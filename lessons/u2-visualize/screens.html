@@ -1,0 +1,430 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 2. 빅데이터</span>
+      <h1>같은 데이터,<br>왜 다르게 보일까?</h1>
+      <div class="story"><b>같은 칼로리 데이터를 본 두 친구</b><br>칼로리 데이터를 앞에 두고 한 친구는 <b>성별에 따라 키가 어떻게 다른지</b>를, 다른 친구는 <b>운동 시간과 소모한 열량</b>을 함께 살펴봤어요. 두 친구가 들려주는 이야기는 서로 달랐어요. 같은 데이터에서 왜 서로 다른 것을 보게 되었을까요?</div>
+      <p>오늘은 데이터를 <b>그래픽으로 표현하는 방법</b>을 알아보고, 오렌지3로 <b>칼로리 데이터</b>와 <b>윤동주의 시</b>를 직접 시각화해요. 그다음 빅데이터 단원을 정리해요.</p>
+      <ol>
+        <li>데이터 시각화 · 그래프 고르기</li><li>칼로리 데이터 시각화 (필수 실습 ①)</li><li>정형 데이터의 시각화</li>
+        <li>비정형 데이터 · 워드 클라우드 (필수 실습 ②)</li><li>빅데이터 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📊 📈 🥧</i><div><b>그래프 고르기 실험실</b><small>같은 데이터를 여러 그래프로 바꿔 보기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🍊</i><div><b>오렌지3 실습 ①</b><small>칼로리 데이터 · 박스 플롯 · 산점도</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🗺️ 🖼️ ☁️</i><div><b>정형 · 비정형 데이터</b><small>지도 · 이미지 · 워드 클라우드</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧩</i><div><b>빅데이터 정리</b><small>나만의 빅데이터 분석 계획</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>수치나 통계 데이터를 그래픽으로 바꾸는 <b>데이터 시각화</b>의 뜻과 종류를 알아보고, 오렌지3로 <b>정형 데이터</b>(칼로리 데이터)와 <b>비정형 데이터</b>(시 텍스트)를 시각화합니다. 시각화한 결과를 보고 <b>무엇을 알 수 있는지, 왜 쓸모 있는지</b> 해석합니다.</p>
+    </div>
+    <div class="callout vz-ready">🍊 <b>지금 바로 오렌지3를 실행해 두세요.</b> 처음 열리는 데 1~2분 걸려요. 열리는 동안 다음 화면에서 개념을 먼저 봐요.<br>📁 <b>선생님이 알려 주는 폴더</b>에서 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span> · <span class="mono">윤동주 시.csv</span>를 내려받아요. 지난 시간에 저장한 <b>「칼로리 전처리」 워크플로 파일(.ows)</b>이 있으면 어디 있는지 확인해요.</div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo"><label>내가 알고 있는 그래프 종류와, 그 그래프를 어디에서 봤는지 <small>떠오르는 대로</small></label><textarea data-memo="planGuess" rows="2" placeholder="예: 날씨 앱에서 시간별 기온을 선으로 이은 그래프"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>빅데이터</b> · 빅데이터를 목적에 맞게 처리하여 분석하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 시각화한 결과의 해석이 서로 다른 이유는 무엇이고, 시각화의 방법에는 어떤 것이 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>빅데이터 분석 도구를 활용하여 데이터를 시각화할 수 있다.</li>
+          <li>시각화한 결과의 의미와 가치를 해석할 수 있다.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>⏱️ 50분 계획</h3>
+      <div class="flow2 vz-plan">
+        <div style="--k:#1f9d74"><b>준비 · 01 시각화</b><span>오렌지3 켜기 · 그래프 고르기 실험실 <b>10분</b></span></div>
+        <div style="--k:#e0702b"><b>02 필수 실습 ①</b><span>칼로리 데이터 준비(필요하면 5분) · 박스 플롯 · 산점도 <b>17분</b></span></div>
+        <div style="--k:#2f6fd0"><b>03 정형 데이터</b><span>분류 게임 (지도 실습은 선택) <b>3분</b></span></div>
+        <div style="--k:#9b4fc4"><b>04 필수 실습 ②</b><span>윤동주 시 워드 클라우드 <b>9분</b></span></div>
+        <div style="--k:#d64535"><b>05 정리 · 마무리</b><span>빅데이터 정리 5분 · 질문폼 6분</span></div>
+      </div>
+      <p class="note">「선택」이라고 적힌 실습은 접어 두었어요. 필수 실습을 마치고 시간이 남으면 펼쳐서 해요.</p>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 데이터 시각화부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 데이터 시각화 -->
+<section class="page" data-name="데이터 시각화" data-acc="#1f9d74">
+  <div class="head"><div class="num">01</div><div><h2>데이터 시각화는 무엇이고 어떤 방법이 있을까?</h2><p>교과서 76쪽</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>숫자가 잔뜩 적힌 표는 한눈에 들어오지 않아요. 숫자를 <b>그림(그래픽)</b>으로 바꾸면 의미가 바로 보이고, 표에서는 몰랐던 <b>숨은 정보</b>도 찾을 수 있어요. 다만 <b>어떤 그림으로 바꾸느냐에 따라 보이는 것이 달라요.</b></span></div>
+  <div class="card">
+    <h3>📌 데이터 시각화</h3>
+    <div class="callout" style="margin-top:4px">수치나 통계 데이터를 <b>그래픽으로 표현</b>하여 분석 결과를 <b>직관적으로 이해하기 쉽게</b> 만드는 기술</div>
+    <p>일상생활에서 생기는 수많은 데이터는 그 자체만으로는 전체를 파악하기 어려운 경우가 많아요. 시각화하면 그 <b>의미를 쉽게 파악</b>할 수 있고 <b>숨어 있는 정보</b>도 쉽게 찾을 수 있어요. 그래서 시각화는 데이터 분석 분야에서 매우 중요한 역할을 해요.</p>
+    <div class="cards4 vz-kinds">
+      <div class="kc" style="--k:#e0702b"><svg viewBox="0 0 120 70" aria-hidden="true"><line x1="10" y1="62" x2="112" y2="62" class="vz-ax"/><line x1="34" y1="8" x2="34" y2="58" class="vz-wk"/><rect x="24" y="20" width="20" height="24" rx="2" style="fill:#e0702b"/><line x1="24" y1="32" x2="44" y2="32" class="vz-md"/><line x1="78" y1="14" x2="78" y2="54" class="vz-wk"/><rect x="68" y="24" width="20" height="18" rx="2" style="fill:#2f6fd0"/><line x1="68" y1="34" x2="88" y2="34" class="vz-md"/></svg><h4>박스 플롯</h4><p>데이터의 특징을 파악할 수 있는 <b>통계 분포와 이상치</b>를 시각화</p></div>
+      <div class="kc" style="--k:#1f9d74"><svg viewBox="0 0 120 70" aria-hidden="true"><line x1="10" y1="62" x2="112" y2="62" class="vz-ax"/><g style="fill:#1f9d74;opacity:.75"><rect x="14" y="52" width="10" height="10"/><rect x="25" y="40" width="10" height="22"/><rect x="36" y="24" width="10" height="38"/><rect x="47" y="14" width="10" height="48"/><rect x="58" y="22" width="10" height="40"/><rect x="69" y="36" width="10" height="26"/><rect x="80" y="48" width="10" height="14"/><rect x="91" y="56" width="10" height="6"/></g><path d="M12 60 C30 56,40 12,52 12 S80 50,104 60" class="vz-cv"/></svg><h4>히스토그램 · 분포도</h4><p>수치형 변수를 <b>구간으로 나누어</b> 각 구간에 속하는 데이터의 분포를 시각화</p></div>
+      <div class="kc" style="--k:#2f6fd0"><svg viewBox="0 0 120 70" aria-hidden="true"><line x1="10" y1="62" x2="112" y2="62" class="vz-ax"/><line x1="12" y1="6" x2="12" y2="62" class="vz-ax"/><g style="fill:#2f6fd0"><circle cx="24" cy="54" r="3.5"/><circle cx="34" cy="48" r="3.5"/><circle cx="40" cy="52" r="3.5"/><circle cx="52" cy="40" r="3.5"/><circle cx="60" cy="36" r="3.5"/><circle cx="66" cy="42" r="3.5"/><circle cx="78" cy="28" r="3.5"/><circle cx="88" cy="24" r="3.5"/><circle cx="98" cy="14" r="3.5"/></g><line x1="18" y1="58" x2="106" y2="12" class="vz-rg"/></svg><h4>산점도</h4><p>수치형인 <b>두 개의 변수 간의 관계</b>를 시각화</p></div>
+      <div class="kc" style="--k:#9b4fc4"><svg viewBox="0 0 120 70" aria-hidden="true"><circle cx="34" cy="35" r="26" style="fill:#9b4fc4;opacity:.35"/><path d="M34 35 L34 9 A26 26 0 0 1 58 45 Z" style="fill:#9b4fc4"/><line x1="72" y1="62" x2="114" y2="62" class="vz-ax"/><rect x="76" y="34" width="8" height="28" style="fill:#e0702b"/><rect x="88" y="20" width="8" height="42" style="fill:#e0702b"/><rect x="100" y="44" width="8" height="18" style="fill:#e0702b"/></svg><h4>차트</h4><p><b>막대그래프, 선그래프, 원그래프</b>와 같이 데이터의 수치, 비율 등을 시각화</p></div>
+    </div>
+  </div>
+
+  <div class="card vz-labcard">
+    <h3>🧪 그래프 고르기 실험실 <span class="muted" style="font-weight:400;font-size:.88rem">(연습용 가상 데이터)</span></h3>
+    <p style="margin-top:0">미션을 하나 고르고, 아래 버튼으로 <b>같은 데이터를 여러 그래프로 바꿔</b> 보세요. 메시지가 가장 잘 보이는 그래프를 찾으면 <b>「이 그래프로 전할래요」</b>를 눌러요. 미션 다섯 개 중 <b>두 개 이상</b> 해 봐요(시간이 되면 더).</p>
+    <div class="vz-mis" id="labMis"></div>
+    <div class="vz-q" id="labQ"></div>
+    <div class="vz-types" id="labTypes"></div>
+    <div class="vz-chart" id="labChart"></div>
+    <div class="row" style="margin-top:8px"><button class="btn sm" id="labPick">이 그래프로 전할래요</button></div>
+    <div class="vz-fb" id="labFb"></div>
+    <div class="vz-log" id="labLog"></div>
+    <div class="memo">
+      <label>가장 고민한 미션 하나: 고른 그래프와, 다른 그래프로는 왜 잘 안 보였는지 <small>예: ○○ 미션은 ○○그래프가 좋았다. △△그래프로 바꾸면 ~이 보이지 않았다.</small></label>
+      <textarea data-memo="labWhy" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+
+  <details class="card vz-opt">
+    <summary>🔎 선택 · 시각화 체험: 검색어 두 개 비교하기 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 76쪽 스스로 해결하기)</span></summary>
+    <ol class="vz-do">
+      <li>선생님이 알려 주는 <b>검색어 트렌드 사이트</b>(온라인 데이터랩)에 들어가요.</li>
+      <li>관심 있는 <b>두 개의 키워드</b>를 검색어에 입력해요. <small class="muted">예: 「줄넘기」와 「마스크」처럼 계절에 따라 달라질 것 같은 낱말</small></li>
+      <li>기간을 <b>최근 4년</b>으로 정하고 두 그래프를 비교해요. 언제 오르고 언제 내리나요?</li>
+    </ol>
+    <div class="memo"><label>고른 두 키워드와 그래프에서 알게 된 점</label><textarea data-memo="trendTry" rows="2"></textarea><div class="saved"></div></div>
+  </details>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 칼로리 데이터 시각화 -->
+<section class="page" data-name="칼로리 데이터 시각화" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>데이터를 시각화하는 방법으로 무엇이 있을까?</h2><p>교과서 77~78쪽 · 필수 실습 ① 칼로리 데이터</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>두 파일을 <b>합치고(Merge Data)</b> 나이를 <b>세 구간으로 나눈(Discretize)</b> 칼로리 데이터를 써요. 지난 시간에 만들었으면 열기만 하고, 아니면 아래 「나」 순서로 5분 안에 만들어요. 오늘은 여기에 <b>Visualize</b> 카테고리의 위젯을 붙여서 <b>박스 플롯</b>과 <b>산점도</b>로 그려 봐요.</span></div>
+
+  <div class="card vz-lab">
+    <h3>🍊 준비: 칼로리 데이터 흐름 만들기</h3>
+    <div class="grid2 even vz-prep">
+      <div class="vz-path">
+        <h4>가. 「칼로리 전처리」 파일을 저장해 두었다면</h4>
+        <ol class="vz-do">
+          <li>오렌지3에서 <b>File → Open</b>으로 지난 시간에 저장한 <b>「칼로리 전처리」</b> 워크플로(.ows)를 열어요.</li>
+          <li>아래 흐름도의 <b>회색 위젯</b>(calories · exercise · Merge Data · Discretize)이 있으면 준비 끝이에요.</li>
+        </ol>
+      </div>
+      <div class="vz-path b">
+        <h4>나. 파일이 없거나 지난 시간 칼로리 실습을 하지 않았다면 (5분)</h4>
+        <ol class="vz-do">
+          <li>내려받은 <span class="mono">calories.csv</span>와 <span class="mono">exercise.csv</span>를 <b>File</b> 위젯 2개로 각각 불러오고, F2 키로 이름을 calories · exercise로 바꿔요.</li>
+          <li>Transform 카테고리의 <b>Merge Data</b>에 두 File 위젯을 연결해요(calories → Data, exercise → Extra Data). Merge Data를 더블 클릭해 짝을 <b>User_ID ↔ User_ID</b>로 바꿔요(처음에는 Row index로 맞춰져 있어요).</li>
+          <li><b>Discretize</b>를 Merge Data에 연결하고, Age를 고른 뒤 <b>Natural binning</b>, desired bins를 <b>3</b>으로 정해요.</li>
+        </ol>
+      </div>
+    </div>
+    <p style="margin:10px 0 0">준비가 끝나면 <b>색이 진한 위젯</b>(Box Plot · Scatter Plot)을 오늘 새로 붙여요.</p>
+    <div class="vz-flow" id="flowCal"></div>
+    <div class="vz-legend"><span style="--k:#f2a516">Data</span><span style="--k:#e0702b">Transform</span><span style="--k:#d64535">Visualize</span><span class="old">회색: 준비 단계에서 만드는 위젯</span><span class="opt">점선: 선택</span></div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card vz-lab">
+      <h3>🧪 필수 실습 ①-가 박스 플롯: 성별에 따른 키</h3>
+      <ol class="vz-do">
+        <li>Visualize 카테고리의 <b>Box Plot</b>을 <b>Merge Data</b>에 연결하고 더블 클릭해요.</li>
+        <li>아래 표처럼 정해요.</li>
+        <li>성별에 따른 키의 <b>중앙값, 최솟값, 최댓값</b> 등 통곗값을 확인해요.</li>
+      </ol>
+      <div class="vz-tw"><table class="tbl vz-set">
+        <tr><th>설정 칸</th><th>고를 값</th></tr>
+        <tr><td>변수 (Variable)</td><td><b>Height</b> (키)</td></tr>
+        <tr><td>부집단 (Subgroups)</td><td><b>Gender</b> (성별)</td></tr>
+      </table></div>
+      <div class="vz-boxread" id="boxGuide"></div>
+      <p class="note">오렌지3의 박스 플롯은 가로로 그려지고 <b>평균선도 함께</b> 그려요. 상자 높이만큼 긴 <b>노란 세로선이 중앙값</b>(값은 상자 아래)이고, 파란 짧은 세로선은 평균(값은 상자 위), 그 양옆으로 뻗은 파란 가로선은 표준편차 범위예요.</p>
+      <div class="memo"><label>남녀의 키 중앙값은 각각 얼마쯤이고, 어떤 차이가 보이나요?</label><textarea data-memo="boxRead" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div class="card vz-lab">
+      <h3>🧪 필수 실습 ①-나 산점도: 운동 시간과 열량 소모</h3>
+      <ol class="vz-do">
+        <li>Visualize 카테고리의 <b>Scatter Plot</b>을 <b>Discretize</b>에 연결하고 더블 클릭해요.</li>
+        <li>아래 표처럼 정하고, 먼저 <b>흑백 산점도와 회귀선</b>을 확인해요.</li>
+        <li>그다음 Color를 <b>Age</b>로 바꿔 <b>나이 구간별 색</b>을 확인해요.</li>
+      </ol>
+      <div class="vz-tw"><table class="tbl vz-set">
+        <tr><th>설정 칸</th><th>고를 값</th></tr>
+        <tr><td>x축 (Axis x)</td><td><b>Duration</b> (운동 시간)</td></tr>
+        <tr><td>y축 (Axis y)</td><td><b>Calories</b> (열량)</td></tr>
+        <tr><td>회귀선 표시 (Show regression line)</td><td>☑ 체크</td></tr>
+        <tr><td>색 (Color)</td><td><b>Age</b> (나이, 세 구간)</td></tr>
+      </table></div>
+      <div class="callout vz-mini"><b>궁금해요! 회귀선은 왜 볼까?</b> 회귀선을 보면 데이터 간의 <b>연관성</b>을 알 수 있어요. 점들이 이루는 방향을 하나의 직선으로 나타낸 것이라고 생각하면 돼요.</div>
+      <div class="memo"><label>운동 시간이 길어지면 열량 소모는 어떻게 되나요? 세 나이 구간에서도 같은가요?</label><textarea data-memo="scatterRead" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 표로 볼 때와 그래프로 볼 때</h3>
+    <p style="margin-top:0">Merge Data에 연결된 <b>Data Table</b>을 열어(없으면 Data Table을 하나 연결해요) 1만 5천 줄의 숫자를 잠깐 훑어보고, 방금 그린 두 그래프와 비교해 보세요.</p>
+    <div class="memo"><label>숫자 표만 볼 때와 비교해 그래프로 보니 무엇을 더 쉽게 알 수 있었나요? 박스 플롯과 산점도는 각각 무엇을 잘 보여 주었나요?</label><textarea data-memo="vizValue" rows="3"></textarea><div class="saved"></div></div>
+    <p class="note">오렌지3가 열리지 않았다면 01 실험실의 「남녀 키 비교」와 「운동 시간과 열량」 미션으로 박스 플롯과 산점도를 먼저 살펴보고, 위 메모를 써요.</p>
+  </div>
+
+  <details class="card vz-opt">
+    <summary>➕ 선택 · 분포도와 다른 속성의 산점도 <span class="muted" style="font-weight:400;font-size:.88rem">(필수 실습을 마친 뒤)</span></summary>
+    <div class="grid2 even" style="margin-top:8px">
+      <div>
+        <h4>분포도: 성별에 따른 몸무게</h4>
+        <p style="margin:4px 0 6px">Visualize의 <b>Distributions</b>를 <b>Merge Data</b>에 연결해요.</p>
+        <div class="vz-tw"><table class="tbl vz-set">
+          <tr><th>설정 칸</th><th>고를 값</th></tr>
+          <tr><td>변수 (Variable)</td><td><b>Weight</b> (몸무게)</td></tr>
+          <tr><td>구간도 (Bin width)</td><td><b>2</b></td></tr>
+          <tr><td>분할 기준 (Split by)</td><td><b>Gender</b> (성별)</td></tr>
+          <tr><td>분포 곡선 (Fitted distribution)</td><td><b>Normal</b></td></tr>
+        </table></div>
+        <p class="note">종 모양 곡선이 좌우 대칭이면 <b>정규분포</b>예요. 대부분의 값이 가운데로 몰려 있고 양쪽으로 갈수록 점점 적어지는 모양이에요.</p>
+      </div>
+      <div>
+        <h4>산점도: 심장 박동 수 · 체온과 열량</h4>
+        <p style="margin:4px 0 6px">실습 ①-나의 Scatter Plot에서 x축만 바꿔 봐요. y축은 그대로 <b>Calories</b>예요.</p>
+        <div class="vz-tw"><table class="tbl vz-set">
+          <tr><th>비교</th><th>x축 (Axis x)</th></tr>
+          <tr><td>(1)</td><td><b>Heart_Rate</b> (심장 박동 수)</td></tr>
+          <tr><td>(2)</td><td><b>Body_Temp</b> (체온)</td></tr>
+        </table></div>
+        <p class="note">두 그래프에서 점들이 올라가는 모양이 어떻게 다른지 비교해 봐요. 직선처럼 올라가나요, 휘어지며 올라가나요?</p>
+      </div>
+    </div>
+    <div class="memo"><label>분포도나 다른 산점도에서 알게 된 점 <small>선택</small></label><textarea data-memo="optRead" rows="2"></textarea><div class="saved"></div></div>
+  </details>
+
+  <div class="cards2 vz-terms">
+    <div class="kc" style="--k:#5b6776"><h4>표준편차</h4><p>데이터가 평균을 중심으로 얼마나 퍼져 있는지를 나타내는 통계적 지표예요. <b>작을수록</b> 데이터가 평균 가까이 모여 있고, <b>클수록</b> 평균에서 멀리 퍼져 있어요.</p></div>
+    <div class="kc" style="--k:#5b6776"><h4>분포도 · 정규분포</h4><p>분포도는 여러 가지 경우나 조건에 따른 다양한 확률 분포를 말해요. 정규분포는 평균값을 가운데로 하여 좌우 대칭인 종 모양의 분포예요.</p></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 정형 데이터 -->
+<section class="page" data-name="정형 데이터의 시각화" data-acc="#2f6fd0">
+  <div class="head"><div class="num">03</div><div><h2>정형 데이터의 시각화는 어떻게 할까?</h2><p>교과서 79쪽</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>칼로리 데이터처럼 <b>행과 열이 정해진 표</b>로 정리된 데이터가 정형 데이터예요. 숫자뿐 아니라 이름·날짜·위도와 경도 같은 정보도 들어 있어서, 정보의 특성에 맞게 그래프나 <b>지도</b>로 시각화해요.</span></div>
+  <div class="grid2">
+    <div class="card">
+      <h3>📋 정형 데이터</h3>
+      <div class="callout" style="margin-top:4px"><b>일정한 형식</b>을 갖춘 데이터로 수치, 문자, 날짜, 지리 정보 등을 포함해요.</div>
+      <div class="cards2 vz-info">
+        <div><b>수치</b><span>키, 열량, 운동 시간</span></div>
+        <div><b>문자</b><span>성별, 학교명, 주소</span></div>
+        <div><b>날짜</b><span>학교 설립일자</span></div>
+        <div><b>지리</b><span>위도, 경도</span></div>
+      </div>
+      <p class="note">정보의 특성에 맞게 시각화하는 것도 데이터 분석의 중요한 부분이에요. 예를 들어 위도·경도는 오렌지3의 <b>Geo Map</b> 위젯으로 지도 위의 점이 되고, 날짜는 시간의 흐름으로 보여 줄 수 있어요.</p>
+    </div>
+    <div class="card">
+      <h3>🎯 정형일까, 비정형일까?</h3>
+      <div id="typeSort"></div>
+    </div>
+  </div>
+
+  <details class="card vz-opt">
+    <summary>🗺️ 선택 실습 · 전국 초중등학교 위치를 지도에 그리기 <span class="muted" style="font-weight:400;font-size:.88rem">(04 워드 클라우드까지 마친 뒤)</span></summary>
+    <div class="callout vz-mini" style="margin-top:8px"><b>먼저 확인:</b> 오렌지3 위젯 목록에 <b>Geo</b>와 <b>Time series</b> 카테고리가 보여야 해요. 보이지 않으면 추가 기능(Options → Add-ons…)을 설치하고 오렌지3를 다시 시작해야 하므로, 선생님께 먼저 여쭤봐요. 지도 바탕 그림은 인터넷으로 불러와요.</div>
+    <ol class="vz-do">
+      <li>선생님이 알려 주는 폴더에서 <b>전국 초중등학교 위치 표준 데이터</b>(.csv)를 내려받아 <b>File</b> 위젯으로 불러와요. 위도와 경도가 <b>numeric</b>으로 되어 있는지 확인해요.</li>
+      <li>File에 <b>Scatter Plot</b>을 연결해 점들이 이루는 모양을 봐요.</li>
+      <li>Geo 카테고리의 <b>Geo Map</b>을 연결하고 아래 표처럼 정해 우리나라 지도 위의 학교급별 위치를 봐요.</li>
+      <li>Time series 카테고리의 <b>Time Slice</b>를 File에 연결하고, Time Slice에 <b>Geo Map</b>을 하나 더 연결해요(설정은 위 Geo Map과 같게: 위도 · 경도 · 학교급구분). Custom step size를 <b>1 year</b>로 정하고 ▶ 재생 버튼을 눌러 시간의 흐름에 따라 세워진 학교를 봐요.</li>
+    </ol>
+    <div class="vz-flow" id="flowGeo"></div>
+    <div class="vz-tw"><table class="tbl vz-set">
+      <tr><th>위젯</th><th>설정 칸</th><th>고를 값</th></tr>
+      <tr><td rowspan="2"><b>Scatter Plot</b></td><td>x축 (Axis x)</td><td><b>학교급구분</b></td></tr>
+      <tr><td>y축 (Axis y)</td><td><b>설립일자</b></td></tr>
+      <tr><td rowspan="3"><b>Geo Map</b></td><td>Latitude</td><td><b>위도</b></td></tr>
+      <tr><td>Longitude</td><td><b>경도</b></td></tr>
+      <tr><td>Color (Attributes)</td><td><b>학교급구분</b></td></tr>
+      <tr><td><b>Time Slice</b></td><td>Custom step size</td><td><b>1 year</b> → ▶ 재생</td></tr>
+    </table></div>
+    <div class="memo"><label>지도에서 알게 된 점 <small>예: 학교급별 위치는 어떻게 퍼져 있나? 학교가 가장 많이 세워진 해는 언제쯤?</small></label><textarea data-memo="geoRead" rows="2"></textarea><div class="saved"></div></div>
+    <p class="note">글자가 깨져 보이면 선생님께 알려 주세요. 파일의 글자 인코딩을 바꿔야 할 수 있어요.</p>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 비정형 데이터 -->
+<section class="page" data-name="비정형 데이터 · 워드 클라우드" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>비정형 데이터의 시각화는 어떻게 할까?</h2><p>교과서 80~81쪽 · 필수 실습 ② 윤동주 시</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사진, 글, 소리처럼 <b>형식이 정해지지 않은 데이터</b>도 시각화할 수 있어요. 이미지는 <b>그림 그대로 모아 보고</b>, 텍스트는 <b>자주 나온 단어를 크게</b> 보여 주는 워드 클라우드로 나타내요.</span></div>
+  <div class="card">
+    <h3>🧩 비정형 데이터</h3>
+    <div class="callout" style="margin-top:4px"><b>형식이 정해지지 않은</b> 데이터로 이미지, 텍스트, 소리 등의 형태를 띠고 있어요.</div>
+    <div class="cards2">
+      <div class="kc" style="--k:#a39213"><div class="ic">🖼️</div><h4>이미지 데이터</h4><p>폴더에 모은 사진을 <b>Import Images</b>로 불러와 <b>Image Viewer</b>로 이미지 형태 그대로 확인해요. 표 데이터에 사진 주소가 있으면, 그래프에서 고른 부분의 사진만 모아 볼 수도 있어요.</p></div>
+      <div class="kc" style="--k:#9b4fc4"><div class="ic">☁️</div><h4>텍스트 데이터 · 워드 클라우드</h4><p>텍스트에서 단어가 나온 횟수(빈도수)를 글자 크기로 나타내요. <b>글자가 클수록 빈도수가 높은 단어</b>예요. 주요 키워드를 알려 주고, 불용어(분석에 필요 없는 말)를 빼기 쉽고, 시각적 표현으로 이해를 도와요.</p></div>
+    </div>
+  </div>
+
+  <div class="card vz-lab">
+    <h3>🧪 필수 실습 ② 윤동주의 시를 워드 클라우드로</h3>
+    <div class="grid2">
+      <div>
+        <ol class="vz-do">
+          <li>Text Mining 카테고리의 <b>Corpus</b> 위젯을 불러와요.</li>
+          <li>Corpus에서 내려받은 <span class="mono">윤동주 시.csv</span>를 불러오고, 언어(Language)를 <b>Korean</b>으로 정해요.</li>
+          <li>Corpus에 <b>Corpus Viewer</b>를 연결해 시 데이터를 살펴봐요.</li>
+          <li>Corpus에 <b>Preprocess Text</b>를 연결해요. 정렬하거나 불필요한 문자를 지우는 <b>데이터 전처리</b>를 하는 위젯이에요.</li>
+          <li>Preprocess Text에 <b>Word Cloud</b>를 연결해 시각화해요.</li>
+        </ol>
+        <p class="note">Text Mining 카테고리가 보이지 않으면 추가 기능 Text가 설치되지 않은 거예요. 선생님께 알려 주세요.</p>
+      </div>
+      <div>
+        <div class="vz-flow" id="flowText"></div>
+        <div class="vz-tw"><table class="tbl vz-set">
+          <tr><th>위젯</th><th>설정</th></tr>
+          <tr><td><b>Corpus</b></td><td>파일: 윤동주 시.csv · Language: <b>Korean</b> · Used text features: <b>content</b></td></tr>
+          <tr><td><b>Preprocess Text</b></td><td>Filtering에서 처음 켜져 있는 <b>Stopwords는 체크를 끄고</b>, <b>Regexp만</b> 체크해 문장 부호 같은 불필요한 문자를 빼요</td></tr>
+          <tr><td><b>Word Cloud</b></td><td>왼쪽 목록에서 단어별 빈도(Weight)도 확인</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="memo">
+      <label>가장 크게 보인 단어 2~3개와, 그 단어들로 짐작할 수 있는 시의 특징</label>
+      <textarea data-memo="wordRead" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+
+  <details class="card vz-opt">
+    <summary>🖼️ 선택 실습 · 이미지 데이터 시각화 <span class="muted" style="font-weight:400;font-size:.88rem">(은하 이미지 또는 FIFA 2023 데이터)</span></summary>
+    <div class="grid2 even" style="margin-top:8px">
+      <div>
+        <h4>은하 이미지</h4>
+        <ol class="vz-do">
+          <li>선생님이 알려 주는 폴더에서 <b>은하 이미지</b> 폴더(안에 은하 종류별 폴더 3개)를 내려받아요.</li>
+          <li>Image Analytics의 <b>Import Images</b>로 은하 이미지 폴더를 정해요.</li>
+          <li><b>Image Viewer</b>를 연결해 이미지 데이터를 그대로 확인해요.</li>
+        </ol>
+        <div class="vz-flow" id="flowImg"></div>
+      </div>
+      <div>
+        <h4>FIFA 2023 데이터</h4>
+        <ol class="vz-do">
+          <li><b>File</b>로 선생님이 알려 주는 FIFA 2023 데이터(.csv)를 불러와요.</li>
+          <li>Visualize의 <b>Distributions</b>를 연결하고 변수를 <b>선수 가치(Value(£))</b>로 정해요.</li>
+          <li>Distributions에 <b>Image Viewer</b>를 연결하고, 선수 가치가 <b>1억 파운드 이상</b>인 막대를 눌러 골라요. 몇 명인지 아래쪽 숫자로 확인해요.</li>
+          <li>Image Viewer에서 이미지 속성을 <b>Photo</b>로 정해요. 선수 사진은 인터넷으로 불러와요.</li>
+        </ol>
+        <div class="vz-flow" id="flowFifa"></div>
+      </div>
+    </div>
+    <div class="memo"><label>이미지 데이터를 시각화해서 알게 된 점 <small>선택</small></label><textarea data-memo="imgRead" rows="2"></textarea><div class="saved"></div></div>
+  </details>
+
+  <details class="card vz-opt">
+    <summary>💭 선택 · 생각해 보기: 정형 데이터와 비정형 데이터의 시각화 비교</summary>
+    <div class="memo"><label>칼로리 데이터(정형)와 시 데이터(비정형)를 시각화한 방법은 무엇이 달랐나요? <small>불러온 위젯, 전처리, 결과 그림의 모양 등</small></label><textarea data-memo="compareViz" rows="3"></textarea><div class="saved"></div></div>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 빅데이터 정리 -->
+<section class="page" data-name="빅데이터 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>빅데이터 정리 · 나만의 빅데이터 분석</h2><p>교과서 82~83쪽 · 맞춤 활동 · 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>빅데이터 단원에서 한 일은 <b>수집 → 전처리 → 시각화</b>였어요. 이 흐름을 내 관심 분야에 적용하는 계획을 세우며 빅데이터의 의미와 시각화의 가치를 정리해요.</span></div>
+  <div class="card">
+    <h3>🧩 맞춤 활동: 나만의 빅데이터 분석 계획</h3>
+    <div class="memo">
+      <label><span class="vz-tag" style="--k:#1f9d74">과정 · 기능</span> 관심 있는 분야에서 <b>관계를 알고 싶은 두 속성</b>과 그 데이터를 구할 곳</label>
+      <textarea data-memo="myField" rows="2" placeholder="예: 우리 동네 날씨 — 하루 최고 기온과 ○○의 관계, 공공 데이터에서 구하기"></textarea>
+      <label>두 속성의 관계를 보여 주기에 알맞은 시각화 방법 <small>하나 고르기</small></label>
+      <div id="myVizPick"></div>
+      <div class="saved"></div>
+    </div>
+    <details class="vz-help">
+      <summary>➕ 선택 · 맞춤 활동 더 하기 (지식 · 이해 / 가치 · 태도)</summary>
+      <div class="memo">
+        <label><span class="vz-tag" style="--k:#2f6fd0">지식 · 이해</span> 빅데이터의 세 가지 특성을, 이 단원에서 다룬 데이터 하나를 예로 들어 내 말로 적기</label>
+        <textarea data-memo="bdFeat" rows="2" placeholder="예: 운동 기록 1만 5천 명 분량처럼 …"></textarea><div class="saved"></div>
+        <label><span class="vz-tag" style="--k:#e0702b">가치 · 태도</span> 오늘 시각화한 결과로 생각한 <b>빅데이터의 의미</b>와 <b>시각화의 가치</b></label>
+        <textarea data-memo="bdMeaning" rows="2" placeholder="빅데이터의 의미: &#10;시각화의 가치: "></textarea><div class="saved"></div>
+      </div>
+    </details>
+    <p class="note">시간이 넉넉하면 선생님이 알려 주는 공공 데이터 사이트에서 데이터를 내려받아 오렌지3로 실제로 시각화해 봐요.</p>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🔤 주요 개념 정리 <span class="muted" style="font-weight:400;font-size:.88rem">(알맞은 말 고르기)</span></h3>
+      <ol class="vz-blanks" id="fillBox"></ol>
+    </div>
+    <div class="card">
+      <h3>✅ 학업 성취도 점검 <span class="muted" style="font-weight:400;font-size:.88rem">(할 수 있는 것을 모두 골라요)</span></h3>
+      <div id="selfCheck"></div>
+      <p class="note">세 가지를 모두 골랐다면 아래 <b>심화</b>, 아니라면 <b>보충</b> 활동을 해 봐요.</p>
+    </div>
+  </div>
+
+  <details class="card vz-opt">
+    <summary>📎 선택 활동 · 보충 또는 심화 <span class="muted" style="font-weight:400;font-size:.88rem">(시간이 되는 만큼)</span></summary>
+    <div class="vote" id="extraPick" style="margin-bottom:10px"></div>
+    <div class="cards2">
+      <div class="kc" style="--k:#1f9d74"><h4>보충 · 데이터 분석과 시각화의 관계</h4><p>데이터 분석은 복잡한 데이터를 수집·가공·분석해 의미 있는 정보를 끌어내는 과정이고, 시각화는 데이터를 차트·그래프·지도 같은 시각적 요소로 표현하는 것이에요. 두 가지는 어떤 관계일까요?</p>
+        <div class="memo"><textarea data-memo="extraBasic" rows="3"></textarea><div class="saved"></div></div></div>
+      <div class="kc" style="--k:#d64535"><h4>심화 · 사회적·윤리적 가치를 생각해야 하는 시각화</h4><p>내 경험을 떠올려, 사회적·윤리적 가치를 고려해야 하는 빅데이터 시각화 사례를 찾아 친구와 의견을 나눠 봐요.</p>
+        <div class="memo"><label>빅데이터 시각화 사례</label><textarea data-memo="extraCase" rows="2"></textarea><div class="saved"></div><label>고려해야 할 사회적·윤리적 가치</label><textarea data-memo="extraValue" rows="2"></textarea><div class="saved"></div></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#1f9d74">데이터 시각화는 숫자를 그래픽으로 바꿔 <b>의미와 숨은 정보</b>를 쉽게 보게 해 준다. 박스 플롯 · 히스토그램(분포도) · 산점도 · 차트(막대 · 선 · 원) 가운데 <b>전하려는 메시지에 맞는 방법</b>을 골라야 한다.</div>
+    <div style="--k:#e0702b">같은 칼로리 데이터도 <b>박스 플롯</b>으로는 성별에 따른 통곗값을, <b>산점도와 회귀선</b>으로는 운동 시간과 열량 소모의 관계를 볼 수 있다. 어떤 방법으로 보느냐에 따라 <b>해석이 달라질 수 있다.</b></div>
+    <div style="--k:#9b4fc4"><b>정형 데이터</b>는 수치 · 문자 · 날짜 · 지리 정보의 특성에 맞게 그래프나 지도로, <b>비정형 데이터</b>는 이미지를 그대로 모아 보거나 텍스트를 워드 클라우드로 시각화한다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">빅데이터 단원을 마치며 핵심 질문에 답하고, 새롭게 알게 된 점을 적어요.</p>
+    <div class="grid2 even">
+      <div class="memo" style="margin-top:0"><label>빅데이터를 목적에 맞게 처리하여 분석하는 방법은 무엇일까?</label><textarea data-memo="keyQ" rows="4"></textarea><div class="saved"></div></div>
+      <div class="memo" style="margin-top:0"><label>새롭게 알게 된 점 <small>처음에 적은 「알고 있는 그래프」와 비교해도 좋아요</small></label><textarea data-memo="newLearn" rows="4"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>그래프 고르기 실험실: 고른 그래프가 메시지를 잘 전한 까닭과 <b>다른 그래프와의 비교</b></li>
+      <li>칼로리 데이터의 <b>박스 플롯</b>과 <b>산점도</b>에서 각각 알게 된 사실과 설정</li>
+      <li>표로 볼 때와 비교한 <b>시각화의 가치</b>, 같은 데이터의 <b>해석이 달라질 수 있는 까닭</b></li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

@@ -1,0 +1,264 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 2. 빅데이터</span>
+      <h1>문제를 해결할 데이터는<br>어디에서, 어떻게<br>모을까?</h1>
+      <div class="story"><b>생각해 볼까요? 우리가 필요로 하는 데이터는 어떻게 이용할 수 있을까?</b><br>질병관리청 자료를 보면 중고등학생의 비만율은 2011년 5.6%에서 2021년 13.5%로, 10년 사이에 <b>2.4배</b>가 되었어요. 남학생은 6.8%에서 17.5%로, 여학생은 4.2%에서 9.1%로 늘었어요. 그래서 건강 관리가 점점 더 중요해지고 있어요.<br>요즘은 스마트 기기로 내 몸의 정보를 파악해 <b>맞춤형 운동 처방</b>을 받고, 빅데이터로 걸릴 위험이 높은 질환을 예측해 알맞은 의료진을 추천받기도 해요. 다만 이때 <b>개인 정보가 유출되지 않도록</b> 조심해야 해요.</div>
+      <p>이처럼 빅데이터로 개인과 사회의 문제를 해결하는 사례가 늘고 있어요. 오늘은 빅데이터가 무엇인지 알아보고, 문제를 해결하는 데 필요한 데이터를 <b>어떤 방법으로 모으는지</b>, 모을 때 <b>무엇을 조심해야 하는지</b> 살펴봐요.</p>
+      <ol>
+        <li>빅데이터의 개념과 특징은 무엇일까?</li><li>내가 필요한 데이터는 어떻게 수집할까?</li><li>수집할 때 주의할 점</li>
+        <li>스스로 해결하기 · 나의 수집 계획</li><li>마무리 · 질문폼</li>
+      </ol>
+      <p class="bc-first">⬇️ <b>먼저 아래 「오늘 할 일 보기」에서 칼로리 데이터를 내려받은 뒤</b> 시작해요.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st bc-obe" style="animation-delay:.2s">
+        <div>
+          <b>중고등학생 비만율 (%)</b>
+          <div class="bc-bars">
+            <div class="g"><div class="pair"><i style="--h:5.6"><em>5.6</em></i><i class="n" style="--h:13.5"><em>13.5</em></i></div><span>전체</span></div>
+            <div class="g"><div class="pair"><i style="--h:6.8"><em>6.8</em></i><i class="n" style="--h:17.5"><em>17.5</em></i></div><span>남학생</span></div>
+            <div class="g"><div class="pair"><i style="--h:4.2"><em>4.2</em></i><i class="n" style="--h:9.1"><em>9.1</em></i></div><span>여학생</span></div>
+          </div>
+          <small><span class="bc-key"></span>2011년 <span class="bc-key n"></span>2021년 · 자료: 질병관리청</small>
+        </div>
+      </div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🗄️</i><div><b>빅데이터란?</b><small>양 · 속도 · 다양성(3V)</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧺</i><div><b>네 가지 수집 방법</b><small>공공 데이터 · 민간 데이터 · 웹크롤링 · 직접 수집</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="card bc-dl">
+      <h3>⬇️ 먼저 칼로리 데이터 내려받기 <span class="muted" style="font-weight:400;font-size:.88rem">(68쪽 스스로 해결하기 · 3분)</span></h3>
+      <div class="grid2 even">
+        <div>
+          <p style="margin-top:0">「빅데이터 전처리」 실습에 쓸 <b>칼로리</b> 데이터를 지금 받아 두어요. 교과서는 민간 데이터 사이트인 <b>캐글</b>에 회원 가입하고 「fmendes-DAT263x-demos」를 검색해 받지만, 수업에서는 가입하지 않고 <b>선생님이 알려 주는 폴더</b>에서 같은 데이터를 받아요.</p>
+          <ol class="bc-do">
+            <li>선생님이 알려 주는 폴더에서 <b class="mono">calories.csv</b>와 <b class="mono">exercise.csv</b>를 내려받아요.</li>
+            <li>내 노트북에 「정보 데이터」처럼 찾기 쉬운 폴더를 만들어 두 파일을 함께 넣어요.</li>
+          </ol>
+          <div id="fileCheck"></div>
+        </div>
+        <div class="bc-files">
+          <div><b>📄 calories.csv</b><span>한 사람마다 개별 ID와 소모한 칼로리가 들어 있어요.</span></div>
+          <div><b>📄 exercise.csv</b><span>같은 사람들의 성별, 나이, 키, 체중, 운동 시간, 심장 박동 수, 체온이 들어 있어요.</span></div>
+          <p class="note" style="margin:0">내용은 「빅데이터 전처리」에서 오렌지3로 열어요. 저장한 폴더를 기억해 둬요.</p>
+        </div>
+      </div>
+    </div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>빅데이터</b>의 뜻과 세 가지 특징(3V)을 알아보고, 데이터를 모으는 네 가지 방법인 <b>공공 데이터·민간 데이터·웹크롤링·직접 수집</b>을 여러 상황에 맞추어 골라 봅니다. 그리고 수집할 때 주의할 점을 따져 본 뒤, 나만의 <b>데이터 수집 계획</b>을 세웁니다. 시작하기 전에 다음 시간 실습에 쓸 <b>칼로리 데이터</b>를 먼저 내려받아 둡니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">이 중단원을 다 배우고 나면 핵심 질문에 답하고 새롭게 알게 된 점을 정리해요. 지금 내 생각을 먼저 적어 두고, 배우면서 얼마나 달라지는지 비교해 봐요.</p>
+        <div class="memo"><label>중고등학생의 비만 문제를 해결하려면 어떤 데이터가 필요하고, 그 데이터는 어디에서 구할 수 있을까요?</label><textarea data-memo="planGuess" rows="2" placeholder="지금 떠오르는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>빅데이터</b> · 빅데이터를 목적에 맞게 처리하여 분석하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 빅데이터를 수집하는 다양한 방법은 무엇이고, 수많은 데이터 중 내게 맞는 데이터를 선택하는 방법과 주의해야 할 점은 무엇일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">단원 목표: 데이터 구조화와 빅데이터 기술을 활용한 데이터 분석 시 윤리적인 문제를 고려하여 수행할 수 있다.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>빅데이터의 개념과 특징을 설명할 수 있다.</li>
+          <li>다양한 방법으로 데이터를 수집할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 빅데이터 · 공공 데이터 · 민간 데이터 · 웹크롤링</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 빅데이터의 개념과 특징부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 빅데이터의 개념과 특징 -->
+<section class="page" data-name="빅데이터란?" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>빅데이터의 개념과 특징은 무엇일까?</h2><p>교과서 67쪽 · 빅데이터의 뜻과 3V</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>우리 주변에서는 지금 이 순간에도 엄청나게 많은 데이터가 만들어져요. 너무 <b>많고</b>, 너무 <b>빨리</b> 쌓이고, 생김새도 <b>제각각</b>이라서 예전 방법으로는 다루기 어려운 데이터, 또는 그런 데이터를 다루는 기술을 빅데이터라고 해요.</span></div>
+  <div class="card">
+    <h3>🗄️ 빅데이터</h3>
+    <div class="callout" style="margin-top:4px">기존의 관리 방법이나 분석 체계로는 <b>처리하기 어려운 막대한 양의 데이터셋</b> 또는 <b>그것을 처리하는 기술</b></div>
+    <p style="margin:0">우리는 4차 산업혁명이 빨라지고 디지털 전환이 이루어지면서, 규모를 가늠할 수 없을 정도로 많은 데이터가 생산되는 「빅데이터」 사회에 살고 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>🔺 빅데이터의 세 가지 특징 · 3V <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅱ-5)</span></h3>
+    <div class="bc-3v">
+      <svg viewBox="0 0 360 270" role="img" aria-label="빅데이터의 세 가지 특징: 양, 속도, 다양성">
+        <circle cx="180" cy="142" r="92" fill="none" stroke="#9fd8c4" stroke-width="6"/>
+        <circle cx="180" cy="142" r="44" fill="#eef1f5" stroke="#cfd5dc" stroke-width="2"/>
+        <text x="180" y="148" class="c">빅데이터</text>
+        <circle cx="180" cy="50" r="30" fill="#1f9d74"/><text x="180" y="57" class="w">양</text>
+        <circle cx="100" cy="188" r="30" fill="#1f9d74"/><text x="100" y="195" class="w">속도</text>
+        <circle cx="260" cy="188" r="30" fill="#1f9d74"/><text x="260" y="195" class="w">다양성</text>
+        <text x="180" y="12" class="s">데이터의 물리적 크기</text>
+        <text x="80" y="238" class="s">데이터의</text><text x="80" y="256" class="s">생성 속도</text>
+        <text x="282" y="238" class="s">다양한 종류 및</text><text x="282" y="256" class="s">형식의 데이터</text>
+      </svg>
+      <div class="bc-3vtx">
+        <div class="kc" style="--k:#1f9d74"><h4>📦 양 (volume)</h4><p>데이터 집합의 크기가 테라바이트(TB, 10<sup>12</sup> byte)에서 페타바이트(PB, 10<sup>15</sup> byte)에 이르기까지 매우 커요.</p></div>
+        <div class="kc" style="--k:#2f6fd0"><h4>⚡ 속도 (velocity)</h4><p>센서, 인터넷, 모바일 장치를 포함한 다양한 곳에서 데이터가 빠르게 생성되고 수집돼요.</p></div>
+        <div class="kc" style="--k:#e0702b"><h4>🧩 다양성 (variety)</h4><p>구조화된 데이터(데이터베이스), 구조화되지 않은 데이터(이메일, SNS 게시물) 등 다양한 형태로 제공돼요.</p></div>
+      </div>
+    </div>
+    <p class="note">영어 낱말의 첫 글자를 따서 <b>3V</b>라고 해요. 최근에는 가치(value)나 정확성(veracity)을 더해 4V 또는 5V라고도 표현해요.</p>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🏦 빅데이터는 어디에 쓰일까?</h3>
+      <p style="margin-top:0">의료, 금융, 마케팅, 운송 등 여러 분야에서 쓰여요. 빅데이터를 도구와 기술로 분석하면 <b>더 나은 결정</b>을 내리거나 <b>문제를 개선</b>하는 데 도움을 받을 수 있어요.</p>
+      <ul class="bc-ul">
+        <li><b>은행의 고객 관리 서비스</b> 고객의 금융 활동 데이터를 바탕으로 고객에게 맞춘 금융 상품을 추천해요.</li>
+        <li><b>추천 서비스</b> 사회 관계망 서비스의 타깃 광고, 온라인 동영상 플랫폼의 맞춤 동영상 추천</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📲 은행 창구의 태블릿</h3>
+      <p style="margin-top:0">은행 창구의 태블릿에 나이, 성별, 월 소득 같은 기본 데이터를 입력하면, <b>같은 조건을 갖춘 사람들</b>의 평균적인 경제 상황과 금융 활동을 한눈에 볼 수 있어요. 이것을 보고 자신의 투자 전략을 짜는 데 활용해요.</p>
+      <p class="note">내 데이터 한 줄만으로는 알 수 없던 것을, 많은 사람의 데이터가 모여서 알려 주는 셈이에요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 이 장면은 3V 중 어떤 특징을 보여 줄까?</h3>
+    <p class="muted" style="margin-top:0">장면을 읽고 가장 잘 드러나는 특징을 골라요. 위의 설명을 다시 봐도 괜찮아요.</p>
+    <div id="vGame"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 수집 방법 -->
+<section class="page" data-name="수집 방법" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>내가 필요한 데이터는 어떻게 수집할까?</h2><p>교과서 68~69쪽 · 공공 데이터 · 민간 데이터 · 웹크롤링 · 직접 수집</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>데이터를 모으는 길은 네 가지예요. 나라·공공 기관이 <b>공개한 것</b>을 가져오거나, 기업 같은 민간이 <b>개방한 것</b>을 가져오거나, 프로그램으로 웹 사이트에서 <b>자동으로 긁어 오거나</b>, 그래도 없으면 설문·카메라·센서로 <b>내가 직접 모아요</b>.</span></div>
+  <div class="apps" id="wayBtns"></div>
+  <div class="cview" id="wayView"></div>
+  <div class="callout">데이터 수집 방법마다 <b>장점과 단점</b>이 있어요. <b>목적에 알맞은 방법</b>을 골라 데이터를 수집하면 문제 해결에 도움이 되고 <b>비용을 절감</b>하는 효과도 얻을 수 있어요.</div>
+  <div class="card">
+    <h3>🧭 이 상황에서는 어떤 방법으로 모을까?</h3>
+    <p class="muted" style="margin-top:0">상황마다 필요한 데이터를 <b>어디에서, 어떻게</b> 얻는지 보고 알맞은 수집 방법을 골라요.</p>
+    <div id="wayGame"></div>
+    <div class="memo"><label>헷갈렸던 상황 하나와, 그 상황에 알맞은 수집 방법과 까닭 <small>한 줄로</small></label><textarea data-memo="wayWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 주의할 점 -->
+<section class="page" data-name="주의할 점" data-acc="#d64535">
+  <div class="head"><div class="num">03</div><div><h2>데이터를 수집할 때 주의할 점은 무엇일까?</h2><p>교과서 66·68·69쪽 · 윤리적인 문제와 알맞은 데이터 고르기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>데이터를 많이 모은다고 끝이 아니에요. 다른 사람의 <b>개인 정보를 지키면서</b>, <b>믿을 수 있는</b> 데이터를, <b>내 목적에 맞게</b> 모아야 올바른 결과를 얻을 수 있어요.</span></div>
+  <div class="cards3">
+    <div class="kc" style="--k:#d64535"><div class="ic">🔒</div><h4>개인 정보를 지켜요</h4><p>빅데이터를 사용할 때는 개인 정보가 유출되지 않도록 조심해야 해요. 공공 데이터도 개인 정보 보호와 국가 안보·질서를 해치지 않는 범위에서 공개돼요.</p></div>
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">✅</div><h4>믿을 수 있는지 살펴요</h4><p>공공 데이터는 정부의 업무나 연구에 쓰이므로 신뢰성이 높고, 법적 근거에 따라 수집돼요. 어디에서 나온 데이터인지 확인하고 골라요.</p></div>
+    <div class="kc" style="--k:#1f9d74"><div class="ic">🎯</div><h4>목적에 맞게 골라요</h4><p>수많은 데이터 가운데 내가 해결하려는 문제에 필요한 데이터를, 목적에 알맞은 방법으로 모아요.</p></div>
+  </div>
+  <p class="note">빅데이터를 활용한 데이터 분석은 이 과정에서 <b>윤리적인 문제를 고려해서</b> 수행해야 올바른 결과를 얻을 수 있어요(66쪽).</p>
+  <div class="card" style="margin-top:14px">
+    <h3>⚖️ 이렇게 수집해도 될까?</h3>
+    <p class="muted" style="margin-top:0">학생들이 세운 수집 방법이에요. 이대로 괜찮은지, 고쳐야 하는지 골라요. 고쳐야 한다면 어떻게 바꾸면 좋을지도 떠올려 봐요.</p>
+    <div id="careGame"></div>
+  </div>
+  <div class="card">
+    <h3>✍️ 내 생각 정리</h3>
+    <div class="memo">
+      <label>위 장면 가운데 하나를 골라, 왜 고쳐야 하는지와 어떻게 바꾸면 좋을지 적어요</label>
+      <textarea data-memo="careFix" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 스스로 해결하기 -->
+<section class="page" data-name="스스로 해결하기" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>스스로 해결하기 · 나의 데이터 수집 계획</h2><p>교과서 68~69쪽 · 데이터 수집</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>내가 관심 있는 문제를 하나 골라, 어떤 데이터를 어떤 방법으로 모을지 <b>수집 계획</b>을 세워요. 적은 내용은 마지막 질문폼의 바탕이 돼요.</span></div>
+  <div class="card">
+    <h3>🗺️ 나의 데이터 수집 계획 세우기</h3>
+    <p class="muted" style="margin-top:0">주제를 하나 고르고, 02의 네 가지 방법과 03의 주의할 점을 떠올리며 채워요. 짝과 이야기한 뒤 적어도 좋아요.</p>
+    <div class="memo bc-plan">
+      <label>① 주제 고르기</label>
+      <div id="planTopic"></div>
+      <label>② 해결하고 싶은 문제 <small>한 문장으로</small></label>
+      <textarea data-memo="planQ" rows="2" placeholder="예: 우리 학교 학생들은 점심시간에 얼마나 움직일까?"></textarea><div class="saved"></div>
+      <label>③ 필요한 데이터 <small>무엇을, 누구에게서, 얼마 동안</small></label>
+      <textarea data-memo="planData" rows="2"></textarea><div class="saved"></div>
+      <label>④ 수집 방법 <small>여러 개 골라도 돼요</small></label>
+      <div id="planWay"></div>
+      <label>⑤ 그 방법을 고른 까닭</label>
+      <textarea data-memo="planWhy" rows="2"></textarea><div class="saved"></div>
+      <label>⑥ 수집할 때 주의할 점</label>
+      <textarea data-memo="planCare" rows="2"></textarea><div class="saved"></div>
+    </div>
+    <p class="note">직접 수집을 골랐다면, 설문 조사 사이트에서 설문지를 만들어 보는 것도 좋아요(69쪽 생각해 보기). 만든 설문은 선생님이 허락할 때만 친구들에게 보내요.</p>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">문제를 해결하는 데 필요한 데이터를 수집할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+  <details class="card bc-more">
+    <summary>➕ 시간이 남으면 · 수집 과정 돌아보기와 개념 정리하기</summary>
+    <div class="memo">
+      <label>시작 화면에서 칼로리 데이터를 수집한 과정을 다시 생각하며 순서대로 적어요 <small>어디에서 → 무엇을 → 어디에 저장</small></label>
+      <textarea data-memo="collectSteps" rows="2"></textarea><div class="saved"></div>
+    </div>
+    <h4 style="margin:14px 0 4px">📝 개념 정리하기 <small class="muted" style="font-weight:400">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</small></h4>
+    <ol class="bc-blanks">
+      <li>교통 카드 결제 기록이 1초에도 수천 건씩 쌓이는 것은 빅데이터의 세 가지 특징 가운데 <button class="blank" data-a="속도(velocity)">?</button>를 잘 보여 준다.</li>
+      <li>구청이 업무를 하며 모은 동네별 쓰레기 배출량을 누구나 내려받을 수 있게 공개했다면 이것은 <button class="blank" data-a="공공 데이터">?</button>이다.</li>
+      <li>날씨 앱의 지역별 기온을 프로그램이 매시간 자동으로 모아 오게 하는 것은 <button class="blank" data-a="웹크롤링">?</button>이다.</li>
+      <li>한 기업이 상업적 목적으로 모은 고객 구매 기록을 데이터 대회용으로 개방했다면 이것은 <button class="blank" data-a="민간 데이터">?</button>이다.</li>
+      <li>필요한 데이터가 어디에도 없어서 학교 앞 횡단보도를 건너는 사람 수를 시간대별로 세어 기록한다면 <button class="blank" data-a="직접 수집">?</button> 방법을 쓴 것이다.</li>
+    </ol>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">예전 방법으로는 다루기 벅찰 만큼 엄청나게 많은 데이터, 또는 그런 데이터를 다루는 기술을 <b>빅데이터</b>라고 한다. 빅데이터는 형태가 여러 가지이고(<b>다양성</b>), 쉬지 않고 빠르게 생겨나며(<b>속도</b>), 크기가 테라바이트를 넘어 페타바이트에 이를 만큼 크다(<b>양</b>). 이 셋을 줄여 3V라고 부른다.</div>
+    <div style="--k:#1f9d74">데이터는 <b>공공 데이터</b>(개방성), <b>민간 데이터</b>(전문적·활용 가치), <b>웹크롤링</b>(자동 수집), <b>직접 수집</b>(설문 조사·카메라·센서)으로 모은다. 목적에 알맞은 방법을 고르면 문제 해결에 도움이 되고 비용을 절감할 수 있다.</div>
+    <div style="--k:#d64535">데이터를 수집하고 활용할 때는 <b>개인 정보가 유출되지 않도록</b> 하고, 믿을 수 있는 데이터를 목적에 맞게 골라 <b>윤리적인 문제</b>를 고려해야 올바른 결과를 얻을 수 있다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 생각을 떠올리며, 오늘의 질문에 배운 낱말(수집 방법 이름, 주의할 점)을 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">빅데이터를 수집하는 다양한 방법은 무엇이고, 내게 맞는 데이터를 선택하는 방법과 주의해야 할 점은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>상황별 수집 방법 고르기에서 <b>헷갈렸던 상황 하나</b>를 골라, 왜 그 방법이 알맞은지 설명하기</li>
+      <li>「이렇게 수집해도 될까?」에서 고쳐야 했던 장면 하나를 골라 <b>무엇이 문제이고 어떻게 바꿀지</b> 쓰기</li>
+      <li>나의 <b>데이터 수집 계획</b>(문제·필요한 데이터·수집 방법과 까닭·주의할 점) 쓰기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

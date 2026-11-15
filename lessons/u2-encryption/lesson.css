@@ -1,0 +1,133 @@
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;letter-spacing:.02em}
+  .ec-lab{display:block;font-weight:700;font-size:.9rem;margin:6px 0 4px}
+  .ec-ul{margin:6px 0 10px;padding-left:18px;font-size:.93rem}
+  .ec-ul li{margin:4px 0}
+  .ec-ol{font-size:.93rem;padding-left:20px}
+  .ec-tbl{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .ec-tbl th,.ec-tbl td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  .ec-tbl tr:first-child th{background:var(--acc-soft)}
+  .ec-tbl th{color:var(--ink);font-weight:700}
+  .ec-tbl td input{width:100%;min-width:120px}
+  .ec-more{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:8px 14px;background:#fff}
+  .ec-more>summary{cursor:pointer;font-weight:700}
+  /* 성취도 평가 */
+  .ec-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .ec-ck>b{font-size:.92rem;color:var(--mint)}
+  .ec-ck .chk button.on::before,#selfCheck.chk button.on::before{content:"✔ "}
+  /* 01 기본 원리 그림 */
+  .ec-flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:#fbfaf7;border-radius:14px;padding:14px;margin-bottom:12px}
+  .ec-flow .who{font-size:2rem;text-align:center;line-height:1.1}
+  .ec-flow .who small{display:block;font-size:.75rem;color:var(--muted)}
+  .ec-flow .doc{display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid #2f6fd0;border-radius:10px;padding:6px 12px;font-size:1.5rem;min-width:84px}
+  .ec-flow .doc b{font-size:.95rem}
+  .ec-flow .doc small{font-size:.72rem;color:var(--muted)}
+  .ec-flow .doc.lock{border-color:#d64535;background:#fff3f1}
+  .ec-flow .arr{display:flex;flex-direction:column;align-items:center;font-size:.85rem}
+  .ec-flow .arr span{background:var(--acc);color:#fff;border-radius:999px;padding:1px 12px;font-weight:700}
+  .ec-flow .arr span::after{content:" →"}
+  .ec-flow .arr i{font-style:normal;color:#e0702b;font-size:.8rem;margin-top:3px}
+  .ec-terms .kc h4{font-size:.98rem}
+  /* 02 카이사르 */
+  .ec-shift{overflow-x:auto;background:#f6efe2;border-radius:12px;padding:10px 14px}
+  .ec-shift .r{display:flex;gap:4px;align-items:center}
+  .ec-shift .r small{width:52px;font-size:.78rem;color:var(--muted)}
+  .ec-shift .r span{width:34px;height:34px;display:grid;place-items:center;border:2px dashed #b9a98c;border-radius:6px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fffaf0}
+  .ec-shift .r span.h{border-style:solid;border-color:#d64535;color:#d64535}
+  .ec-shift .r span.d{border:0;background:none}
+  .ec-shift .r.mid i{width:34px;text-align:center;font-style:normal;font-size:.72rem;color:#2f6fd0;font-weight:700}
+  .ec-ctl{gap:14px;margin-bottom:10px}
+  .ec-mode{display:inline-flex;border:2px solid var(--acc);border-radius:999px;overflow:hidden}
+  .ec-mode button{border:0;background:#fff;color:var(--acc);font:inherit;font-weight:700;padding:5px 14px;cursor:pointer}
+  .ec-mode button.on{background:var(--acc);color:#fff}
+  .ec-key{display:flex;align-items:center;gap:8px;min-width:280px}
+  .ec-key input[type=range]{width:180px}
+  .ec-key b{font-size:1.2rem;color:var(--acc)}
+  .ec-wheel{overflow-x:auto;background:#fbfaf7;border-radius:12px;padding:8px}
+  .ec-wheel .r{display:flex;gap:2px;align-items:center}
+  .ec-wheel .r small{width:50px;flex:0 0 50px;font-size:.75rem;color:var(--muted)}
+  .ec-wheel .r span{flex:0 0 26px;height:28px;display:grid;place-items:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:4px}
+  .ec-wheel .r span.s{background:var(--acc-soft);color:var(--acc);border-color:var(--acc)}
+  .ec-out{min-height:64px;background:#fbfaf7;border:1px solid #c5ccd5;border-radius:8px;padding:8px 10px;font-size:1.05rem;word-break:break-all}
+  .ec-mis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .ec-mis.one{grid-template-columns:1fr}
+  @media (max-width:860px){.ec-mis{grid-template-columns:1fr}}
+  .ec-mis>div{border:2px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:.93rem}
+  .ec-mis .row input[type=text]{flex:1 1 180px}
+  .ec-mis .row input[type=number]{width:110px}
+  .ec-mis .fb{margin-top:6px;font-size:.9rem}
+  .ec-code{background:#0f2742;color:#ffe9b0;border-radius:8px;padding:6px 10px;margin:6px 0;font-size:1.02rem;word-break:break-all}
+  /* 03 전치 */
+  .ec-tx{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .ec-tx .box{display:flex;flex-direction:column;align-items:center;border:2px solid var(--line);border-radius:12px;padding:6px 16px;background:#fbfaf7}
+  .ec-tx .box small{color:var(--muted);font-size:.78rem}
+  .ec-tx .box .mono{font-size:1.15rem;font-weight:700}
+  .ec-tx .arr{font-size:.9rem;color:var(--muted)}
+  .ec-tabs{display:flex;gap:6px;margin-bottom:12px}
+  .ec-tabs button{border:2px solid var(--acc);background:#fff;color:var(--acc);border-radius:10px;padding:6px 14px;font:inherit;font-weight:700;cursor:pointer}
+  .ec-tabs button.on{background:var(--acc);color:#fff}
+  .ec-blocks{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0;padding:8px;background:#fbfaf7;border-radius:12px;min-height:40px}
+  .ec-blocks .bk{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .ec-blocks .r{display:flex;gap:3px}
+  .ec-blocks .r span{position:relative;width:30px;height:34px;display:grid;place-items:center;background:#fff;border:2px solid var(--line);border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;padding-top:6px}
+  .ec-blocks .r span i{position:absolute;top:0;left:3px;font-style:normal;font-size:.62rem;color:var(--muted)}
+  .ec-blocks .r span.o{border-color:var(--acc);background:var(--acc-soft)}
+  .ec-blocks .ar{font-size:.72rem;color:var(--muted)}
+  .ec-res{margin:8px 0;font-size:1rem}
+  .ec-res b{font-size:1.1rem}
+  .ec-strip{display:flex;flex-wrap:wrap;gap:0;background:#f6efe2;border-radius:8px;padding:6px;width:max-content;max-width:100%}
+  .ec-strip span{width:32px;height:32px;display:grid;place-items:center;border-right:1px dashed #b9a98c;font-weight:700}
+  .ec-rod{display:inline-grid;gap:3px;background:#8a6a45;border-radius:14px;padding:8px 12px}
+  .ec-rod .r{display:flex;gap:3px}
+  .ec-rod .r span{width:34px;height:34px;display:grid;place-items:center;background:#f6efe2;border-radius:4px;font-weight:700}
+  .ec-rod .r span.e{background:rgba(246,239,226,.35)}
+  /* 04 해시 */
+  .ec-kinds{display:inline-grid;gap:6px;background:#fbfaf7;border-radius:12px;padding:10px 14px;font-size:.88rem}
+  .ec-kinds .t{display:flex;gap:8px}
+  .ec-kinds span{border:2px solid #1f9d74;border-radius:999px;padding:1px 12px;background:#fff}
+  .ec-kinds span.on{background:#e0702b;border-color:#e0702b;color:#fff;font-weight:700}
+  .ec-kinds .sub i{width:110px}
+  .ec-hash{margin-top:6px;background:#0f2742;color:#d7e3f2;border-radius:8px;padding:6px 10px;font-size:.82rem;word-break:break-all;min-height:44px}
+  .ec-hash mark{background:#f2a516;color:#0f2742;border-radius:2px}
+  .ec-hr{border:0;border-top:1px dashed var(--line);margin:16px 0}
+  .ec-site{background:#fbfaf7;border-radius:12px;padding:10px 12px}
+  .ec-site .row input{flex:1 1 160px}
+  .ec-db{margin-top:8px;font-size:.85rem;word-break:break-all}
+  .ec-site .fb{margin-top:8px;font-size:.88rem;word-break:break-all}
+  /* 05 키 흐름 */
+  .ec-scn{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .ec-scn button{border:2px solid var(--acc);background:#fff;color:var(--acc);border-radius:10px;padding:5px 12px;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
+  .ec-scn button.on{background:var(--acc);color:#fff}
+  .ec-stage{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .ec-stage .col{background:#fbfaf7;border-radius:12px;padding:10px;min-height:150px;display:flex;flex-direction:column;gap:8px}
+  .ec-stage .col:nth-child(2){background:#f1f3f6}
+  .ec-stage .nm{font-weight:900;font-size:.93rem}
+  .ec-stage .ks{display:flex;flex-wrap:wrap;gap:4px}
+  .ec-k{border:2px solid var(--k);color:var(--k);background:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;font-weight:700}
+  .ec-k.maybe{border-style:dashed;opacity:.8}
+  .ec-msg{align-self:center;margin-top:auto;border:3px solid var(--k);border-radius:10px;padding:6px 14px;background:#fff;font-weight:900;text-align:center;animation:ecIn .4s}
+  .ec-msg.lk{background:color-mix(in srgb,var(--k) 12%,#fff)}
+  .ec-msg small{display:block;font-weight:400;font-size:.75rem;color:var(--muted)}
+  @keyframes ecIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .ec-say{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
+  .ec-say p{margin:4px 0 8px}
+  .ec-say .fb{margin-top:8px;font-size:.92rem}
+  /* 06 정리 */
+  .ec-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;margin-right:6px;vertical-align:middle}
+  .ec-cond{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:10px}
+  @media (max-width:760px){.ec-cond{grid-template-columns:1fr}}
+  .ec-cond>div{background:#fbfaf7;border-radius:12px;padding:8px 12px;font-size:.92rem}
+  .ec-cond ul{margin:4px 0 0;padding-left:18px}
+  .ec-cond .big{display:block;font-size:1.25rem;font-weight:700;margin-top:4px}
+  .ec-cond small{color:var(--muted)}
+  .ec-step{border-top:1px dashed var(--line);padding:10px 0;font-size:.95rem}
+  .ec-step .fb{font-size:.9rem;margin-top:6px}
+  .ec-dict{width:auto;margin:8px 0}
+  .ec-dict td input{width:44px;min-width:0;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase}
+  .ec-blanks{padding-left:22px}
+  .ec-blanks li{margin:8px 0}
+  .ec-blank{min-width:96px;border:2px dashed var(--acc);background:var(--acc-soft);border-radius:8px;font:inherit;font-weight:700;color:var(--acc);cursor:pointer;padding:0 8px}
+  .ec-blank.on{border-style:solid;background:#fff}
+  .ec-extra{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .ec-extra.on{display:block}
+  .ec-prev{background:#fbfaf7;border-left:4px solid var(--amber);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.93rem}

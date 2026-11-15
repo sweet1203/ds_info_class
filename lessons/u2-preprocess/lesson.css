@@ -1,0 +1,113 @@
+
+  /* 0 시작 */
+  .pp-ready{margin:0 0 16px;font-size:.95rem}
+
+  /* 01 데이터 처리 과정 */
+  .pp-proc>div b{font-size:.95rem}
+
+  /* 02 작은 표 체험 */
+  .pp-stepbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 8px}
+  .pp-stepbar button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 10px;font:inherit;font-size:.86rem;font-weight:700;cursor:pointer;color:var(--ink);line-height:1.35}
+  .pp-stepbar button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .pp-stepbar button.ok:not(.on){border-color:#9fd8c4}
+  .pp-stepbar button.ok::after{content:" ✓";color:var(--mint)}
+  .pp-stepbar button:disabled{opacity:.4;cursor:not-allowed}
+  .pp-msg{background:var(--acc-soft);border-radius:10px;padding:9px 12px;font-size:.93rem;min-height:2.6em}
+  .pp-ctl{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pp-ctl:empty{display:none}
+  .pp-ctl .btn small{display:block;font-weight:400;font-size:.74rem;opacity:.85}
+  .pp-ctl .btn.on{outline:3px solid var(--amber);outline-offset:2px}
+  .pp-labg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:14px;margin-top:10px;align-items:start}
+  @media (max-width:900px){.pp-labg{grid-template-columns:1fr}}
+  .pp-tw{overflow-x:auto}
+  .pp-tbl{margin:0;font-size:.84rem;min-width:470px}
+  .pp-tbl th,.pp-tbl td{padding:4px 7px;text-align:right;border-bottom:1px solid #eef0f3;white-space:nowrap}
+  .pp-tbl th{background:#fbfaf7;color:var(--muted);font-size:.78rem}
+  .pp-tbl tr[data-n]{cursor:pointer}
+  .pp-tbl tr[data-n]:hover td{background:#f7f9fc}
+  .pp-tbl tr.sel td{background:#fff4d6 !important}
+  .pp-tbl tr.gone td{color:#b8bfc8;text-decoration:line-through}
+  .pp-tbl td.miss{background:#fde8e6;color:var(--red);font-weight:900;outline:2px dashed var(--red);outline-offset:-3px}
+  .pp-tbl td.fill{font-style:italic;color:#2f6fd0;font-weight:700}
+  .pp-tbl td.oy{color:var(--red);font-weight:900}
+  .pp-tbl tr.st th{text-align:left;background:#eef1f5}
+  .pp-tbl tr.st td{background:#eef1f5;font-weight:700}
+  .pp-tbl tr.st:first-of-type td,.pp-tbl tr.st:first-of-type th{border-top:2px solid #cfd5dc}
+  .pp-tbl b.mm{color:var(--red)}
+  .pp-plotbox svg{width:100%;height:auto;display:block;background:#fff;border-radius:10px;border:1px solid var(--line)}
+  #labPlot .gl{stroke:#eef0f3;stroke-width:1}
+  #labPlot .tk{font-size:11px;fill:#8a94a3;text-anchor:middle}
+  #labPlot .ax{font-size:12px;font-weight:700;fill:#5b6776;text-anchor:middle}
+  #labPlot .pt{fill:#2f6fd0;opacity:.8;cursor:pointer;stroke:#fff;stroke-width:1.5}
+  #labPlot .pt.mk{stroke:var(--amber);stroke-width:4}
+  #labPlot .pt.y{fill:var(--red);opacity:1}
+  #labPlot .pt.sel{stroke:#0f2742;stroke-width:3}
+  #labPlot .rl{stroke:var(--red);stroke-width:2;stroke-dasharray:6 5}
+  #labPlot .rt{font-size:11px;fill:var(--red);font-weight:700}
+  .pp-sum{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;font-size:.92rem}
+  .pp-sum:empty{display:none}
+  .pp-sum span{background:#fbfaf7;border-radius:999px;padding:3px 12px;border:1px solid var(--line)}
+  .pp-sum i{font-style:normal;font-weight:900;color:var(--muted)}
+
+  /* 03·04 실습 */
+  .pp-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+  @media (max-width:900px){.pp-4{grid-template-columns:1fr 1fr}}
+  .pp-4>div{background:#fff;border-radius:12px;padding:8px 12px;box-shadow:0 6px 16px rgba(15,39,66,.06);border-top:4px solid var(--acc);font-size:.86rem;line-height:1.5}
+  .pp-4 b{display:block;font-size:.92rem}
+  .pp-flowbox{overflow-x:auto}
+  .pp-flowbox svg{display:block;width:100%;min-width:860px;height:auto}
+  #calFlow{min-width:600px;max-width:800px}
+  .pp-flowbox .fe{fill:none;stroke:#8a94a3;stroke-width:2}
+  .pp-flowbox .fl{font-size:11px;fill:#5b6776;text-anchor:end;font-weight:700}
+  .pp-flowbox .fn{cursor:pointer}
+  .pp-flowbox .fb{fill:#fff;stroke-width:2}
+  .pp-flowbox .fn.on .fb{fill:#fff4d6;stroke-width:4}
+  .pp-flowbox .fn:focus{outline:none}
+  .pp-flowbox .fn:focus .fb{stroke-width:4}
+  .pp-flowbox .fnum{font-size:14px;font-weight:900;fill:#fff;text-anchor:middle}
+  .pp-flowbox .ft{font-size:13px;font-weight:700;fill:#16202c}
+  .pp-flowbox .fs{font-size:11px;fill:#5b6776}
+  .pp-legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:8px;font-size:.85rem}
+  .pp-legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--k);margin-right:5px;vertical-align:-2px}
+  .pp-legend small{color:var(--muted)}
+  .pp-set{min-width:860px;margin:0}
+  .pp-set th{text-align:left;background:#fbfaf7;white-space:nowrap}
+  .pp-set td{border-top:1px solid #eef0f3}
+  .pp-set td:first-child{font-weight:900;color:var(--acc);text-align:center;width:44px}
+  .pp-set tr[data-s]{cursor:pointer;transition:background .3s}
+  .pp-set tr.hl td{background:#fff4d6}
+  .pp-warn{font-size:.9rem;margin-top:12px}
+  .pp-save{font-size:.93rem;background:#e7f6ef;border-left-color:var(--mint)}
+  .pp-help summary{cursor:pointer;font-weight:900;font-size:1rem}
+  .pp-help ul{margin:10px 0 0;padding-left:20px;font-size:.92rem}
+  .pp-help li{margin:6px 0}
+  .pp-role{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:12px;font-size:.86rem}
+  .pp-role span{background:#fbfaf7;border-radius:8px;padding:3px 10px;border:1px solid var(--line)}
+  .pp-role i{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--acc);margin-right:6px}
+
+  /* 04 합치기 체험 */
+  #mgDo:disabled,#mgBin:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .pp-mg{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+  .pp-mt{flex:0 1 auto;min-width:0;animation:fadein .4s both}
+  .pp-mt>b{display:block;font-size:.9rem;margin-bottom:2px}
+  .pp-mt table{margin:0;font-size:.86rem;width:auto}
+  .pp-mt th,.pp-mt td{padding:4px 10px;border-bottom:1px solid #eef0f3;text-align:center}
+  .pp-mt th{background:#fbfaf7}
+  .pp-mt tr[data-id]{cursor:pointer}
+  .pp-mt tr.hi td{background:#fff4d6}
+  .pp-mt td.meta{color:#8a94a3}
+  .pp-mt td.bin{font-weight:900;color:#9b4fc4}
+
+  /* 05 정리 */
+  .pp-ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:700px){.pp-ba{grid-template-columns:1fr}}
+  .pp-ba>div{background:#fbfaf7;border-radius:12px;padding:10px 14px;border-left:5px solid var(--acc);font-size:.9rem}
+  .pp-ba b{display:block;margin-bottom:2px}
+  .pp-ba span{display:block}
+  .pp-blanks li{margin:8px 0;line-height:1.9}
+  .pp-blanks .blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .pp-blanks .blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  /* 검토 반영(1차): 칼로리 오렌지3 실습 접기 */
+  .pp-opt>summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .pp-opt>summary small{font-weight:400;color:var(--muted);font-size:.85rem}
+  .pp-optnote{background:#f3ecfa;border-radius:10px;padding:8px 12px;font-size:.92rem;margin:10px 0 12px}

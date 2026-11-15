@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빅데이터 전처리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+
+  /* 0 시작 */
+  .pp-ready{margin:0 0 16px;font-size:.95rem}
+
+  /* 01 데이터 처리 과정 */
+  .pp-proc>div b{font-size:.95rem}
+
+  /* 02 작은 표 체험 */
+  .pp-stepbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 8px}
+  .pp-stepbar button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 10px;font:inherit;font-size:.86rem;font-weight:700;cursor:pointer;color:var(--ink);line-height:1.35}
+  .pp-stepbar button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .pp-stepbar button.ok:not(.on){border-color:#9fd8c4}
+  .pp-stepbar button.ok::after{content:" ✓";color:var(--mint)}
+  .pp-stepbar button:disabled{opacity:.4;cursor:not-allowed}
+  .pp-msg{background:var(--acc-soft);border-radius:10px;padding:9px 12px;font-size:.93rem;min-height:2.6em}
+  .pp-ctl{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pp-ctl:empty{display:none}
+  .pp-ctl .btn small{display:block;font-weight:400;font-size:.74rem;opacity:.85}
+  .pp-ctl .btn.on{outline:3px solid var(--amber);outline-offset:2px}
+  .pp-labg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:14px;margin-top:10px;align-items:start}
+  @media (max-width:900px){.pp-labg{grid-template-columns:1fr}}
+  .pp-tw{overflow-x:auto}
+  .pp-tbl{margin:0;font-size:.84rem;min-width:470px}
+  .pp-tbl th,.pp-tbl td{padding:4px 7px;text-align:right;border-bottom:1px solid #eef0f3;white-space:nowrap}
+  .pp-tbl th{background:#fbfaf7;color:var(--muted);font-size:.78rem}
+  .pp-tbl tr[data-n]{cursor:pointer}
+  .pp-tbl tr[data-n]:hover td{background:#f7f9fc}
+  .pp-tbl tr.sel td{background:#fff4d6 !important}
+  .pp-tbl tr.gone td{color:#b8bfc8;text-decoration:line-through}
+  .pp-tbl td.miss{background:#fde8e6;color:var(--red);font-weight:900;outline:2px dashed var(--red);outline-offset:-3px}
+  .pp-tbl td.fill{font-style:italic;color:#2f6fd0;font-weight:700}
+  .pp-tbl td.oy{color:var(--red);font-weight:900}
+  .pp-tbl tr.st th{text-align:left;background:#eef1f5}
+  .pp-tbl tr.st td{background:#eef1f5;font-weight:700}
+  .pp-tbl tr.st:first-of-type td,.pp-tbl tr.st:first-of-type th{border-top:2px solid #cfd5dc}
+  .pp-tbl b.mm{color:var(--red)}
+  .pp-plotbox svg{width:100%;height:auto;display:block;background:#fff;border-radius:10px;border:1px solid var(--line)}
+  #labPlot .gl{stroke:#eef0f3;stroke-width:1}
+  #labPlot .tk{font-size:11px;fill:#8a94a3;text-anchor:middle}
+  #labPlot .ax{font-size:12px;font-weight:700;fill:#5b6776;text-anchor:middle}
+  #labPlot .pt{fill:#2f6fd0;opacity:.8;cursor:pointer;stroke:#fff;stroke-width:1.5}
+  #labPlot .pt.mk{stroke:var(--amber);stroke-width:4}
+  #labPlot .pt.y{fill:var(--red);opacity:1}
+  #labPlot .pt.sel{stroke:#0f2742;stroke-width:3}
+  #labPlot .rl{stroke:var(--red);stroke-width:2;stroke-dasharray:6 5}
+  #labPlot .rt{font-size:11px;fill:var(--red);font-weight:700}
+  .pp-sum{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;font-size:.92rem}
+  .pp-sum:empty{display:none}
+  .pp-sum span{background:#fbfaf7;border-radius:999px;padding:3px 12px;border:1px solid var(--line)}
+  .pp-sum i{font-style:normal;font-weight:900;color:var(--muted)}
+
+  /* 03·04 실습 */
+  .pp-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+  @media (max-width:900px){.pp-4{grid-template-columns:1fr 1fr}}
+  .pp-4>div{background:#fff;border-radius:12px;padding:8px 12px;box-shadow:0 6px 16px rgba(15,39,66,.06);border-top:4px solid var(--acc);font-size:.86rem;line-height:1.5}
+  .pp-4 b{display:block;font-size:.92rem}
+  .pp-flowbox{overflow-x:auto}
+  .pp-flowbox svg{display:block;width:100%;min-width:860px;height:auto}
+  #calFlow{min-width:600px;max-width:800px}
+  .pp-flowbox .fe{fill:none;stroke:#8a94a3;stroke-width:2}
+  .pp-flowbox .fl{font-size:11px;fill:#5b6776;text-anchor:end;font-weight:700}
+  .pp-flowbox .fn{cursor:pointer}
+  .pp-flowbox .fb{fill:#fff;stroke-width:2}
+  .pp-flowbox .fn.on .fb{fill:#fff4d6;stroke-width:4}
+  .pp-flowbox .fn:focus{outline:none}
+  .pp-flowbox .fn:focus .fb{stroke-width:4}
+  .pp-flowbox .fnum{font-size:14px;font-weight:900;fill:#fff;text-anchor:middle}
+  .pp-flowbox .ft{font-size:13px;font-weight:700;fill:#16202c}
+  .pp-flowbox .fs{font-size:11px;fill:#5b6776}
+  .pp-legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:8px;font-size:.85rem}
+  .pp-legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--k);margin-right:5px;vertical-align:-2px}
+  .pp-legend small{color:var(--muted)}
+  .pp-set{min-width:860px;margin:0}
+  .pp-set th{text-align:left;background:#fbfaf7;white-space:nowrap}
+  .pp-set td{border-top:1px solid #eef0f3}
+  .pp-set td:first-child{font-weight:900;color:var(--acc);text-align:center;width:44px}
+  .pp-set tr[data-s]{cursor:pointer;transition:background .3s}
+  .pp-set tr.hl td{background:#fff4d6}
+  .pp-warn{font-size:.9rem;margin-top:12px}
+  .pp-save{font-size:.93rem;background:#e7f6ef;border-left-color:var(--mint)}
+  .pp-help summary{cursor:pointer;font-weight:900;font-size:1rem}
+  .pp-help ul{margin:10px 0 0;padding-left:20px;font-size:.92rem}
+  .pp-help li{margin:6px 0}
+  .pp-role{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:12px;font-size:.86rem}
+  .pp-role span{background:#fbfaf7;border-radius:8px;padding:3px 10px;border:1px solid var(--line)}
+  .pp-role i{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--acc);margin-right:6px}
+
+  /* 04 합치기 체험 */
+  #mgDo:disabled,#mgBin:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .pp-mg{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+  .pp-mt{flex:0 1 auto;min-width:0;animation:fadein .4s both}
+  .pp-mt>b{display:block;font-size:.9rem;margin-bottom:2px}
+  .pp-mt table{margin:0;font-size:.86rem;width:auto}
+  .pp-mt th,.pp-mt td{padding:4px 10px;border-bottom:1px solid #eef0f3;text-align:center}
+  .pp-mt th{background:#fbfaf7}
+  .pp-mt tr[data-id]{cursor:pointer}
+  .pp-mt tr.hi td{background:#fff4d6}
+  .pp-mt td.meta{color:#8a94a3}
+  .pp-mt td.bin{font-weight:900;color:#9b4fc4}
+
+  /* 05 정리 */
+  .pp-ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:700px){.pp-ba{grid-template-columns:1fr}}
+  .pp-ba>div{background:#fbfaf7;border-radius:12px;padding:10px 14px;border-left:5px solid var(--acc);font-size:.9rem}
+  .pp-ba b{display:block;margin-bottom:2px}
+  .pp-ba span{display:block}
+  .pp-blanks li{margin:8px 0;line-height:1.9}
+  .pp-blanks .blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .pp-blanks .blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  /* 검토 반영(1차): 칼로리 오렌지3 실습 접기 */
+  .pp-opt>summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .pp-opt>summary small{font-weight:400;color:var(--muted);font-size:.85rem}
+  .pp-optnote{background:#f3ecfa;border-radius:10px;padding:8px 12px;font-size:.92rem;margin:10px 0 12px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 2. 빅데이터</span>
+      <h1>모은 데이터,<br>바로 분석해도<br>괜찮을까?</h1>
+      <div class="story"><b>칼로리 데이터로 운동 계획 세우기</b><br>지난 시간에 내려받은 칼로리 데이터로 <b>효율적인 운동 계획</b>을 세우려고 해요. 그런데 파일이 두 개로 나뉘어 있고, 열어 보면 숫자가 1만 5천 줄이나 돼요. 어딘가 비어 있는 칸이나 터무니없는 값이 섞여 있을지도 몰라요. 수집한 데이터 가운데 <b>문제를 해결하는 데 필요한 데이터는 무엇이고</b>, 그것을 어떻게 손봐야 할까요?</div>
+      <p>수집한 그대로의 데이터는 분석하기 전에 다듬어야 해요. 오늘은 그 작업인 <b>데이터 전처리</b>를 알아보고, 브라우저에서 먼저 연습한 뒤 오렌지3로 <b>태양광 발전</b> 데이터를 직접 전처리하고, <b>칼로리</b> 데이터 두 개를 하나로 합쳐 봐요.</p>
+      <ol>
+        <li>데이터 전처리는 무엇일까?</li><li>결측치와 이상치 먼저 해 보기</li><li>오렌지3 실습 ① 태양광 발전</li>
+        <li>칼로리 데이터 합치기</li><li>스스로 정리하기</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🧺</i><div><b>원시 데이터</b><small>빈칸 · 동떨어진 값 · 나뉜 파일</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🧹</i><div><b>데이터 전처리</b><small>정리 · 통합 · 정규화</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>☀️</i><div><b>태양광 발전 데이터</b><small>결측치 제거 · 이상치 제거</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🏃</i><div><b>칼로리 데이터</b><small>데이터 합치기 · 나이 구간 나누기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="callout pp-ready">🍊 <b>지금 바로 오렌지3를 실행해 두세요.</b> 처음 열리는 데 1~2분 걸려요. 열리는 동안 다음 화면에서 개념을 먼저 봐요.<br>📁 <b>선생님이 알려 주는 폴더</b>에서 <span class="mono">태양광 발전.xlsx</span>를 내려받고, (선택 실습용) 지난 시간에 저장한 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span>가 어디 있는지도 봐 둬요.</div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>데이터 전처리</b>의 뜻과 작업 종류를 알아보고, 데이터 처리 과정(문제 상황 이해 → 수집 → 탐색 → 전처리)을 따라갑니다. 작은 표에서 <b>결측치</b>와 <b>이상치</b>를 찾아 고쳐 본 다음, 오렌지3로 태양광 발전 데이터의 결측치·이상치를 없애고, 칼로리 데이터 두 개를 <b>합쳐</b> 나이 구간을 나눕니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">오늘 배우기 전의 내 생각을 적어 두고, 마무리에서 다시 비교해 봐요.</p>
+        <div class="memo"><label>수집한 데이터를 손보지 않고 바로 분석하면 어떤 문제가 생길까요?</label><textarea data-memo="planGuess" rows="2" placeholder="지금 떠오르는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>빅데이터</b> · 빅데이터를 목적에 맞게 처리하여 분석하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 「칼로리 데이터」를 수집하여 효율적인 운동 계획을 세우고자 한다. 수집한 데이터 중에 문제를 해결하는 데 필요한 데이터는 무엇일까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>데이터 전처리의 개념을 설명할 수 있다.</li>
+          <li>수집한 데이터를 데이터 전처리 과정에 따라 가공할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 데이터 전처리 · 결측치 · 이상치</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 데이터 전처리부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 데이터 전처리 -->
+<section class="page" data-name="데이터 전처리" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>데이터 전처리는 무엇이고, 어떻게 하는 것일까?</h2><p>교과서 70쪽 · 데이터 전처리의 뜻과 작업, 데이터 처리 과정</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>요리하기 전에 재료를 씻고, 상한 부분을 떼고, 크기를 맞춰 써는 것처럼, 분석하기 전에 데이터를 <b>쓸 수 있는 모양으로 다듬는 일</b>이 데이터 전처리예요. 여러 데이터 처리 작업 가운데 <b>가장 기초가 되는 단계</b>예요.</span></div>
+  <div class="card">
+    <h3>🧹 데이터 전처리</h3>
+    <div class="callout" style="margin-top:4px"><b>원시 데이터</b>를 <b>원하는 형식으로 변환</b>하는 작업</div>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🧽</div><h4>데이터 정리</h4><p>데이터에서 오류, 불일치 또는 누락된 데이터를 제거하거나 수정해요. 예: 중복 항목 제거, 맞춤법 오류 수정, 누락된 값 채우기</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🔗</div><h4>데이터 통합</h4><p>서로 유사하거나 동질성을 가진 데이터를 하나의 데이터로 합해요. 예: 중복되는 데이터 속성값을 통합해 효율성을 높여요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">📐</div><h4>데이터 정규화</h4><p>데이터를 분석하기 쉽고 일관성을 유지하도록 공통 척도 또는 일정 범위로 바꿔요. 예: 속성값을 일정한 범위에 속하도록 조정해요.</p></div>
+    </div>
+    <p class="note">이 밖에 데이터 크기를 줄이는 <b>데이터 축소</b>, 데이터 형식을 바꾸는 <b>데이터 변환</b>도 데이터 전처리 작업이에요.</p>
+  </div>
+  <div class="card">
+    <h3>🎯 왜 전처리를 할까?</h3>
+    <p style="margin-top:0">데이터 전처리의 목표는 <b>데이터 분석 또는 기계학습을 준비</b>하는 것이에요. 데이터를 적절하게 전처리하면 데이터 분석이나 기계학습의 <b>정확도와 신뢰도가 높아지고</b>, 데이터의 통찰력이나 경향성을 알아볼 수 있어요.</p>
+    <p class="note"><b>기계학습</b> 컴퓨터가 데이터를 기반으로 스스로 학습하여 규칙을 찾고, 찾아낸 규칙을 토대로 새로운 데이터의 결과를 예측하는 것. 인공지능 단원에서 자세히 배워요.</p>
+  </div>
+  <div class="card">
+    <h3>🔄 일반적인 데이터 처리 과정 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅱ-9)</span></h3>
+    <div class="flow2 pp-proc">
+      <div style="--k:#5b6776"><b>💬 문제 상황 이해하기</b><span>무엇을 알고 싶은지 정해요</span></div><div class="ar">→</div>
+      <div style="--k:#2f6fd0"><b>🧺 데이터 수집하기</b><span>필요한 데이터를 모아요</span></div><div class="ar">→</div>
+      <div style="--k:#9b4fc4"><b>🔍 데이터 탐색하기</b><span>불러와 속성과 통계를 살펴요</span></div><div class="ar">→</div>
+      <div style="--k:#1f9d74"><b>✂️ 데이터 전처리하기</b><span>빠진 값·이상한 값을 다듬어요</span></div>
+    </div>
+    <p class="note">오늘 태양광 발전 실습과 칼로리 데이터 합치기도 이 네 단계를 그대로 따라가요.</p>
+  </div>
+  <div class="card">
+    <h3>🗂️ 이 작업은 어떤 전처리일까?</h3>
+    <p class="muted" style="margin-top:0">상황을 읽고 데이터 정리 · 데이터 통합 · 데이터 정규화 가운데 알맞은 것을 골라요.</p>
+    <div id="ppGame"></div>
+    <div class="memo"><label>헷갈렸던 상황 하나와, 왜 그 작업인지 <small>한 줄로</small></label><textarea data-memo="ppWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 결측치·이상치 체험 -->
+<section class="page" data-name="결측치·이상치" data-acc="#d64535">
+  <div class="head"><div class="num">02</div><div><h2>결측치와 이상치는 어떻게 찾아 고칠까?</h2><p>교과서 72~73쪽 · 오렌지3를 열기 전에 브라우저에서 먼저 해 보기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>결측치</b>는 데이터가 빠져서 <b>비어 있는 칸</b>, <b>이상치</b>는 다른 데이터와 달리 <b>혼자 동떨어진 값</b>이에요. 둘 다 그대로 두면 분석 결과가 엉뚱하게 나올 수 있어서 찾아서 처리해요.</span></div>
+  <div class="grid2 even">
+    <div class="kc" style="--k:#d64535"><div class="ic">🕳️</div><h4>결측치</h4><p>데이터셋에서 일부 데이터가 누락된 <b>빈값</b>이에요. 결측치는 데이터 분석이나 기계학습을 할 때 문제를 일으킬 수 있어서 처리해야 해요.</p></div>
+    <div class="kc" style="--k:#e0702b"><div class="ic">🎯</div><h4>이상치</h4><p><b>일반적이지 않은 데이터</b>예요. 밥을 많이 먹고 운동을 적게 하면 살이 찔 거라고 예상하지만, 많이 먹고 움직이지 않는데도 마른 사람이 있는 것처럼요. 이상치는 <b>분석 결과를 왜곡</b>할 수 있으므로 제거해요.</p></div>
+  </div>
+  <div class="card pp-lab" style="margin-top:16px">
+    <h3>🧪 작은 태양광 발전 표로 먼저 해 보기</h3>
+    <p class="muted" style="margin-top:0">교과서의 태양광 발전 데이터를 본떠 새로 만든 16줄짜리 연습용 표예요. 오렌지3 실습과 <b>같은 순서</b>로, 아래 단계 버튼을 차례로 눌러요.</p>
+    <div class="pp-stepbar" id="labSteps"></div>
+    <div class="pp-msg" id="labMsg"></div>
+    <div class="pp-ctl" id="labCtl"></div>
+    <div class="pp-labg">
+      <div class="pp-tw"><table class="pp-tbl" id="labTbl"></table></div>
+      <div class="pp-plotbox">
+        <svg id="labPlot" viewBox="0 0 430 330" role="img" aria-label="습도와 태양광 발전량의 산점도"></svg>
+        <p class="note" style="margin-top:2px">x축 습도, y축 태양광 발전량(kW) · 점을 누르면 표에서 그 줄이 강조돼요.</p>
+      </div>
+    </div>
+    <div class="pp-sum" id="labSum"></div>
+    <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="labReset">처음부터 다시</button></div>
+  </div>
+  <div class="card">
+    <h3>✍️ 해 보고 나서</h3>
+    <div class="memo">
+      <label>결측치를 평균으로 채울 때와 그 줄을 지울 때 무엇이 달랐나요? 교과서는 왜 지우는 쪽을 골랐을까요?</label>
+      <textarea data-memo="missWhy" rows="2"></textarea><div class="saved"></div>
+      <label>이상치를 어떻게 찾았나요? 찾은 이상치를 지우는 까닭은 무엇인가요?</label>
+      <textarea data-memo="outlierHow" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 오렌지3 실습 ① 태양광 발전 -->
+<section class="page" data-name="실습 ① 태양광 발전" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>「태양광 발전」 데이터는 어떻게 전처리할까?</h2><p>교과서 71~73쪽 · 오렌지3 실습 ① 결측치 제거 · 이상치 제거</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>02에서 한 일을 이번에는 <b>5만 줄이 넘는 진짜 데이터</b>로 해요. 위젯 이름만 다를 뿐 순서는 같아요. 살펴보기(<b>Feature Statistics</b>) → 결측치 처리(<b>Impute</b>) → 이상치 찾기(<b>Scatter Plot</b>) → 표시하기(<b>Formula</b>) → 남기기(<b>Select Rows</b>).</span></div>
+  <div class="pp-4">
+    <div><b>1 문제 상황 이해하기</b><span>환경 보호와 지속적인 태양광 발전을 위해 태양광 발전 데이터를 분석해요.</span></div>
+    <div><b>2 데이터 수집하기</b><span>교과서는 데이콘에서 내려받아요. 우리는 선생님이 알려 주는 폴더의 <span class="mono">태양광 발전.xlsx</span>를 써요.</span></div>
+    <div><b>3 데이터 탐색하기</b><span>불러와 속성과 통계를 살펴요(아래 1~3).</span></div>
+    <div><b>4 데이터 전처리하기</b><span>결측치와 이상치를 없애요(아래 4~11).</span></div>
+  </div>
+  <div class="card">
+    <h3>🔀 위젯 연결 흐름도 <span class="muted" style="font-weight:400;font-size:.88rem">(위젯을 누르면 아래 설정 표의 그 줄이 강조돼요)</span></h3>
+    <div class="pp-flowbox"><svg id="solarFlow" role="img" aria-label="태양광 발전 데이터 전처리 위젯 연결 흐름도"></svg></div>
+    <div class="pp-legend"><span style="--k:#f2b84b">Data</span><span style="--k:#f0875a">Transform</span><span style="--k:#ef8fa0">Visualize</span><small>색은 오렌지3 왼쪽 카테고리를 나타내요.</small></div>
+  </div>
+  <div class="card">
+    <h3>⚙️ 위젯 설정 표</h3>
+    <div class="pp-tw"><table class="tbl pp-set" id="solarSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>File</b> (Data)</td><td>처음 위젯</td><td><span class="mono">태양광 발전.xlsx</span> 열기</td><td>52,560개의 데이터, 9개 속성(feature)</td></tr>
+      <tr data-s="2"><td>2</td><td><b>Data Table</b> (Data)</td><td>File →</td><td>더블 클릭해 표로 보기</td><td>일 · 시 · 분 · 산란일사량 · 직달일사량 · 풍속 · 습도 · 온도 · 태양광 발전량(kW)</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Feature Statistics</b> (Data)</td><td>File →</td><td>Color를 <b>태양광 발전량(kW)</b>으로 바꾸기</td><td>맨 오른쪽 <b>Missing</b> 열에서 산란일사량·풍속의 결측치 찾기</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Impute</b> (Transform)</td><td>File →</td><td><b>Remove instances with unknown values</b> 선택 (결측치가 2개뿐이라 지워요)</td><td>–</td></tr>
+      <tr data-s="5"><td>5</td><td><b>Feature Statistics (1)</b> (Data)</td><td>Impute →</td><td>–</td><td>Missing이 0이 되었는지</td></tr>
+      <tr data-s="6"><td>6</td><td><b>Scatter Plot</b> (Visualize)</td><td>Impute →</td><td>x축 <b>습도</b>, y축 <b>태양광 발전량(kW)</b>, Color <b>태양광 발전량(kW)</b>, <b>Show all data on mouse hover</b> 체크</td><td>습도가 높은데 발전량도 높은 동떨어진 점 몇 개 (점에 마우스를 올리면 값이 보여요)</td></tr>
+      <tr data-s="7"><td>7</td><td><b>Formula</b> (Transform)</td><td>Impute →</td><td><b>New → Categorical</b>, 이름 <b>이상치</b><br>식: <span class="mono">0 if 습도+태양광_발전량_kW_&gt;150 else 1</span><br>Values: <span class="mono">Y, N</span> → <b>Send</b></td><td>습도와 발전량의 합이 150을 넘으면 Y(이상치), 아니면 N(정상치)</td></tr>
+      <tr data-s="8"><td>8</td><td><b>Data Table (1)</b> (Data)</td><td>Formula →</td><td>「이상치」 열 머리글을 눌러 정렬하기 (정렬은 괜찮아요. 줄을 눌러 고르지만 않으면 돼요)</td><td>Y로 표시된 이상치 <b>5개</b></td></tr>
+      <tr data-s="9"><td>9</td><td><b>Select Rows</b> (Transform)</td><td>Formula →</td><td>조건: <b>이상치</b> <span class="mono">is</span> <b>N</b></td><td>–</td></tr>
+      <tr data-s="10"><td>10</td><td><b>Data Table (2)</b> (Data)</td><td>Select Rows →</td><td>–</td><td>52,553개(결측치 2개, 이상치 5개를 뺀 수). 정확한 개수는 창 왼쪽 정보 칸에서 봐요. 창 아래쪽 숫자는 52.6k처럼 줄여 보일 수 있어요.</td></tr>
+      <tr data-s="11"><td>11</td><td><b>Scatter Plot (1)</b> (Visualize)</td><td>Select Rows →</td><td>6번과 같은 축으로 정하기</td><td>동떨어진 점이 사라졌는지</td></tr>
+    </table></div>
+    <div class="callout pp-warn">💡 교과서 그림은 Formula → Data Table (1) → Select Rows → Data Table (2) → Scatter Plot (1)처럼 <b>Data Table을 거쳐</b> 이어요. 그렇게 해도 되지만, Data Table에서 줄을 눌러 고르면 <b>고른 줄만</b> 다음 위젯으로 넘어가요. 이 흐름도처럼 Formula와 Select Rows에서 바로 이으면 더 안전해요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="solarDone"></div>
+    <div class="memo">
+      <label>✍️ 실습하면서 적기 · 결측치와 이상치를 제거한 과정을 위젯 이름을 넣어 순서대로 정리해요 <small>(73쪽 생각해 보기)</small></label>
+      <textarea data-memo="solarSteps" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card pp-help">
+    <summary>🆘 막혔을 때 펼쳐 보기</summary>
+    <ul>
+      <li><b>위젯을 못 찾겠어요</b> → 캔버스 빈 곳을 마우스 오른쪽 버튼으로 누르고 위젯 이름을 입력해요. 왼쪽 목록 위의 검색 칸을 써도 돼요.</li>
+      <li><b>연결선을 어떻게 만들어요?</b> → 위젯 오른쪽의 둥근 끝을 끌어 다음 위젯의 왼쪽에 놓아요. 빈 곳에 놓으면 이어 붙일 위젯을 고르는 창이 떠요.</li>
+      <li><b>Formula 식에 오류가 나요</b> → 속성 이름은 직접 치지 말고 <b>Select Feature</b> 목록에서 골라 넣어요. 「태양광 발전량(kW)」은 식 안에서 <span class="mono">태양광_발전량_kW_</span>로 바뀌어 들어가요.</li>
+      <li><b>Missing 열이 안 보여요</b> → Feature Statistics 창을 옆으로 넓혀요.</li>
+      <li><b>오렌지3가 안 열리거나 너무 느려요</b> → 02의 작은 표 체험을 한 번 더 하며 단계마다 어떤 위젯이 같은 일을 하는지 떠올리고, 위의 메모를 채워요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 오렌지3 실습 ② 칼로리 -->
+<section class="page" data-name="칼로리 합치기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>「칼로리」 데이터는 어떻게 전처리할까?</h2><p>교과서 74~75쪽 · 데이터 합치기 · 나이 구간 나누기 (오렌지3 실습은 선택)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>칼로리 데이터는 <b>두 파일</b>로 나뉘어 있어요. 한쪽에는 소모한 칼로리, 다른 쪽에는 나이·운동 시간 같은 정보가 있지요. 두 파일에 똑같이 들어 있는 <b>User_ID</b>를 기준으로 <b>하나로 합치고</b>, 나이를 <b>세 구간으로 나누어</b> 다음 분석을 준비해요.</span></div>
+  <div class="pp-4">
+    <div><b>1 문제 상황 이해하기</b><span>칼로리는 신체를 유지하고 일상생활의 모든 활동을 하는 데 필요한 에너지 단위예요. 건강 관리를 위해 칼로리 데이터를 분석해요.</span></div>
+    <div><b>2 데이터 수집하기</b><span>지난 시간 「스스로 해결하기」에서 수집한 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span>를 써요.</span></div>
+    <div><b>3 데이터 탐색하기</b><span>두 파일을 불러와 속성을 살펴보고 합쳐요(선택 실습 1~6).</span></div>
+    <div><b>4 데이터 전처리하기</b><span>나이의 구간을 나누어요(선택 실습 7).</span></div>
+  </div>
+  <div class="card">
+    <h3>🧩 합치기 먼저 해 보기 <span class="muted" style="font-weight:400;font-size:.88rem">(연습용으로 새로 만든 5명의 데이터)</span></h3>
+    <p class="muted" style="margin-top:0">두 표는 사람의 순서가 서로 달라요. <b>User_ID</b>가 같은 줄끼리 이어야 한 사람의 정보가 한 줄에 모여요.</p>
+    <div class="pp-mg" id="mgBox"></div>
+    <div class="row" style="margin-top:8px;gap:8px">
+      <button class="btn sm" id="mgDo">User_ID로 합치기 (Merge Data)</button>
+      <button class="btn sm" id="mgBin" disabled>나이 구간 나누기 (Discretize)</button>
+      <button class="btn ghost sm" id="mgReset">처음부터</button>
+    </div>
+    <div class="pp-msg" id="mgMsg" style="margin-top:8px">두 표를 보고 User_ID 1003번 사람의 나이와 소모한 칼로리를 찾아보세요. 그다음 합치기 버튼을 눌러요.</div>
+    <p class="note">오렌지3에서는 exercise의 <b>Gender</b>를 <b>meta</b>로 바꿔 참고용으로만 둬요(74쪽). 그래서 위 표에서도 Gender를 흐리게 보여 줘요.</p>
+    <div class="pp-role">
+      <b>Role(역할) 종류</b>
+      <span><i>feature</i>기계학습에 영향을 미치는 속성</span>
+      <span><i>target</i>예측하고자 하는 결과가 되는 속성</span>
+      <span><i>meta</i>참고만 하기 위해 보여지는 속성</span>
+      <span><i>ignore</i>무시해도 되는 속성</span>
+    </div>
+  </div>
+  <details class="card pp-opt">
+    <summary>🍊 시간이 남으면 · 오렌지3로 칼로리 데이터 전처리하기 <small>(못 했다면 빅데이터 시각화 시간 처음에 이어서 해요)</small></summary>
+    <p class="pp-optnote">이 실습은 <b>시간이 남을 때</b> 해요. 지금 못 해도 괜찮아요. 빅데이터 시각화 시간 처음에 「나. 파일이 없거나 지난 시간 칼로리 실습을 하지 않았다면」 안내를 따라 5분 안에 같은 흐름을 만들 수 있어요. 다 했다면 마지막에 꼭 <b>칼로리 전처리</b>로 저장해요.</p>
+    <h3>🔀 위젯 연결 흐름도</h3>
+    <div class="pp-flowbox"><svg id="calFlow" role="img" aria-label="칼로리 데이터 전처리 위젯 연결 흐름도"></svg></div>
+    <div class="pp-legend"><span style="--k:#f2b84b">Data</span><span style="--k:#f0875a">Transform</span><small>File 위젯 이름은 F2 키로 calories · exercise로 바꿔요.</small></div>
+    <h3 style="margin-top:16px">⚙️ 위젯 설정 표</h3>
+    <div class="pp-tw"><table class="tbl pp-set" id="calSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>File</b> → 이름 <b>calories</b> (Data)</td><td>처음 위젯</td><td><span class="mono">calories.csv</span> 열기, 위젯을 고르고 <b>F2</b> 키로 이름 바꾸기</td><td>User_ID · Calories</td></tr>
+      <tr data-s="2"><td>2</td><td><b>File</b> → 이름 <b>exercise</b> (Data)</td><td>처음 위젯</td><td><span class="mono">exercise.csv</span> 열기, F2로 이름 바꾸기, <b>Gender</b>의 Role 칸을 더블 클릭해 <b>meta</b>로 바꾼 뒤 <b>Apply</b></td><td>Gender가 참고용 속성이 됨</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Data Table</b> (Data)</td><td>calories →</td><td>더블 클릭해 보기</td><td>개별 ID와 소모한 칼로리</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Data Table (1)</b> (Data)</td><td>exercise →</td><td>더블 클릭해 보기</td><td>User_ID · Gender · Age · Height · Weight · Duration · Heart_Rate · Body_Temp, 아래쪽 <b>15k</b>는 데이터 개수</td></tr>
+      <tr data-s="5"><td>5</td><td><b>Merge Data</b> (Transform)</td><td>calories → <b>Data</b><br>exercise → <b>Extra Data</b></td><td><b>Append columns from Extra data</b>, 맞출 속성을 <b>User_ID</b> ↔ <b>User_ID</b>로 (처음에 Row index로 되어 있으면 바꿔요)</td><td>–</td></tr>
+      <tr data-s="6"><td>6</td><td><b>Data Table (2)</b> (Data)</td><td>Merge Data →</td><td>더블 클릭해 보기</td><td>Calories와 Age · Duration 같은 속성이 한 표에 모였는지</td></tr>
+      <tr data-s="7"><td>7</td><td><b>Discretize</b> (Transform)</td><td>Merge Data →</td><td>목록에서 <b>Age</b>를 누르고 <b>Natural binning, desired bins</b>를 <b>3</b>으로</td><td>Age 옆에 <b>40, 60</b>이 표시됨 (40세 미만 · 40세 이상 60세 미만 · 60세 이상)</td></tr>
+    </table></div>
+    <div class="callout pp-warn">💡 두 번째로 이은 선이 <b>Extra Data</b>로 들어갔는지 연결선 위의 글자를 확인해요. 바꾸려면 연결선을 더블 클릭해요.</div>
+    <div class="callout pp-save">💾 <b>다 했으면 꼭 저장해요.</b> 오렌지3 메뉴 <b>File → Save As</b>로 <b>칼로리 전처리</b>라는 이름으로 데이터 파일과 같은 폴더에 저장해요. 빅데이터 시각화에서 이 흐름에 이어서 작업해요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="calDone"></div>
+  </details>
+  <div class="card">
+    <h3>✍️ 생각해 보기</h3>
+    <div class="memo">
+      <label>칼로리 데이터로 문제를 해결하기 위해 어떤 작업을 했는지 순서대로 정리해요</label>
+      <textarea data-memo="calorieWork" rows="2"></textarea><div class="saved"></div>
+      <label>합친 데이터로 무엇을 더 알아보고 싶나요? <small>운동 계획을 세우는 데 도움이 될 질문 하나</small></label>
+      <textarea data-memo="calorieNext" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 스스로 정리하기 -->
+<section class="page" data-name="스스로 정리하기" data-acc="#1f9d74">
+  <div class="head"><div class="num">05</div><div><h2>스스로 정리하기</h2><p>교과서 73·75쪽 · 전처리 전후 비교 · 개념 정리 · 성취도 평가</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>「태양광 발전」과 「칼로리」 두 데이터로 결측치·이상치 제거, 데이터 합치기 같은 전처리를 해서 데이터를 알맞게 쓸 수 있도록 가공했어요. 전처리하기 <b>전과 후에 무엇이 달라졌는지</b> 정리해요.</span></div>
+  <div class="card">
+    <h3>🔁 전처리 전과 후</h3>
+    <div class="pp-ba">
+      <div><b>☀️ 태양광 발전</b><span>전: 52,560개 · 결측치 2개 · 동떨어진 점 5개</span><span>후: 52,553개 · 결측치 0개 · 이상치 제거</span></div>
+      <div><b>🏃 칼로리</b><span>전: 파일 2개(calories · exercise) · 나이는 숫자 그대로</span><span>후: User_ID로 합친 표 1개 · 나이는 세 구간</span></div>
+    </div>
+    <div class="memo">
+      <label>전처리를 하고 나니 무엇이 좋아졌나요? 하지 않고 바로 분석했다면 어떤 문제가 생겼을까요?</label>
+      <textarea data-memo="beforeAfter" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</p>
+    <ol class="pp-blanks">
+      <li>하루 걸음 수가 대부분 수천에서 1만 걸음 사이인데 한 사람만 900만 걸음으로 적혀 있다면, 이 값은 <button class="blank" data-a="이상치">?</button>로 볼 수 있다.</li>
+      <li>센서가 잠시 꺼져서 몇몇 시간의 기온 칸이 비어 있다면, 그 빈칸은 <button class="blank" data-a="결측치">?</button>이다.</li>
+      <li>두 동아리가 따로 만든 회원 명단을 한 표로 합치는 일은 전처리 작업 가운데 <button class="blank" data-a="데이터 통합">?</button>에 해당한다.</li>
+      <li>체육 대회 기록을 분석하기 전에 빈칸을 채우고, 잘못 적힌 반 이름을 고치고, 두 학년 기록을 한 표로 합쳤다. 이렇게 분석 전에 데이터를 다듬은 일을 통틀어 <button class="blank" data-a="데이터 전처리">?</button>라고 한다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">수집한 데이터를 데이터 전처리 과정에 따라 가공할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">수집한 그대로의 데이터를 분석에 쓸 수 있는 모양으로 바꾸는 일이 <b>데이터 전처리</b>이다. 잘못된 것을 고치는 정리, 여러 데이터를 합하는 통합, 값의 범위를 맞추는 정규화 등이 있으며, 잘 전처리할수록 분석과 기계학습의 정확도와 신뢰도가 높아진다.</div>
+    <div style="--k:#d64535">데이터가 빠져서 비어 있는 값이 <b>결측치</b>, 다른 값들과 동떨어진 값이 <b>이상치</b>이다. 둘 다 그대로 두면 분석을 흐트러뜨리므로 찾아서 처리한다.</div>
+    <div style="--k:#1f9d74">데이터는 <b>문제 상황 이해하기 → 데이터 수집하기 → 데이터 탐색하기 → 데이터 전처리하기</b>의 과정으로 처리한다. 오렌지3에서는 Impute로 결측치를, Formula와 Select Rows로 이상치를 처리하며, Merge Data로 두 데이터를 합친다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 생각을 떠올리며, 오늘의 질문에 배운 낱말(전처리, 결측치, 이상치, 데이터 합치기)을 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">칼로리 데이터로 효율적인 운동 계획을 세우려면, 수집한 데이터 중에 무엇이 필요하고 어떻게 손봐야 할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>전처리 작업 분류에서 <b>헷갈렸던 상황 하나</b>를 골라, 데이터 정리·통합·정규화 가운데 왜 그 작업인지 설명하기</li>
+      <li>작은 표 체험에서 <b>결측치를 채울 때와 지울 때의 차이</b>, 이상치를 찾은 방법과 지우는 까닭 쓰기</li>
+      <li>태양광 발전 데이터의 결측치·이상치를 없앤 과정을 <b>위젯 이름과 순서</b>대로 설명하기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u2-preprocess.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u2-preprocess', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 70~75쪽) — 보기는 짧은 것부터, 극단어 피하기 */
+const QUIZ={
+ 1:[{q:'운동 앱에서 모은 기록을 분석하기 전에 빈 값을 처리하고, 나뉘어 있던 파일을 하나로 합쳤다. 이런 작업을 통틀어 무엇이라고 할까?',o:['웹크롤링','데이터 수집','데이터 전처리'],a:2,w:'데이터 전처리는 원시 데이터를 원하는 형식으로 변환하는 작업으로, 여러 데이터 처리 작업에서 가장 기초가 되는 단계예요(70쪽).'},
+    {q:'데이터에서 오류나 불일치, 누락된 데이터를 제거하거나 수정하는 작업은?',o:['데이터 정리','데이터 통합','데이터 정규화'],a:0,w:'중복 항목 제거, 맞춤법 오류 수정, 누락된 값 채우기처럼 잘못되거나 빠진 데이터를 고치는 작업이 데이터 정리예요(70쪽).'},
+    {q:'일반적인 데이터 처리 과정에서 「데이터 전처리하기」 바로 앞 단계는?',o:['데이터 수집하기','데이터 탐색하기','문제 상황 이해하기'],a:1,w:'데이터 처리 과정은 문제 상황 이해하기 → 데이터 수집하기 → 데이터 탐색하기 → 데이터 전처리하기 순서예요. 살펴본 결과를 보고 전처리를 계획해요(그림 Ⅱ-9).'}],
+ 2:[{q:'도서관 대출 기록에서 몇몇 줄의 「반납 날짜」 칸이 비어 있다. 이런 값을 무엇이라고 할까?',o:['결측치','이상치','정규화'],a:0,w:'누락되어 비어 있는 값이 결측치예요. 데이터 분석이나 기계학습을 할 때 문제를 일으킬 수 있어 처리해야 해요(72쪽).'},
+    {q:'이상치를 제거하는 까닭으로 알맞은 것은?',o:['파일 크기가 커지므로','데이터를 합칠 수 없게 되므로','분석 결과를 왜곡할 수 있으므로'],a:2,w:'이상치는 일반적이지 않은 데이터라서 그대로 두면 분석 결과를 왜곡할 수 있어요(72쪽).'},
+    {q:'결측치가 있는 줄을 지우지 않고 그 속성의 평균값으로 채우면 어떻게 될까?',o:['데이터 개수가 줄어든다','데이터 개수가 그대로다','이상치가 함께 지워진다'],a:1,w:'빈칸을 평균으로 채우면 줄을 지우지 않으므로 데이터 개수가 그대로 남아요. 대신 채운 값은 실제로 잰 값이 아니에요.'}],
+ 3:[{q:'오렌지3에서 속성마다 최소, 최대, 평균과 결측치(Missing)를 한눈에 확인하는 위젯은?',o:['Impute','Data Table','Feature Statistics'],a:2,w:'Feature Statistics 위젯은 최소(Min), 최대(Max), 평균(Mean) 같은 통계적 특성과 맨 마지막 Missing 열로 결측치를 보여 줘요(71~72쪽).'},
+    {q:'Formula로 만든 「이상치」 속성이 N인 데이터만 다음 위젯으로 보내려면 무엇을 연결할까?',o:['Formula','Select Rows','Scatter Plot'],a:1,w:'Select Rows는 조건에 맞는 행을 추출하거나 제거하는 위젯이에요. Formula는 이상치 속성을 새로 만들고, Scatter Plot은 산점도를 그려요(73쪽).'}],
+ 4:[{q:'공통 속성인 User_ID를 기준으로 두 칼로리 파일을 하나로 합칠 때 쓰는 위젯은?',o:['Merge Data','Discretize','Select Rows'],a:0,w:'Merge Data 위젯으로 calories와 exercise 데이터를 User_ID 기준으로 합쳐요(75쪽).'},
+    {q:'exercise.csv의 Gender처럼 참고만 하기 위해 보여지는 속성에 주는 역할(Role)은?',o:['meta','target','feature'],a:0,w:'meta는 참고만 하기 위해 보여지는 속성이에요. feature는 기계학습에 영향을 미치는 속성, target은 예측하고자 하는 결과가 되는 속성이에요(74쪽).'}],
+ 6:[{q:'Discretize 위젯으로 나이(Age)를 세 구간으로 나누었더니 40, 60이 표시되었다. 45세는 어느 구간에 들어갈까?',o:['40세 미만','60세 이상','40세 이상 60세 미만'],a:2,w:'40, 60은 40세 미만, 40세 이상 60세 미만, 60세 이상의 세 구간을 뜻해요. 45세는 가운데 구간이에요(75쪽).'},
+    {q:'데이터를 적절하게 전처리하면 얻을 수 있는 점은?',o:['정확도와 신뢰도가 높아진다','데이터를 다시 수집해야 한다','원시 데이터의 양이 크게 늘어난다'],a:0,w:'데이터를 적절하게 전처리하면 데이터 분석이나 기계학습의 정확도와 신뢰도가 높아지고 데이터의 경향성을 알아볼 수 있어요(70쪽).'},
+    {q:'결측치를 처리하는 Impute 위젯이 들어 있는 카테고리는?',o:['Data','Transform','Visualize'],a:1,w:'Transform 카테고리에는 Impute, Formula, Select Rows, Merge Data처럼 데이터 전처리와 관련된 위젯이 모여 있어요(72쪽).'}]
+};
+
+const QK='ds-u2-preprocess-quiz'+WHO.sfx;
+const MK='ds-u2-preprocess-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 01 어떤 전처리일까? — 카드 문장에 작업 이름(정리·통합·정규화)을 넣지 않음 */
+sorter('ppGame',{
+  cats:[{n:'🧽 데이터 정리',k:'#2f6fd0'},{n:'🔗 데이터 통합',k:'#1f9d74'},{n:'📐 데이터 정규화',k:'#e0702b'}],
+  items:[
+    {t:'설문 응답을 보니 같은 학생이 두 번 제출한 줄이 있어 하나만 남긴다',short:'두 번 낸 응답 하나만 남기기',c:0,ic:'🧾',w:'데이터 하나 안에서 잘못 들어간 중복 줄을 없애는 일이라 데이터 정리예요. 여러 데이터를 하나로 모으는 통합과는 달라요.'},
+    {t:'지역 이름 칸에 「서울」, 「서을」, 「서울시」처럼 제각각 적힌 것을 바르게 고친다',short:'잘못 적힌 지역 이름 고치기',c:0,ic:'✏️',w:'맞춤법 오류나 불일치를 수정하는 것은 데이터 정리예요.'},
+    {t:'키 칸이 비어 있는 몇몇 학생 기록을 찾아 지우거나 알맞은 값으로 채운다',short:'빈 키 칸 처리하기',c:0,ic:'🕳️',w:'누락된 데이터를 제거하거나 채우는 것은 데이터 정리예요. 02에서 직접 해 봐요.'},
+    {t:'같은 학생들의 체력 측정 기록 파일과 급식 설문 파일을 학번을 기준으로 하나의 표로 만든다',short:'두 파일을 학번 기준으로 하나로',c:1,ic:'🧩',w:'동질성을 가진 데이터를 하나의 데이터로 합하는 데이터 통합이에요. 04의 칼로리 데이터 합치기와 같은 일이에요.'},
+    {t:'학교 도서관과 동네 공공 도서관에서 따로 받은 대출 기록 파일을 한 표로 모아 우리 동네 학생들의 독서량을 살펴본다',short:'두 도서관 대출 기록을 한 표로',c:1,ic:'📚',w:'서로 다른 곳에서 모은 비슷한 데이터를 하나로 합하는 데이터 통합이에요. 한 데이터 안의 잘못을 고치면 정리, 여러 데이터를 하나로 모으면 통합이에요.'},
+    {t:'100점 만점 시험 점수와 10점 만점 수행 점수를 둘 다 0에서 1 사이의 값으로 바꾸어 비교한다',short:'점수를 0~1 사이로 바꾸기',c:2,ic:'💯',w:'속성값을 일정한 범위에 속하도록 조정하는 데이터 정규화예요.'},
+    {t:'단위가 서로 다른 키(cm)와 몸무게(kg)를 같은 범위의 값으로 바꾸어 함께 분석한다',short:'키·몸무게를 같은 범위로',c:2,ic:'📏',w:'분석하기 쉽게 공통 척도나 일정 범위로 바꾸는 데이터 정규화예요.'},
+  ],
+  end:'<b>정리</b> 틀리거나 빠진 것을 고치면 <b>데이터 정리</b>, 여러 데이터를 하나로 합하면 <b>데이터 통합</b>, 값의 척도나 범위를 맞추면 <b>데이터 정규화</b>예요. 정규화는 교과서 뒷부분(182쪽)에서 다시 만나요.'
+});
+
+/* 02 작은 태양광 발전 표 체험 (교과서 데이터를 본떠 새로 만든 값) */
+(function(){
+  const ORIG=[
+    [1,8,60,2.1,78,8],[2,9,110,2.4,70,18],[3,10,160,null,62,31],[4,11,190,3.0,55,42],
+    [5,12,210,3.2,48,50],[6,13,null,2.8,45,52],[7,14,180,2.6,50,44],[8,15,140,2.2,58,30],
+    [9,16,90,1.9,66,16],[10,11,200,3.4,92,66],[11,12,150,2.0,74,28],[12,13,170,2.5,60,38],
+    [13,10,190,3.1,88,69],[14,14,120,2.3,83,20],[15,9,70,1.8,90,6],[16,15,100,2.0,71,22]];
+  const K=['n','h','sd','ws','hu','pw'], NAMES=['번호','시','산란일사량','풍속','습도','태양광 발전량(kW)'], NUM=['sd','ws','hu','pw'];
+  const STEPS=['① 살펴보기 · Feature Statistics','② 결측치 처리 · Impute','③ 이상치 찾기 · Scatter Plot + Formula','④ 이상치 제거 · Select Rows'];
+  let S;
+  const reset=()=>{S={done:0,cur:0,imp:null,rule:false,cut:false,marks:new Set(),sel:null,rows:ORIG.map(r=>{const o={fill:{},gone:false,out:null,cut:false};K.forEach((k,i)=>o[k]=r[i]);return o;})};};
+  const live=()=>S.rows.filter(r=>!r.gone&&!r.cut);
+  const f1=v=>Math.round(v*10)/10;
+  const stat=k=>{const v=live().map(r=>r[k]).filter(x=>x!=null);return {min:Math.min(...v),max:Math.max(...v),mean:v.reduce((a,b)=>a+b,0)/v.length,miss:live().filter(r=>r[k]==null).length};};
+
+  function drawSteps(){
+    $('labSteps').innerHTML=STEPS.map((t,i)=>`<button class="${S.cur===i+1?'on':''} ${S.done>i?'ok':''}" data-i="${i+1}" ${i+1>S.done+1?'disabled':''}>${t}</button>`).join('');
+    $('labSteps').querySelectorAll('button').forEach(b=>b.onclick=()=>step(+b.dataset.i));
+  }
+  function drawTable(){
+    const head=`<tr>${NAMES.map(n=>`<th>${n}</th>`).join('')}${S.rule?'<th>이상치</th>':''}</tr>`;
+    const body=S.rows.map(r=>`<tr data-n="${r.n}" class="${r.gone||r.cut?'gone':''} ${S.sel===r.n?'sel':''}">${K.map(k=>{
+      const v=r[k];
+      if(v==null) return `<td class="${S.done>=1?'miss':''}">?</td>`;
+      if(r.fill[k]) return `<td class="fill">${f1(v)}</td>`;
+      return `<td>${k==='ws'?v.toFixed(1):v}</td>`;}).join('')}${S.rule?`<td class="${r.out==='Y'?'oy':''}">${r.out||''}</td>`:''}</tr>`).join('');
+    let foot='';
+    if(S.done>=1){
+      const st={}; NUM.forEach(k=>st[k]=stat(k));
+      const row=(lab,fn)=>`<tr class="st"><th>${lab}</th><td>–</td>${NUM.map(k=>`<td>${fn(st[k])}</td>`).join('')}${S.rule?'<td></td>':''}</tr>`;
+      foot=row('최소',s=>f1(s.min))+row('최대',s=>f1(s.max))+row('평균',s=>f1(s.mean))+row('Missing',s=>`<b class="${s.miss?'mm':''}">${s.miss}</b>`);
+    }
+    $('labTbl').innerHTML=head+body+foot;
+    $('labTbl').querySelectorAll('tr[data-n]').forEach(tr=>tr.onclick=()=>{S.sel=+tr.dataset.n;drawTable();drawPlot();});
+  }
+  const sx=h=>50+(h-40)/60*360, sy=p=>280-p/80*260;
+  function drawPlot(){
+    let g='';
+    for(let h=40;h<=100;h+=10) g+=`<line x1="${sx(h)}" y1="20" x2="${sx(h)}" y2="280" class="gl"/><text x="${sx(h)}" y="298" class="tk">${h}</text>`;
+    for(let p=0;p<=80;p+=20) g+=`<line x1="50" y1="${sy(p)}" x2="410" y2="${sy(p)}" class="gl"/><text x="42" y="${sy(p)+4}" class="tk" style="text-anchor:end">${p}</text>`;
+    g+=`<text x="230" y="322" class="ax">습도</text><text x="14" y="150" class="ax" transform="rotate(-90 14 150)">태양광 발전량(kW)</text>`;
+    if(S.rule) g+=`<line x1="${sx(70)}" y1="${sy(80)}" x2="${sx(100)}" y2="${sy(50)}" class="rl"/><text x="${sx(71)}" y="${sy(80)-6}" class="rt">습도 + 발전량 = 150</text>`;
+    live().forEach(r=>{
+      const cls=['pt',r.out==='Y'?'y':'',S.marks.has(r.n)?'mk':'',S.sel===r.n?'sel':''].join(' ');
+      g+=`<circle cx="${sx(r.hu)}" cy="${sy(r.pw)}" r="${S.sel===r.n?9:7}" class="${cls}" data-n="${r.n}"><title>번호 ${r.n} · 습도 ${r.hu} · 발전량 ${r.pw}</title></circle>`;
+    });
+    $('labPlot').innerHTML=g;
+    $('labPlot').querySelectorAll('circle').forEach(c=>c.onclick=()=>{
+      const n=+c.dataset.n; S.sel=n;
+      if(S.cur===3&&!S.rule){S.marks.has(n)?S.marks.delete(n):S.marks.add(n); msg(`고른 점 <b>${S.marks.size}개</b>. 다 골랐으면 아래 <b>규칙으로 확인하기</b>를 눌러요.`);}
+      drawTable(); drawPlot();
+    });
+  }
+  const msg=h=>$('labMsg').innerHTML=h;
+  function sum(){
+    const a=S.rows.filter(r=>!r.gone).length, b=live().length;
+    $('labSum').innerHTML=S.done>=2?`<span>처음 <b>16줄</b></span><i>→</i><span>결측치 처리 후 <b>${a}줄</b></span>${S.cut?`<i>→</i><span>이상치 제거 후 <b>${b}줄</b></span>`:''}`:'';
+  }
+  function impute(kind){
+    S.rows.forEach(r=>{r.gone=false;NUM.forEach(k=>{if(r.fill[k]){r[k]=null;delete r.fill[k];}});});
+    if(kind==='avg'){
+      const m={}; NUM.forEach(k=>{const v=S.rows.map(r=>r[k]).filter(x=>x!=null);m[k]=v.reduce((x,y)=>x+y,0)/v.length;});
+      S.rows.forEach(r=>NUM.forEach(k=>{if(r[k]==null){r[k]=f1(m[k]);r.fill[k]=true;}}));
+      msg(`<b>평균으로 채우기</b> 16줄이 그대로 남고, 빈칸에 그 속성의 평균(기울어진 글씨)이 들어갔어요. 줄은 지키지만, 채운 값은 실제로 잰 값이 아니에요. 다른 방법도 눌러 비교해 봐요.`);
+    } else {
+      S.rows.forEach(r=>{if(NUM.some(k=>r[k]==null)) r.gone=true;});
+      msg(`<b>빈칸 있는 줄 지우기</b> 빈칸이 있던 2줄이 지워져 14줄이 남았어요. 교과서도 결측치가 <b>2개뿐</b>이라 이 방법을 골랐어요. 5만 줄이 넘는 데이터에서 2줄은 아주 적은 양이에요. 다른 방법도 눌러 비교해 봐요.`);
+    }
+    S.imp=kind; S.marks.clear(); S.done=Math.max(S.done,2); $('labCtl').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.k===kind));
+    drawSteps(); drawTable(); drawPlot(); sum();
+  }
+  function step(i){
+    S.cur=i; const C=$('labCtl'); C.innerHTML='';
+    if(i===1){
+      S.done=Math.max(S.done,1);
+      msg('표 아래에 속성마다 <b>최소 · 최대 · 평균 · Missing</b>이 나왔어요. Missing은 빈칸 수예요. <b>Missing이 0이 아닌 속성</b>은 무엇인가요? 빨간 칸이 결측치예요. 다 찾았으면 ②로 가요.');
+    } else if(i===2&&S.rule){
+      msg('이미 이상치 단계로 넘어갔어요. 결측치 처리 방법을 다시 비교하려면 아래 「처음부터 다시」를 눌러요.');
+    } else if(i===2){
+      C.innerHTML='<button class="btn sm" data-k="avg">평균으로 채우기 <small>Average/Most frequent</small></button><button class="btn sm" data-k="rm">빈칸 있는 줄 지우기 <small>Remove instances with unknown values</small></button>';
+      C.querySelectorAll('button').forEach(b=>{b.onclick=()=>impute(b.dataset.k); b.classList.toggle('on',b.dataset.k===S.imp);});
+      msg(S.imp?'두 방법을 모두 눌러 비교해 봐요. 마지막에 누른 방법으로 다음 단계를 해요.':'결측치를 어떻게 처리할까요? 두 버튼을 차례로 눌러 표와 줄 수가 어떻게 바뀌는지 비교해요.');
+    } else if(i===3){
+      if(!S.rule){
+        C.innerHTML='<button class="btn sm" id="labRule">규칙으로 확인하기 <small>Formula: 습도 + 발전량 &gt; 150 이면 Y</small></button>';
+        $('labRule').onclick=()=>{
+          S.rule=true; live().forEach(r=>r.out=r.hu+r.pw>150?'Y':'N'); S.rows.filter(r=>r.gone).forEach(r=>r.out=null);
+          const ys=live().filter(r=>r.out==='Y').map(r=>r.n), hit=ys.filter(n=>S.marks.has(n)).length;
+          S.done=Math.max(S.done,3); C.innerHTML='';
+          msg(`규칙으로 찾은 이상치는 <b>${ys.length}개</b>(빨간 점, 표의 Y)예요. 내가 고른 점 ${S.marks.size}개 가운데 <b>${hit}개</b>가 같아요. 습도가 높은데 발전량도 높은, 다른 점들과 반대로 가는 점이에요. 이제 ④로 가요.`);
+          drawSteps(); drawTable(); drawPlot();
+        };
+        msg('산점도에서 <b>다른 점들과 동떨어진 점</b>을 눌러 표시해 보세요(다시 누르면 취소). 대부분의 점은 습도가 높을수록 발전량이 낮아요. 그 흐름에서 벗어난 점은 무엇일까요?');
+      } else if(S.cut) msg('이상치는 ④에서 이미 제거했어요. 산점도에 남은 점은 N(정상치)이에요. 처음부터 다시 해 보려면 아래 「처음부터 다시」를 눌러요.');
+      else msg('규칙으로 찾은 이상치가 빨간 점과 표의 Y로 표시되어 있어요. ④로 가요.');
+    } else if(i===4){
+      if(!S.cut){
+        C.innerHTML='<button class="btn sm" id="labCut">이상치가 N인 줄만 남기기 <small>Select Rows: 이상치 is N</small></button>';
+        $('labCut').onclick=()=>{
+          S.cut=true; S.rows.forEach(r=>{if(r.out==='Y') r.cut=true;}); S.done=4; C.innerHTML='';
+          msg(`이상치 줄이 빠지고 <b>${live().length}줄</b>이 남았어요. 산점도에서 동떨어진 점이 사라졌는지 보세요. 이렇게 <b>살펴보기 → 결측치 처리 → 이상치 찾기 → 이상치 제거</b>를 마쳤어요. 이 순서를 03에서 오렌지3로 똑같이 해요.`);
+          drawSteps(); drawTable(); drawPlot(); sum();
+        };
+        msg('Select Rows처럼 <b>조건에 맞는 줄만</b> 남겨요. 이상치가 N(정상치)인 줄만 남기면 이상치가 제거돼요.');
+      } else msg(`전처리를 마쳤어요. ${live().length}줄이 남았어요. 다시 해 보려면 「처음부터 다시」를 눌러요.`);
+    }
+    drawSteps(); drawTable(); drawPlot(); sum();
+  }
+  $('labReset').onclick=()=>{reset(); $('labCtl').innerHTML=''; msg('① 살펴보기부터 눌러 시작해요. 표에서 <b>?</b>는 비어 있는 칸이에요.'); drawSteps(); drawTable(); drawPlot(); sum();};
+  $('labReset').onclick();
+})();
+
+/* 03·04 위젯 연결 흐름도 (오렌지3 화면을 캡처하지 않고 새로 그림) */
+function drawFlow(svgId,tblId,W,H,nodes,edges){
+  const col={D:'#f2b84b',T:'#f0875a',V:'#ef8fa0'}, BW=174, BH=48, N={};
+  nodes.forEach(n=>N[n.s]=n);
+  let g=`<defs><marker id="${svgId}A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a94a3"/></marker></defs>`;
+  edges.forEach(([a,b,lab,dy])=>{
+    const p=N[a], q=N[b], x1=p.x+BW, y1=p.y+BH/2, x2=q.x-2, y2=q.y+BH/2+(dy||0);
+    g+=`<path d="M${x1} ${y1}C${x1+40} ${y1} ${x2-40} ${y2} ${x2} ${y2}" class="fe" marker-end="url(#${svgId}A)"/>`;
+    if(lab) g+=`<text x="${x2-12}" y="${dy>0?y2+15:y2-7}" class="fl">${lab}</text>`;
+  });
+  nodes.forEach(n=>{
+    g+=`<g class="fn" data-s="${n.s}" tabindex="0"><rect x="${n.x}" y="${n.y}" width="${BW}" height="${BH}" rx="10" class="fb" style="stroke:${col[n.c]}"/><rect x="${n.x}" y="${n.y}" width="28" height="${BH}" rx="10" fill="${col[n.c]}"/><rect x="${n.x+18}" y="${n.y}" width="10" height="${BH}" fill="${col[n.c]}"/><text x="${n.x+14}" y="${n.y+29}" class="fnum">${n.s}</text><text x="${n.x+36}" y="${n.y+(n.sub?20:29)}" class="ft">${n.t}</text>${n.sub?`<text x="${n.x+36}" y="${n.y+37}" class="fs">${n.sub}</text>`:''}</g>`;
+  });
+  const S=$(svgId); S.setAttribute('viewBox',`0 0 ${W} ${H}`); S.innerHTML=g;
+  const pick=s=>{
+    S.querySelectorAll('.fn').forEach(x=>x.classList.toggle('on',x.dataset.s===s));
+    $(tblId).querySelectorAll('tr[data-s]').forEach(tr=>tr.classList.toggle('hl',tr.dataset.s===s));
+    const tr=$(tblId).querySelector(`tr[data-s="${s}"]`); if(tr) tr.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  S.querySelectorAll('.fn').forEach(x=>{x.onclick=()=>pick(x.dataset.s); x.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(x.dataset.s);}};});
+  $(tblId).querySelectorAll('tr[data-s]').forEach(tr=>tr.onclick=()=>pick(tr.dataset.s));
+}
+drawFlow('solarFlow','solarSet',1050,385,[
+  {s:1,t:'File',sub:'태양광 발전.xlsx',c:'D',x:10,y:150},
+  {s:2,t:'Data Table',c:'D',x:225,y:20},{s:3,t:'Feature Statistics',c:'D',x:225,y:85},{s:4,t:'Impute',sub:'결측치 제거',c:'T',x:225,y:210},
+  {s:5,t:'Feature Statistics (1)',sub:'Missing 0 확인',c:'D',x:440,y:130},{s:6,t:'Scatter Plot',sub:'이상치 확인',c:'V',x:440,y:200},{s:7,t:'Formula',sub:'이상치 Y/N 표시',c:'T',x:440,y:280},
+  {s:8,t:'Data Table (1)',sub:'Y 5개 확인',c:'D',x:655,y:215},{s:9,t:'Select Rows',sub:'이상치 is N',c:'T',x:655,y:300},
+  {s:10,t:'Data Table (2)',c:'D',x:870,y:255},{s:11,t:'Scatter Plot (1)',sub:'제거 확인',c:'V',x:870,y:325},
+],[[1,2],[1,3],[1,4],[4,5],[4,6],[4,7],[7,8],[7,9],[9,10],[9,11]]);
+drawFlow('calFlow','calSet',720,262,[
+  {s:1,t:'calories',sub:'File · calories.csv',c:'D',x:10,y:40},{s:2,t:'exercise',sub:'File · exercise.csv',c:'D',x:10,y:175},
+  {s:3,t:'Data Table',c:'D',x:270,y:5},{s:5,t:'Merge Data',sub:'User_ID 기준',c:'T',x:270,y:105},{s:4,t:'Data Table (1)',c:'D',x:270,y:207},
+  {s:6,t:'Data Table (2)',c:'D',x:535,y:60},{s:7,t:'Discretize',sub:'Age 3구간',c:'T',x:535,y:150},
+],[[1,3],[2,4],[1,5,'Data',-10],[2,5,'Extra Data',10],[5,6],[5,7]]);
+chips('solarDone','solarDonePick',['파일 불러오기','결측치 확인','결측치 제거','산점도로 이상치 확인','Formula로 이상치 표시','Select Rows로 이상치 제거'],true);
+chips('calDone','calDonePick',['두 파일 불러오기·이름 바꾸기','Gender를 meta로','Merge Data로 합치기','Discretize로 나이 구간 나누기','작업 흐름 저장하기'],true);
+
+/* 04 합치기 먼저 해 보기 (새로 만든 5명) */
+(function(){
+  const CAL=[[1001,180],[1002,62],[1003,25],[1004,140],[1005,95]];
+  const EX=[[1003,'female',23,6],[1001,'male',45,25],[1005,'male',67,15],[1002,'female',38,11],[1004,'female',61,22]];
+  const bin=a=>a<40?'< 40':a<60?'40 – 60':'≥ 60';
+  let merged=false, binned=false, hi=null;
+  const T=(cap,hd,rows,key)=>`<div class="pp-mt"><b>${cap}</b><table><tr>${hd.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(r=>`<tr data-id="${r[0]}" class="${hi===r[0]?'hi':''}">${r.map((v,i)=>`<td class="${key&&key[i]||''}">${v}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  function draw(){
+    let h;
+    if(!merged) h=T('📄 calories',['User_ID','Calories'],CAL)+T('📄 exercise',['User_ID','Gender','Age','Duration'],EX,['','meta','','']);
+    else{
+      const rows=CAL.map(([id,c])=>{const e=EX.find(x=>x[0]===id); const r=[id,c,e[1],e[2],e[3]]; if(binned) r.push(bin(e[2])); return r;});
+      h=T('🔗 Merge Data 결과',['User_ID','Calories','Gender','Age','Duration'].concat(binned?['Age 구간']:[]),rows,['','','meta','','','bin']);
+    }
+    $('mgBox').innerHTML=h;
+    $('mgBox').querySelectorAll('tr[data-id]').forEach(tr=>tr.onclick=()=>{hi=+tr.dataset.id;draw();});
+  }
+  $('mgDo').onclick=()=>{merged=true; $('mgDo').disabled=true; $('mgBin').disabled=false;
+    $('mgMsg').innerHTML='두 표가 <b>User_ID가 같은 줄끼리</b> 이어져 한 표가 되었어요. 이제 한 줄에서 한 사람의 소모 칼로리와 나이·운동 시간을 함께 볼 수 있어요. Gender는 meta(참고용)로 함께 붙어 있어요.'; draw();};
+  $('mgBin').onclick=()=>{binned=true; $('mgBin').disabled=true;
+    $('mgMsg').innerHTML='나이(Age)를 <b>40세 미만 · 40세 이상 60세 미만 · 60세 이상</b>의 세 구간으로 나누었어요. 오렌지3의 Discretize에서 Natural binning, desired bins 3을 고르면 Age 옆에 <b>40, 60</b>이 표시되는 것과 같은 뜻이에요.'; draw();};
+  $('mgReset').onclick=()=>{merged=false;binned=false;hi=null;$('mgDo').disabled=false;$('mgBin').disabled=true;
+    $('mgMsg').innerHTML='두 표를 보고 User_ID 1003번 사람의 나이와 소모한 칼로리를 찾아보세요. 그다음 합치기 버튼을 눌러요.'; draw();};
+  draw();
+})();
+
+/* 05 스스로 정리하기 */
+chips('selfCheck','selfCheckPick',['데이터 전처리의 뜻을 설명할 수 있다','데이터 정리·통합·정규화를 구분할 수 있다','결측치를 찾아 처리할 수 있다','이상치를 찾아 제거할 수 있다','두 데이터를 공통 속성으로 합칠 수 있다'],true);
+document.querySelectorAll('.pp-blanks .blank').forEach(b=>b.onclick=()=>{b.textContent=b.dataset.a; b.classList.add('on');});
+
+/* 06 마무리 */
+const MEMOLIST=[['planGuess','처음 생각: 손보지 않고 바로 분석하면 생길 문제'],['ppWhy','헷갈렸던 전처리 상황과 그 까닭'],['missWhy','결측치를 채울 때와 지울 때의 차이'],['outlierHow','이상치를 찾은 방법과 지우는 까닭'],['solarDonePick','실습 ① 태양광 발전 진행'],['solarSteps','태양광 발전 데이터 전처리 과정'],['calDonePick','(선택) 오렌지3 칼로리 실습 진행'],['calorieWork','칼로리 데이터로 한 작업'],['calorieNext','합친 데이터로 더 알아보고 싶은 것'],['beforeAfter','전처리 전과 후 비교'],['selfCheckPick','성취도 평가: 할 수 있게 된 것'],['keyQ','오늘의 질문에 대한 내 답']];
+onShow[6]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

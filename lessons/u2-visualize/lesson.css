@@ -1,0 +1,91 @@
+  /* 시작 화면 */
+  .vz-ready{font-size:.95rem;line-height:1.7}
+  .vz-plan>div{min-width:150px}
+  /* 시각화 종류 카드 */
+  .vz-kinds{margin-top:12px}
+  .vz-kinds svg{width:100%;max-width:150px;height:auto;display:block;margin:0 auto 6px}
+  .vz-ax{stroke:#8a94a3;stroke-width:2}
+  .vz-wk{stroke:#33393f;stroke-width:2}
+  .vz-md{stroke:#fff;stroke-width:3}
+  .vz-cv{fill:none;stroke:#d64535;stroke-width:2.5}
+  .vz-rg{stroke:#d64535;stroke-width:2;stroke-dasharray:5 4}
+  /* 그래프 고르기 실험실 */
+  .vz-labcard{border-top:6px solid var(--acc)}
+  .vz-mis,.vz-types{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .vz-mis button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;color:var(--ink)}
+  .vz-mis button.on{border-color:var(--navy);background:var(--navy);color:#fff;font-weight:700}
+  .vz-q{background:#fbfaf7;border-radius:12px;padding:10px 14px;font-size:1.02rem}
+  .vz-q small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
+  .vz-types button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 12px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink);display:flex;align-items:center;gap:6px}
+  .vz-types button i{font-style:normal;font-size:1.1rem}
+  .vz-types button.on{border-color:var(--acc);background:var(--acc-soft);font-weight:700}
+  .vz-chart{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:200px;overflow-x:auto}
+  .vz-svg{width:100%;max-width:620px;height:auto;display:block;margin:0 auto;min-width:460px}
+  .vz-grid{stroke:#eceae4;stroke-width:1}
+  .vz-axl{stroke:#8a94a3;stroke-width:1.5}
+  .vz-tk{font-size:11px;fill:#5b6776}
+  .vz-tk.e{text-anchor:end}.vz-tk.m{text-anchor:middle}
+  .vz-al{font-size:12px;fill:#16202c;font-weight:700;text-anchor:middle}
+  .vz-lg{font-size:13px;fill:#16202c}
+  .vz-ln{fill:none;stroke-width:2.5;stroke-linejoin:round}
+  .vz-sl{stroke:#fff;stroke-width:2}
+  .vz-rg2{stroke:#d64535;stroke-width:2.5;stroke-dasharray:7 5}
+  .vz-none{display:grid;place-items:center;min-height:200px;color:var(--muted);font-size:1rem;text-align:center;padding:20px}
+  .vz-fb{margin-top:10px;background:var(--acc-soft);border-radius:10px;padding:10px 14px;font-size:.95rem;min-height:1em}
+  .vz-fb:empty{display:none}
+  .vz-fb b.ok,.vz-log .ok{color:#1f7a55}
+  .vz-fb b.mid,.vz-log .mid{color:#b06a00}
+  .vz-fb b.ng,.vz-log .ng{color:#c0392b}
+  .vz-log{margin-top:10px;font-size:.88rem;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .vz-log span{background:#fbfaf7;border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+  /* 실습 상자 */
+  .vz-lab{border-top:6px solid var(--acc)}
+  .vz-do{margin:8px 0 0;padding-left:22px;font-size:.95rem}
+  .vz-do li{margin:5px 0}
+  .vz-tw{overflow-x:auto;margin-top:8px}
+  .vz-set{min-width:280px}
+  .vz-set th,.vz-set td{text-align:left;font-size:.92rem}
+  .vz-help,.vz-opt{margin-top:10px}
+  .vz-help summary,.vz-opt summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .vz-help[open] summary,.vz-opt[open] summary{margin-bottom:6px}
+  .vz-help{background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .vz-mini{font-size:.9rem}
+  .vz-terms{margin-bottom:18px}
+  .vz-boxread{margin-top:10px;overflow-x:auto}
+  .vz-bg{width:100%;max-width:520px;min-width:380px;display:block;margin:0 auto}
+  /* 오렌지3 흐름도 */
+  .vz-flow{overflow-x:auto;margin:10px 0 4px;background:#fbfaf7;border-radius:12px;padding:6px}
+  .ow-svg{width:100%;height:auto;display:block;margin:0 auto;min-width:300px}
+  .ow-l{fill:none;stroke:#5b6776;stroke-width:2.5}
+  .ow-l.old{stroke:#b8bec7;stroke-dasharray:6 5}
+  .ow-l.opt{stroke:#8a94a3;stroke-dasharray:3 4}
+  .ow-ah{fill:#5b6776}
+  .ow-lt{font-size:11px;fill:#5b6776;text-anchor:middle}
+  .ow-ic{font-size:20px;text-anchor:middle}
+  .ow-t{font-size:12.5px;font-weight:700;fill:#16202c;text-anchor:middle}
+  .ow-k{font-size:11px;fill:#5b6776;text-anchor:middle}
+  .ow-n circle{stroke:#fff;stroke-width:3}
+  .ow-n.old circle{fill:#d6dae0 !important}
+  .ow-n.old .ow-t{fill:#7b8592}
+  .ow-n.opt circle{opacity:.55;stroke:#8a94a3;stroke-dasharray:4 3}
+  .vz-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.84rem;color:var(--muted)}
+  .vz-legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--k,#d6dae0);margin-right:5px;vertical-align:-1px}
+  .vz-legend span.old::before{background:#d6dae0}
+  .vz-legend span.opt::before{background:none;border:2px dashed #8a94a3;width:8px;height:8px}
+  /* 정형 데이터 정보 */
+  .vz-info{margin-top:10px}
+  .vz-info>div{background:#fbfaf7;border-radius:12px;padding:8px 12px;border-left:5px solid var(--acc)}
+  .vz-info b{display:block}
+  .vz-info span{font-size:.88rem;color:var(--muted)}
+  /* 정리 */
+  .vz-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.78rem;margin-right:6px;vertical-align:1px}
+  .vz-blanks{margin:6px 0 0;padding-left:22px}
+  .vz-blanks li{margin:10px 0;line-height:1.9;font-size:.95rem}
+  .vz-blanks select{font:inherit;font-size:.92rem;padding:2px 6px;border:2px solid var(--line);border-radius:8px;background:#fff}
+  .vz-bk{font-size:.85rem;font-weight:700}
+  .vz-bk.ok{color:#1f7a55}.vz-bk.ng{color:#c0392b}
+  /* 02 준비: 두 갈래 */
+  .vz-prep{margin-top:4px}
+  .vz-path{background:#fbfaf7;border-radius:12px;padding:10px 14px;border-left:5px solid #1f9d74}
+  .vz-path.b{border-left-color:#e0702b;background:#fff4ea}
+  .vz-path h4{margin:0 0 2px;font-size:.98rem}

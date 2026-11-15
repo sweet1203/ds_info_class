@@ -1,0 +1,317 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 2. 빅데이터</span>
+      <h1>모은 데이터,<br>바로 분석해도<br>괜찮을까?</h1>
+      <div class="story"><b>칼로리 데이터로 운동 계획 세우기</b><br>지난 시간에 내려받은 칼로리 데이터로 <b>효율적인 운동 계획</b>을 세우려고 해요. 그런데 파일이 두 개로 나뉘어 있고, 열어 보면 숫자가 1만 5천 줄이나 돼요. 어딘가 비어 있는 칸이나 터무니없는 값이 섞여 있을지도 몰라요. 수집한 데이터 가운데 <b>문제를 해결하는 데 필요한 데이터는 무엇이고</b>, 그것을 어떻게 손봐야 할까요?</div>
+      <p>수집한 그대로의 데이터는 분석하기 전에 다듬어야 해요. 오늘은 그 작업인 <b>데이터 전처리</b>를 알아보고, 브라우저에서 먼저 연습한 뒤 오렌지3로 <b>태양광 발전</b> 데이터를 직접 전처리하고, <b>칼로리</b> 데이터 두 개를 하나로 합쳐 봐요.</p>
+      <ol>
+        <li>데이터 전처리는 무엇일까?</li><li>결측치와 이상치 먼저 해 보기</li><li>오렌지3 실습 ① 태양광 발전</li>
+        <li>칼로리 데이터 합치기</li><li>스스로 정리하기</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🧺</i><div><b>원시 데이터</b><small>빈칸 · 동떨어진 값 · 나뉜 파일</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🧹</i><div><b>데이터 전처리</b><small>정리 · 통합 · 정규화</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>☀️</i><div><b>태양광 발전 데이터</b><small>결측치 제거 · 이상치 제거</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🏃</i><div><b>칼로리 데이터</b><small>데이터 합치기 · 나이 구간 나누기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="callout pp-ready">🍊 <b>지금 바로 오렌지3를 실행해 두세요.</b> 처음 열리는 데 1~2분 걸려요. 열리는 동안 다음 화면에서 개념을 먼저 봐요.<br>📁 <b>선생님이 알려 주는 폴더</b>에서 <span class="mono">태양광 발전.xlsx</span>를 내려받고, (선택 실습용) 지난 시간에 저장한 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span>가 어디 있는지도 봐 둬요.</div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>데이터 전처리</b>의 뜻과 작업 종류를 알아보고, 데이터 처리 과정(문제 상황 이해 → 수집 → 탐색 → 전처리)을 따라갑니다. 작은 표에서 <b>결측치</b>와 <b>이상치</b>를 찾아 고쳐 본 다음, 오렌지3로 태양광 발전 데이터의 결측치·이상치를 없애고, 칼로리 데이터 두 개를 <b>합쳐</b> 나이 구간을 나눕니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">오늘 배우기 전의 내 생각을 적어 두고, 마무리에서 다시 비교해 봐요.</p>
+        <div class="memo"><label>수집한 데이터를 손보지 않고 바로 분석하면 어떤 문제가 생길까요?</label><textarea data-memo="planGuess" rows="2" placeholder="지금 떠오르는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>빅데이터</b> · 빅데이터를 목적에 맞게 처리하여 분석하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 「칼로리 데이터」를 수집하여 효율적인 운동 계획을 세우고자 한다. 수집한 데이터 중에 문제를 해결하는 데 필요한 데이터는 무엇일까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>데이터 전처리의 개념을 설명할 수 있다.</li>
+          <li>수집한 데이터를 데이터 전처리 과정에 따라 가공할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 데이터 전처리 · 결측치 · 이상치</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 데이터 전처리부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 데이터 전처리 -->
+<section class="page" data-name="데이터 전처리" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>데이터 전처리는 무엇이고, 어떻게 하는 것일까?</h2><p>교과서 70쪽 · 데이터 전처리의 뜻과 작업, 데이터 처리 과정</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>요리하기 전에 재료를 씻고, 상한 부분을 떼고, 크기를 맞춰 써는 것처럼, 분석하기 전에 데이터를 <b>쓸 수 있는 모양으로 다듬는 일</b>이 데이터 전처리예요. 여러 데이터 처리 작업 가운데 <b>가장 기초가 되는 단계</b>예요.</span></div>
+  <div class="card">
+    <h3>🧹 데이터 전처리</h3>
+    <div class="callout" style="margin-top:4px"><b>원시 데이터</b>를 <b>원하는 형식으로 변환</b>하는 작업</div>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🧽</div><h4>데이터 정리</h4><p>데이터에서 오류, 불일치 또는 누락된 데이터를 제거하거나 수정해요. 예: 중복 항목 제거, 맞춤법 오류 수정, 누락된 값 채우기</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🔗</div><h4>데이터 통합</h4><p>서로 유사하거나 동질성을 가진 데이터를 하나의 데이터로 합해요. 예: 중복되는 데이터 속성값을 통합해 효율성을 높여요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">📐</div><h4>데이터 정규화</h4><p>데이터를 분석하기 쉽고 일관성을 유지하도록 공통 척도 또는 일정 범위로 바꿔요. 예: 속성값을 일정한 범위에 속하도록 조정해요.</p></div>
+    </div>
+    <p class="note">이 밖에 데이터 크기를 줄이는 <b>데이터 축소</b>, 데이터 형식을 바꾸는 <b>데이터 변환</b>도 데이터 전처리 작업이에요.</p>
+  </div>
+  <div class="card">
+    <h3>🎯 왜 전처리를 할까?</h3>
+    <p style="margin-top:0">데이터 전처리의 목표는 <b>데이터 분석 또는 기계학습을 준비</b>하는 것이에요. 데이터를 적절하게 전처리하면 데이터 분석이나 기계학습의 <b>정확도와 신뢰도가 높아지고</b>, 데이터의 통찰력이나 경향성을 알아볼 수 있어요.</p>
+    <p class="note"><b>기계학습</b> 컴퓨터가 데이터를 기반으로 스스로 학습하여 규칙을 찾고, 찾아낸 규칙을 토대로 새로운 데이터의 결과를 예측하는 것. 인공지능 단원에서 자세히 배워요.</p>
+  </div>
+  <div class="card">
+    <h3>🔄 일반적인 데이터 처리 과정 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅱ-9)</span></h3>
+    <div class="flow2 pp-proc">
+      <div style="--k:#5b6776"><b>💬 문제 상황 이해하기</b><span>무엇을 알고 싶은지 정해요</span></div><div class="ar">→</div>
+      <div style="--k:#2f6fd0"><b>🧺 데이터 수집하기</b><span>필요한 데이터를 모아요</span></div><div class="ar">→</div>
+      <div style="--k:#9b4fc4"><b>🔍 데이터 탐색하기</b><span>불러와 속성과 통계를 살펴요</span></div><div class="ar">→</div>
+      <div style="--k:#1f9d74"><b>✂️ 데이터 전처리하기</b><span>빠진 값·이상한 값을 다듬어요</span></div>
+    </div>
+    <p class="note">오늘 태양광 발전 실습과 칼로리 데이터 합치기도 이 네 단계를 그대로 따라가요.</p>
+  </div>
+  <div class="card">
+    <h3>🗂️ 이 작업은 어떤 전처리일까?</h3>
+    <p class="muted" style="margin-top:0">상황을 읽고 데이터 정리 · 데이터 통합 · 데이터 정규화 가운데 알맞은 것을 골라요.</p>
+    <div id="ppGame"></div>
+    <div class="memo"><label>헷갈렸던 상황 하나와, 왜 그 작업인지 <small>한 줄로</small></label><textarea data-memo="ppWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 결측치·이상치 체험 -->
+<section class="page" data-name="결측치·이상치" data-acc="#d64535">
+  <div class="head"><div class="num">02</div><div><h2>결측치와 이상치는 어떻게 찾아 고칠까?</h2><p>교과서 72~73쪽 · 오렌지3를 열기 전에 브라우저에서 먼저 해 보기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>결측치</b>는 데이터가 빠져서 <b>비어 있는 칸</b>, <b>이상치</b>는 다른 데이터와 달리 <b>혼자 동떨어진 값</b>이에요. 둘 다 그대로 두면 분석 결과가 엉뚱하게 나올 수 있어서 찾아서 처리해요.</span></div>
+  <div class="grid2 even">
+    <div class="kc" style="--k:#d64535"><div class="ic">🕳️</div><h4>결측치</h4><p>데이터셋에서 일부 데이터가 누락된 <b>빈값</b>이에요. 결측치는 데이터 분석이나 기계학습을 할 때 문제를 일으킬 수 있어서 처리해야 해요.</p></div>
+    <div class="kc" style="--k:#e0702b"><div class="ic">🎯</div><h4>이상치</h4><p><b>일반적이지 않은 데이터</b>예요. 밥을 많이 먹고 운동을 적게 하면 살이 찔 거라고 예상하지만, 많이 먹고 움직이지 않는데도 마른 사람이 있는 것처럼요. 이상치는 <b>분석 결과를 왜곡</b>할 수 있으므로 제거해요.</p></div>
+  </div>
+  <div class="card pp-lab" style="margin-top:16px">
+    <h3>🧪 작은 태양광 발전 표로 먼저 해 보기</h3>
+    <p class="muted" style="margin-top:0">교과서의 태양광 발전 데이터를 본떠 새로 만든 16줄짜리 연습용 표예요. 오렌지3 실습과 <b>같은 순서</b>로, 아래 단계 버튼을 차례로 눌러요.</p>
+    <div class="pp-stepbar" id="labSteps"></div>
+    <div class="pp-msg" id="labMsg"></div>
+    <div class="pp-ctl" id="labCtl"></div>
+    <div class="pp-labg">
+      <div class="pp-tw"><table class="pp-tbl" id="labTbl"></table></div>
+      <div class="pp-plotbox">
+        <svg id="labPlot" viewBox="0 0 430 330" role="img" aria-label="습도와 태양광 발전량의 산점도"></svg>
+        <p class="note" style="margin-top:2px">x축 습도, y축 태양광 발전량(kW) · 점을 누르면 표에서 그 줄이 강조돼요.</p>
+      </div>
+    </div>
+    <div class="pp-sum" id="labSum"></div>
+    <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="labReset">처음부터 다시</button></div>
+  </div>
+  <div class="card">
+    <h3>✍️ 해 보고 나서</h3>
+    <div class="memo">
+      <label>결측치를 평균으로 채울 때와 그 줄을 지울 때 무엇이 달랐나요? 교과서는 왜 지우는 쪽을 골랐을까요?</label>
+      <textarea data-memo="missWhy" rows="2"></textarea><div class="saved"></div>
+      <label>이상치를 어떻게 찾았나요? 찾은 이상치를 지우는 까닭은 무엇인가요?</label>
+      <textarea data-memo="outlierHow" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 오렌지3 실습 ① 태양광 발전 -->
+<section class="page" data-name="실습 ① 태양광 발전" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>「태양광 발전」 데이터는 어떻게 전처리할까?</h2><p>교과서 71~73쪽 · 오렌지3 실습 ① 결측치 제거 · 이상치 제거</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>02에서 한 일을 이번에는 <b>5만 줄이 넘는 진짜 데이터</b>로 해요. 위젯 이름만 다를 뿐 순서는 같아요. 살펴보기(<b>Feature Statistics</b>) → 결측치 처리(<b>Impute</b>) → 이상치 찾기(<b>Scatter Plot</b>) → 표시하기(<b>Formula</b>) → 남기기(<b>Select Rows</b>).</span></div>
+  <div class="pp-4">
+    <div><b>1 문제 상황 이해하기</b><span>환경 보호와 지속적인 태양광 발전을 위해 태양광 발전 데이터를 분석해요.</span></div>
+    <div><b>2 데이터 수집하기</b><span>교과서는 데이콘에서 내려받아요. 우리는 선생님이 알려 주는 폴더의 <span class="mono">태양광 발전.xlsx</span>를 써요.</span></div>
+    <div><b>3 데이터 탐색하기</b><span>불러와 속성과 통계를 살펴요(아래 1~3).</span></div>
+    <div><b>4 데이터 전처리하기</b><span>결측치와 이상치를 없애요(아래 4~11).</span></div>
+  </div>
+  <div class="card">
+    <h3>🔀 위젯 연결 흐름도 <span class="muted" style="font-weight:400;font-size:.88rem">(위젯을 누르면 아래 설정 표의 그 줄이 강조돼요)</span></h3>
+    <div class="pp-flowbox"><svg id="solarFlow" role="img" aria-label="태양광 발전 데이터 전처리 위젯 연결 흐름도"></svg></div>
+    <div class="pp-legend"><span style="--k:#f2b84b">Data</span><span style="--k:#f0875a">Transform</span><span style="--k:#ef8fa0">Visualize</span><small>색은 오렌지3 왼쪽 카테고리를 나타내요.</small></div>
+  </div>
+  <div class="card">
+    <h3>⚙️ 위젯 설정 표</h3>
+    <div class="pp-tw"><table class="tbl pp-set" id="solarSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>File</b> (Data)</td><td>처음 위젯</td><td><span class="mono">태양광 발전.xlsx</span> 열기</td><td>52,560개의 데이터, 9개 속성(feature)</td></tr>
+      <tr data-s="2"><td>2</td><td><b>Data Table</b> (Data)</td><td>File →</td><td>더블 클릭해 표로 보기</td><td>일 · 시 · 분 · 산란일사량 · 직달일사량 · 풍속 · 습도 · 온도 · 태양광 발전량(kW)</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Feature Statistics</b> (Data)</td><td>File →</td><td>Color를 <b>태양광 발전량(kW)</b>으로 바꾸기</td><td>맨 오른쪽 <b>Missing</b> 열에서 산란일사량·풍속의 결측치 찾기</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Impute</b> (Transform)</td><td>File →</td><td><b>Remove instances with unknown values</b> 선택 (결측치가 2개뿐이라 지워요)</td><td>–</td></tr>
+      <tr data-s="5"><td>5</td><td><b>Feature Statistics (1)</b> (Data)</td><td>Impute →</td><td>–</td><td>Missing이 0이 되었는지</td></tr>
+      <tr data-s="6"><td>6</td><td><b>Scatter Plot</b> (Visualize)</td><td>Impute →</td><td>x축 <b>습도</b>, y축 <b>태양광 발전량(kW)</b>, Color <b>태양광 발전량(kW)</b>, <b>Show all data on mouse hover</b> 체크</td><td>습도가 높은데 발전량도 높은 동떨어진 점 몇 개 (점에 마우스를 올리면 값이 보여요)</td></tr>
+      <tr data-s="7"><td>7</td><td><b>Formula</b> (Transform)</td><td>Impute →</td><td><b>New → Categorical</b>, 이름 <b>이상치</b><br>식: <span class="mono">0 if 습도+태양광_발전량_kW_&gt;150 else 1</span><br>Values: <span class="mono">Y, N</span> → <b>Send</b></td><td>습도와 발전량의 합이 150을 넘으면 Y(이상치), 아니면 N(정상치)</td></tr>
+      <tr data-s="8"><td>8</td><td><b>Data Table (1)</b> (Data)</td><td>Formula →</td><td>「이상치」 열 머리글을 눌러 정렬하기 (정렬은 괜찮아요. 줄을 눌러 고르지만 않으면 돼요)</td><td>Y로 표시된 이상치 <b>5개</b></td></tr>
+      <tr data-s="9"><td>9</td><td><b>Select Rows</b> (Transform)</td><td>Formula →</td><td>조건: <b>이상치</b> <span class="mono">is</span> <b>N</b></td><td>–</td></tr>
+      <tr data-s="10"><td>10</td><td><b>Data Table (2)</b> (Data)</td><td>Select Rows →</td><td>–</td><td>52,553개(결측치 2개, 이상치 5개를 뺀 수). 정확한 개수는 창 왼쪽 정보 칸에서 봐요. 창 아래쪽 숫자는 52.6k처럼 줄여 보일 수 있어요.</td></tr>
+      <tr data-s="11"><td>11</td><td><b>Scatter Plot (1)</b> (Visualize)</td><td>Select Rows →</td><td>6번과 같은 축으로 정하기</td><td>동떨어진 점이 사라졌는지</td></tr>
+    </table></div>
+    <div class="callout pp-warn">💡 교과서 그림은 Formula → Data Table (1) → Select Rows → Data Table (2) → Scatter Plot (1)처럼 <b>Data Table을 거쳐</b> 이어요. 그렇게 해도 되지만, Data Table에서 줄을 눌러 고르면 <b>고른 줄만</b> 다음 위젯으로 넘어가요. 이 흐름도처럼 Formula와 Select Rows에서 바로 이으면 더 안전해요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="solarDone"></div>
+    <div class="memo">
+      <label>✍️ 실습하면서 적기 · 결측치와 이상치를 제거한 과정을 위젯 이름을 넣어 순서대로 정리해요 <small>(73쪽 생각해 보기)</small></label>
+      <textarea data-memo="solarSteps" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card pp-help">
+    <summary>🆘 막혔을 때 펼쳐 보기</summary>
+    <ul>
+      <li><b>위젯을 못 찾겠어요</b> → 캔버스 빈 곳을 마우스 오른쪽 버튼으로 누르고 위젯 이름을 입력해요. 왼쪽 목록 위의 검색 칸을 써도 돼요.</li>
+      <li><b>연결선을 어떻게 만들어요?</b> → 위젯 오른쪽의 둥근 끝을 끌어 다음 위젯의 왼쪽에 놓아요. 빈 곳에 놓으면 이어 붙일 위젯을 고르는 창이 떠요.</li>
+      <li><b>Formula 식에 오류가 나요</b> → 속성 이름은 직접 치지 말고 <b>Select Feature</b> 목록에서 골라 넣어요. 「태양광 발전량(kW)」은 식 안에서 <span class="mono">태양광_발전량_kW_</span>로 바뀌어 들어가요.</li>
+      <li><b>Missing 열이 안 보여요</b> → Feature Statistics 창을 옆으로 넓혀요.</li>
+      <li><b>오렌지3가 안 열리거나 너무 느려요</b> → 02의 작은 표 체험을 한 번 더 하며 단계마다 어떤 위젯이 같은 일을 하는지 떠올리고, 위의 메모를 채워요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 오렌지3 실습 ② 칼로리 -->
+<section class="page" data-name="칼로리 합치기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>「칼로리」 데이터는 어떻게 전처리할까?</h2><p>교과서 74~75쪽 · 데이터 합치기 · 나이 구간 나누기 (오렌지3 실습은 선택)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>칼로리 데이터는 <b>두 파일</b>로 나뉘어 있어요. 한쪽에는 소모한 칼로리, 다른 쪽에는 나이·운동 시간 같은 정보가 있지요. 두 파일에 똑같이 들어 있는 <b>User_ID</b>를 기준으로 <b>하나로 합치고</b>, 나이를 <b>세 구간으로 나누어</b> 다음 분석을 준비해요.</span></div>
+  <div class="pp-4">
+    <div><b>1 문제 상황 이해하기</b><span>칼로리는 신체를 유지하고 일상생활의 모든 활동을 하는 데 필요한 에너지 단위예요. 건강 관리를 위해 칼로리 데이터를 분석해요.</span></div>
+    <div><b>2 데이터 수집하기</b><span>지난 시간 「스스로 해결하기」에서 수집한 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span>를 써요.</span></div>
+    <div><b>3 데이터 탐색하기</b><span>두 파일을 불러와 속성을 살펴보고 합쳐요(선택 실습 1~6).</span></div>
+    <div><b>4 데이터 전처리하기</b><span>나이의 구간을 나누어요(선택 실습 7).</span></div>
+  </div>
+  <div class="card">
+    <h3>🧩 합치기 먼저 해 보기 <span class="muted" style="font-weight:400;font-size:.88rem">(연습용으로 새로 만든 5명의 데이터)</span></h3>
+    <p class="muted" style="margin-top:0">두 표는 사람의 순서가 서로 달라요. <b>User_ID</b>가 같은 줄끼리 이어야 한 사람의 정보가 한 줄에 모여요.</p>
+    <div class="pp-mg" id="mgBox"></div>
+    <div class="row" style="margin-top:8px;gap:8px">
+      <button class="btn sm" id="mgDo">User_ID로 합치기 (Merge Data)</button>
+      <button class="btn sm" id="mgBin" disabled>나이 구간 나누기 (Discretize)</button>
+      <button class="btn ghost sm" id="mgReset">처음부터</button>
+    </div>
+    <div class="pp-msg" id="mgMsg" style="margin-top:8px">두 표를 보고 User_ID 1003번 사람의 나이와 소모한 칼로리를 찾아보세요. 그다음 합치기 버튼을 눌러요.</div>
+    <p class="note">오렌지3에서는 exercise의 <b>Gender</b>를 <b>meta</b>로 바꿔 참고용으로만 둬요(74쪽). 그래서 위 표에서도 Gender를 흐리게 보여 줘요.</p>
+    <div class="pp-role">
+      <b>Role(역할) 종류</b>
+      <span><i>feature</i>기계학습에 영향을 미치는 속성</span>
+      <span><i>target</i>예측하고자 하는 결과가 되는 속성</span>
+      <span><i>meta</i>참고만 하기 위해 보여지는 속성</span>
+      <span><i>ignore</i>무시해도 되는 속성</span>
+    </div>
+  </div>
+  <details class="card pp-opt">
+    <summary>🍊 시간이 남으면 · 오렌지3로 칼로리 데이터 전처리하기 <small>(못 했다면 빅데이터 시각화 시간 처음에 이어서 해요)</small></summary>
+    <p class="pp-optnote">이 실습은 <b>시간이 남을 때</b> 해요. 지금 못 해도 괜찮아요. 빅데이터 시각화 시간 처음에 「나. 파일이 없거나 지난 시간 칼로리 실습을 하지 않았다면」 안내를 따라 5분 안에 같은 흐름을 만들 수 있어요. 다 했다면 마지막에 꼭 <b>칼로리 전처리</b>로 저장해요.</p>
+    <h3>🔀 위젯 연결 흐름도</h3>
+    <div class="pp-flowbox"><svg id="calFlow" role="img" aria-label="칼로리 데이터 전처리 위젯 연결 흐름도"></svg></div>
+    <div class="pp-legend"><span style="--k:#f2b84b">Data</span><span style="--k:#f0875a">Transform</span><small>File 위젯 이름은 F2 키로 calories · exercise로 바꿔요.</small></div>
+    <h3 style="margin-top:16px">⚙️ 위젯 설정 표</h3>
+    <div class="pp-tw"><table class="tbl pp-set" id="calSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>File</b> → 이름 <b>calories</b> (Data)</td><td>처음 위젯</td><td><span class="mono">calories.csv</span> 열기, 위젯을 고르고 <b>F2</b> 키로 이름 바꾸기</td><td>User_ID · Calories</td></tr>
+      <tr data-s="2"><td>2</td><td><b>File</b> → 이름 <b>exercise</b> (Data)</td><td>처음 위젯</td><td><span class="mono">exercise.csv</span> 열기, F2로 이름 바꾸기, <b>Gender</b>의 Role 칸을 더블 클릭해 <b>meta</b>로 바꾼 뒤 <b>Apply</b></td><td>Gender가 참고용 속성이 됨</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Data Table</b> (Data)</td><td>calories →</td><td>더블 클릭해 보기</td><td>개별 ID와 소모한 칼로리</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Data Table (1)</b> (Data)</td><td>exercise →</td><td>더블 클릭해 보기</td><td>User_ID · Gender · Age · Height · Weight · Duration · Heart_Rate · Body_Temp, 아래쪽 <b>15k</b>는 데이터 개수</td></tr>
+      <tr data-s="5"><td>5</td><td><b>Merge Data</b> (Transform)</td><td>calories → <b>Data</b><br>exercise → <b>Extra Data</b></td><td><b>Append columns from Extra data</b>, 맞출 속성을 <b>User_ID</b> ↔ <b>User_ID</b>로 (처음에 Row index로 되어 있으면 바꿔요)</td><td>–</td></tr>
+      <tr data-s="6"><td>6</td><td><b>Data Table (2)</b> (Data)</td><td>Merge Data →</td><td>더블 클릭해 보기</td><td>Calories와 Age · Duration 같은 속성이 한 표에 모였는지</td></tr>
+      <tr data-s="7"><td>7</td><td><b>Discretize</b> (Transform)</td><td>Merge Data →</td><td>목록에서 <b>Age</b>를 누르고 <b>Natural binning, desired bins</b>를 <b>3</b>으로</td><td>Age 옆에 <b>40, 60</b>이 표시됨 (40세 미만 · 40세 이상 60세 미만 · 60세 이상)</td></tr>
+    </table></div>
+    <div class="callout pp-warn">💡 두 번째로 이은 선이 <b>Extra Data</b>로 들어갔는지 연결선 위의 글자를 확인해요. 바꾸려면 연결선을 더블 클릭해요.</div>
+    <div class="callout pp-save">💾 <b>다 했으면 꼭 저장해요.</b> 오렌지3 메뉴 <b>File → Save As</b>로 <b>칼로리 전처리</b>라는 이름으로 데이터 파일과 같은 폴더에 저장해요. 빅데이터 시각화에서 이 흐름에 이어서 작업해요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="calDone"></div>
+  </details>
+  <div class="card">
+    <h3>✍️ 생각해 보기</h3>
+    <div class="memo">
+      <label>칼로리 데이터로 문제를 해결하기 위해 어떤 작업을 했는지 순서대로 정리해요</label>
+      <textarea data-memo="calorieWork" rows="2"></textarea><div class="saved"></div>
+      <label>합친 데이터로 무엇을 더 알아보고 싶나요? <small>운동 계획을 세우는 데 도움이 될 질문 하나</small></label>
+      <textarea data-memo="calorieNext" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 스스로 정리하기 -->
+<section class="page" data-name="스스로 정리하기" data-acc="#1f9d74">
+  <div class="head"><div class="num">05</div><div><h2>스스로 정리하기</h2><p>교과서 73·75쪽 · 전처리 전후 비교 · 개념 정리 · 성취도 평가</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>「태양광 발전」과 「칼로리」 두 데이터로 결측치·이상치 제거, 데이터 합치기 같은 전처리를 해서 데이터를 알맞게 쓸 수 있도록 가공했어요. 전처리하기 <b>전과 후에 무엇이 달라졌는지</b> 정리해요.</span></div>
+  <div class="card">
+    <h3>🔁 전처리 전과 후</h3>
+    <div class="pp-ba">
+      <div><b>☀️ 태양광 발전</b><span>전: 52,560개 · 결측치 2개 · 동떨어진 점 5개</span><span>후: 52,553개 · 결측치 0개 · 이상치 제거</span></div>
+      <div><b>🏃 칼로리</b><span>전: 파일 2개(calories · exercise) · 나이는 숫자 그대로</span><span>후: User_ID로 합친 표 1개 · 나이는 세 구간</span></div>
+    </div>
+    <div class="memo">
+      <label>전처리를 하고 나니 무엇이 좋아졌나요? 하지 않고 바로 분석했다면 어떤 문제가 생겼을까요?</label>
+      <textarea data-memo="beforeAfter" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</p>
+    <ol class="pp-blanks">
+      <li>하루 걸음 수가 대부분 수천에서 1만 걸음 사이인데 한 사람만 900만 걸음으로 적혀 있다면, 이 값은 <button class="blank" data-a="이상치">?</button>로 볼 수 있다.</li>
+      <li>센서가 잠시 꺼져서 몇몇 시간의 기온 칸이 비어 있다면, 그 빈칸은 <button class="blank" data-a="결측치">?</button>이다.</li>
+      <li>두 동아리가 따로 만든 회원 명단을 한 표로 합치는 일은 전처리 작업 가운데 <button class="blank" data-a="데이터 통합">?</button>에 해당한다.</li>
+      <li>체육 대회 기록을 분석하기 전에 빈칸을 채우고, 잘못 적힌 반 이름을 고치고, 두 학년 기록을 한 표로 합쳤다. 이렇게 분석 전에 데이터를 다듬은 일을 통틀어 <button class="blank" data-a="데이터 전처리">?</button>라고 한다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">수집한 데이터를 데이터 전처리 과정에 따라 가공할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">수집한 그대로의 데이터를 분석에 쓸 수 있는 모양으로 바꾸는 일이 <b>데이터 전처리</b>이다. 잘못된 것을 고치는 정리, 여러 데이터를 합하는 통합, 값의 범위를 맞추는 정규화 등이 있으며, 잘 전처리할수록 분석과 기계학습의 정확도와 신뢰도가 높아진다.</div>
+    <div style="--k:#d64535">데이터가 빠져서 비어 있는 값이 <b>결측치</b>, 다른 값들과 동떨어진 값이 <b>이상치</b>이다. 둘 다 그대로 두면 분석을 흐트러뜨리므로 찾아서 처리한다.</div>
+    <div style="--k:#1f9d74">데이터는 <b>문제 상황 이해하기 → 데이터 수집하기 → 데이터 탐색하기 → 데이터 전처리하기</b>의 과정으로 처리한다. 오렌지3에서는 Impute로 결측치를, Formula와 Select Rows로 이상치를 처리하며, Merge Data로 두 데이터를 합친다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 생각을 떠올리며, 오늘의 질문에 배운 낱말(전처리, 결측치, 이상치, 데이터 합치기)을 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">칼로리 데이터로 효율적인 운동 계획을 세우려면, 수집한 데이터 중에 무엇이 필요하고 어떻게 손봐야 할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>전처리 작업 분류에서 <b>헷갈렸던 상황 하나</b>를 골라, 데이터 정리·통합·정규화 가운데 왜 그 작업인지 설명하기</li>
+      <li>작은 표 체험에서 <b>결측치를 채울 때와 지울 때의 차이</b>, 이상치를 찾은 방법과 지우는 까닭 쓰기</li>
+      <li>태양광 발전 데이터의 결측치·이상치를 없앤 과정을 <b>위젯 이름과 순서</b>대로 설명하기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

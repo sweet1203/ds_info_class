@@ -83,9 +83,9 @@
      "no": "08",
      "id": "u2-compression",
      "title": "디지털 데이터의 압축",
-     "pages": "48~57",
+     "pages": "46~57",
      "form": "info-u2-compression",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "09",
@@ -93,7 +93,7 @@
      "title": "디지털 데이터의 암호화 · 압축과 암호화 정리",
      "pages": "58~65",
      "form": "info-u2-encryption",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "10",
@@ -101,7 +101,7 @@
      "title": "빅데이터 수집",
      "pages": "66~69",
      "form": "info-u2-bigdata-collect",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "11",
@@ -109,7 +109,7 @@
      "title": "빅데이터 전처리",
      "pages": "70~75",
      "form": "info-u2-preprocess",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "12",
@@ -117,7 +117,7 @@
      "title": "빅데이터 시각화 · 빅데이터 정리",
      "pages": "76~83",
      "form": "info-u2-visualize",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "13",
@@ -125,7 +125,7 @@
      "title": "협력적 창의·융합 프로젝트 · Ⅱ단원 정리",
      "pages": "84~87",
      "form": "info-u2-review",
-     "status": "todo"
+     "status": "ready"
     }
    ]
   },

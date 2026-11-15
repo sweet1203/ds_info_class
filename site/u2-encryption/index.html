@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디지털 데이터의 암호화 · 압축과 암호화 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;letter-spacing:.02em}
+  .ec-lab{display:block;font-weight:700;font-size:.9rem;margin:6px 0 4px}
+  .ec-ul{margin:6px 0 10px;padding-left:18px;font-size:.93rem}
+  .ec-ul li{margin:4px 0}
+  .ec-ol{font-size:.93rem;padding-left:20px}
+  .ec-tbl{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .ec-tbl th,.ec-tbl td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  .ec-tbl tr:first-child th{background:var(--acc-soft)}
+  .ec-tbl th{color:var(--ink);font-weight:700}
+  .ec-tbl td input{width:100%;min-width:120px}
+  .ec-more{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:8px 14px;background:#fff}
+  .ec-more>summary{cursor:pointer;font-weight:700}
+  /* 성취도 평가 */
+  .ec-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .ec-ck>b{font-size:.92rem;color:var(--mint)}
+  .ec-ck .chk button.on::before,#selfCheck.chk button.on::before{content:"✔ "}
+  /* 01 기본 원리 그림 */
+  .ec-flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:#fbfaf7;border-radius:14px;padding:14px;margin-bottom:12px}
+  .ec-flow .who{font-size:2rem;text-align:center;line-height:1.1}
+  .ec-flow .who small{display:block;font-size:.75rem;color:var(--muted)}
+  .ec-flow .doc{display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid #2f6fd0;border-radius:10px;padding:6px 12px;font-size:1.5rem;min-width:84px}
+  .ec-flow .doc b{font-size:.95rem}
+  .ec-flow .doc small{font-size:.72rem;color:var(--muted)}
+  .ec-flow .doc.lock{border-color:#d64535;background:#fff3f1}
+  .ec-flow .arr{display:flex;flex-direction:column;align-items:center;font-size:.85rem}
+  .ec-flow .arr span{background:var(--acc);color:#fff;border-radius:999px;padding:1px 12px;font-weight:700}
+  .ec-flow .arr span::after{content:" →"}
+  .ec-flow .arr i{font-style:normal;color:#e0702b;font-size:.8rem;margin-top:3px}
+  .ec-terms .kc h4{font-size:.98rem}
+  /* 02 카이사르 */
+  .ec-shift{overflow-x:auto;background:#f6efe2;border-radius:12px;padding:10px 14px}
+  .ec-shift .r{display:flex;gap:4px;align-items:center}
+  .ec-shift .r small{width:52px;font-size:.78rem;color:var(--muted)}
+  .ec-shift .r span{width:34px;height:34px;display:grid;place-items:center;border:2px dashed #b9a98c;border-radius:6px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fffaf0}
+  .ec-shift .r span.h{border-style:solid;border-color:#d64535;color:#d64535}
+  .ec-shift .r span.d{border:0;background:none}
+  .ec-shift .r.mid i{width:34px;text-align:center;font-style:normal;font-size:.72rem;color:#2f6fd0;font-weight:700}
+  .ec-ctl{gap:14px;margin-bottom:10px}
+  .ec-mode{display:inline-flex;border:2px solid var(--acc);border-radius:999px;overflow:hidden}
+  .ec-mode button{border:0;background:#fff;color:var(--acc);font:inherit;font-weight:700;padding:5px 14px;cursor:pointer}
+  .ec-mode button.on{background:var(--acc);color:#fff}
+  .ec-key{display:flex;align-items:center;gap:8px;min-width:280px}
+  .ec-key input[type=range]{width:180px}
+  .ec-key b{font-size:1.2rem;color:var(--acc)}
+  .ec-wheel{overflow-x:auto;background:#fbfaf7;border-radius:12px;padding:8px}
+  .ec-wheel .r{display:flex;gap:2px;align-items:center}
+  .ec-wheel .r small{width:50px;flex:0 0 50px;font-size:.75rem;color:var(--muted)}
+  .ec-wheel .r span{flex:0 0 26px;height:28px;display:grid;place-items:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:4px}
+  .ec-wheel .r span.s{background:var(--acc-soft);color:var(--acc);border-color:var(--acc)}
+  .ec-out{min-height:64px;background:#fbfaf7;border:1px solid #c5ccd5;border-radius:8px;padding:8px 10px;font-size:1.05rem;word-break:break-all}
+  .ec-mis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .ec-mis.one{grid-template-columns:1fr}
+  @media (max-width:860px){.ec-mis{grid-template-columns:1fr}}
+  .ec-mis>div{border:2px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:.93rem}
+  .ec-mis .row input[type=text]{flex:1 1 180px}
+  .ec-mis .row input[type=number]{width:110px}
+  .ec-mis .fb{margin-top:6px;font-size:.9rem}
+  .ec-code{background:#0f2742;color:#ffe9b0;border-radius:8px;padding:6px 10px;margin:6px 0;font-size:1.02rem;word-break:break-all}
+  /* 03 전치 */
+  .ec-tx{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .ec-tx .box{display:flex;flex-direction:column;align-items:center;border:2px solid var(--line);border-radius:12px;padding:6px 16px;background:#fbfaf7}
+  .ec-tx .box small{color:var(--muted);font-size:.78rem}
+  .ec-tx .box .mono{font-size:1.15rem;font-weight:700}
+  .ec-tx .arr{font-size:.9rem;color:var(--muted)}
+  .ec-tabs{display:flex;gap:6px;margin-bottom:12px}
+  .ec-tabs button{border:2px solid var(--acc);background:#fff;color:var(--acc);border-radius:10px;padding:6px 14px;font:inherit;font-weight:700;cursor:pointer}
+  .ec-tabs button.on{background:var(--acc);color:#fff}
+  .ec-blocks{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0;padding:8px;background:#fbfaf7;border-radius:12px;min-height:40px}
+  .ec-blocks .bk{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .ec-blocks .r{display:flex;gap:3px}
+  .ec-blocks .r span{position:relative;width:30px;height:34px;display:grid;place-items:center;background:#fff;border:2px solid var(--line);border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;padding-top:6px}
+  .ec-blocks .r span i{position:absolute;top:0;left:3px;font-style:normal;font-size:.62rem;color:var(--muted)}
+  .ec-blocks .r span.o{border-color:var(--acc);background:var(--acc-soft)}
+  .ec-blocks .ar{font-size:.72rem;color:var(--muted)}
+  .ec-res{margin:8px 0;font-size:1rem}
+  .ec-res b{font-size:1.1rem}
+  .ec-strip{display:flex;flex-wrap:wrap;gap:0;background:#f6efe2;border-radius:8px;padding:6px;width:max-content;max-width:100%}
+  .ec-strip span{width:32px;height:32px;display:grid;place-items:center;border-right:1px dashed #b9a98c;font-weight:700}
+  .ec-rod{display:inline-grid;gap:3px;background:#8a6a45;border-radius:14px;padding:8px 12px}
+  .ec-rod .r{display:flex;gap:3px}
+  .ec-rod .r span{width:34px;height:34px;display:grid;place-items:center;background:#f6efe2;border-radius:4px;font-weight:700}
+  .ec-rod .r span.e{background:rgba(246,239,226,.35)}
+  /* 04 해시 */
+  .ec-kinds{display:inline-grid;gap:6px;background:#fbfaf7;border-radius:12px;padding:10px 14px;font-size:.88rem}
+  .ec-kinds .t{display:flex;gap:8px}
+  .ec-kinds span{border:2px solid #1f9d74;border-radius:999px;padding:1px 12px;background:#fff}
+  .ec-kinds span.on{background:#e0702b;border-color:#e0702b;color:#fff;font-weight:700}
+  .ec-kinds .sub i{width:110px}
+  .ec-hash{margin-top:6px;background:#0f2742;color:#d7e3f2;border-radius:8px;padding:6px 10px;font-size:.82rem;word-break:break-all;min-height:44px}
+  .ec-hash mark{background:#f2a516;color:#0f2742;border-radius:2px}
+  .ec-hr{border:0;border-top:1px dashed var(--line);margin:16px 0}
+  .ec-site{background:#fbfaf7;border-radius:12px;padding:10px 12px}
+  .ec-site .row input{flex:1 1 160px}
+  .ec-db{margin-top:8px;font-size:.85rem;word-break:break-all}
+  .ec-site .fb{margin-top:8px;font-size:.88rem;word-break:break-all}
+  /* 05 키 흐름 */
+  .ec-scn{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .ec-scn button{border:2px solid var(--acc);background:#fff;color:var(--acc);border-radius:10px;padding:5px 12px;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
+  .ec-scn button.on{background:var(--acc);color:#fff}
+  .ec-stage{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .ec-stage .col{background:#fbfaf7;border-radius:12px;padding:10px;min-height:150px;display:flex;flex-direction:column;gap:8px}
+  .ec-stage .col:nth-child(2){background:#f1f3f6}
+  .ec-stage .nm{font-weight:900;font-size:.93rem}
+  .ec-stage .ks{display:flex;flex-wrap:wrap;gap:4px}
+  .ec-k{border:2px solid var(--k);color:var(--k);background:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;font-weight:700}
+  .ec-k.maybe{border-style:dashed;opacity:.8}
+  .ec-msg{align-self:center;margin-top:auto;border:3px solid var(--k);border-radius:10px;padding:6px 14px;background:#fff;font-weight:900;text-align:center;animation:ecIn .4s}
+  .ec-msg.lk{background:color-mix(in srgb,var(--k) 12%,#fff)}
+  .ec-msg small{display:block;font-weight:400;font-size:.75rem;color:var(--muted)}
+  @keyframes ecIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .ec-say{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
+  .ec-say p{margin:4px 0 8px}
+  .ec-say .fb{margin-top:8px;font-size:.92rem}
+  /* 06 정리 */
+  .ec-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;margin-right:6px;vertical-align:middle}
+  .ec-cond{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:10px}
+  @media (max-width:760px){.ec-cond{grid-template-columns:1fr}}
+  .ec-cond>div{background:#fbfaf7;border-radius:12px;padding:8px 12px;font-size:.92rem}
+  .ec-cond ul{margin:4px 0 0;padding-left:18px}
+  .ec-cond .big{display:block;font-size:1.25rem;font-weight:700;margin-top:4px}
+  .ec-cond small{color:var(--muted)}
+  .ec-step{border-top:1px dashed var(--line);padding:10px 0;font-size:.95rem}
+  .ec-step .fb{font-size:.9rem;margin-top:6px}
+  .ec-dict{width:auto;margin:8px 0}
+  .ec-dict td input{width:44px;min-width:0;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase}
+  .ec-blanks{padding-left:22px}
+  .ec-blanks li{margin:8px 0}
+  .ec-blank{min-width:96px;border:2px dashed var(--acc);background:var(--acc-soft);border-radius:8px;font:inherit;font-weight:700;color:var(--acc);cursor:pointer;padding:0 8px}
+  .ec-blank.on{border-style:solid;background:#fff}
+  .ec-extra{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .ec-extra.on{display:block}
+  .ec-prev{background:#fbfaf7;border-left:4px solid var(--amber);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.93rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 1. 디지털 데이터의 압축과 암호화</span>
+      <h1>들켜도 읽을 수 없게,<br>데이터를 어떻게 지킬까?</h1>
+      <div class="story"><b>문서를 들키고 말았다!</b><br>누구에게도 들키지 않고 문서를 전달해야 하는데, 그만 문서를 들키고 말았어요. 문서가 발각되어도 <b>내용은 들키지 않게</b> 숨길 수 있는 방법이 있을까요? 우리가 온라인 쇼핑에서 결제하고 민원 서류를 발급받을 수 있는 것도 이 방법 덕분이에요.</div>
+      <p>오늘은 정보를 읽기 어려운 형태로 바꾸는 <b>암호화</b>를 배워요. 옛날 방식인 <b>치환형·전치형 암호</b>를 직접 만들고 풀어 보고, 지금 쓰이는 <b>단방향·대칭·비대칭 암호화</b>를 체험한 뒤 압축과 암호화를 정리해요.</p>
+      <ol>
+        <li>암호화란 무엇이며, 왜 중요할까?</li><li>치환형 암호화 · 카이사르 암호</li><li>전치형 암호화 · 단순 전치와 스키테일</li>
+        <li>단방향 암호화 · 해시 함수</li><li>대칭 암호화와 비대칭 암호화</li><li>압축과 암호화 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📄</i><div><b>평문</b><small>보호하고 싶은 원본 데이터</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓ 암호화 🔑</div>
+      <div class="st" style="animation-delay:.8s"><i>🔒</i><div><b>암호문</b><small>치환형 · 전치형 · 단방향 · 대칭 · 비대칭</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓ 복호화 🔑</div>
+      <div class="st" style="animation-delay:1.4s"><i>📄</i><div><b>다시 평문</b><small>열쇠(암호키)가 있는 사람만</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>암호화</b>의 개념과 <b>평문·암호문·복호화·암호키</b>를 알아보고, 암호화의 기능(기밀성·무결성·인증)을 살펴봐요. <b>카이사르 암호</b>와 <b>전치 암호</b>를 직접 만들고 풀면서 한계를 찾고, <b>해시 함수</b>로 단방향 암호화를 체험한 뒤 <b>대칭·비대칭 암호화</b>의 키 흐름을 따라가요. 마지막에 압축과 암호화를 함께 정리해요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">지난 시간 떠올리기</span>
+        <p style="margin:0 0 6px;font-size:.9rem"><b>데이터 압축</b>은 원본 데이터를 더 작은 용량으로 만들어 저장 공간과 전송 시간을 줄였어요. 원본 그대로 되돌리는 <b>무손실 압축</b>(런 길이 부호화·사전 압축·허프만 부호화)과 용량을 크게 줄이는 <b>손실 압축</b>(JPEG·MPEG)이 있었지요.</p>
+        <p style="margin:0;font-size:.85rem" class="muted">데이터를 <b>효율적으로</b> 관리했다면, 오늘은 <b>안전하게 보호</b>하는 방법을 배워요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>압축과 암호화</b> · 데이터를 효율적으로 관리하고 보호하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 문서가 발각되어도 내용을 들키지 않게 숨길 수 있는 방법이 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>암호화의 개념과 중요성을 설명할 수 있다.</li>
+          <li>암호화를 활용하여 데이터를 효율적이고 안전하게 관리하는 사례를 비교 및 분석할 수 있다.</li>
+        </ul>
+        <p style="font-size:.85rem;margin-top:8px" class="muted">주요 용어: 암호화 · 복호화 · 치환형 암호화 · 전치형 암호화 · 단방향 암호화 · 대칭 암호화 · 비대칭 암호화</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 처음 생각 적기</h3>
+      <div class="memo"><label>문서가 발각되어도 내용을 들키지 않게 하려면 어떻게 하면 좋을까요? 지금 떠오르는 방법을 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="hideIdea" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 암호화란 무엇일까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 암호화의 개념 -->
+<section class="page" data-name="암호화란" data-acc="#1f9d74">
+  <div class="head"><div class="num">01</div><div><h2>암호화란 무엇이며, 왜 중요할까?</h2><p>교과서 58쪽 · 암호화, 평문, 암호문, 복호화, 암호키, 암호화의 기능</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정해 둔 규칙(<b>암호키</b>)으로 글을 알아볼 수 없게 바꾸는 것이 <b>암호화</b>, 같은 규칙을 아는 사람이 원래대로 되돌리는 것이 <b>복호화</b>예요. 중간에 누가 가로채도 규칙을 모르면 읽을 수 없어요.</span></div>
+  <div class="card">
+    <h3>🛒 우리가 쓰는 서비스 속 암호화</h3>
+    <p style="margin-top:0">인터넷이 발전하면서 온라인 쇼핑, 민원 서류 발급처럼 다양한 서비스가 네트워크에서 이뤄지게 되었어요. 이런 서비스를 쓸 수 있는 것은 <b>중요한 정보(비밀번호)를 다른 사람은 알지 못하게 전달하는 기술</b> 덕분이에요. 이처럼 정보를 읽기 어려운 형태로 바꾸거나 반대로 다시 읽을 수 있게 해독하는 기술을 <b>암호화</b>(encryption)라고 해요.</p>
+    <p class="note" style="margin-top:0">암호(cryptography)라는 단어는 그리스어로 「비밀」이라는 뜻의 크립토스(Kryptos)에서 왔어요.</p>
+  </div>
+  <div class="card">
+    <h3>🔐 암호화의 기본 원리 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅱ-3을 다시 그림)</span></h3>
+    <div class="ec-flow" aria-label="평문을 암호키로 암호화하면 암호문이 되고, 암호문을 암호키로 복호화하면 평문이 된다">
+      <div class="who">🧑‍💻<small>보내는 사람</small></div>
+      <div class="doc">📄<b>평문</b><small>plaintext</small></div>
+      <div class="arr"><span>암호화</span><i>🔑 암호키</i></div>
+      <div class="doc lock">🔒<b>암호문</b><small>ciphertext</small></div>
+      <div class="arr"><span>복호화</span><i>🔑 암호키</i></div>
+      <div class="doc">📄<b>평문</b><small>plaintext</small></div>
+      <div class="who">🙋<small>받는 사람</small></div>
+    </div>
+    <div class="cards4 ec-terms">
+      <div class="kc" style="--k:#2f6fd0"><h4>평문</h4><p>암호화를 통해 보호하고자 하는 원본 데이터</p></div>
+      <div class="kc" style="--k:#d64535"><h4>암호문</h4><p>암호화된 데이터</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>암호화 · 복호화</h4><p>평문 → 암호문으로 바꾸는 과정이 암호화, 암호문 → 평문으로 해독하는 과정이 복호화(decryption)</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>암호키</h4><p>암호화와 복호화에 필요한 열쇠가 되는 규칙(encryption key)</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🛡️ 암호화의 기능</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🙈</div><h4>기밀성 <small style="display:inline">confidentiality</small></h4><p>정보를 보호하는 속성으로, <b>권한이 있는 사용자만</b> 정보를 볼 수 있어요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🧩</div><h4>무결성 <small style="display:inline">integrity</small></h4><p>정보의 내용이 임의로 <b>생성, 변경, 삭제</b>되지 않았는지, 곧 원본과 같은지 확인해요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🪪</div><h4>인증 <small style="display:inline">authentication</small></h4><p><b>권한이 있는 사용자인지</b> 식별해요. 예: 계좌에 접근한 사람이 실제 계좌의 주인인지 확인</p></div>
+    </div>
+  </div>
+  <div class="card"><h3>🎯 어떤 기능일까?</h3><p class="muted" style="margin-top:0">상황을 읽고, 암호화의 세 가지 기능 가운데 무엇이 쓰였는지 골라요.</p><div id="funcGame"></div></div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 치환형 암호화 -->
+<section class="page" data-name="치환형 암호화" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>치환형 암호화 · 카이사르 암호</h2><p>교과서 59쪽 · 고대의 암호 방법, 치환형 암호화, 카이사르 암호</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>글자를 <b>약속한 다른 글자로 바꿔 쓰는</b> 방법이에요. 카이사르 암호는 알파벳을 정한 칸 수(키)만큼 밀어서 바꿔요. 키가 3이면 A → D, B → E처럼요.</span></div>
+  <div class="card">
+    <h3>🏺 고대 사회의 비밀 전달</h3>
+    <p style="margin-top:0">고대 사회에서는 비밀을 지키며 정보를 전달하려고 이런 방법을 썼어요. 살아 있는 동물의 털을 깎아 메시지를 쓰고 털을 길러 보내면, 받는 사람이 털을 깎아 확인했어요. 받았을 때는 보이지 않지만 불빛에 반응하는 약품으로 메시지를 써서 보내기도 했지요.</p>
+  </div>
+  <div class="card">
+    <h3>🔄 치환형 암호화</h3>
+    <p style="margin-top:0"><b>치환형 암호화</b>는 평문의 각 문자를 약속된 다른 문자로 <b>치환</b>(substitution, 특정 부분을 다른 문자로 바꾸는 것)하는 방법이에요. 복호화를 위해 암호문을 주고받는 발신자와 수신자는 각 문자를 어떤 문자로 바꿀지 <b>약속</b>해야 해요.</p>
+    <p>간단한 예로 로마 황제 「율리우스 카이사르」의 이름을 딴 <b>카이사르 암호</b>(caesar cipher)가 있어요. 평문의 각 알파벳을 <b>약속한 거리만큼 밀어서</b> 다른 알파벳으로 치환하고, 복호화할 때는 암호문의 각 문자를 다시 원래 위치로 밀어서 평문을 구해요.</p>
+    <div class="ec-shift" aria-label="키가 3일 때 카이사르 암호화: X는 A, Y는 B, Z는 C, A는 D로 바뀐다">
+      <div class="r"><small>평문</small><span>X</span><span>Y</span><span>Z</span><span class="h">A</span><span class="h">B</span><span class="h">C</span><span>D</span><span>E</span><span>F</span><span class="d">…</span></div>
+      <div class="r mid"><small></small><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><span class="d"></span></div>
+      <div class="r"><small>암호문</small><span>A</span><span>B</span><span>C</span><span class="h">D</span><span class="h">E</span><span class="h">F</span><span>G</span><span>H</span><span>I</span><span class="d">…</span></div>
+    </div>
+    <p class="note">궁금해요! 카이사르가 전쟁 중 군사 정보를 비밀스럽게 전달하려고 고안했다고 전해져 이런 이름이 붙었어요. 암호화와 복호화가 간단해요.</p>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 카이사르 암호 원판</h3>
+    <p class="muted" style="margin-top:0">키를 바꾸면 아래 줄이 밀려요. 위 줄(평문)의 글자가 아래 줄(암호문)의 글자로 바뀌어요. 영문자만 바뀌고 띄어쓰기와 한글은 그대로예요.</p>
+    <div id="caesarLab"></div>
+    <div class="memo"><label>미션 B에서 키를 어떻게 찾았나요? 이 경험을 바탕으로 카이사르 암호(치환형 암호화)의 한계를 적어 보세요.</label><textarea data-memo="caesarLimit" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 전치형 암호화 -->
+<section class="page" data-name="전치형 암호화" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>전치형 암호화 · 단순 전치와 스키테일</h2><p>교과서 60쪽 · 전치형 암호화, 단순 전치 암호, 스키테일</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>글자는 그대로 두고 <b>순서(자리)만 바꾸는</b> 방법이에요. 어떤 순서로 섞었는지가 <b>키</b>예요.</span></div>
+  <div class="card">
+    <h3>🔀 전치형 암호화</h3>
+    <p style="margin-top:0"><b>전치형 암호화</b>는 문자의 <b>순서를 바꾸어</b> 암호화하는 방법이에요. 암호문을 주고받는 발신자와 수신자는 평문의 문자를 재배치할 순서를 <b>키</b>로 나누어 가져요. <b>단순 전치 암호</b>가 대표적인 예로, 평문을 키의 재배열 순서에 따라 재배치해요.</p>
+    <div class="ec-tx">
+      <div class="box"><small>평문</small><span class="mono">COMPUTER</span></div>
+      <div class="arr">키 <b class="mono">35164827</b> →</div>
+      <div class="box"><small>암호문</small><span class="mono">MUCTPROE</span></div>
+      <p class="note" style="flex-basis:100%;margin:4px 0 0">키의 첫 숫자가 3이면 평문의 3번째 글자(M)가 첫 자리에, 다음 숫자가 5면 5번째 글자(U)가 둘째 자리에 와요.</p>
+    </div>
+    <p>평문이 길면 <b>키의 길이만큼 일정 간격으로 나눈 뒤</b>, 나눈 문자를 키의 재배열 순서에 따라 재배치해요. 예를 들어 「roma at six」를 키 312로 암호화하면 세 글자씩 나눈 rom · aat · six가 mro · taa · xsi가 되어 「mrot aa xsi」가 돼요. 복호화할 때는 231 순서로 재배열하면 되고, 빈칸은 키 순서에 넣지 않아요.</p>
+    <div class="kc" style="--k:#e0702b;margin-top:10px"><h4>📜 스키테일(scytale)</h4><p>고대 전쟁에서 그리스 군사들이 쓴 암호예요. 특정 지름의 막대기에 종이(양피지)를 감고 메시지를 쓴 뒤 풀면 각 문자가 재배치돼요. 보낸 사람과 <b>같은 지름의 막대기</b>를 가진 사람만 암호문을 해석할 수 있어요. 양피지를 펼치거나 지름이 다른 원통에 감으면 해독할 수 없지요.</p></div>
+    <p style="margin-bottom:0">그러나 전치형 암호화는 암호를 해독할 수 있어서 <b>보안에 취약</b>해요. 특히 컴퓨팅 기술이 발전하면서 별도의 안전한 암호화 방법이 필요해졌어요.</p>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 전치 암호 만들고 풀기</h3>
+    <div class="ec-tabs" id="txTabs"><button data-t="0" class="on">① 단순 전치 암호기</button><button data-t="1">② 스키테일 막대</button></div>
+    <div id="txLab"></div>
+    <div id="scyLab" hidden></div>
+    <div class="memo"><label>두 전치 암호를 풀어 보니 어떤 한계가 보이나요? 키(순서, 막대 굵기)를 모르는 사람도 풀 수 있을지 생각해 적어 보세요.</label><textarea data-memo="transLimit" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 단방향 암호화 -->
+<section class="page" data-name="단방향 암호화" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>단방향 암호화 · 해시 함수</h2><p>교과서 61쪽 · 현재의 암호화, 단방향 암호화, 해시 함수와 해시값</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>암호화만 되고 <b>되돌릴 수 없는</b> 방식이에요. 대신 <b>같은 글이면 늘 같은 결과</b>, 한 글자만 달라도 <b>완전히 다른 결과</b>가 나와서, 결과끼리 비교해 「같은지」를 확인하는 데 써요.</span></div>
+  <div class="card">
+    <p style="margin-top:0">정보 통신 기술이 발달하면서 인터넷으로 전달하는 데이터의 양이 급격하게 늘었고, 이를 보호하기 위한 암호화 기술의 사용도 늘고 있어요. 개인용 컴퓨터와 인터넷 상거래가 발달하면서, 예전에는 군사용이나 외교용으로 쓰던 암호를 개인과 기업도 쓰게 되었어요.</p>
+    <div class="ec-kinds" aria-label="암호화의 기법 종류: 단방향 암호화, 양방향 암호화(대칭 암호화, 비대칭 암호화)">
+      <b>암호화의 기법 종류</b>
+      <div class="t"><span class="on">단방향 암호화</span><span>양방향 암호화</span></div>
+      <div class="t sub"><i></i><span>대칭 암호화</span><span>비대칭 암호화</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>➡️ 단방향 암호화</h3>
+    <p style="margin-top:0">암호화는 가능하지만 <b>복호화는 불가능한</b> 방식이에요. 암호화만 가능해서 단방향 암호화라고 해요. 단방향 암호화는 <b>동일한 평문에 대해 동일한 암호문</b>을 만들고, <b>한 글자라도 다른 평문은 다른 암호문</b>을 만드는 특징이 있어서, 암호화된 값을 서로 비교해 <b>무결성이나 인증</b>에 써요.</p>
+    <div class="cards3">
+      <div class="kc" style="--k:#1f9d74"><h4>🧩 무결성 확인</h4><p>파일이 변조되거나 훼손되었는지 확인할 때</p></div>
+      <div class="kc" style="--k:#d64535"><h4>🔑 중요 정보 관리</h4><p>비밀번호나 개인 정보처럼 유출되면 안 되는 정보를 관리할 때</p></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>🪪 신원 확인</h4><p>사용자의 신원을 확인할 때</p></div>
+    </div>
+    <p>단방향 암호화를 적용한 사례로는 사용자의 신원을 확인하고 전염병의 경로를 파악하는 <b>QR코드</b>가 있어요. 코로나19 때 전염 경로를 파악하고 확산을 막으려고, QR코드로 신원을 인증하는 <b>전자 출입 명부</b>를 시행했어요. 사용자가 서버에 QR코드 생성을 요청하면 서버가 사용자의 정보를 포함한 암호문으로 QR코드를 만들고, 인증 제한 시간 안에 QR코드를 찍으면 인증이 끝나요.</p>
+    <div class="callout"><b>궁금해요! 해시 함수와 해시값</b><br><b>해시 함수</b>는 다양한 길이의 입력 정보를 <b>고정된 길이의 해시값</b>으로 바꾸는 함수예요. 한 번 바뀐 데이터는 원래 상태로 되돌릴 수 없어서 단방향 암호화라고 해요. 그래서 비밀번호 같은 중요 정보를 안전하게 저장하는 데 써요. 사용자가 비밀번호를 입력하면 컴퓨터는 이를 해시값으로 바꿔 저장하고, 나중에 같은 비밀번호를 입력하면 저장된 해시값과 비교해 일치하는지 확인해요. 입력값이 조금만 바뀌어도 완전히 다른 해시값이 나와 해시값으로는 원래 입력값을 예측할 수 없어요. <b>SHA-256</b>은 해시 함수의 한 예로, 비트코인 같은 블록체인에서 거래 정보를 보호하는 데 쓰여요.</div>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 해시 함수 실험실 <span class="muted" style="font-weight:400;font-size:.88rem">(SHA-256, 이 화면 안에서 계산)</span></h3>
+    <div id="hashLab"></div>
+    <div class="memo"><label>메시지를 아주 조금 고쳤을 때 해시값은 어떻게 달라졌나요? 이 특징 덕분에 비밀번호를 해시값으로 저장하면 어떤 점이 좋은지 함께 적어 보세요.</label><textarea data-memo="hashWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck3"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 대칭 · 비대칭 암호화 -->
+<section class="page" data-name="대칭 · 비대칭" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>대칭 암호화와 비대칭 암호화</h2><p>교과서 62~63쪽 · 양방향 암호화, 비밀키, 공개키와 개인키, 전자 서명</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>암호화도 복호화도 되는 <b>양방향 암호화</b>에는 두 가지가 있어요. 두 사람이 <b>같은 키 하나</b>를 나눠 쓰는 <b>대칭</b>, 서로 짝을 이루는 <b>다른 키 두 개</b>(공개키·개인키)를 쓰는 <b>비대칭</b>이에요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🗝️ 대칭 암호화</h3>
+      <p style="margin-top:0">양방향 암호화의 한 종류로, 송수신자가 <b>같은 키</b>를 이용해 암호화와 복호화를 하는 방법이에요. 송수신자, 곧 정보를 공유할 사람들만 키를 공유하므로 <b>비밀키</b>라고 불러요.</p>
+      <ul class="ec-ul">
+        <li>암호화 <b>속도가 빨라요</b>.</li>
+        <li>암호문을 도둑맞아도 비밀키가 없으면 복호화할 수 없어요.</li>
+        <li>키를 교환하는 문제(<b>키 배송 문제</b>)가 생겨요. 특정한 사람에게 암호화된 정보와 키를 함께 전달하는 과정에서 분실이 생길 수 있기 때문이에요.</li>
+        <li>개인마다 키를 따로 교환해야 해서 <b>관리할 키가 방대</b>해요. 사용자가 10만 명이면 10만 개의 키를 보관해야 해요.</li>
+      </ul>
+      <p style="margin-bottom:0"><b>사례</b> 인터넷 뱅킹의 <b>OTP</b>(One Time Password)는 기기와 서버에 비밀키를 할당해 두고, 버튼을 누르면 현재 시간과 비밀키로 만든 번호로 사용자를 인증해요. <b>보안 카드</b>는 은행마다 1인당 한 장씩 발급하고, 그때그때 지정된 번호를 입력해 사용자를 인증해요.</p>
+    </div>
+    <div class="card">
+      <h3>🔑🔑 비대칭 암호화</h3>
+      <p style="margin-top:0">개인마다 키를 따로 교환해야 하는 대칭 암호화의 문제를 해결하려고, <b>키를 교환하지 않는</b> 양방향 암호화의 또 다른 종류로 탄생했어요. 송수신자가 <b>서로 다른 키</b>를 가져요. 한쪽이 <b>개인키(또는 공개키)</b>로 암호화하면, 다른 쪽은 그 키와 <b>쌍을 이루는 공개키(또는 개인키)</b>로 복호화해요.</p>
+      <ul class="ec-ul">
+        <li>처리 속도는 <b>느리지만</b> <b>키 교환이 쉬워요</b>.</li>
+        <li>개인키는 도장과 같아서 늘 본인이 가지고, 다른 사람에게 노출되지 않게 휴대폰·PC 같은 개인적인 공간에서 관리해야 해요.</li>
+        <li>문서를 공개키로 암호화하면 문서에 대한 접근을 통제하고 <b>기밀성</b>을 유지하는 데 도움이 돼요.</li>
+      </ul>
+      <p style="margin-bottom:0"><b>사례</b> <b>전자 서명</b>은 이용자의 개인키로 만든 전자 서명을 보내, 받는 사람에게 지금의 이용자가 본인임을 확인시켜요. 이때 개인키와 공개키를 생성·발급·관리하는 <b>공인 인증 기관</b>(CA: Certificate Authority)이 필요해요. 비대칭 암호화 원리를 쓰는 <b>공동 인증서</b>도 있어요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔬 키 흐름 따라가기</h3>
+    <p class="muted" style="margin-top:0">지우가 민서에게 메시지를 보내요. 장면마다 <b>어떤 열쇠로 잠그고 여는지</b> 골라요. <b>① 대칭 암호화</b>와 <b>② 비대칭 · 기밀성 유지</b>는 꼭 해 보고, <b>③ 전자 서명</b>은 시간이 남을 때 해요(선택).</p>
+    <div id="keyFlow"></div>
+  </div>
+  <div class="card">
+    <h3>🤝 함께 해결하기 · 대칭 암호화와 비대칭 암호화 비교하기 <span class="muted" style="font-weight:400;font-size:.88rem">(62~63쪽)</span></h3>
+    <p class="muted" style="margin-top:0">위의 키 흐름을 떠올리며 빈칸을 내 말로 채워요.</p>
+    <div style="overflow-x:auto">
+      <table class="ec-tbl">
+        <tr><th>구분</th><th>대칭 암호화</th><th>비대칭 암호화</th></tr>
+        <tr><th>키 관계</th><td>암호화 키와 복호화 키가 같음</td><td>암호화 키와 복호화 키가 다름</td></tr>
+        <tr><th>키 전송 여부</th><td><input type="text" data-memo="cmpSymSend" aria-label="대칭 암호화의 키 전송 여부"></td><td><input type="text" data-memo="cmpAsymSend" aria-label="비대칭 암호화의 키 전송 여부"></td></tr>
+        <tr><th>장점</th><td>구현이 쉬움, 속도가 빠름</td><td><input type="text" data-memo="cmpAsymGood" aria-label="비대칭 암호화의 장점"></td></tr>
+        <tr><th>단점</th><td><input type="text" data-memo="cmpSymBad" aria-label="대칭 암호화의 단점"></td><td>해독 시간이 오래 걸림</td></tr>
+        <tr><th>활용</th><td>OTP, 보안 카드</td><td>전자 서명, 공동 인증서</td></tr>
+      </table>
+    </div>
+    <div class="memo"><label>대칭 암호화를 쓰는 이유와 그 중요성은 무엇일까요? 짝과 이야기 나눈 뒤 적어요.</label><textarea data-memo="symWhy" rows="2"></textarea><div class="saved"></div></div>
+    <details class="ec-more"><summary>💻 선택 · 한컴오피스로 문서 암호 설정해 보기 (62쪽 실습)</summary>
+      <p>학교 노트북에 한컴오피스가 있고 선생님이 안내하면 해 봐요. 연습용 새 문서로만 하고, 정한 암호는 잊지 않게 짝과 함께 확인해요.</p>
+      <ol class="ec-ol"><li>한컴오피스로 한글 파일을 새로 만들어요.</li><li>도구창에서 <b>[보안] - [문서 암호 설정] - [열기/쓰기 암호]</b>에 각각 암호를 입력해요.</li><li>문서를 저장한 뒤 다시 열면 암호를 입력해야만 열려요. 같은 암호로 잠그고 여니 대칭 암호화예요.</li></ol>
+    </details>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck4"></div></div>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 압축과 암호화 정리 -->
+<section class="page" data-name="압축과 암호화 정리" data-acc="#0f8fa6">
+  <div class="head"><div class="num">06</div><div><h2>압축과 암호화 정리 · 데이터 관리는 똑똑하게!</h2><p>교과서 63~65쪽 · 맞춤 활동, 개념 정리하기, 학업 성취도 점검, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>압축은 데이터를 <b>효율적으로</b>, 암호화는 <b>안전하게</b> 관리하는 방법이에요. 두 가지를 함께 써 보고, 스스로 점검한 뒤 나에게 맞는 <b>보충</b> 또는 <b>심화</b> 활동을 골라요.</span></div>
+  <p class="note" style="margin-top:-6px">⏳ 이 화면의 활동은 <b>시간이 되는 만큼</b> 해요. 남은 시간이 적으면 2번(암호화하고 압축하기)과 개념 정리하기부터 해요.</p>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#2f6fd0">지식·이해</span> 1. 동아리 누리집에 무엇을 써야 할까?</h3>
+    <div class="memo"><label>동아리 소개 영상과 회원 연락처 명단을 동아리 누리집에 올리려고 해요. 영상에는 <b>압축</b>을, 명단에는 <b>암호화</b>를 쓰려는 까닭을 각각 적어 보세요.</label><textarea data-memo="whyBoth" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#1f9d74">과정·기능</span> 2. 암호화하고 압축해 보기</h3>
+    <p class="muted" style="margin-top:0">03 화면의 전치 암호 방법과 지난 시간의 사전 압축 방법을 떠올리며 차례대로 풀어요.</p>
+    <div class="ec-cond"><div><b>조건</b><ul><li>단순 전치 암호로 암호화하며 키는 <b class="mono">4132</b>예요.</li><li>암호문을 사전 압축하며, 암호문에 <b>등장하는 순서대로</b> 사전에 코드를 붙여요. 문자 종류가 7가지를 넘으므로 코드는 0001, 0010, 0011 …처럼 <b>4비트</b>예요.</li></ul></div><div><b>원본 데이터</b><span class="mono big">BLUEBERRYJAM</span><small>12bytes</small></div></div>
+    <div id="mixLab"></div>
+  </div>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#d64535">가치·태도</span> 3. 우리 반 데이터 다이어트</h3>
+    <div class="memo"><label>우리 반이 한 달 동안 쓰는 데이터(영상 보기, 사진 백업, 단체 대화방 파일 등)를 떠올려 봐요. 데이터 센터의 전기 사용과 탄소 배출을 줄이려면 우리 반이 함께 실천할 수 있는 일 두 가지를 적어 보세요.</label>
+      <input type="text" data-memo="ecoAct1" placeholder="실천 방법 1" aria-label="실천 방법 1"><div class="saved"></div>
+      <input type="text" data-memo="ecoAct2" placeholder="실천 방법 2" aria-label="실천 방법 2" style="margin-top:6px"><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="ec-blanks">
+      <li>친구에게 쪽지를 보내기 전에 약속한 규칙으로 읽을 수 없게 바꾸는 과정은 <button class="ec-blank" data-a="암호화">?</button>, 받은 친구가 같은 규칙으로 원래 문장을 되살리는 과정은 <button class="ec-blank" data-a="복호화">?</button>이다.</li>
+      <li>알파벳을 정해진 칸 수만큼 밀어 다른 글자로 바꾸면 <button class="ec-blank" data-a="치환형 암호화">?</button>, 글자는 그대로 두고 자리만 뒤섞으면 <button class="ec-blank" data-a="전치형 암호화">?</button>이다.</li>
+      <li>회원 가입 때 받은 비밀번호를 되돌릴 수 없는 값으로 바꿔 저장해 두고, 로그인할 때 그 값끼리 비교하는 것은 <button class="ec-blank" data-a="단방향 암호화">?</button>이다.</li>
+      <li>은행 OTP처럼 서버와 기기가 같은 키를 나눠 가지면 <button class="ec-blank" data-a="대칭 암호화">?</button>, 공동 인증서처럼 짝을 이루는 개인키와 공개키를 쓰면 <button class="ec-blank" data-a="비대칭 암호화">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 학업 성취도 점검</h3>
+    <p style="margin-top:0">평가 기준을 읽고, 할 수 있게 된 것을 골라요.</p>
+    <div id="selfCheck"></div>
+    <p class="muted" style="font-size:.9rem">모두 고를 수 있으면 <b>심화</b>, 고르지 못한 것이 있으면 <b>보충</b> 활동을 해 봐요.</p>
+    <div class="vote" id="extraVote"></div>
+    <div class="ec-extra" id="extraBasic">
+      <p><b>보충</b> 짝에게만 읽히는 비밀 쪽지를 보내려고 해요. 한글 문장에 쓸 <b>나만의 암호 규칙</b>을 정해 문장을 바꿔 보고, 규칙을 모르는 친구가 쉽게 풀 수 있는지 확인해 봐요. <small class="muted">글자를 다른 글자로 바꾸는 치환형, 글자의 자리를 바꾸는 전치형 가운데 하나를 골라 규칙을 세워 봐요.</small></p>
+      <div class="memo">
+        <label>나의 암호화 규칙</label><input type="text" data-memo="myRule">
+        <label>원본 문장</label><input type="text" data-memo="myPlain">
+        <label>암호 문장</label><input type="text" data-memo="myCipher"><div class="saved"></div>
+      </div>
+    </div>
+    <div class="ec-extra" id="extraDeep">
+      <p><b>심화</b> 영상 통화나 동영상 서비스에서 화질은 지키면서 데이터를 덜 쓰는 기술이 계속 나오고 있어요. 음성·영상 데이터를 디지털로 바꿔 저장하고 재생하는 소프트웨어나 하드웨어를 <b>코덱</b>(codec)이라고 해요. 인공지능을 쓰는 압축 기술을 하나 찾아, 원래 쓰던 코덱과 비교해 나아진 점을 정리해 봐요. <small class="muted">그 기술이 데이터 센터의 전기 사용에 어떤 도움이 될지도 생각해 봐요.</small></p>
+      <div class="memo">
+        <label>조사한 압축 기술</label><input type="text" data-memo="aiTech">
+        <label>원래 쓰던 코덱과 비교해 나아진 점</label><textarea data-memo="aiGood" rows="2"></textarea><div class="saved"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">07</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#1f9d74"><b>암호화</b>는 평문을 암호키로 읽기 어려운 암호문으로 바꾸는 과정이고, <b>복호화</b>는 암호문을 평문으로 해독하는 과정이다. 암호화는 기밀성·무결성·인증을 지킨다.</div>
+    <div style="--k:#9b4fc4">옛날 암호에는 문자를 다른 문자로 바꾸는 <b>치환형</b>(카이사르 암호)과 문자의 순서를 바꾸는 <b>전치형</b>(단순 전치, 스키테일)이 있다. 키를 모르는 사람도 풀 수 있어 보안에 취약하다.</div>
+    <div style="--k:#d64535">지금은 복호화가 불가능한 <b>단방향 암호화</b>(해시 함수)로 무결성·인증을 확인하고, 같은 키를 쓰는 <b>대칭 암호화</b>(빠르지만 키 배송 문제)와 공개키·개인키를 쓰는 <b>비대칭 암호화</b>(키 교환이 쉽지만 느림)로 데이터를 주고받는다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">「디지털 데이터의 압축과 암호화」를 배운 뒤, 핵심 질문의 답과 새롭게 알게 된 점을 적어요. 처음 생각과 비교해 보세요.</p>
+    <div class="ec-prev" id="prevIdea"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 데이터를 효율적으로 관리하고 보호하는 방법은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="7"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>카이사르 암호와 전치 암호를 직접 만들고 풀어 보았습니다. <b>치환형 암호화와 전치형 암호화가 어떻게 다른지</b> 내가 해 본 예로 설명하고, 두 방법의 한계를 쓰세요.</li>
+      <li>해시 함수 실험실에서 메시지를 조금 고쳤을 때 <b>해시값이 어떻게 달라졌는지</b> 쓰고, 이 특징 때문에 웹 사이트가 비밀번호를 해시값으로 저장하면 어떤 점이 좋은지 설명하세요.</li>
+      <li>대칭 암호화와 비대칭 암호화의 키 흐름을 따라가 보았습니다. 두 방식에서 <b>암호화와 복호화에 쓰는 키</b>가 어떻게 다른지 쓰고, 대칭 암호화의 키 배송 문제를 비대칭 암호화가 어떻게 해결하는지 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u2-encryption.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u2-encryption', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 */
+const QUIZ={
+ 1:[{q:'암호화를 통해 보호하고자 하는 원본 데이터를 무엇이라고 할까?',o:['평문','암호문','암호키'],a:0,w:'평문을 암호화하면 암호문이 되고, 암호키는 암호화와 복호화에 필요한 열쇠가 되는 규칙이에요.'},
+    {q:'민서가 받은 암호문을 약속한 키로 풀어 원래 문장을 읽었다. 이 과정은?',o:['암호화','복호화','부호화'],a:1,w:'암호문을 평문으로 되돌리는 과정이에요. 부호화는 디지털값을 비트로 표현하는 과정으로, 압축에서 배웠어요.'},
+    {q:'내려받은 파일이 중간에 바뀌거나 지워진 부분 없이 원본과 같은지 확인하는 암호화의 기능은?',o:['인증','기밀성','무결성'],a:2,w:'정보가 임의로 생성, 변경, 삭제되지 않았는지 확인하는 기능이에요. 권한 있는 사람만 보게 하는 것과 사용자를 식별하는 것은 다른 기능이에요.'}],
+ 2:[{q:'키가 3인 카이사르 암호로 ‘CAT’을 암호화한 결과는?',o:['ZXQ','FDW','DBU'],a:1,w:'알파벳을 3칸씩 밀어요. C → F, A → D, T → W예요.'},
+    {q:'카이사르 암호의 한계로 알맞은 것은?',o:['키를 알아도 복호화할 수 없다','키를 하나씩 넣어 보면 풀린다','암호문이 평문보다 훨씬 길어진다'],a:1,w:'알파벳을 미는 거리는 25가지뿐이라, 키를 몰라도 하나씩 넣어 보면 금방 해독돼요.'}],
+ 3:[{q:'전치형 암호화에 대한 설명으로 알맞은 것은?',o:['복호화가 불가능하다','문자의 순서를 바꾼다','문자의 개수를 줄인다'],a:1,w:'글자는 그대로 두고 키의 재배열 순서에 따라 자리를 바꿔요. 그래서 키를 알면 다시 원래 순서로 돌릴 수 있어요.'},
+    {q:'평문 ‘CAT’을 키 312로 단순 전치 암호화한 결과는?',o:['TCA','ACT','CTA'],a:0,w:'키의 숫자는 평문의 몇 번째 글자를 가져올지 알려 줘요. 3번째 T, 1번째 C, 2번째 A 순서예요.'}],
+ 4:[{q:'단방향 암호화의 특징으로 알맞은 것은?',o:['복호화가 쉽다','같은 평문이면 같은 암호문이 나온다','평문이 달라도 같은 암호문이 나온다'],a:1,w:'같은 평문은 늘 같은 암호문이 되고, 한 글자라도 다르면 다른 암호문이 돼요. 그래서 값끼리 비교해 확인할 수 있어요.'},
+    {q:'웹 사이트가 비밀번호를 해시값으로 저장해 두었다면, 로그인할 때 하는 일은?',o:['해시값을 복호화한다','입력한 비밀번호를 그대로 저장한다','입력한 비밀번호의 해시값과 비교한다'],a:2,w:'해시값은 되돌릴 수 없으므로, 입력한 비밀번호를 다시 해시값으로 바꿔 저장된 값과 같은지 비교해요.'},
+    {q:'해시 함수에 대한 설명으로 알맞은 것은?',o:['SHA-256은 해시 함수의 한 예이다','해시값으로 원래 입력값을 알 수 있다','입력 길이에 따라 해시값 길이가 달라진다'],a:0,w:'해시 함수는 다양한 길이의 입력을 고정된 길이의 해시값으로 바꾸고, 해시값으로는 원래 입력값을 예측할 수 없어요.'}],
+ 5:[{q:'지우와 민서가 미리 나눠 가진 같은 키 하나로 암호화와 복호화를 모두 한다. 이 방식은?',o:['대칭 암호화','비대칭 암호화','단방향 암호화'],a:0,w:'송수신자가 같은 키(비밀키)를 쓰는 양방향 암호화예요.'},
+    {q:'대칭 암호화에서 생기는 키 배송 문제란?',o:['키가 길어지는 문제','암호화가 느려지는 문제','키를 전하다 잃을 수 있는 문제'],a:2,w:'상대에게도 같은 키가 있어야 하므로 키를 건네야 하는데, 이 과정에서 분실이 생길 수 있어요.'},
+    {q:'비대칭 암호화로 받는 사람만 읽게 하려면, 보내는 사람은 무엇으로 암호화할까?',o:['내 공개키','받는 사람의 공개키','받는 사람의 개인키'],a:1,w:'누구나 가질 수 있는 받는 사람의 공개키로 잠그면, 그와 쌍을 이루는 받는 사람의 개인키로만 풀 수 있어요.'}],
+ 7:[{q:'공인 인증 기관(CA)이 하는 일은?',o:['비밀키를 나눠 준다','해시값을 복호화한다','개인키와 공개키를 생성·발급·관리한다'],a:2,w:'전자 서명에는 개인키와 공개키를 생성·발급·관리하는 공인 인증 기관이 필요해요.'},
+    {q:'대칭 암호화를 쓰는 사람이 늘어날수록 생기는 문제는?',o:['암호문이 길어진다','복호화가 불가능해진다','관리해야 할 키가 많아진다'],a:2,w:'개인마다 키를 따로 교환해야 해서, 사용자가 10만 명이면 10만 개의 키를 보관해야 해요.'},
+    {q:'비대칭 암호화의 특징으로 알맞은 것은?',o:['키 교환이 쉽다','처리 속도가 빠르다','복호화가 불가능하다'],a:0,w:'키를 몰래 주고받지 않아도 되어 키 교환이 쉽지만, 처리 속도는 느려요.'}],
+};
+
+const QK='ds-u2-encryption-quiz'+WHO.sfx;
+const MK='ds-u2-encryption-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 공통 */
+function ecSave(){store.set(MK,MEMO);}
+const ecNorm=s=>String(s).toUpperCase().replace(/\s+/g,'');
+const ecShift=(t,k)=>t.replace(/[A-Za-z]/g,c=>{const b=c<='Z'?65:97; return String.fromCharCode(((c.charCodeAt(0)-b+k)%26+26)%26+b);});
+/* 단순 전치: 공백은 제자리에 두고, 글자를 키 길이만큼 묶어 재배치(짧은 마지막 묶음은 묶음 길이보다 큰 키 숫자를 건너뜀 — 교과서 64쪽과 같은 방식) */
+function ecTrans(text,key,dec){
+  const pos=[],letters=[]; [...text].forEach((c,i)=>{if(c!==' '){pos.push(i);letters.push(c);}});
+  const k=key.length, out=[], blocks=[];
+  for(let s=0;s<letters.length;s+=k){const blk=letters.slice(s,s+k), p=key.filter(d=>d<=blk.length); let res;
+    if(!dec) res=p.map(d=>blk[d-1]); else {res=new Array(blk.length); p.forEach((d,i)=>res[d-1]=blk[i]);}
+    blocks.push([blk,res,p]); out.push(...res);}
+  const arr=[...text]; pos.forEach((pi,j)=>arr[pi]=out[j]); return {res:arr.join(''),blocks};
+}
+const ecKeyOk=s=>{if(!/^[1-9]{2,9}$/.test(s)) return null; const a=[...s].map(Number); return a.slice().sort().every((d,i)=>d===i+1)?a:null;};
+const ecInv=key=>{const v=[]; key.forEach((d,i)=>v[d-1]=i+1); return v.join('');};
+/* 스키테일: 암호문을 한 바퀴 k글자씩 세로(열)로 채우고 가로(행)로 읽기 */
+function ecScyOrder(n,k){const o=[]; for(let j=0;j<n;j++) o.push(j); return o.sort((a,b)=>(a%k)-(b%k)||a-b);}
+function ecScyEnc(p,k){const ch=[...p], o=ecScyOrder(ch.length,k), c=[]; o.forEach((j,t)=>c[j]=ch[t]); return c.join('');}
+
+/* SHA-256 (UTF-8) */
+function ecSha256(str){
+  const b=new TextEncoder().encode(str), K=[], H=[]; let n=2;
+  const frac=x=>(x-Math.floor(x))*4294967296|0;
+  for(let c=0;c<64;n++){let p=true;for(let d=2;d*d<=n;d++) if(n%d===0){p=false;break;} if(p){if(c<8) H[c]=frac(Math.pow(n,1/2)); K[c++]=frac(Math.pow(n,1/3));}}
+  const L=b.length, total=((L+9+63)>>6)<<6, m=new Uint8Array(total); m.set(b); m[L]=0x80;
+  const bits=L*8; m[total-4]=bits>>>24; m[total-3]=bits>>>16; m[total-2]=bits>>>8; m[total-1]=bits; m[total-5]=Math.floor(bits/4294967296);
+  const W=new Array(64), r=(x,k)=>(x>>>k)|(x<<(32-k));
+  for(let o=0;o<total;o+=64){
+    for(let i=0;i<16;i++) W[i]=(m[o+4*i]<<24)|(m[o+4*i+1]<<16)|(m[o+4*i+2]<<8)|m[o+4*i+3];
+    for(let i=16;i<64;i++){const a=W[i-15], c=W[i-2]; W[i]=(W[i-16]+(r(a,7)^r(a,18)^(a>>>3))+W[i-7]+(r(c,17)^r(c,19)^(c>>>10)))|0;}
+    let [a,bb,c,d,e,f,g,h]=H;
+    for(let i=0;i<64;i++){const t1=(h+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+K[i]+W[i])|0, t2=((r(a,2)^r(a,13)^r(a,22))+((a&bb)^(a&c)^(bb&c)))|0; h=g; g=f; f=e; e=(d+t1)|0; d=c; c=bb; bb=a; a=(t1+t2)|0;}
+    H[0]=(H[0]+a)|0; H[1]=(H[1]+bb)|0; H[2]=(H[2]+c)|0; H[3]=(H[3]+d)|0; H[4]=(H[4]+e)|0; H[5]=(H[5]+f)|0; H[6]=(H[6]+g)|0; H[7]=(H[7]+h)|0;
+  }
+  return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');
+}
+
+/* 성취도 평가 */
+chips('ck1','ck1',['치환형 암호화 방법과 그 효율성을 설명할 수 있다'],true);
+chips('ck2','ck2',['전치형 암호화 방법과 그 효율성을 설명할 수 있다'],true);
+chips('ck3','ck3',['단방향 암호화 방법과 그 효율성을 설명할 수 있다'],true);
+chips('ck4','ck4',['대칭 암호화를 사용하는 이유와 그 안전성을 설명할 수 있다','비대칭 암호화의 중요성과 필요성을 설명할 수 있다'],true);
+
+/* 01 어떤 기능일까? */
+sorter('funcGame',{
+  cats:[{n:'🙈 기밀성',k:'#2f6fd0'},{n:'🧩 무결성',k:'#1f9d74'},{n:'🪪 인증',k:'#e0702b'}],
+  items:[
+    {t:'내 성적표 파일은 나와 담임 선생님만 열어 볼 수 있어요.',c:0,ic:'📑',w:'권한이 있는 사람만 정보를 볼 수 있게 해요.'},
+    {t:'메신저 대화를 중간에서 가로챈 사람이 내용을 읽지 못해요.',c:0,ic:'💬',w:'가로채도 읽을 수 없으니 정보가 보호돼요.'},
+    {t:'선생님이 올린 공지 파일이 누군가에 의해 고쳐지지 않았는지 확인해요.',c:1,ic:'📢',w:'내용이 임의로 바뀌지 않았는지, 원본과 같은지 확인해요.'},
+    {t:'내려받은 프로그램 파일에 빠지거나 덧붙은 부분이 없는지 검사해요.',c:1,ic:'💿',w:'생성·변경·삭제가 일어나지 않았는지 확인해요.'},
+    {t:'학교 누리집에 접속한 사람이 정말 그 학생 본인인지 확인해요.',c:2,ic:'🏫',w:'권한이 있는 사용자인지 식별해요.'},
+    {t:'온라인 시험 화면에 들어온 사람이 응시자 본인이 맞는지 확인해요.',c:2,ic:'📝',w:'접근한 사람이 실제 그 사람인지 확인해요.'},
+  ],
+  end:'<b>정리</b> 볼 수 있는 사람을 제한하면 기밀성, 내용이 그대로인지 보면 무결성, 누구인지 확인하면 인증이에요.'
+});
+
+/* 02 카이사르 암호 원판 */
+(function(){
+  const MA=ecShift('SEE YOU AT THE LIBRARY',3), MB=ecShift('KEEP YOUR PASSWORD SAFE',11);
+  const B=$('caesarLab'); let mode='enc', tried=new Set(), bOn=false;
+  B.innerHTML=`<div class="row ec-ctl"><div class="ec-mode"><button data-m="enc" class="on">🔒 암호화</button><button data-m="dec">🔓 복호화</button></div>
+      <div class="ec-key"><button class="btn ghost sm" data-k="-1" aria-label="키 1 줄이기">◀</button><input type="range" min="0" max="25" value="3" id="cKey" aria-label="키"><button class="btn ghost sm" data-k="1" aria-label="키 1 늘리기">▶</button><span>키 <b id="cKeyV">3</b></span></div></div>
+    <div class="ec-wheel" id="cWheel"></div>
+    <div class="grid2 even" style="margin-top:10px"><div><label class="ec-lab" id="cInL">평문 입력</label><textarea id="cIn" rows="2" spellcheck="false">HELLO DATA</textarea></div><div><label class="ec-lab" id="cOutL">암호문</label><div class="ec-out mono" id="cOut"></div></div></div>
+    <div class="ec-mis">
+      <div><b>미션 A · 키를 알 때</b> 선생님이 보낸 암호문이에요. 키는 <b>3</b>이에요.<div class="mono ec-code">${MA}</div>
+        <div class="row"><button class="btn ghost sm" data-load="A">입력 칸에 넣기</button><input type="text" id="cAnsA" placeholder="해독한 평문" aria-label="미션 A 평문"><button class="btn sm" id="cChkA">확인</button></div><div class="fb" id="cFbA"></div></div>
+      <div><b>미션 B · 키를 모를 때</b> 누군가 보낸 암호문이에요. 「입력 칸에 넣기」를 누르면 <b>복호화 모드</b>로 바뀌어요. 키를 0부터 ▶로 하나씩 올리며 오른쪽 결과가 영어 문장으로 읽히는 키를 찾아요.<div class="mono ec-code">${MB}</div>
+        <div class="row"><button class="btn ghost sm" data-load="B">입력 칸에 넣기</button><input type="number" id="cAnsB" min="0" max="25" placeholder="찾은 키" aria-label="미션 B 키"><button class="btn sm" id="cChkB">확인</button></div><div class="fb" id="cFbB"></div></div>
+    </div>`;
+  const key=$('cKey'), inp=$('cIn');
+  function draw(){const k=+key.value; $('cKeyV').textContent=k; const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if(mode==='dec'&&bOn) tried.add(k);
+    $('cWheel').innerHTML=`<div class="r"><small>평문</small>${[...A].map(c=>`<span>${c}</span>`).join('')}</div><div class="r"><small>암호문</small>${[...A].map(c=>`<span class="s">${ecShift(c,k)}</span>`).join('')}</div>`;
+    $('cInL').textContent=mode==='enc'?'평문 입력':'암호문 입력'; $('cOutL').textContent=mode==='enc'?'암호문 (위 줄 글자 → 아래 줄 글자)':'평문 (아래 줄 글자 → 위 줄 글자)';
+    $('cOut').textContent=ecShift(inp.value,mode==='enc'?k:-k)||' ';}
+  function setMode(m){mode=m; B.querySelectorAll('.ec-mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===m)); draw();}
+  B.querySelectorAll('.ec-mode button').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+  B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{key.value=(+key.value+ +b.dataset.k+26)%26; draw();});
+  key.oninput=draw; inp.oninput=()=>{bOn=ecNorm(inp.value)===ecNorm(MB); draw();};
+  B.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{const A=b.dataset.load==='A'; inp.value=A?MA:MB; bOn=!A; if(!A){tried=new Set(); key.value=0;} setMode('dec');});
+  $('cChkA').onclick=()=>{const ok=ecNorm($('cAnsA').value)==='SEEYOUATTHELIBRARY';
+    $('cFbA').innerHTML=ok?'<span class="ok">맞아요!</span> 키를 알면 복호화는 간단해요.':'<span class="ng">다시 해 봐요.</span> 「입력 칸에 넣기」를 누르고 키를 3에 맞춘 뒤 복호화 결과를 읽어요.';};
+  $('cChkB').onclick=()=>{const v=+$('cAnsB').value, ok=$('cAnsB').value!==''&&v===11;
+    if(ok){MEMO.caesarKey=`미션 B · 키 11을 찾음 (키를 바꿔 본 횟수 ${Math.max(1,tried.size)}번)`; ecSave();}
+    $('cFbB').innerHTML=ok?`<span class="ok">맞아요!</span> 키를 몰라도 <b>${Math.max(1,tried.size)}번</b> 바꿔 보고 찾았어요. 키가 될 수 있는 수는 몇 가지뿐일까요?`:'<span class="ng">아직이에요.</span> 복호화 모드에서 키를 0부터 하나씩 바꾸며 영어 문장으로 읽히는 키를 찾아요.';};
+  draw();
+})();
+
+/* 03 전치 암호 */
+(function(){
+  const TP='SAVE THE EARTH', TK=[3,1,4,2], TC=ecTrans(TP,TK,false).res, SP='정보를안전하게지켜요', SC=ecScyEnc(SP,4);
+  document.querySelectorAll('#txTabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#txTabs button').forEach(x=>x.classList.toggle('on',x===b)); $('txLab').hidden=b.dataset.t!=='0'; $('scyLab').hidden=b.dataset.t!=='1';});
+  const B=$('txLab'); let mode='enc';
+  B.innerHTML=`<div class="row ec-ctl"><div class="ec-mode"><button data-m="enc" class="on">🔒 암호화</button><button data-m="dec">🔓 복호화</button></div>
+      <label class="ec-lab" style="margin:0">키 <input type="text" id="tKey" value="312" maxlength="9" style="width:110px" aria-label="키"></label><button class="btn ghost sm" id="tEx">교과서 예제 1 불러오기</button></div>
+    <label class="ec-lab" id="tInL">평문 입력</label><input type="text" id="tIn" value="roma at six" spellcheck="false" style="width:100%">
+    <div class="ec-blocks" id="tBlocks"></div>
+    <div class="ec-res"><span id="tOutL">암호문</span> <b class="mono" id="tOut"></b> <small class="muted" id="tInv"></small></div>
+    <div class="ec-mis one"><div><b>미션 · 전치 암호문 해독하기</b> 키 <b class="mono">${TK.join('')}</b>로 암호화한 암호문이에요.<div class="mono ec-code">${TC}</div>
+      <div class="row"><button class="btn ghost sm" id="tLoad">입력 칸에 넣기</button><input type="text" id="tAns" placeholder="해독한 평문" aria-label="해독한 평문"><button class="btn sm" id="tChk">확인</button></div><div class="fb" id="tFb"></div></div></div>`;
+  function draw(){const ks=$('tKey').value.trim(), key=ecKeyOk(ks), t=$('tIn').value;
+    $('tInL').textContent=mode==='enc'?'평문 입력':'암호문 입력'; $('tOutL').textContent=mode==='enc'?'암호문':'평문';
+    if(!key){$('tBlocks').innerHTML='<p class="ng" style="margin:6px 0">키는 1부터 키 길이까지의 숫자를 한 번씩 써요. 예: 312, 2413</p>'; $('tOut').textContent=''; $('tInv').textContent=''; return;}
+    const R=ecTrans(t,key,mode==='dec');
+    $('tBlocks').innerHTML=R.blocks.map(([blk,res,p])=>`<div class="bk"><div class="r">${blk.map((c,i)=>`<span><i>${i+1}</i>${esc(c)}</span>`).join('')}</div><div class="ar">${mode==='enc'?`키 ${p.join('')} 순서로 가져오기`:`암호문 글자 → 평문 자리: ${p.map((d,i)=>`${i+1}번째→${d}번째`).join(', ')}`} ↓</div><div class="r">${res.map((c,i)=>`<span class="o"><i>${mode==='enc'?p[i]:i+1}</i>${esc(c==null?'':c)}</span>`).join('')}</div></div>`).join('')||'<p class="muted">글자를 입력해 보세요.</p>';
+    $('tOut').textContent=R.res; $('tInv').textContent=`· 복호화할 때는 ${ecInv(key)} 순서로 재배열하는 것과 같아요`;}
+  B.querySelectorAll('.ec-mode button').forEach(b=>b.onclick=()=>{mode=b.dataset.m; B.querySelectorAll('.ec-mode button').forEach(x=>x.classList.toggle('on',x===b)); draw();});
+  $('tKey').oninput=draw; $('tIn').oninput=draw;
+  $('tEx').onclick=()=>{$('tKey').value='312'; $('tIn').value='roma at six'; B.querySelector('[data-m=enc]').click();};
+  $('tLoad').onclick=()=>{$('tKey').value=TK.join(''); $('tIn').value=TC; B.querySelector('[data-m=dec]').click();};
+  $('tChk').onclick=()=>{const ok=ecNorm($('tAns').value)===ecNorm(TP);
+    if(ok){MEMO.transDone=`단순 전치 미션 해독 성공 (키 ${TK.join('')})`; ecSave();}
+    $('tFb').innerHTML=ok?'<span class="ok">맞아요!</span> 키를 알면 글자를 원래 자리로 되돌릴 수 있어요.':'<span class="ng">다시 해 봐요.</span> 「입력 칸에 넣기」를 누르면 복호화 모드로 바뀌어요. 결과를 읽어 적어요.';};
+  draw();
+
+  const S=$('scyLab');
+  S.innerHTML=`<p class="muted" style="margin-top:0">막대에 감았던 종이 띠를 펼쳤더니 아래처럼 보여요. 막대 굵기(한 바퀴에 감기는 글자 수)를 바꿔 다시 감아 보고, 읽을 수 있는 굵기를 찾아요.</p>
+    <div class="ec-strip">${[...SC].map(c=>`<span>${c}</span>`).join('')}</div>
+    <div class="ec-key" style="margin:10px 0"><span>한 바퀴에 감기는 글자 수</span><input type="range" min="2" max="6" value="2" id="sK" aria-label="막대 굵기"><b id="sKV">2</b></div>
+    <div class="ec-rod" id="sRod"></div>
+    <div class="ec-res">가로로 읽으면 <b id="sOut"></b></div>
+    <div class="row"><input type="number" id="sAns" min="2" max="6" placeholder="찾은 글자 수" aria-label="찾은 글자 수"><button class="btn sm" id="sChk">확인</button></div><div class="fb" id="sFb"></div>`;
+  function drawS(){const k=+$('sK').value, ch=[...SC], n=ch.length, C=Math.ceil(n/k); $('sKV').textContent=k;
+    let h=''; const rows=[]; for(let r=0;r<k;r++){let row=''; let t=''; for(let c=0;c<C;c++){const j=c*k+r; if(j<n){row+=`<span style="--d:${c}">${ch[j]}</span>`; t+=ch[j];} else row+='<span class="e"></span>';} rows.push(t); h+=`<div class="r">${row}</div>`;}
+    $('sRod').innerHTML=h; $('sOut').textContent=rows.join('');}
+  $('sK').oninput=drawS;
+  $('sChk').onclick=()=>{const ok=+$('sAns').value===4; if(ok){MEMO.scyKey='스키테일 · 읽히는 막대 굵기를 찾음'; ecSave();}
+    $('sFb').innerHTML=ok?'<span class="ok">맞아요!</span> 같은 굵기의 막대가 있어야 읽혀요. 그런데 굵기는 몇 가지만 해 보면 찾을 수 있었지요?':'<span class="ng">아직이에요.</span> 막대 굵기를 바꾸며 가로로 읽은 문장이 자연스러운 굵기를 찾아요.';};
+  drawS();
+})();
+
+/* 04 해시 함수 실험실 */
+(function(){
+  const B=$('hashLab'), D='우리 반 단합 대회는 금요일입니다.';
+  B.innerHTML=`<p style="margin-top:0"><b>① 메시지를 아주 조금만 고쳐 보기</b> <span class="muted" style="font-size:.88rem">아래 칸의 마침표를 지우거나 글자 하나만 바꿔 보세요.</span></p>
+    <div class="grid2 even"><div><label class="ec-lab">원본 메시지</label><textarea id="hA" rows="2">${D}</textarea><div class="ec-hash mono" id="hAH"></div></div>
+      <div><label class="ec-lab">고친 메시지</label><textarea id="hB" rows="2">${D}</textarea><div class="ec-hash mono" id="hBH"></div></div></div>
+    <div class="ec-res" id="hRes"></div>
+    <div class="row"><button class="btn sm" id="hRec">결과 기록하기</button></div><div class="fb" id="hRecFb"></div>
+    <hr class="ec-hr">
+    <p><b>② 비밀번호를 해시값으로 저장하는 웹 사이트 흉내</b> <span class="ng" style="font-size:.88rem">실제로 쓰는 비밀번호는 넣지 마세요.</span> <span class="muted" style="font-size:.85rem">입력한 값은 어디에도 저장되지 않아요.</span></p>
+    <div class="grid2 even"><div class="ec-site"><b>회원 가입</b><div class="row"><input type="text" id="pJoin" placeholder="연습용 비밀번호" autocomplete="off" aria-label="가입할 비밀번호"><button class="btn sm" id="pJoinB">가입</button></div><div class="ec-db" id="pDb">서버에 저장된 값: (아직 없음)</div></div>
+      <div class="ec-site"><b>로그인</b><div class="row"><input type="text" id="pLog" placeholder="비밀번호 입력" autocomplete="off" aria-label="로그인 비밀번호"><button class="btn sm" id="pLogB">로그인</button></div><div class="fb" id="pFb"></div></div></div>`;
+  function draw(){const a=$('hA').value, b=$('hB').value, ha=ecSha256(a), hb=ecSha256(b); let n=0;
+    $('hAH').textContent=ha; $('hBH').innerHTML=[...hb].map((c,i)=>c===ha[i]?c:(n++,`<mark>${c}</mark>`)).join('');
+    $('hRes').innerHTML=a===b?'두 메시지가 <b>같아서</b> 해시값도 똑같아요. 오른쪽 메시지를 조금만 고쳐 보세요.':`메시지는 조금 달라졌는데 해시값은 64자리 가운데 <b>${n}자리</b>가 달라졌어요(노란 칸). 메시지 길이가 달라도 해시값은 늘 64자리예요.`;
+    return n;}
+  $('hA').oninput=draw; $('hB').oninput=draw;
+  $('hRec').onclick=()=>{const a=$('hA').value, b=$('hB').value; if(a===b){$('hRecFb').innerHTML='<span class="ng">먼저 오른쪽 메시지를 조금 고쳐 보세요.</span>'; return;}
+    const n=draw(); MEMO.hashTry=`「${a.slice(0,30)}」 → 「${b.slice(0,30)}」: 해시값 64자리 중 ${n}자리가 달라짐`; ecSave(); $('hRecFb').innerHTML='<span class="ok">기록했어요.</span> 마무리 화면의 메모 모아 보기에서 볼 수 있어요.';};
+  let saved=null;
+  $('pJoinB').onclick=()=>{const v=$('pJoin').value; if(!v){$('pDb').textContent='비밀번호를 입력해요.'; return;} saved=ecSha256(v); $('pJoin').value=''; $('pDb').innerHTML=`서버에 저장된 값(해시값): <span class="mono">${saved}</span><br><small class="muted">서버는 비밀번호 원문을 저장하지 않아요. 이 값으로 원래 비밀번호를 알아낼 수 있을까요?</small>`;};
+  $('pLogB').onclick=()=>{if(!saved){$('pFb').innerHTML='<span class="ng">먼저 회원 가입을 해요.</span>'; return;} const h=ecSha256($('pLog').value), ok=h===saved;
+    $('pFb').innerHTML=`입력값의 해시값: <span class="mono">${h.slice(0,16)}…</span><br>${ok?'<span class="ok">저장된 해시값과 같아요 → 로그인 성공!</span>':'<span class="ng">저장된 해시값과 달라요 → 로그인 실패</span>'} <small class="muted">비밀번호를 되돌리지 않고 해시값끼리 비교했어요.</small>`;};
+  draw();
+})();
+
+/* 05 키 흐름 따라가기 */
+(function(){
+  const KY={sec:['🗝️','비밀키','#1f9d74'],mPub:['🔑','민서의 공개키','#2f6fd0'],mPri:['🔑','민서의 개인키','#d64535'],jPub:['🔑','지우의 공개키','#0f8fa6'],jPri:['🔑','지우의 개인키','#9b4fc4']};
+  const SC=[
+    {n:'대칭 암호화',mid:'🌐 통신망 · 👀 엿보는 사람',steps:[
+      {t:'지우가 민서에게 「내일 3시 도서관」이라는 비밀 메시지를 보내려고 해요. 대칭 암호화는 송수신자가 <b>같은 키</b>를 쓰므로, 먼저 비밀키 하나를 정해요.',s:{j:['sec']},m:['j',null]},
+      {t:'민서도 같은 비밀키가 있어야 복호화할 수 있어요. 지우가 비밀키를 민서에게 전달해요. 그런데 전달하는 과정에서 키를 잃어버리거나 엿보는 사람이 가로챌 수도 있어요. 이것이 <b>키 배송 문제</b>예요.',s:{j:['sec'],e:['sec?'],r:['sec']},m:['j',null]},
+      {q:'지우는 평문을 무엇으로 암호화할까요?',o:['민서와 나눠 가진 비밀키','지우만 아는 다른 키'],ok:'맞아요. 민서가 가진 키와 같은 키로 잠가야 민서가 풀 수 있어요.',ng:'민서는 그 키를 가지고 있지 않아요. 민서도 풀 수 있는 키를 골라요.',s:{j:['sec'],e:['sec?'],r:['sec']},m:['j','sec']},
+      {q:'통신망에서 엿보는 사람이 암호문을 가로챘어요. 이 암호문을 풀려면 무엇이 필요할까요?',o:['같은 비밀키','아무 키나','키 없이도 읽을 수 있다'],ok:'맞아요. 암호문을 도둑맞아도 비밀키가 없으면 복호화할 수 없어요. 하지만 키를 전달할 때 가로챘다면 풀 수 있겠죠?',ng:'암호문은 같은 키가 있어야 풀려요.',s:{j:['sec'],e:['sec?'],r:['sec']},m:['e','sec']},
+      {q:'암호문이 민서에게 도착했어요. 민서는 무엇으로 복호화할까요?',o:['같은 비밀키','민서가 새로 만든 키'],ok:'맞아요. 같은 키로 암호화·복호화하니 「대칭」이에요. 암호화 속도가 빨라요.',ng:'잠근 키와 같은 키가 있어야 열려요.',s:{j:['sec'],e:['sec?'],r:['sec']},m:['r','sec'],end:['r',null]},
+      {q:'지우가 반 친구 10명과 각각 따로 비밀 메시지를 주고받으려면, 지우가 관리할 비밀키는 몇 개일까요?',o:['1개','10개','100개'],ok:'맞아요. 개인마다 키를 따로 교환해야 해서 관리할 키가 많아져요. 사용자가 10만 명이면 10만 개를 보관해야 해요.',ng:'친구마다 다른 키를 따로 나눠 가져야 해요.',s:{j:['sec'],r:['sec']},m:['r',null]}]},
+    {n:'비대칭 · 기밀성 유지',mid:'🌐 통신망 · 👀 엿보는 사람',steps:[
+      {t:'이번에는 키를 몰래 주고받지 않아요. 비대칭 암호화는 송수신자가 <b>서로 다른 키</b>를 가져요. 받는 사람인 민서가 한 쌍의 키를 가지고 있어요. 누구에게 보여 줘도 되는 <b>공개키</b>와 민서만 가지는 <b>개인키</b>예요.',s:{r:['mPub','mPri']},m:['j',null]},
+      {t:'민서가 공개키를 공개해요. 지우도, 엿보는 사람도 민서의 공개키를 가질 수 있어요.',s:{j:['mPub'],e:['mPub'],r:['mPub','mPri']},m:['j',null]},
+      {q:'지우는 「민서야, 너만 봐」 메시지를 무엇으로 암호화할까요?',o:['민서의 공개키','민서의 개인키','지우가 정한 비밀키'],ok:'맞아요. 공개키로 암호화하면 문서에 대한 접근을 통제하고 기밀성을 유지할 수 있어요.',ng:'지우가 가진 키를 살펴봐요. 민서의 개인키는 민서만 가지고 있고, 비밀키는 민서와 나눠 가진 적이 없어요.',s:{j:['mPub'],e:['mPub'],r:['mPub','mPri']},m:['j','mPub']},
+      {q:'엿보는 사람이 암호문을 가로챘어요. 엿보는 사람도 민서의 공개키를 가지고 있는데, 이 암호문을 풀 수 있을까요?',o:['풀 수 없다','풀 수 있다'],ok:'맞아요. 공개키로 암호화한 것은 쌍을 이루는 개인키로만 풀 수 있어요. 그래서 공개키는 누구에게 보여 줘도 괜찮아요.',ng:'잠근 키(공개키)와 쌍을 이루는 다른 키가 있어야 열려요.',s:{j:['mPub'],e:['mPub'],r:['mPub','mPri']},m:['e','mPub']},
+      {q:'암호문이 민서에게 도착했어요. 민서는 무엇으로 복호화할까요?',o:['민서의 개인키','민서의 공개키'],ok:'맞아요. 개인키는 도장처럼 본인만 가지고 다른 사람에게 노출되지 않게 관리해요. 키를 교환하지 않아도 되지만 처리 속도는 느려요.',ng:'공개키로 잠근 것은 공개키로 열리지 않아요.',s:{j:['mPub'],e:['mPub'],r:['mPub','mPri']},m:['r','mPub'],end:['r',null]}]},
+    {n:'비대칭 · 전자 서명',opt:1,mid:'🏛️ 공인 인증 기관 · 🌐 통신망',steps:[
+      {t:'지우는 공인 인증 기관(CA)에서 개인키와 공개키 한 쌍을 발급받았어요. 공인 인증 기관은 개인키와 공개키를 생성·발급·관리해요.',s:{j:['jPri','jPub'],e:['jPub']},m:['j',null]},
+      {q:'지우가 「이 계약서는 내가 보냈어요」를 증명하려고 해요. 무엇으로 암호화해 전자 서명을 만들까요?',o:['지우의 개인키','지우의 공개키','민서의 공개키'],ok:'맞아요. 전자 서명은 이용자의 개인키로 만들어요. 지우의 개인키는 지우만 가지고 있으니까요.',ng:'누구나 가질 수 있는 키로 서명하면 지우가 보냈다는 증거가 되지 않아요.',s:{j:['jPri','jPub'],e:['jPub']},m:['j','jPri']},
+      {t:'서명된 문서가 민서에게 도착했어요. 민서는 공인 인증 기관에 「지우의 공개키를 주세요」라고 요청해 받아요.',s:{j:['jPri','jPub'],e:['jPub'],r:['jPub']},m:['r','jPri']},
+      {q:'민서는 무엇으로 복호화해서 지우가 보낸 것인지 확인할까요?',o:['지우의 공개키','지우의 개인키','민서의 개인키'],ok:'맞아요. 「진짜 지우라면 이 공개키로 복호화될 거야.」 풀리면 지우의 개인키로 서명한 것이 맞아요.',ng:'지우의 개인키로 잠근 것은 그와 쌍을 이루는 키로 열려요. 민서가 받은 키를 살펴봐요.',s:{j:['jPri','jPub'],e:['jPub'],r:['jPub']},m:['r','jPri'],end:['r',null]},
+      {q:'누군가 지우인 척하며 자기 개인키로 서명한 문서를 보냈어요. 민서가 지우의 공개키로 복호화하면 어떻게 될까요?',o:['풀리지 않아 가짜임을 알 수 있다','풀려서 지우가 보낸 것으로 보인다'],ok:'맞아요. 지우의 공개키는 지우의 개인키와만 쌍을 이루므로, 다른 사람의 서명은 풀리지 않아요. 그래서 본인 확인에 쓰여요.',ng:'공개키는 쌍을 이루는 개인키로 잠근 것만 풀 수 있어요.',s:{j:['jPri','jPub'],e:['jPub'],r:['jPub']},m:['r',null]}]},
+  ];
+  const B=$('keyFlow'); let sc=0, st=0, miss=0, answered=false; const done=new Set(store.get(MK+'|kf',[]));
+  const perm=(n,seed)=>{const a=[...Array(n).keys()]; let h=seed*2654435761>>>0; for(let i=n-1;i>0;i--){h=(Math.imul(h^(h>>>13),1597334677)+i)>>>0; const j=h%(i+1); [a[i],a[j]]=[a[j],a[i]];} return a;};
+  const chip=k=>{const q=k.endsWith('?'), id=q?k.slice(0,-1):k; return `<span class="ec-k${q?' maybe':''}" style="--k:${KY[id][2]}">${KY[id][0]} ${KY[id][1]}${q?' (가로챌 수도…)':''}</span>`;};
+  let fin=false;
+  function render(){const S=SC[sc], P=S.steps[st], m=(fin||answered)&&P.end?P.end:P.m;
+    const msg=w=>m[0]===w?`<div class="ec-msg ${m[1]?'lk':''}" style="--k:${m[1]?KY[m[1]][2]:'#8a94a3'}">${m[1]?`🔒 암호문<small>${KY[m[1]][1]}(으)로 잠금</small>`:'📄 평문'}</div>`:'';
+    const col=(w,ic,nm)=>`<div class="col"><div class="nm">${ic} ${nm}</div><div class="ks">${(P.s[w]||[]).map(chip).join('')||'<span class="muted" style="font-size:.8rem">열쇠 없음</span>'}</div>${msg(w)}</div>`;
+    const ord=P.q?perm(P.o.length,sc*10+st+3):[], need=SC.filter(x=>!x.opt), allNeed=need.every(x=>done.has(x.n));
+    let say;
+    if(fin){const nx=SC.findIndex(x=>!done.has(x.n));
+      say=`<p class="ok">✔ 「${S.n}」 흐름을 마쳤어요.</p>${allNeed?'<p>🎉 꼭 할 두 흐름(① 대칭, ② 기밀성 유지)을 모두 마쳤어요. 아래 비교 표를 채워 봐요.'+(done.size<SC.length?' 시간이 남으면 ③ 전자 서명도 해 봐요(선택).':'')+'</p>':''}
+        <div class="row">${nx>=0?`<button class="btn sm" data-go="${nx}">${SC[nx].n}${SC[nx].opt?' (선택)':''} 하러 가기 →</button>`:''}<button class="btn ghost sm" data-go="${sc}">이 흐름 다시 보기</button></div>`;}
+    else say=`<span class="muted">장면 ${st+1} / ${S.steps.length}</span><p>${P.t||P.q}</p>${P.q?`<div class="row">${ord.map(i=>`<button class="btn ${answered&&i===0?'':'ghost '}sm" data-o="${i}" ${answered?'disabled':''}>${P.o[i]}</button>`).join('')}</div><div class="fb">${answered?`<span class="ok">${P.ok}</span>`:''}</div>`:''}`;
+    B.innerHTML=`<div class="ec-scn">${SC.map((x,i)=>`<button data-s="${i}" class="${i===sc?'on':''}">${done.has(x.n)?'✔ ':''}${['①','②','③'][i]} ${x.n}${x.opt?' (선택)':''}</button>`).join('')}</div>
+      <div class="ec-stage">${col('j','👧','지우 · 보내는 사람')}${col('e','',S.mid)}${col('r','🧑','민서 · 받는 사람')}</div>
+      <div class="ec-say">${say}</div>
+      ${fin?'':`<div class="row"><button class="btn ghost sm" data-nav="-1" ${st?'':'disabled'}>← 이전 장면</button><button class="btn sm" data-nav="1" ${P.q&&!answered?'disabled':''}>${st<S.steps.length-1?'다음 장면 →':'이 흐름 마치기 ✓'}</button></div>`}`;
+    const open=i=>{sc=i; st=0; answered=false; fin=false; render();};
+    B.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>open(+b.dataset.s));
+    B.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>open(+b.dataset.go));
+    B.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(+b.dataset.o===0){answered=true; render();}
+      else{miss++; B.querySelector('.ec-say .fb').innerHTML=`<span class="ng">다시 생각해 봐요.</span> ${P.ng}`;}});
+    B.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{const d=+b.dataset.nav;
+      if(d>0&&st===S.steps.length-1){done.add(S.n); store.set(MK+'|kf',[...done]); MEMO.keyFlow=SC.filter(x=>done.has(x.n)).map(x=>x.n+' ✓').join(' · ')+` (다시 고른 횟수 ${miss}번)`; ecSave(); fin=true; render(); return;}
+      st=Math.max(0,st+d); answered=false; render();});
+  }
+  render();
+})();
+
+/* 06 맞춤 활동 · 암호화하고 압축하기 */
+(function(){
+  const P='BLUEBERRYJAM', K=[4,1,3,2], C=ecTrans(P,K,false).res, ORD=[]; for(const c of C) if(!ORD.includes(c)) ORD.push(c);
+  const B=$('mixLab');
+  B.innerHTML=`<div class="ec-step"><b>① 암호화</b> 키 4132로 단순 전치 암호화한 결과는? <div class="row"><input type="text" id="mxC" maxlength="20" placeholder="암호문 12글자" aria-label="암호문"><button class="btn sm" id="mxCB">확인</button></div><div class="fb" id="mxCF"></div></div>
+    <div class="ec-step"><b>② 사전 만들기</b> 암호문에 등장하는 순서대로 코드에 해당하는 문자를 적어요.
+      <table class="ec-tbl ec-dict"><tr><th>코드</th>${ORD.map((_,i)=>`<td class="mono">${(i+1).toString(2).padStart(4,'0')}</td>`).join('')}</tr><tr><th>데이터</th>${ORD.map((_,i)=>`<td><input type="text" maxlength="1" data-d="${i}" aria-label="코드 ${i+1}의 문자"></td>`).join('')}</tr></table>
+      <div class="row"><button class="btn sm" id="mxDB">확인</button></div><div class="fb" id="mxDF"></div></div>
+    <div class="ec-step"><b>③ 압축률 구하기</b> 원본 <input type="number" id="mxO" style="width:80px" aria-label="원본 비트 수">bits ÷ 압축 데이터 <input type="number" id="mxZ" style="width:80px" aria-label="압축 데이터 비트 수">bits <button class="btn sm" id="mxRB">확인</button><div class="fb" id="mxRF"></div></div>`;
+  const st={c:false,d:false,r:false}, rec=()=>{MEMO.mixDone=`암호화 ${st.c?'✓':'–'} · 사전 ${st.d?'✓':'–'} · 압축률 ${st.r?'✓':'–'}`; ecSave();};
+  $('mxCB').onclick=()=>{st.c=ecNorm($('mxC').value)===C; $('mxCF').innerHTML=st.c?'<span class="ok">맞아요!</span> 네 글자씩 나눠 키 순서대로 재배치했어요.':'<span class="ng">다시 해 봐요.</span> 네 글자씩 나눈 뒤, 각 묶음에서 4번째·1번째·3번째·2번째 글자 순서로 적어요. 03 화면의 전치 암호기로 확인해도 돼요.'; rec();};
+  $('mxDB').onclick=()=>{const v=[...B.querySelectorAll('[data-d]')].map(x=>x.value.toUpperCase()); st.d=v.every((x,i)=>x===ORD[i]);
+    $('mxDF').innerHTML=st.d?`<span class="ok">맞아요!</span> 문자가 ${ORD.length}종류라 코드는 4비트예요.`:(st.c?'<span class="ng">다시 해 봐요.</span> 암호문을 앞에서부터 읽으며 처음 나온 문자부터 차례대로 적어요.':'<span class="ng">먼저 ①의 암호문을 맞혀 봐요.</span>'); rec();};
+  $('mxRB').onclick=()=>{st.r=+$('mxO').value===P.length*8&&+$('mxZ').value===P.length*4;
+    $('mxRF').innerHTML=st.r?`<span class="ok">맞아요!</span> 압축률은 ${P.length*8} / ${P.length*4} = 2. 문자 종류가 많아 코드가 길어지면 압축률이 낮아져요. 암호화해도 글자 수와 종류는 같아서 압축률은 그대로예요.`:'<span class="ng">다시 계산해 봐요.</span> 1byte = 8bits이고, 압축 데이터는 글자 수 × 코드의 비트 수예요.'; rec();};
+})();
+
+/* 06 개념 정리 · 성취도 · 선택 활동 */
+document.querySelectorAll('.ec-blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+chips('selfCheck','selfCheckPick',['압축과 암호화가 왜 필요한지 예를 들어 말할 수 있다','문자열을 직접 암호화하고 압축해 압축률을 구할 수 있다','내 데이터를 안전하게 지키는 습관을 실천하려고 한다'],true);
+vote('extraVote','extraPick',[['보충','짝에게 보낼 비밀 쪽지 규칙 만들기'],['심화','인공지능을 쓰는 압축 기술 찾아보기']],i=>{$('extraBasic').classList.toggle('on',i===0); $('extraDeep').classList.toggle('on',i===1);});
+
+/* 07 마무리 */
+const MEMOLIST=[['hideIdea','처음 생각 · 내용을 들키지 않게 하는 방법'],['caesarKey','카이사르 미션 B 기록'],['caesarLimit','치환형 암호화의 한계'],['ck1','성취도 · 치환형 암호화'],['transDone','단순 전치 미션 기록'],['scyKey','스키테일 미션 기록'],['transLimit','전치형 암호화의 한계'],['ck2','성취도 · 전치형 암호화'],['hashTry','해시값 비교 기록'],['hashWhy','해시값이 달라진 모습과 비밀번호 저장의 좋은 점'],['ck3','성취도 · 단방향 암호화'],['keyFlow','키 흐름 따라가기 기록'],['cmpSymSend','대칭 · 키 전송 여부'],['cmpAsymSend','비대칭 · 키 전송 여부'],['cmpAsymGood','비대칭 · 장점'],['cmpSymBad','대칭 · 단점'],['symWhy','대칭 암호화를 쓰는 이유와 중요성'],['ck4','성취도 · 대칭·비대칭 암호화'],['whyBoth','압축과 암호화의 중요성·필요성'],['mixDone','암호화하고 압축하기'],['ecoAct1','지속 가능한 데이터 사용 실천 1'],['ecoAct2','지속 가능한 데이터 사용 실천 2'],['selfCheckPick','학업 성취도 점검'],['extraPick','고른 선택 활동'],['myRule','보충 · 나의 암호화 규칙'],['myPlain','보충 · 원본 문장'],['myCipher','보충 · 암호 문장'],['aiTech','심화 · 조사한 압축 기술'],['aiGood','심화 · 기존 코덱보다 좋은 점'],['keyQ','핵심 질문에 대한 내 답'],['newLearn','새롭게 알게 된 점']];
+onShow[7]=()=>{const p=(MEMO.hideIdea||'').trim(); $('prevIdea').innerHTML=`<b>처음 생각</b> ${p?esc(p):'<span class="muted">(시작 화면에 아직 안 씀)</span>'}`; memoSummary('msum',MEMOLIST);};
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

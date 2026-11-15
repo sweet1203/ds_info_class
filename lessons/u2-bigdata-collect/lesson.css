@@ -1,0 +1,62 @@
+
+  /* 0 시작: 비만율 막대그래프 (교과서 66쪽 수치로 새로 그림) */
+  .route .bc-obe{display:block;padding:12px 16px}
+  .bc-obe b{display:block;font-size:.98rem}
+  .bc-obe small{display:block;margin-top:4px}
+  .bc-bars{display:flex;justify-content:space-around;align-items:flex-end;height:150px;margin-top:8px;border-bottom:1px solid rgba(255,255,255,.35)}
+  .bc-bars .g{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+  .bc-bars .pair{display:flex;gap:4px;align-items:flex-end;height:120px}
+  .bc-bars i{display:block;width:26px;height:calc(var(--h) * 6.4px);background:#9fb3cc;border-radius:4px 4px 0 0;position:relative}
+  .bc-bars i.n{background:var(--amber)}
+  .bc-bars em{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-style:normal;font-size:.72rem;color:#fff;white-space:nowrap}
+  .bc-bars span{font-size:.8rem;color:#c8d6e8;margin-bottom:-22px}
+  .bc-bars + small{margin-top:26px !important}
+  .bc-key{display:inline-block;width:10px;height:10px;border-radius:2px;background:#9fb3cc;margin:0 4px 0 0;vertical-align:middle}
+  .bc-key.n{background:var(--amber);margin-left:8px}
+
+  /* 01 3V */
+  .bc-3v{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:16px;align-items:center}
+  @media (max-width:820px){.bc-3v{grid-template-columns:1fr}}
+  .bc-3v svg{width:100%;height:auto;display:block}
+  .bc-3v .c{font-size:17px;font-weight:900;fill:#16202c;text-anchor:middle}
+  .bc-3v .w{font-size:17px;font-weight:900;fill:#fff;text-anchor:middle}
+  .bc-3v .s{font-size:13px;fill:#5b6776;text-anchor:middle}
+  .bc-3vtx{display:grid;gap:10px}
+  .bc-3vtx .kc h4{margin:0 0 2px}
+  .bc-3vtx .kc p{margin:0;font-size:.92rem}
+  .bc-ul{margin:6px 0 0;padding-left:18px;font-size:.93rem}
+  .bc-ul li{margin:6px 0}
+  .bc-ul b{margin-right:4px}
+
+  /* 02 수집 방법 */
+  #wayBtns{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:560px){#wayBtns{grid-template-columns:1fr 1fr}}
+  .bc-way{border-top:6px solid var(--k)}
+  .bc-def{margin-top:0}
+  .bc-way .kc h4{margin:0 0 2px}
+  .bc-way .kc p{margin:0;font-size:.92rem}
+  .bc-site{margin:10px 0 0;background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.9rem}
+  .bc-site b{margin-right:6px}
+  .bc-crawl{margin-top:6px}
+
+  /* 04 스스로 해결하기 */
+  .bc-tip{margin:8px 0}
+  .bc-do{margin:6px 0 10px;padding-left:22px;font-size:.95rem}
+  .bc-do li{margin:4px 0}
+  .bc-files{display:grid;gap:8px;margin-bottom:6px}
+  .bc-files>div{background:#fbfaf7;border-radius:10px;padding:8px 12px;border-left:5px solid var(--acc)}
+  .bc-files b{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem}
+  .bc-files span{font-size:.88rem;color:var(--muted)}
+  .bc-plan label{margin-top:10px}
+  .bc-plan label:first-child{margin-top:0}
+  .bc-plan .chk{margin:4px 0 6px}
+  .bc-blanks li{margin:8px 0;line-height:1.9}
+  .bc-blanks .blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .bc-blanks .blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  /* 검토 반영(1차): 시작 화면 내려받기 · 접는 칸 */
+  .bc-dl{margin-bottom:16px}
+  .bc-dl h3{margin-top:0}
+  .bc-more summary{cursor:pointer;font-weight:900}
+  .bc-more h4 small{font-size:.85rem}
+  .bc-dl .bc-files{align-content:start}
+  .cover p.bc-first{margin:0 0 10px;color:#ffe2a6;font-size:.95rem}

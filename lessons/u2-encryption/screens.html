@@ -1,0 +1,339 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅱ. 데이터 · 1. 디지털 데이터의 압축과 암호화</span>
+      <h1>들켜도 읽을 수 없게,<br>데이터를 어떻게 지킬까?</h1>
+      <div class="story"><b>문서를 들키고 말았다!</b><br>누구에게도 들키지 않고 문서를 전달해야 하는데, 그만 문서를 들키고 말았어요. 문서가 발각되어도 <b>내용은 들키지 않게</b> 숨길 수 있는 방법이 있을까요? 우리가 온라인 쇼핑에서 결제하고 민원 서류를 발급받을 수 있는 것도 이 방법 덕분이에요.</div>
+      <p>오늘은 정보를 읽기 어려운 형태로 바꾸는 <b>암호화</b>를 배워요. 옛날 방식인 <b>치환형·전치형 암호</b>를 직접 만들고 풀어 보고, 지금 쓰이는 <b>단방향·대칭·비대칭 암호화</b>를 체험한 뒤 압축과 암호화를 정리해요.</p>
+      <ol>
+        <li>암호화란 무엇이며, 왜 중요할까?</li><li>치환형 암호화 · 카이사르 암호</li><li>전치형 암호화 · 단순 전치와 스키테일</li>
+        <li>단방향 암호화 · 해시 함수</li><li>대칭 암호화와 비대칭 암호화</li><li>압축과 암호화 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📄</i><div><b>평문</b><small>보호하고 싶은 원본 데이터</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓ 암호화 🔑</div>
+      <div class="st" style="animation-delay:.8s"><i>🔒</i><div><b>암호문</b><small>치환형 · 전치형 · 단방향 · 대칭 · 비대칭</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓ 복호화 🔑</div>
+      <div class="st" style="animation-delay:1.4s"><i>📄</i><div><b>다시 평문</b><small>열쇠(암호키)가 있는 사람만</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>암호화</b>의 개념과 <b>평문·암호문·복호화·암호키</b>를 알아보고, 암호화의 기능(기밀성·무결성·인증)을 살펴봐요. <b>카이사르 암호</b>와 <b>전치 암호</b>를 직접 만들고 풀면서 한계를 찾고, <b>해시 함수</b>로 단방향 암호화를 체험한 뒤 <b>대칭·비대칭 암호화</b>의 키 흐름을 따라가요. 마지막에 압축과 암호화를 함께 정리해요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">지난 시간 떠올리기</span>
+        <p style="margin:0 0 6px;font-size:.9rem"><b>데이터 압축</b>은 원본 데이터를 더 작은 용량으로 만들어 저장 공간과 전송 시간을 줄였어요. 원본 그대로 되돌리는 <b>무손실 압축</b>(런 길이 부호화·사전 압축·허프만 부호화)과 용량을 크게 줄이는 <b>손실 압축</b>(JPEG·MPEG)이 있었지요.</p>
+        <p style="margin:0;font-size:.85rem" class="muted">데이터를 <b>효율적으로</b> 관리했다면, 오늘은 <b>안전하게 보호</b>하는 방법을 배워요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>압축과 암호화</b> · 데이터를 효율적으로 관리하고 보호하는 방법은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 문서가 발각되어도 내용을 들키지 않게 숨길 수 있는 방법이 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>암호화의 개념과 중요성을 설명할 수 있다.</li>
+          <li>암호화를 활용하여 데이터를 효율적이고 안전하게 관리하는 사례를 비교 및 분석할 수 있다.</li>
+        </ul>
+        <p style="font-size:.85rem;margin-top:8px" class="muted">주요 용어: 암호화 · 복호화 · 치환형 암호화 · 전치형 암호화 · 단방향 암호화 · 대칭 암호화 · 비대칭 암호화</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 처음 생각 적기</h3>
+      <div class="memo"><label>문서가 발각되어도 내용을 들키지 않게 하려면 어떻게 하면 좋을까요? 지금 떠오르는 방법을 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="hideIdea" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 암호화란 무엇일까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 암호화의 개념 -->
+<section class="page" data-name="암호화란" data-acc="#1f9d74">
+  <div class="head"><div class="num">01</div><div><h2>암호화란 무엇이며, 왜 중요할까?</h2><p>교과서 58쪽 · 암호화, 평문, 암호문, 복호화, 암호키, 암호화의 기능</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정해 둔 규칙(<b>암호키</b>)으로 글을 알아볼 수 없게 바꾸는 것이 <b>암호화</b>, 같은 규칙을 아는 사람이 원래대로 되돌리는 것이 <b>복호화</b>예요. 중간에 누가 가로채도 규칙을 모르면 읽을 수 없어요.</span></div>
+  <div class="card">
+    <h3>🛒 우리가 쓰는 서비스 속 암호화</h3>
+    <p style="margin-top:0">인터넷이 발전하면서 온라인 쇼핑, 민원 서류 발급처럼 다양한 서비스가 네트워크에서 이뤄지게 되었어요. 이런 서비스를 쓸 수 있는 것은 <b>중요한 정보(비밀번호)를 다른 사람은 알지 못하게 전달하는 기술</b> 덕분이에요. 이처럼 정보를 읽기 어려운 형태로 바꾸거나 반대로 다시 읽을 수 있게 해독하는 기술을 <b>암호화</b>(encryption)라고 해요.</p>
+    <p class="note" style="margin-top:0">암호(cryptography)라는 단어는 그리스어로 「비밀」이라는 뜻의 크립토스(Kryptos)에서 왔어요.</p>
+  </div>
+  <div class="card">
+    <h3>🔐 암호화의 기본 원리 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅱ-3을 다시 그림)</span></h3>
+    <div class="ec-flow" aria-label="평문을 암호키로 암호화하면 암호문이 되고, 암호문을 암호키로 복호화하면 평문이 된다">
+      <div class="who">🧑‍💻<small>보내는 사람</small></div>
+      <div class="doc">📄<b>평문</b><small>plaintext</small></div>
+      <div class="arr"><span>암호화</span><i>🔑 암호키</i></div>
+      <div class="doc lock">🔒<b>암호문</b><small>ciphertext</small></div>
+      <div class="arr"><span>복호화</span><i>🔑 암호키</i></div>
+      <div class="doc">📄<b>평문</b><small>plaintext</small></div>
+      <div class="who">🙋<small>받는 사람</small></div>
+    </div>
+    <div class="cards4 ec-terms">
+      <div class="kc" style="--k:#2f6fd0"><h4>평문</h4><p>암호화를 통해 보호하고자 하는 원본 데이터</p></div>
+      <div class="kc" style="--k:#d64535"><h4>암호문</h4><p>암호화된 데이터</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>암호화 · 복호화</h4><p>평문 → 암호문으로 바꾸는 과정이 암호화, 암호문 → 평문으로 해독하는 과정이 복호화(decryption)</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>암호키</h4><p>암호화와 복호화에 필요한 열쇠가 되는 규칙(encryption key)</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🛡️ 암호화의 기능</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🙈</div><h4>기밀성 <small style="display:inline">confidentiality</small></h4><p>정보를 보호하는 속성으로, <b>권한이 있는 사용자만</b> 정보를 볼 수 있어요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🧩</div><h4>무결성 <small style="display:inline">integrity</small></h4><p>정보의 내용이 임의로 <b>생성, 변경, 삭제</b>되지 않았는지, 곧 원본과 같은지 확인해요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🪪</div><h4>인증 <small style="display:inline">authentication</small></h4><p><b>권한이 있는 사용자인지</b> 식별해요. 예: 계좌에 접근한 사람이 실제 계좌의 주인인지 확인</p></div>
+    </div>
+  </div>
+  <div class="card"><h3>🎯 어떤 기능일까?</h3><p class="muted" style="margin-top:0">상황을 읽고, 암호화의 세 가지 기능 가운데 무엇이 쓰였는지 골라요.</p><div id="funcGame"></div></div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 치환형 암호화 -->
+<section class="page" data-name="치환형 암호화" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>치환형 암호화 · 카이사르 암호</h2><p>교과서 59쪽 · 고대의 암호 방법, 치환형 암호화, 카이사르 암호</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>글자를 <b>약속한 다른 글자로 바꿔 쓰는</b> 방법이에요. 카이사르 암호는 알파벳을 정한 칸 수(키)만큼 밀어서 바꿔요. 키가 3이면 A → D, B → E처럼요.</span></div>
+  <div class="card">
+    <h3>🏺 고대 사회의 비밀 전달</h3>
+    <p style="margin-top:0">고대 사회에서는 비밀을 지키며 정보를 전달하려고 이런 방법을 썼어요. 살아 있는 동물의 털을 깎아 메시지를 쓰고 털을 길러 보내면, 받는 사람이 털을 깎아 확인했어요. 받았을 때는 보이지 않지만 불빛에 반응하는 약품으로 메시지를 써서 보내기도 했지요.</p>
+  </div>
+  <div class="card">
+    <h3>🔄 치환형 암호화</h3>
+    <p style="margin-top:0"><b>치환형 암호화</b>는 평문의 각 문자를 약속된 다른 문자로 <b>치환</b>(substitution, 특정 부분을 다른 문자로 바꾸는 것)하는 방법이에요. 복호화를 위해 암호문을 주고받는 발신자와 수신자는 각 문자를 어떤 문자로 바꿀지 <b>약속</b>해야 해요.</p>
+    <p>간단한 예로 로마 황제 「율리우스 카이사르」의 이름을 딴 <b>카이사르 암호</b>(caesar cipher)가 있어요. 평문의 각 알파벳을 <b>약속한 거리만큼 밀어서</b> 다른 알파벳으로 치환하고, 복호화할 때는 암호문의 각 문자를 다시 원래 위치로 밀어서 평문을 구해요.</p>
+    <div class="ec-shift" aria-label="키가 3일 때 카이사르 암호화: X는 A, Y는 B, Z는 C, A는 D로 바뀐다">
+      <div class="r"><small>평문</small><span>X</span><span>Y</span><span>Z</span><span class="h">A</span><span class="h">B</span><span class="h">C</span><span>D</span><span>E</span><span>F</span><span class="d">…</span></div>
+      <div class="r mid"><small></small><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><i>+3</i><span class="d"></span></div>
+      <div class="r"><small>암호문</small><span>A</span><span>B</span><span>C</span><span class="h">D</span><span class="h">E</span><span class="h">F</span><span>G</span><span>H</span><span>I</span><span class="d">…</span></div>
+    </div>
+    <p class="note">궁금해요! 카이사르가 전쟁 중 군사 정보를 비밀스럽게 전달하려고 고안했다고 전해져 이런 이름이 붙었어요. 암호화와 복호화가 간단해요.</p>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 카이사르 암호 원판</h3>
+    <p class="muted" style="margin-top:0">키를 바꾸면 아래 줄이 밀려요. 위 줄(평문)의 글자가 아래 줄(암호문)의 글자로 바뀌어요. 영문자만 바뀌고 띄어쓰기와 한글은 그대로예요.</p>
+    <div id="caesarLab"></div>
+    <div class="memo"><label>미션 B에서 키를 어떻게 찾았나요? 이 경험을 바탕으로 카이사르 암호(치환형 암호화)의 한계를 적어 보세요.</label><textarea data-memo="caesarLimit" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 전치형 암호화 -->
+<section class="page" data-name="전치형 암호화" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>전치형 암호화 · 단순 전치와 스키테일</h2><p>교과서 60쪽 · 전치형 암호화, 단순 전치 암호, 스키테일</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>글자는 그대로 두고 <b>순서(자리)만 바꾸는</b> 방법이에요. 어떤 순서로 섞었는지가 <b>키</b>예요.</span></div>
+  <div class="card">
+    <h3>🔀 전치형 암호화</h3>
+    <p style="margin-top:0"><b>전치형 암호화</b>는 문자의 <b>순서를 바꾸어</b> 암호화하는 방법이에요. 암호문을 주고받는 발신자와 수신자는 평문의 문자를 재배치할 순서를 <b>키</b>로 나누어 가져요. <b>단순 전치 암호</b>가 대표적인 예로, 평문을 키의 재배열 순서에 따라 재배치해요.</p>
+    <div class="ec-tx">
+      <div class="box"><small>평문</small><span class="mono">COMPUTER</span></div>
+      <div class="arr">키 <b class="mono">35164827</b> →</div>
+      <div class="box"><small>암호문</small><span class="mono">MUCTPROE</span></div>
+      <p class="note" style="flex-basis:100%;margin:4px 0 0">키의 첫 숫자가 3이면 평문의 3번째 글자(M)가 첫 자리에, 다음 숫자가 5면 5번째 글자(U)가 둘째 자리에 와요.</p>
+    </div>
+    <p>평문이 길면 <b>키의 길이만큼 일정 간격으로 나눈 뒤</b>, 나눈 문자를 키의 재배열 순서에 따라 재배치해요. 예를 들어 「roma at six」를 키 312로 암호화하면 세 글자씩 나눈 rom · aat · six가 mro · taa · xsi가 되어 「mrot aa xsi」가 돼요. 복호화할 때는 231 순서로 재배열하면 되고, 빈칸은 키 순서에 넣지 않아요.</p>
+    <div class="kc" style="--k:#e0702b;margin-top:10px"><h4>📜 스키테일(scytale)</h4><p>고대 전쟁에서 그리스 군사들이 쓴 암호예요. 특정 지름의 막대기에 종이(양피지)를 감고 메시지를 쓴 뒤 풀면 각 문자가 재배치돼요. 보낸 사람과 <b>같은 지름의 막대기</b>를 가진 사람만 암호문을 해석할 수 있어요. 양피지를 펼치거나 지름이 다른 원통에 감으면 해독할 수 없지요.</p></div>
+    <p style="margin-bottom:0">그러나 전치형 암호화는 암호를 해독할 수 있어서 <b>보안에 취약</b>해요. 특히 컴퓨팅 기술이 발전하면서 별도의 안전한 암호화 방법이 필요해졌어요.</p>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 전치 암호 만들고 풀기</h3>
+    <div class="ec-tabs" id="txTabs"><button data-t="0" class="on">① 단순 전치 암호기</button><button data-t="1">② 스키테일 막대</button></div>
+    <div id="txLab"></div>
+    <div id="scyLab" hidden></div>
+    <div class="memo"><label>두 전치 암호를 풀어 보니 어떤 한계가 보이나요? 키(순서, 막대 굵기)를 모르는 사람도 풀 수 있을지 생각해 적어 보세요.</label><textarea data-memo="transLimit" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 단방향 암호화 -->
+<section class="page" data-name="단방향 암호화" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>단방향 암호화 · 해시 함수</h2><p>교과서 61쪽 · 현재의 암호화, 단방향 암호화, 해시 함수와 해시값</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>암호화만 되고 <b>되돌릴 수 없는</b> 방식이에요. 대신 <b>같은 글이면 늘 같은 결과</b>, 한 글자만 달라도 <b>완전히 다른 결과</b>가 나와서, 결과끼리 비교해 「같은지」를 확인하는 데 써요.</span></div>
+  <div class="card">
+    <p style="margin-top:0">정보 통신 기술이 발달하면서 인터넷으로 전달하는 데이터의 양이 급격하게 늘었고, 이를 보호하기 위한 암호화 기술의 사용도 늘고 있어요. 개인용 컴퓨터와 인터넷 상거래가 발달하면서, 예전에는 군사용이나 외교용으로 쓰던 암호를 개인과 기업도 쓰게 되었어요.</p>
+    <div class="ec-kinds" aria-label="암호화의 기법 종류: 단방향 암호화, 양방향 암호화(대칭 암호화, 비대칭 암호화)">
+      <b>암호화의 기법 종류</b>
+      <div class="t"><span class="on">단방향 암호화</span><span>양방향 암호화</span></div>
+      <div class="t sub"><i></i><span>대칭 암호화</span><span>비대칭 암호화</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>➡️ 단방향 암호화</h3>
+    <p style="margin-top:0">암호화는 가능하지만 <b>복호화는 불가능한</b> 방식이에요. 암호화만 가능해서 단방향 암호화라고 해요. 단방향 암호화는 <b>동일한 평문에 대해 동일한 암호문</b>을 만들고, <b>한 글자라도 다른 평문은 다른 암호문</b>을 만드는 특징이 있어서, 암호화된 값을 서로 비교해 <b>무결성이나 인증</b>에 써요.</p>
+    <div class="cards3">
+      <div class="kc" style="--k:#1f9d74"><h4>🧩 무결성 확인</h4><p>파일이 변조되거나 훼손되었는지 확인할 때</p></div>
+      <div class="kc" style="--k:#d64535"><h4>🔑 중요 정보 관리</h4><p>비밀번호나 개인 정보처럼 유출되면 안 되는 정보를 관리할 때</p></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>🪪 신원 확인</h4><p>사용자의 신원을 확인할 때</p></div>
+    </div>
+    <p>단방향 암호화를 적용한 사례로는 사용자의 신원을 확인하고 전염병의 경로를 파악하는 <b>QR코드</b>가 있어요. 코로나19 때 전염 경로를 파악하고 확산을 막으려고, QR코드로 신원을 인증하는 <b>전자 출입 명부</b>를 시행했어요. 사용자가 서버에 QR코드 생성을 요청하면 서버가 사용자의 정보를 포함한 암호문으로 QR코드를 만들고, 인증 제한 시간 안에 QR코드를 찍으면 인증이 끝나요.</p>
+    <div class="callout"><b>궁금해요! 해시 함수와 해시값</b><br><b>해시 함수</b>는 다양한 길이의 입력 정보를 <b>고정된 길이의 해시값</b>으로 바꾸는 함수예요. 한 번 바뀐 데이터는 원래 상태로 되돌릴 수 없어서 단방향 암호화라고 해요. 그래서 비밀번호 같은 중요 정보를 안전하게 저장하는 데 써요. 사용자가 비밀번호를 입력하면 컴퓨터는 이를 해시값으로 바꿔 저장하고, 나중에 같은 비밀번호를 입력하면 저장된 해시값과 비교해 일치하는지 확인해요. 입력값이 조금만 바뀌어도 완전히 다른 해시값이 나와 해시값으로는 원래 입력값을 예측할 수 없어요. <b>SHA-256</b>은 해시 함수의 한 예로, 비트코인 같은 블록체인에서 거래 정보를 보호하는 데 쓰여요.</div>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 해시 함수 실험실 <span class="muted" style="font-weight:400;font-size:.88rem">(SHA-256, 이 화면 안에서 계산)</span></h3>
+    <div id="hashLab"></div>
+    <div class="memo"><label>메시지를 아주 조금 고쳤을 때 해시값은 어떻게 달라졌나요? 이 특징 덕분에 비밀번호를 해시값으로 저장하면 어떤 점이 좋은지 함께 적어 보세요.</label><textarea data-memo="hashWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck3"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 대칭 · 비대칭 암호화 -->
+<section class="page" data-name="대칭 · 비대칭" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>대칭 암호화와 비대칭 암호화</h2><p>교과서 62~63쪽 · 양방향 암호화, 비밀키, 공개키와 개인키, 전자 서명</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>암호화도 복호화도 되는 <b>양방향 암호화</b>에는 두 가지가 있어요. 두 사람이 <b>같은 키 하나</b>를 나눠 쓰는 <b>대칭</b>, 서로 짝을 이루는 <b>다른 키 두 개</b>(공개키·개인키)를 쓰는 <b>비대칭</b>이에요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🗝️ 대칭 암호화</h3>
+      <p style="margin-top:0">양방향 암호화의 한 종류로, 송수신자가 <b>같은 키</b>를 이용해 암호화와 복호화를 하는 방법이에요. 송수신자, 곧 정보를 공유할 사람들만 키를 공유하므로 <b>비밀키</b>라고 불러요.</p>
+      <ul class="ec-ul">
+        <li>암호화 <b>속도가 빨라요</b>.</li>
+        <li>암호문을 도둑맞아도 비밀키가 없으면 복호화할 수 없어요.</li>
+        <li>키를 교환하는 문제(<b>키 배송 문제</b>)가 생겨요. 특정한 사람에게 암호화된 정보와 키를 함께 전달하는 과정에서 분실이 생길 수 있기 때문이에요.</li>
+        <li>개인마다 키를 따로 교환해야 해서 <b>관리할 키가 방대</b>해요. 사용자가 10만 명이면 10만 개의 키를 보관해야 해요.</li>
+      </ul>
+      <p style="margin-bottom:0"><b>사례</b> 인터넷 뱅킹의 <b>OTP</b>(One Time Password)는 기기와 서버에 비밀키를 할당해 두고, 버튼을 누르면 현재 시간과 비밀키로 만든 번호로 사용자를 인증해요. <b>보안 카드</b>는 은행마다 1인당 한 장씩 발급하고, 그때그때 지정된 번호를 입력해 사용자를 인증해요.</p>
+    </div>
+    <div class="card">
+      <h3>🔑🔑 비대칭 암호화</h3>
+      <p style="margin-top:0">개인마다 키를 따로 교환해야 하는 대칭 암호화의 문제를 해결하려고, <b>키를 교환하지 않는</b> 양방향 암호화의 또 다른 종류로 탄생했어요. 송수신자가 <b>서로 다른 키</b>를 가져요. 한쪽이 <b>개인키(또는 공개키)</b>로 암호화하면, 다른 쪽은 그 키와 <b>쌍을 이루는 공개키(또는 개인키)</b>로 복호화해요.</p>
+      <ul class="ec-ul">
+        <li>처리 속도는 <b>느리지만</b> <b>키 교환이 쉬워요</b>.</li>
+        <li>개인키는 도장과 같아서 늘 본인이 가지고, 다른 사람에게 노출되지 않게 휴대폰·PC 같은 개인적인 공간에서 관리해야 해요.</li>
+        <li>문서를 공개키로 암호화하면 문서에 대한 접근을 통제하고 <b>기밀성</b>을 유지하는 데 도움이 돼요.</li>
+      </ul>
+      <p style="margin-bottom:0"><b>사례</b> <b>전자 서명</b>은 이용자의 개인키로 만든 전자 서명을 보내, 받는 사람에게 지금의 이용자가 본인임을 확인시켜요. 이때 개인키와 공개키를 생성·발급·관리하는 <b>공인 인증 기관</b>(CA: Certificate Authority)이 필요해요. 비대칭 암호화 원리를 쓰는 <b>공동 인증서</b>도 있어요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔬 키 흐름 따라가기</h3>
+    <p class="muted" style="margin-top:0">지우가 민서에게 메시지를 보내요. 장면마다 <b>어떤 열쇠로 잠그고 여는지</b> 골라요. <b>① 대칭 암호화</b>와 <b>② 비대칭 · 기밀성 유지</b>는 꼭 해 보고, <b>③ 전자 서명</b>은 시간이 남을 때 해요(선택).</p>
+    <div id="keyFlow"></div>
+  </div>
+  <div class="card">
+    <h3>🤝 함께 해결하기 · 대칭 암호화와 비대칭 암호화 비교하기 <span class="muted" style="font-weight:400;font-size:.88rem">(62~63쪽)</span></h3>
+    <p class="muted" style="margin-top:0">위의 키 흐름을 떠올리며 빈칸을 내 말로 채워요.</p>
+    <div style="overflow-x:auto">
+      <table class="ec-tbl">
+        <tr><th>구분</th><th>대칭 암호화</th><th>비대칭 암호화</th></tr>
+        <tr><th>키 관계</th><td>암호화 키와 복호화 키가 같음</td><td>암호화 키와 복호화 키가 다름</td></tr>
+        <tr><th>키 전송 여부</th><td><input type="text" data-memo="cmpSymSend" aria-label="대칭 암호화의 키 전송 여부"></td><td><input type="text" data-memo="cmpAsymSend" aria-label="비대칭 암호화의 키 전송 여부"></td></tr>
+        <tr><th>장점</th><td>구현이 쉬움, 속도가 빠름</td><td><input type="text" data-memo="cmpAsymGood" aria-label="비대칭 암호화의 장점"></td></tr>
+        <tr><th>단점</th><td><input type="text" data-memo="cmpSymBad" aria-label="대칭 암호화의 단점"></td><td>해독 시간이 오래 걸림</td></tr>
+        <tr><th>활용</th><td>OTP, 보안 카드</td><td>전자 서명, 공동 인증서</td></tr>
+      </table>
+    </div>
+    <div class="memo"><label>대칭 암호화를 쓰는 이유와 그 중요성은 무엇일까요? 짝과 이야기 나눈 뒤 적어요.</label><textarea data-memo="symWhy" rows="2"></textarea><div class="saved"></div></div>
+    <details class="ec-more"><summary>💻 선택 · 한컴오피스로 문서 암호 설정해 보기 (62쪽 실습)</summary>
+      <p>학교 노트북에 한컴오피스가 있고 선생님이 안내하면 해 봐요. 연습용 새 문서로만 하고, 정한 암호는 잊지 않게 짝과 함께 확인해요.</p>
+      <ol class="ec-ol"><li>한컴오피스로 한글 파일을 새로 만들어요.</li><li>도구창에서 <b>[보안] - [문서 암호 설정] - [열기/쓰기 암호]</b>에 각각 암호를 입력해요.</li><li>문서를 저장한 뒤 다시 열면 암호를 입력해야만 열려요. 같은 암호로 잠그고 여니 대칭 암호화예요.</li></ol>
+    </details>
+  </div>
+  <div class="ec-ck"><b>✅ 성취도 평가</b><div id="ck4"></div></div>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 압축과 암호화 정리 -->
+<section class="page" data-name="압축과 암호화 정리" data-acc="#0f8fa6">
+  <div class="head"><div class="num">06</div><div><h2>압축과 암호화 정리 · 데이터 관리는 똑똑하게!</h2><p>교과서 63~65쪽 · 맞춤 활동, 개념 정리하기, 학업 성취도 점검, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>압축은 데이터를 <b>효율적으로</b>, 암호화는 <b>안전하게</b> 관리하는 방법이에요. 두 가지를 함께 써 보고, 스스로 점검한 뒤 나에게 맞는 <b>보충</b> 또는 <b>심화</b> 활동을 골라요.</span></div>
+  <p class="note" style="margin-top:-6px">⏳ 이 화면의 활동은 <b>시간이 되는 만큼</b> 해요. 남은 시간이 적으면 2번(암호화하고 압축하기)과 개념 정리하기부터 해요.</p>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#2f6fd0">지식·이해</span> 1. 동아리 누리집에 무엇을 써야 할까?</h3>
+    <div class="memo"><label>동아리 소개 영상과 회원 연락처 명단을 동아리 누리집에 올리려고 해요. 영상에는 <b>압축</b>을, 명단에는 <b>암호화</b>를 쓰려는 까닭을 각각 적어 보세요.</label><textarea data-memo="whyBoth" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#1f9d74">과정·기능</span> 2. 암호화하고 압축해 보기</h3>
+    <p class="muted" style="margin-top:0">03 화면의 전치 암호 방법과 지난 시간의 사전 압축 방법을 떠올리며 차례대로 풀어요.</p>
+    <div class="ec-cond"><div><b>조건</b><ul><li>단순 전치 암호로 암호화하며 키는 <b class="mono">4132</b>예요.</li><li>암호문을 사전 압축하며, 암호문에 <b>등장하는 순서대로</b> 사전에 코드를 붙여요. 문자 종류가 7가지를 넘으므로 코드는 0001, 0010, 0011 …처럼 <b>4비트</b>예요.</li></ul></div><div><b>원본 데이터</b><span class="mono big">BLUEBERRYJAM</span><small>12bytes</small></div></div>
+    <div id="mixLab"></div>
+  </div>
+  <div class="card">
+    <h3><span class="ec-tag" style="--k:#d64535">가치·태도</span> 3. 우리 반 데이터 다이어트</h3>
+    <div class="memo"><label>우리 반이 한 달 동안 쓰는 데이터(영상 보기, 사진 백업, 단체 대화방 파일 등)를 떠올려 봐요. 데이터 센터의 전기 사용과 탄소 배출을 줄이려면 우리 반이 함께 실천할 수 있는 일 두 가지를 적어 보세요.</label>
+      <input type="text" data-memo="ecoAct1" placeholder="실천 방법 1" aria-label="실천 방법 1"><div class="saved"></div>
+      <input type="text" data-memo="ecoAct2" placeholder="실천 방법 2" aria-label="실천 방법 2" style="margin-top:6px"><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="ec-blanks">
+      <li>친구에게 쪽지를 보내기 전에 약속한 규칙으로 읽을 수 없게 바꾸는 과정은 <button class="ec-blank" data-a="암호화">?</button>, 받은 친구가 같은 규칙으로 원래 문장을 되살리는 과정은 <button class="ec-blank" data-a="복호화">?</button>이다.</li>
+      <li>알파벳을 정해진 칸 수만큼 밀어 다른 글자로 바꾸면 <button class="ec-blank" data-a="치환형 암호화">?</button>, 글자는 그대로 두고 자리만 뒤섞으면 <button class="ec-blank" data-a="전치형 암호화">?</button>이다.</li>
+      <li>회원 가입 때 받은 비밀번호를 되돌릴 수 없는 값으로 바꿔 저장해 두고, 로그인할 때 그 값끼리 비교하는 것은 <button class="ec-blank" data-a="단방향 암호화">?</button>이다.</li>
+      <li>은행 OTP처럼 서버와 기기가 같은 키를 나눠 가지면 <button class="ec-blank" data-a="대칭 암호화">?</button>, 공동 인증서처럼 짝을 이루는 개인키와 공개키를 쓰면 <button class="ec-blank" data-a="비대칭 암호화">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 학업 성취도 점검</h3>
+    <p style="margin-top:0">평가 기준을 읽고, 할 수 있게 된 것을 골라요.</p>
+    <div id="selfCheck"></div>
+    <p class="muted" style="font-size:.9rem">모두 고를 수 있으면 <b>심화</b>, 고르지 못한 것이 있으면 <b>보충</b> 활동을 해 봐요.</p>
+    <div class="vote" id="extraVote"></div>
+    <div class="ec-extra" id="extraBasic">
+      <p><b>보충</b> 짝에게만 읽히는 비밀 쪽지를 보내려고 해요. 한글 문장에 쓸 <b>나만의 암호 규칙</b>을 정해 문장을 바꿔 보고, 규칙을 모르는 친구가 쉽게 풀 수 있는지 확인해 봐요. <small class="muted">글자를 다른 글자로 바꾸는 치환형, 글자의 자리를 바꾸는 전치형 가운데 하나를 골라 규칙을 세워 봐요.</small></p>
+      <div class="memo">
+        <label>나의 암호화 규칙</label><input type="text" data-memo="myRule">
+        <label>원본 문장</label><input type="text" data-memo="myPlain">
+        <label>암호 문장</label><input type="text" data-memo="myCipher"><div class="saved"></div>
+      </div>
+    </div>
+    <div class="ec-extra" id="extraDeep">
+      <p><b>심화</b> 영상 통화나 동영상 서비스에서 화질은 지키면서 데이터를 덜 쓰는 기술이 계속 나오고 있어요. 음성·영상 데이터를 디지털로 바꿔 저장하고 재생하는 소프트웨어나 하드웨어를 <b>코덱</b>(codec)이라고 해요. 인공지능을 쓰는 압축 기술을 하나 찾아, 원래 쓰던 코덱과 비교해 나아진 점을 정리해 봐요. <small class="muted">그 기술이 데이터 센터의 전기 사용에 어떤 도움이 될지도 생각해 봐요.</small></p>
+      <div class="memo">
+        <label>조사한 압축 기술</label><input type="text" data-memo="aiTech">
+        <label>원래 쓰던 코덱과 비교해 나아진 점</label><textarea data-memo="aiGood" rows="2"></textarea><div class="saved"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">07</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#1f9d74"><b>암호화</b>는 평문을 암호키로 읽기 어려운 암호문으로 바꾸는 과정이고, <b>복호화</b>는 암호문을 평문으로 해독하는 과정이다. 암호화는 기밀성·무결성·인증을 지킨다.</div>
+    <div style="--k:#9b4fc4">옛날 암호에는 문자를 다른 문자로 바꾸는 <b>치환형</b>(카이사르 암호)과 문자의 순서를 바꾸는 <b>전치형</b>(단순 전치, 스키테일)이 있다. 키를 모르는 사람도 풀 수 있어 보안에 취약하다.</div>
+    <div style="--k:#d64535">지금은 복호화가 불가능한 <b>단방향 암호화</b>(해시 함수)로 무결성·인증을 확인하고, 같은 키를 쓰는 <b>대칭 암호화</b>(빠르지만 키 배송 문제)와 공개키·개인키를 쓰는 <b>비대칭 암호화</b>(키 교환이 쉽지만 느림)로 데이터를 주고받는다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">「디지털 데이터의 압축과 암호화」를 배운 뒤, 핵심 질문의 답과 새롭게 알게 된 점을 적어요. 처음 생각과 비교해 보세요.</p>
+    <div class="ec-prev" id="prevIdea"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 데이터를 효율적으로 관리하고 보호하는 방법은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="7"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>카이사르 암호와 전치 암호를 직접 만들고 풀어 보았습니다. <b>치환형 암호화와 전치형 암호화가 어떻게 다른지</b> 내가 해 본 예로 설명하고, 두 방법의 한계를 쓰세요.</li>
+      <li>해시 함수 실험실에서 메시지를 조금 고쳤을 때 <b>해시값이 어떻게 달라졌는지</b> 쓰고, 이 특징 때문에 웹 사이트가 비밀번호를 해시값으로 저장하면 어떤 점이 좋은지 설명하세요.</li>
+      <li>대칭 암호화와 비대칭 암호화의 키 흐름을 따라가 보았습니다. 두 방식에서 <b>암호화와 복호화에 쓰는 키</b>가 어떻게 다른지 쓰고, 대칭 암호화의 키 배송 문제를 비대칭 암호화가 어떻게 해결하는지 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
