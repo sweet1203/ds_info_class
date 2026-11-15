@@ -1,0 +1,393 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>네트워크를 활용한<br>스마트 조명은 어떻게 만들까?</h1>
+      <div class="story"><b>해외여행 중에 집 조명이 켜져 있다면?</b><br>은서네는 해외여행 중에 한국 집 조명을 끄지 않고 왔다는 것을 뒤늦게 알았어요. 다행히 은서는 조명을 제어할 수 있는 <b>사물 인터넷 시스템</b>을 만들어 두었어요. 은서는 멀리서 어떻게 조명을 끌 수 있을까요?</div>
+      <p>오늘은 먼저 <b>인체 감지 센서</b>로 사람이 오면 저절로 켜지는 조명을 직접 만들어요. 그다음 교과서의 <b>스마트폰 앱으로 켜는 코드</b>를 읽고 동작을 예측하며, 무엇이 있어야 <b>사물 인터넷 시스템</b>이 되는지 비교해요.</p>
+      <ol>
+        <li>인체 감지 스마트 조명</li><li>앱으로 켜기: 코드 읽기</li><li>버튼 vs 인터넷</li>
+        <li>사물 인터넷 시스템 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🚶 → 💡</i><div><b>인체 감지 스마트 조명</b><small>센서 값에 따라 LED 켜고 끄기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>📱 ☁️</i><div><b>앱으로 켜는 코드 읽기</b><small>와이파이 · 플랫폼 · 앱</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🔘 vs 🌐</i><div><b>무엇이 다를까?</b><small>네트워크에 연결되어 있는가</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>D N P C</i><div><b>사물 인터넷 시스템 정리</b><small>개념 · 구성 · 동작 과정</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>지난 시간 회로에서 <b>버튼만 빼고 인체 감지 센서를 더해</b> 스마트 조명을 완성합니다. 교과서의 ESP32 장치 프로그램을 읽으며 <b>와이파이 · 플랫폼 · 앱</b>이 어떻게 이어지는지 예측하고, 우리 조명과 비교해 <b>사물 인터넷 시스템의 개념과 구성</b>을 정리합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo"><label>은서는 해외에서 집 조명을 어떻게 끌 수 있을까요? <small>떠오르는 대로</small></label><textarea data-memo="remotePlan" rows="2"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+          <li><b>오늘의 질문</b> · 네트워크를 활용한 스마트 조명은 어떻게 설계하고 구현할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>문제 해결에 적합한 피지컬 컴퓨팅 시스템 장치를 선택할 수 있다.</li>
+          <li>사물 인터넷 시스템을 설계할 수 있다.</li>
+          <li>네트워크를 활용한 사물 인터넷 시스템 구성을 설명할 수 있다.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🧰 오늘의 준비물 <span class="muted" style="font-weight:400;font-size:.88rem">(1인 1키트)</span></h3>
+      <div class="d2-kit"><span>라즈베리파이 피코 H</span><span>USB 케이블</span><span>브레드보드</span><span>PIR 센서(인체 감지 센서)</span><span>LED 1개 (지난 시간 그대로)</span><span>저항 1개 (220Ω)</span><span>점퍼선</span><span>암-수 점퍼선 3개 (PIR 연결용)</span><span>종이컵 1개</span><span>부저 (여유가 있으면)</span></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 인체 감지 스마트 조명부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 인체 감지 스마트 조명 -->
+<section class="page" data-name="인체 감지 스마트 조명" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>인체 감지 센서로 켜지는 스마트 조명</h2><p>교과서 35·37쪽 · 인체 감지 센서를 활용한 전등 켜기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>지난 시간 회로에서 <b>버튼만 빼고 인체 감지 센서를 더하면</b> 돼요. LED는 그대로 GP14에 두어요. 코드도 버튼 자리에 센서가 들어갈 뿐이에요. 센서가 사람의 움직임을 감지하면 <b>1</b>, 없으면 <b>0</b>을 보내고, 마이크로컨트롤러는 그 값에 따라 LED를 켜고 꺼요.</span></div>
+  <div class="card">
+    <h3>🔧 회로 연결하기</h3>
+    <div class="grid2 d2-g">
+      <div class="d2-cir" id="cirPir"></div>
+      <div>
+        <div class="d2-tw"><table class="tbl d2-pin">
+          <tr><th class="l">부품 핀</th><th class="l">피코 연결</th><th class="l">교과서 ESP32</th></tr>
+          <tr><td>센서 <b>VCC</b> (전압)</td><td><b>VBUS</b> (보드 핀 40)</td><td>VIN</td></tr>
+          <tr><td>센서 <b>OUT</b> (신호)</td><td><b>GP28</b> (보드 핀 34)</td><td>D13</td></tr>
+          <tr><td>센서 <b>GND</b> (접지)</td><td><b>GND</b> (보드 핀 28 등 아무 GND)</td><td>GND</td></tr>
+          <tr><td>LED 긴 다리(+)</td><td>저항(220Ω)을 거쳐 <b>GP14</b> (보드 핀 19) · 그대로</td><td>D2</td></tr>
+          <tr><td>LED 짧은 다리(−)</td><td><b>GND</b> (보드 핀 18) · 그대로</td><td>GND</td></tr>
+        </table></div>
+        <div class="callout d2-big">🔎 <b>센서 기판에 적힌 글자(VCC · OUT · GND)를 보고 연결해요.</b> 그림의 순서나 선 색이 아니라 <b>글자가 기준</b>이에요. 센서마다 핀 순서가 다를 수 있어요. 교과서는 같은 핀을 V · S · G로 적어요.</div>
+        <p class="note">LED와 저항은 지난 시간 자리(GP14) 그대로 두고, <b>버튼과 버튼 선만 빼요.</b></p>
+        <div class="callout d2-warn">⚠️ <b>VBUS(핀 40)는 5V예요.</b> 이 선은 센서 VCC에만 연결하고 다른 GP 핀에 닿지 않게 해요. 선을 바꿔 꽂을 때는 <b>USB를 뽑아요</b>.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card d2-lab">
+    <h3>🧪 실습 ① 사람이 움직이면 LED 켜기</h3>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codePir">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">PIR = Pin(28, Pin.IN, Pin.PULL_DOWN)</span>
+<span class="l">while True:</span>
+<span class="l">    if PIR.value() == 1:</span>
+<span class="l">        LED.value(1)</span>
+<span class="l">    else:</span>
+<span class="l">        LED.value(0)</span>
+<span class="l">    time.sleep(0.2)</span>
+</pre>
+      </div>
+      <div>
+        <table class="tbl d2-ex">
+          <tr><td><b>3</b></td><td>14번 핀을 LED의 <b>출력</b>으로 정해요. 지난 시간과 같아요.</td></tr>
+          <tr><td><b>4</b></td><td>28번 핀을 인체 감지 센서의 <b>입력</b>으로 정해요.</td></tr>
+          <tr><td><b>6</b></td><td>센서 값이 1이면(움직임을 감지하면)</td></tr>
+          <tr><td><b>7</b></td><td>LED 켜기</td></tr>
+          <tr><td><b>8·9</b></td><td>움직임이 감지되지 않으면 LED 끄기</td></tr>
+          <tr><td><b>10</b></td><td>0.2초 쉬고 다시 확인해요.</td></tr>
+        </table>
+        <p class="note">교과서 37쪽 코드와 같은 순서예요. 주로 달라진 것은 <b>핀 번호</b>(ESP32 2번·13번 → 피코 14번·28번)이고, 그 밖에 4줄의 <span class="mono">Pin.PULL_DOWN</span>, 10줄의 쉬는 시간이에요.</p>
+      </div>
+    </div>
+    <h4 style="margin-top:12px">▶ 화면에서 먼저 움직여 보기</h4>
+    <div class="d2-room" id="pirRoom">
+      <div class="d2-lane"><span class="d2-man" id="pirMan">🚶</span><span class="d2-eye" title="인체 감지 센서">◉</span></div>
+      <div class="d2-sim">
+        <div class="d2-led" id="pirLed"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="bulb" d="M14 52V28a16 16 0 0 1 32 0v24z"/><rect x="10" y="52" width="40" height="6" rx="2" class="rim"/><line x1="24" y1="58" x2="24" y2="78" class="leg"/><line x1="36" y1="58" x2="36" y2="72" class="leg"/></svg><span class="d2-buz" id="pirBuz">🔔</span></div>
+        <div class="d2-ctl">
+          <div class="row"><button class="btn sm" id="pirWalk">🚶 센서 앞 지나가기</button><label class="d2-ck"><input type="checkbox" id="pirBuzOn"> 부저도 울리기</label></div>
+          <div class="ctrl" style="margin-top:8px"><label for="pirHold">유지 시간</label><input type="range" id="pirHold" min="1" max="8" step="1" value="3"><output id="pirHoldV">3초</output></div>
+          <div class="d2-bar"><i id="pirBar"></i></div>
+          <div class="d2-vals"><span>PIR.value() = <b id="pirVal">0</b></span><span>LED.value = <b id="pirLedVal">0</b></span></div>
+          <div class="d2-msg" id="pirMsg">센서 앞을 지나가 보세요. 사람이 지나간 뒤에도 <b>감지 유지 시간</b> 동안은 값이 1로 남아요.</div>
+        </div>
+      </div>
+      <p class="note">실제 센서의 감지 유지 시간은 가변 저항으로 0.3초에서 5분까지 조절해요. 화면에서는 1~8초로 줄여서 보여 줘요.</p>
+    </div>
+    <ol class="d2-do">
+      <li>버튼을 빼고 센서를 연결한 뒤, 코드를 입력해 실행해요.</li>
+      <li><b>종이컵으로 센서를 덮고</b> 컵 안에 손만 넣었다 빼 봐요. 주변 친구들의 움직임에 반응하지 않게 하려는 거예요. LED가 언제 켜지고 언제 꺼지나요?</li>
+      <li>손을 뺀 뒤 LED가 꺼질 때까지 몇 초쯤 걸리는지 재 봐요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkPir"></div>
+      <label>센서 값(0·1)에 따라 LED가 어떻게 동작했나요? 손을 치운 뒤 꺼질 때까지 걸린 시간도 적어요.</label>
+      <textarea data-memo="pirMemo" rows="3" placeholder="예: 손을 흔들면 바로 켜지고, 치운 뒤 약 ○초 지나서 꺼졌다. 6줄의 if 문이 ..."></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d2-help">
+    <summary>🆘 센서가 이상하게 동작할 때 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>전원을 넣자마자 제멋대로 켜졌다 꺼져요</b> → 센서는 전원을 넣은 뒤 1분 가까이 안정되는 시간이 필요해요. 잠시 기다려요.</li>
+      <li><b>한 번 켜지면 한참 안 꺼져요</b> → 감지 유지 시간 가변 저항이 길게 맞춰져 있을 수 있어요. <b>가장 짧게(최소로)</b> 돌려 두어요. 선생님이 미리 맞춰 두었을 수도 있어요.</li>
+      <li><b>LED가 꺼진 직후에는 손을 넣어도 반응이 없어요</b> → 센서는 꺼진 직후 몇 초 동안 다시 감지하지 않아요. 잠깐 기다렸다가 다시 해 봐요.</li>
+      <li><b>아무도 없는데 자꾸 켜져요</b> → 주변 친구들의 움직임을 감지한 거예요. 종이컵으로 센서를 덮고 손만 넣어 봐요.</li>
+      <li><b>가까이 가도 반응이 없어요</b> → 기판 글자를 다시 봐요. VCC가 VBUS(보드 핀 40), OUT이 GP28(보드 핀 34)인지, 코드의 숫자가 28인지 확인해요.</li>
+      <li><b>LED만 안 켜져요</b> → LED가 GP14(보드 핀 19)에 그대로 있는지, 3줄의 숫자가 14인지 확인해요.</li>
+    </ul>
+  </details>
+  <details class="card d2-more">
+    <summary>➕ 여유가 있으면: 부저 더하기 (눌러서 펼치기)</summary>
+    <p style="margin-top:0"><b>먼저 지난 시간의 버튼과 3V3 선을 뺐는지 확인해요.</b> 사람이 처음 감지되는 순간 <b>부저</b>가 「삑」 한 번 울리게 해 봐요. 부저도 결과를 내보내는 <b>출력 장치</b>예요. 버튼이 있던 <b>GP15</b> 자리를 써요.</p>
+    <div class="grid2 d2-g">
+      <div class="d2-cir" id="cirBuz"></div>
+      <div>
+        <table class="tbl d2-pin">
+          <tr><th class="l">부품</th><th class="l">피코 연결</th></tr>
+          <tr><td>부저 빨간 선(+)</td><td><b>GP15</b> (보드 핀 20)</td></tr>
+          <tr><td>부저 검은 선(−)</td><td><b>GND</b></td></tr>
+        </table>
+<pre class="code" id="codeBuz">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">PIR = Pin(28, Pin.IN, Pin.PULL_DOWN)</span>
+<span class="l on">BUZ = Pin(15, Pin.OUT)</span>
+<span class="l">while True:</span>
+<span class="l">    if PIR.value() == 1:</span>
+<span class="l">        LED.value(1)</span>
+<span class="l on">        BUZ.value(1)</span>
+<span class="l on">        time.sleep(0.1)</span>
+<span class="l on">        BUZ.value(0)</span>
+<span class="l on">        while PIR.value() == 1:</span>
+<span class="l on">            time.sleep(0.2)</span>
+<span class="l">    else:</span>
+<span class="l">        LED.value(0)</span>
+<span class="l">    time.sleep(0.2)</span>
+</pre>
+        <p class="note">색칠한 줄(5줄, 9~13줄)이 새로 넣는 줄이에요. 9~11줄에서 0.1초 동안 「삑」 울리고, 12~13줄은 센서 값이 0으로 돌아갈 때까지 기다려요. 그래서 사람이 계속 있어도 부저는 처음 한 번만 울려요.</p>
+      </div>
+    </div>
+  </details>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 앱으로 켜기: 코드 읽기 -->
+<section class="page" data-name="앱으로 켜기" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>스마트폰 앱으로 켜기: 코드 읽고 예측하기</h2><p>교과서 38~39쪽 · 사물 인터넷 시스템 설계와 구현</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>교과서에서는 와이파이가 있는 ESP32를 <b>인터넷에 연결</b>하고, <b>Blynk</b>라는 사물 인터넷 플랫폼과 스마트폰 앱을 이용해 멀리서 LED를 켜요. 우리 피코 H에는 와이파이가 없으니, 오늘은 이 코드를 <b>읽고 동작을 예측</b>해 봐요.</span></div>
+  <div class="card">
+    <h3>🗺️ 사물 인터넷 시스템 설계 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅰ-14)</span></h3>
+    <div class="d2-dnpc">
+      <div style="--k:#2f6fd0"><b>D</b><span>ESP32</span><small>디바이스</small></div><i>N<small>네트워크</small></i>
+      <div style="--k:#9b4fc4"><b>P</b><span>Blynk</span><small>플랫폼</small></div><i>N<small>네트워크</small></i>
+      <div style="--k:#e0702b"><b>C</b><span>Blynk 앱</span><small>서비스</small></div>
+    </div>
+    <p class="note">ESP32에 장치 프로그램을 넣고 Blynk 앱으로 접속하면 전 세계 어디서든 통신과 제어가 가능해요. 플랫폼 쪽은 <b>계정 만들기 → 템플릿 만들기 → 데이터스트림(Virtual Pin) 만들기 → 장치 추가</b> 순서로 준비해요.</p>
+  </div>
+  <div class="card">
+    <h3>📖 교과서의 장치 프로그램 읽기 <span class="muted" style="font-weight:400;font-size:.88rem">(묶음을 눌러 보세요)</span></h3>
+    <div class="grid2 d2-g2">
+      <div>
+<pre class="code d2-long" id="codeBlynk">
+<span class="l">import BlynkLib</span>
+<span class="l">import network</span>
+<span class="l">from machine import Pin</span>
+<span class="l">WIFI_SSID = 'XXX'</span>
+<span class="l">WIFI_PASS = 'XXXXXX'</span>
+<span class="l">BLYNK_AUTH = 'XXXXXXXXX'</span>
+<span class="l">wifi = network.WLAN(network.STA_IF)</span>
+<span class="l">if not wifi.isconnected():</span>
+<span class="l">    print('Connecting to WiFi...')</span>
+<span class="l">    wifi.active(True)</span>
+<span class="l">    wifi.connect(WIFI_SSID, WIFI_PASS)</span>
+<span class="l">    while not wifi.isconnected():</span>
+<span class="l">        pass</span>
+<span class="l">print('IP:', wifi.ifconfig()[0])</span>
+<span class="l">blynk = BlynkLib.Blynk(BLYNK_AUTH)</span>
+<span class="l">ledPin = Pin(2, Pin.OUT)</span>
+<span class="l">@blynk.on('connected')</span>
+<span class="l">def blynk_connected(ping):</span>
+<span class="l">    print('Blynk ready. Ping:', ping, 'ms')</span>
+<span class="l">@blynk.on('disconnected')</span>
+<span class="l">def blynk_disconnected():</span>
+<span class="l">    print('Blynk disconnected')</span>
+<span class="l">@blynk.on('V2')</span>
+<span class="l">def v2_write_handler(value):</span>
+<span class="l">    v2_pin_value = int(value[0])</span>
+<span class="l">    ledPin.value(v2_pin_value)</span>
+<span class="l">while True:</span>
+<span class="l">    blynk.run()</span>
+</pre>
+        <p class="note">읽기만 해요. 직접 입력하지 않아요. 4~6줄의 XXX에는 와이파이 이름·비밀번호, Blynk 인증 키를 넣어요.</p>
+      </div>
+      <div>
+        <div class="d2-grp" id="grpBtns"></div>
+        <div class="d2-msg" id="grpView"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📱 화면에서 앱으로 켜 보기</h3>
+    <p class="muted" style="margin-top:0">보드와 와이파이 상태를 바꿔 가며 앱의 ON·OFF를 눌러 보세요. 명령이 어디까지 가는지 확인해요.</p>
+    <div class="row" style="gap:14px">
+      <div class="row"><b style="font-size:.9rem">보드</b><div class="chips" id="netBoard" style="margin:0"></div></div>
+      <label class="d2-ck"><input type="checkbox" id="netWifi" checked> 와이파이 연결</label>
+    </div>
+    <div class="d2-net" id="netFlow">
+      <div class="nd" data-s="0"><i id="netLed">💡</i><b id="netBoardName">ESP32</b><small>디바이스(D)</small></div>
+      <div class="nl" data-s="1"><span></span><small>네트워크</small></div>
+      <div class="nd" data-s="2"><i>☁️</i><b>Blynk</b><small>플랫폼(P)</small></div>
+      <div class="nl" data-s="3"><span></span><small>네트워크</small></div>
+      <div class="nd" data-s="4"><i>📱</i><b>Blynk 앱</b><small>서비스(C)</small><div class="row" style="justify-content:center;margin-top:6px"><button class="btn sm" id="netOn">ON</button><button class="btn sm ghost" id="netOff">OFF</button></div></div>
+    </div>
+    <div class="d2-msg" id="netMsg">앱의 ON을 눌러 보세요.</div>
+  </div>
+  <div class="card">
+    <h3>🔮 동작 예측하기</h3>
+    <p class="muted" style="margin-top:0">코드를 보고 먼저 내 예측을 적은 다음, 「확인」을 펼쳐 비교해요.</p>
+    <ol class="d2-pred">
+      <li>앱에서 <b>ON</b>을 고르면 25줄의 <span class="mono">v2_pin_value</span>에는 어떤 값이 들어가고, LED는 어떻게 될까?
+        <details><summary>확인</summary>앱의 ON은 데이터스트림 V2에 1을 보내요. 그래서 <span class="mono">v2_pin_value</span>는 1이 되고, 26줄에서 <span class="mono">ledPin.value(1)</span>이 되어 LED가 켜져요. OFF면 0이 들어가 꺼져요.</details></li>
+      <li>5줄의 와이파이 비밀번호를 <b>잘못</b> 넣고 실행하면 어떻게 될까?
+        <details><summary>확인</summary>12~13줄은 「연결되지 않은 동안 계속 기다리기」예요. 연결이 안 되니 아래 줄로 넘어가지 못하고, Blynk와도 연결되지 않아 앱으로 LED를 켤 수 없어요.</details></li>
+      <li>이 코드를 우리 <b>피코 H</b>에 그대로 넣으면 어떻게 될까?
+        <details><summary>확인</summary><b>1줄 <span class="mono">import BlynkLib</span>부터 오류</b>가 나요. 우리 피코에는 Blynk 라이브러리가 설치되어 있지 않거든요. 설치하더라도 피코 H에는 와이파이 기능이 없어서 2·7줄의 와이파이(network) 부분도 쓸 수 없을 거예요. 핀 번호만 바꿔서는 해결되지 않고, 네트워크에 연결할 수 있는 보드가 있어야 해요.</details></li>
+    </ol>
+    <div class="memo"><label>나의 예측 <small>세 질문에 대한 내 생각을 짧게</small></label><textarea data-memo="predict" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 버튼 vs 인터넷 -->
+<section class="page" data-name="버튼 vs 인터넷" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>버튼으로 켜기 vs 인터넷으로 켜기</h2><p>교과서 24·26~27·37~39쪽 · 무엇이 있어야 사물 인터넷 시스템일까?</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>센서와 마이크로컨트롤러로 만든 조명은 <b>사물 인터넷 장치</b>를 만드는 첫걸음이에요. <b>네트워크에 연결되어 정보를 주고받아야</b> 비로소 사물 인터넷 시스템이 돼요.</span></div>
+  <div class="card">
+    <h3>📌 사물 인터넷 시스템이란? <span class="muted" style="font-weight:400;font-size:.88rem">(24쪽)</span></h3>
+    <div class="callout" style="margin-top:4px">센서와 <b>통신 기능</b>을 내장한 각종 사물들이 인터넷을 비롯한 <b>통신망에 연결되어 정보를 주고받는</b> 시스템</div>
+    <div class="cards4">
+      <div class="kc" style="--k:#2f6fd0"><h4>D 디바이스</h4><p>센서, 액추에이터, 통신 모듈과 이것을 제어하는 마이크로컨트롤러 등이 포함된 장치</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>N 네트워크</h4><p>유무선 통신으로 사물들을 연결해 데이터를 전송하는 매개체</p></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>P 플랫폼</h4><p>사용자와 사물 사이에서 데이터를 저장·관리·분석하는 중계자</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>C 서비스</h4><p>분석한 결과를 사용자에게 맞춤형으로 제공</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>⚖️ 세 가지 조명 비교하기</h3>
+    <div class="d2-tw"><table class="tbl d2-cmp">
+      <tr><th class="l"></th><th class="l">🔘 버튼으로 켜기<br><small>지난 시간 · 피코 H</small></th><th class="l">🚶 센서로 켜기<br><small>오늘 실습 · 피코 H</small></th><th class="l">📱 앱으로 켜기<br><small>교과서 · ESP32</small></th></tr>
+      <tr><td><b>명령은 어디서?</b></td><td>바로 옆 버튼</td><td>바로 앞 사람의 움직임</td><td>멀리 있는 스마트폰 앱</td></tr>
+      <tr><td><b>네트워크 연결</b></td><td>없음</td><td>없음</td><td>와이파이로 인터넷에 연결</td></tr>
+      <tr><td><b>멀리서 끄기</b></td><td>할 수 없음</td><td>할 수 없음</td><td>어디서든 가능</td></tr>
+      <tr><td><b>있는 구성 요소</b></td><td>D의 일부<br><small>센서·출력 장치·마이크로컨트롤러, <b>통신 모듈 없음</b></small></td><td>D의 일부<br><small>센서·출력 장치·마이크로컨트롤러, <b>통신 모듈 없음</b></small></td><td>D · N · P · C</td></tr>
+    </table></div>
+  </div>
+  <div class="card">
+    <h3>🗳️ 오늘 만든 피코 스마트 조명은 사물 인터넷 시스템일까?</h3>
+    <div class="vote" id="iotVote"></div>
+    <div class="reveal" id="iotReveal">
+      <div class="callout">교과서의 정의로 보면 <b>아직 아니에요.</b> 디바이스(D)에 들어가는 것 가운데 <b>센서·출력 장치·마이크로컨트롤러는 있지만 통신 모듈이 없어서</b>, <b>통신망에 연결되어 정보를 주고받지 못해요.</b> 교과서도 「센서와 마이크로컨트롤러를 사용하여 사물 인터넷 장치를 개발할 수 있다」고 말해요. 통신 기능을 갖추고 네트워크(N)로 플랫폼(P)과 서비스(C)에 이어질 때 사물 인터넷 시스템이 돼요.</div>
+    </div>
+    <div class="memo"><label>우리 피코 스마트 조명을 사물 인터넷 시스템으로 만들려면 무엇을 더해야 할까요? 그러면 어떤 일을 할 수 있게 될까요?</label><textarea data-memo="cmpWhy" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 사물 인터넷 정리 -->
+<section class="page" data-name="사물 인터넷 정리" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>사물 인터넷 시스템 정리</h2><p>교과서 40~41쪽 · 우리의 일상 속 사물 인터넷 시스템</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>지금까지 배운 사물 인터넷 시스템의 <b>개념 · 구성 · 동작 과정</b>을 내 말로 정리하는 시간이에요. 주변에서 쓰는 시스템 하나를 골라 동작 과정을 설계해 봐요.</span></div>
+  <div class="card">
+    <h3>📘 지식·이해 · 내 말로 정리하기</h3>
+    <div class="memo">
+      <label>사물 인터넷 시스템이란? 구성 요소는? <small>교과서 문장을 옮기지 말고 내 말로</small></label>
+      <textarea data-memo="sumDef" rows="3"></textarea><div class="saved"></div>
+    </div>
+    <p style="margin:12px 0 4px;font-weight:700;font-size:.93rem">동작 원리 확인하기: 교실 화분 알림 시스템 <span class="muted" style="font-weight:400">(빈칸을 눌러 확인)</span></p>
+    <ol class="d2-steps">
+      <li>화분의 토양 수분 센서가 10분마다 흙의 수분을 잰다. → <button class="d2-blank" data-a="데이터 수집">?</button></li>
+      <li>잰 값을 교실 와이파이로 서버에 보낸다. → <button class="d2-blank" data-a="데이터 전달">?</button></li>
+      <li>서버가 값을 쌓아 두고 물이 부족한지 판단한다. → <button class="d2-blank" data-a="데이터 처리 및 분석">?</button></li>
+      <li>환경 도우미 학생의 스마트폰에 「물 줄 시간」 알림이 뜬다. → <button class="d2-blank" data-a="서비스 제공">?</button></li>
+    </ol>
+  </div>
+  <details class="card d2-more">
+    <summary>🛠️ 과정·기능 · 우리 주변 시스템의 동작 과정 설계하기 (선택 · 눌러서 펼치기)</summary>
+    <div class="memo">
+      <label>사물 인터넷 시스템 고르기 <small>하나</small></label><div id="sysPick"></div>
+      <label>동작 과정 <small>데이터 수집 → 전달 → 처리 및 분석 → 서비스 제공 순서로</small></label>
+      <textarea data-memo="sysFlow" rows="4" placeholder="데이터 수집: &#10;데이터 전달: &#10;처리 및 분석: &#10;서비스 제공: "></textarea><div class="saved"></div>
+    </div>
+  </details>
+  <details class="card d2-more">
+    <summary>🎨 가치·태도 · 3컷 만화로 상상하기 (시간이 남으면 · 눌러서 펼치기)</summary>
+    <p style="margin-top:0">사물 인터넷의 발전으로 바뀔 나의 일상을 3컷 만화로 그린다면? 평소 불편했던 점을 떠올려 컷마다 한 줄씩 적고, 느낀 점을 덧붙여요. 그림은 공책에 그려도 좋아요.</p>
+    <div class="memo"><textarea data-memo="comic" rows="4" placeholder="1컷: &#10;2컷: &#10;3컷: &#10;느낀 점: "></textarea><div class="saved"></div></div>
+  </details>
+  <div class="card">
+    <h3>✅ 학업 성취도 점검 <span class="muted" style="font-weight:400;font-size:.88rem">(할 수 있는 것을 모두 골라요)</span></h3>
+    <div id="selfCheck"></div>
+    <p class="note">세 가지를 모두 골랐다면 아래 <b>심화</b>, 아니라면 <b>보충</b> 활동을 해 봐요.</p>
+    <details class="d2-more2">
+      <summary>선택 활동 펼치기 (41쪽)</summary>
+      <div class="cards2" style="margin-top:8px">
+        <div class="kc" style="--k:#1f9d74"><h4>보충 · 웨어러블 장치 상상하기</h4><p>신체에 착용했을 때 사람의 능력을 보완하거나 도움을 줄 수 있는 웨어러블 장치를 상상해 봐요. 웨어러블 장치는 안경, 시계, 의복 등에 센서가 달려 있어 신체 일부처럼 착용하는 사물 인터넷의 한 종류예요.</p></div>
+        <div class="kc" style="--k:#d64535"><h4>심화 · 학교 안 사물 인터넷 시스템</h4><p>사물 인터넷 기술로 학교 안에서 쓸 수 있는 시스템을 구성해 봐요. 작동 원리에 맞는 D·N·P·C 요소를 떠올려요. 다음 시간 프로젝트로 이어져요.</p></div>
+      </div>
+      <div class="memo"><label>내가 고른 활동과 생각</label><textarea data-memo="extra" rows="2"></textarea><div class="saved"></div></div>
+    </details>
+  </div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">인체 감지 센서(입력)의 값이 1이면 LED(출력)를 켜고 0이면 끄도록 <b>if 문</b>으로 제어하면 스마트 조명이 된다. 교과서 ESP32 코드와 주로 달라진 것은 <b>핀 번호</b>다.</div>
+    <div style="--k:#1f9d74">교과서의 앱 조명은 <b>디바이스(ESP32) — 네트워크 — 플랫폼(Blynk) — 네트워크 — 서비스(앱)</b>로 이어져, 멀리서도 LED를 켜고 끌 수 있다.</div>
+    <div style="--k:#e0702b">센서와 통신 기능을 가진 사물이 <b>통신망에 연결되어 정보를 주고받아야</b> 사물 인터넷 시스템이다. 동작 과정은 <b>데이터 수집 → 전달 → 처리 및 분석 → 서비스 제공</b>이다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검 · 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">「사물 인터넷 시스템」 공부를 마치며, 핵심 질문의 답과 새롭게 알게 된 점을 적어 봐요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <label style="display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px">새롭게 알게 된 점</label>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>인체 감지 센서 값(0·1)에 따른 LED 동작을 <b>내가 확인한 결과와 if 문</b>으로 설명하기</li>
+      <li>앱에서 ON을 누를 때부터 LED가 켜질 때까지 <b>D·N·P·C</b>를 거치는 과정 설명하기</li>
+      <li>버튼·센서 조명과 앱 조명을 비교해, 우리 조명이 <b>사물 인터넷 시스템이 되려면</b> 무엇이 필요한지 쓰기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

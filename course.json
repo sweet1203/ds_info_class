@@ -20,9 +20,9 @@
      "no": "01",
      "id": "u1-network",
      "title": "네트워크의 특성",
-     "pages": "10~17",
+     "pages": "8~17",
      "form": "info-u1-network",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "02",
@@ -30,7 +30,7 @@
      "title": "네트워크를 사용한 공유 · 네트워크 정리",
      "pages": "18~23",
      "form": "info-u1-network-sharing",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "03",
@@ -38,7 +38,7 @@
      "title": "사물 인터넷 시스템의 구성과 동작",
      "pages": "24~29",
      "form": "info-u1-iot-system",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "04",
@@ -46,7 +46,7 @@
      "title": "사물 인터넷 기술로 인한 변화",
      "pages": "30~33",
      "form": "info-u1-iot-change",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "05",
@@ -54,15 +54,15 @@
      "title": "사물 인터넷 시스템 설계 ① 장치 고르기와 연결",
      "pages": "34~37",
      "form": "info-u1-iot-design-1",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "06",
      "id": "u1-iot-design-2",
      "title": "사물 인터넷 시스템 설계 ② 스마트 조명 만들기 · 사물 인터넷 정리",
-     "pages": "38~41",
+     "pages": "37~41",
      "form": "info-u1-iot-design-2",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "07",
@@ -70,7 +70,7 @@
      "title": "협력적 창의·융합 프로젝트 · Ⅰ단원 정리",
      "pages": "42~45",
      "form": "info-u1-review",
-     "status": "todo"
+     "status": "ready"
     }
    ]
   },

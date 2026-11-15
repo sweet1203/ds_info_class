@@ -1,0 +1,236 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>사물 인터넷 시스템은<br>무엇으로 이루어지고<br>어떻게 움직일까?</h1>
+      <div class="story"><b>생각해 볼까요? 사물 인터넷은 어떻게 시작되었을까?</b><br>1980년대 초, 카네기 멜런 대학교의 교수와 학생들은 멀리 있는 콜라 자판기까지 갔다가 콜라가 다 떨어졌거나 시원하지 않아 헛걸음을 하곤 했어요. 그래서 <b>인터넷과 연동해 콜라의 재고와 온도를 확인할 수 있는 자판기</b>를 만들었어요. 이것이 최초의 사물 인터넷이었어요.<br>「사물 인터넷」이라는 말은 1999년 생활용품 회사에서 재고 관리를 연구하던 <b>케빈 애슈턴</b>이 만들었어요. 모든 물건에 센서를 붙여 서로 소통하게 하자는 생각이었지요.</div>
+      <p>재고 관리에서 시작한 사물 인터넷은 이제 수많은 전자 기기와 물건에 쓰여요. 오늘은 사물 인터넷 시스템이 <b>무엇으로 이루어져 있고</b>, <b>어떤 순서로 움직이는지</b> 직접 나누고 맞춰 보며 알아봐요.</p>
+      <ol>
+        <li>사물 인터넷이란 무엇일까?</li><li>무엇으로 구성되어 있을까?</li><li>동작 원리는 어떻게 될까?</li>
+        <li>함께 해결하기 · 편리한 사물 인터넷</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🥤</i><div><b>콜라 자판기에서 시작</b><small>재고와 온도를 인터넷으로 확인</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🚗</i><div><b>사물 인터넷이란?</b><small>센서와 통신 기능을 단 사물들이 정보를 주고받아요</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧩</i><div><b>D · N · P · C</b><small>디바이스 · 네트워크 · 플랫폼 · 서비스</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🪴</i><div><b>스마트 화분의 동작</b><small>수집 → 전달 → 처리·분석 → 서비스</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p><b>사물 인터넷</b>의 뜻을 하이패스 예로 알아보고, 사물 인터넷 시스템을 이루는 <b>디바이스(D)·네트워크(N)·플랫폼(P)·서비스(C)</b>를 스마트 홈 속 장치로 나누어 봅니다. 그리고 스마트 화분이 움직이는 순서를 맞추며 <b>동작 원리</b>를 정리하고, 내 생활의 불편함을 해결할 사물 인터넷 시스템을 구상합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">이 중단원을 다 배우고 나면 핵심 질문에 답하고 새롭게 알게 된 점을 정리해요. 지금 내 생각을 먼저 적어 두고, 배우면서 얼마나 달라지는지 비교해 봐요.</p>
+        <div class="memo"><label>집에서 스마트 키로 자동차 시동을 걸고, 스마트폰으로 로봇 청소기를 켜고, 블루투스로 연결된 스마트폰에 신호를 보내 폰을 찾을 수 있는 것은 어떤 기술 덕분일까요?</label><textarea data-memo="planGuess" rows="2" placeholder="지금 떠오르는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+          <li><b>오늘의 질문</b> · 사물 인터넷 시스템은 무엇으로 이루어져 있고, 어떤 과정으로 동작할까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">단원 목표: 사물 인터넷 시스템의 동작 원리를 분석하고 사회적, 기술적 가치를 높이는 데 활용된 사례를 탐색할 수 있다.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>사물 인터넷의 개념을 설명할 수 있다.</li>
+          <li>사물 인터넷 시스템의 구성과 동작 원리를 분석할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 사물 인터넷 · 사물 인터넷 시스템 · 사물 인터넷 구성 및 동작 원리</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 사물 인터넷이란 무엇일까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 사물 인터넷이란 -->
+<section class="page" data-name="사물 인터넷이란?" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>사물 인터넷이란 무엇일까?</h2><p>교과서 25쪽 · 사물 인터넷의 뜻과 하이패스</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>물건에 <b>센서(느끼는 부품)</b>와 <b>통신 기능(말하는 부품)</b>을 달아 주면, 물건끼리 정보를 주고받으며 <b>사람이 일일이 시키지 않아도</b> 알아서 일할 수 있어요. 이렇게 물건이 원래 하던 일보다 더 많은 일을 하게 만드는 기술이 사물 인터넷이에요.</span></div>
+  <div class="card">
+    <h3>🌐 사물 인터넷(IoT: Internet of Things)</h3>
+    <div class="callout" style="margin-top:4px">사물에 다양한 <b>센서와 통신 기능</b>을 장착하여 <b>사물 간에 정보 교류</b>가 가능하게 만든 것으로, 각각의 사물이 제공하던 것 이상의 <b>새로운 가치</b>를 제공하는 기술</div>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">📦</div><h4>사물이란?</h4><p>네트워크에 연결될 수 있는 모든 것이에요. 자동차, 집, 가전제품, 스마트폰은 물론 입고 있는 옷이나 신발도 네트워크에 연결되어 있으면 사물 인터넷 시스템을 이루는 사물이 돼요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🔄</div><h4>스스로 작동</h4><p>인터넷에 연결된 사물들은 사람이 직접 명령을 내리지 않아도 서로 정보를 주고받으며 스스로 작동할 수 있어요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🏠</div><h4>대표 사례</h4><p>스마트 홈 서비스, 자율주행 자동차, 그리고 아래의 하이패스 통행료 처리 시스템이 대표적인 예예요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🚗 하이패스는 어떻게 통행료를 낼까? <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅰ-13 · 단계를 넘겨 보세요)</span></h3>
+    <div class="hp-svg"><svg viewBox="0 0 640 200" id="hpSvg" role="img" aria-label="하이패스 통행료 처리 과정">
+      <rect x="0" y="168" width="640" height="32" fill="#cfd5dc"/>
+      <line x1="0" y1="184" x2="640" y2="184" stroke="#fff" stroke-width="3" stroke-dasharray="18 14"/>
+      <g class="gate" id="hpG1"><line x1="250" y1="168" x2="250" y2="44" stroke="#8a94a3" stroke-width="6"/><line x1="250" y1="44" x2="214" y2="44" stroke="#8a94a3" stroke-width="5"/><rect x="196" y="36" width="22" height="16" rx="3" class="ant"/>
+        <g class="wave" id="hpW1"><path d="M200 62 q8 10 0 20" /><path d="M190 58 q14 14 0 28"/><path d="M180 54 q20 18 0 36"/></g></g>
+      <g class="gate" id="hpG2"><line x1="440" y1="168" x2="440" y2="44" stroke="#8a94a3" stroke-width="6"/><line x1="440" y1="44" x2="404" y2="44" stroke="#8a94a3" stroke-width="5"/><rect x="386" y="36" width="22" height="16" rx="3" class="ant"/>
+        <g class="wave" id="hpW3"><path d="M390 62 q8 10 0 20" /><path d="M380 58 q14 14 0 28"/><path d="M370 54 q20 18 0 36"/></g></g>
+      <line x1="250" y1="44" x2="250" y2="20" stroke="#8a94a3" stroke-width="6"/><line x1="250" y1="22" x2="262" y2="22" stroke="#8a94a3" stroke-width="4"/><rect x="262" y="6" width="40" height="32" rx="4" fill="#e9ecef" stroke="#8a94a3" stroke-width="2" id="hpBox"/><rect x="269" y="14" width="26" height="8" rx="2" fill="#8a94a3"/><text x="310" y="29" class="lb" style="text-anchor:start">톨게이트 단말기</text>
+      <g id="hpCar" class="car">
+        <rect x="0" y="134" width="96" height="26" rx="10" fill="#2f6fd0"/><path d="M18 134 l12 -18 h36 l12 18z" fill="#4f8ad9"/>
+        <circle cx="22" cy="162" r="9" fill="#16202c"/><circle cx="74" cy="162" r="9" fill="#16202c"/>
+        <rect x="42" y="120" width="16" height="11" rx="2" class="unit" id="hpUnit"/>
+        <g class="wave" id="hpW2"><path d="M62 112 q-8 -10 0 -20" transform="translate(0,0)"/><path d="M70 116 q-14 -14 0 -28"/></g>
+        <text x="48" y="154" class="ct">차량 단말기</text>
+      </g>
+    </svg></div>
+    <div class="hp-msg" id="hpMsg"></div>
+    <div class="row" style="justify-content:center;margin-top:10px;gap:8px">
+      <button class="btn ghost sm" id="hpPrev">◀ 이전</button>
+      <button class="btn sm" id="hpNext">다음 단계 ▶</button>
+    </div>
+    <div class="hp-ask" id="hpAsk">
+      <b>생각해 보기</b> 이 네 단계 동안 운전자가 직접 버튼을 누르거나 명령을 내린 곳이 있었나요?
+      <button class="btn ghost sm" id="hpShow">확인하기</button>
+      <p class="reveal" id="hpAns">없어요. 차량 단말기와 톨게이트 단말기가 <b>서로 정보를 주고받으며 스스로 작동</b>해, 달리는 차 안에서 통행료가 자동으로 결제돼요. 이것이 사물 인터넷 시스템의 모습이에요.</p>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 구성 -->
+<section class="page" data-name="구성 요소" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>사물 인터넷 시스템은 무엇으로 구성되어 있을까?</h2><p>교과서 26~27쪽 · 디바이스 · 네트워크 · 플랫폼 · 서비스</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷 시스템은 네 부분이 한 팀이에요. <b>디바이스</b>가 데이터를 만들고, <b>네트워크</b>가 그 데이터를 실어 나르고, <b>플랫폼</b>이 모아서 저장·분석하고, <b>서비스</b>가 그 결과를 사용자에게 쓸모 있게 전해 줘요. 앞 글자를 따서 <b>DNPC</b>라고 기억해요.</span></div>
+  <div class="dnpc-row" aria-hidden="true">
+    <div style="--k:#e0702b"><i>D</i><b>디바이스</b><small>데이터를 생성</small></div><span>→</span>
+    <div style="--k:#d64535"><i>N</i><b>네트워크</b><small>디바이스와 플랫폼을 연결</small></div><span>→</span>
+    <div style="--k:#2f6fd0"><i>P</i><b>플랫폼</b><small>데이터를 저장·분석</small></div><span>→</span>
+    <div style="--k:#1f9d74"><i>C</i><b>서비스</b><small>결과를 사용자에게 제공</small></div>
+  </div>
+  <p class="note" style="text-align:center">서비스는 C 또는 S로 나타내요(Contents/Service).</p>
+  <div class="apps" id="dnpcBtns"></div>
+  <div class="cview" id="dnpcView"></div>
+  <div class="card" style="margin-top:18px">
+    <h3>🏠 스마트 홈 속 이것은 D · N · P · C 중 무엇일까?</h3>
+    <p class="muted" style="margin-top:0">카드에 적힌 장치나 기술이 사물 인터넷 시스템에서 <b>어떤 역할</b>을 하는지 보고 골라요. 위의 설명을 다시 봐도 괜찮아요.</p>
+    <div id="dnpcGame"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 동작 원리 -->
+<section class="page" data-name="동작 원리" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>사물 인터넷 시스템의 동작 원리는 어떻게 될까?</h2><p>교과서 28쪽 · 스마트 화분으로 보는 DNPC</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>센서가 <b>모으고</b>(데이터 수집) → 네트워크가 <b>보내고</b>(데이터 전달) → 클라우드가 <b>따져 보고</b>(데이터 처리 및 분석) → 스마트 기기로 <b>알려 줘요</b>(서비스 제공). 사용자가 명령을 내리면 이번에는 거꾸로 사물 쪽으로 전달돼 사물이 움직여요.</span></div>
+  <div class="card">
+    <h3>⚙️ 동작 원리</h3>
+    <ul class="vsteps">
+      <li><b>데이터 수집</b><p>다양한 센서나 디바이스를 통해 데이터를 수집해요.</p></li>
+      <li><b>데이터 전달</b><p>수집한 데이터를 유무선 통신 기술을 통해 클라우드로 전송해요.</p></li>
+      <li><b>데이터 처리 및 분석</b><p>클라우드에서 데이터를 저장하고, 전송된 정보를 분석하는 데이터 처리 과정을 거쳐 유용한 정보를 생산해요.</p></li>
+      <li><b>서비스 제공</b><p>생산된 정보는 다시 스마트 기기나 센서로 전달되어 사용자에게 서비스를 제공해요.</p></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>🪴 순서 맞추기: 사물 인터넷 시스템은 어떤 순서로 움직일까?</h3>
+    <p class="muted" style="margin-top:0">아래 카드 중에서 <b>먼저 일어나는 일</b>부터 차례로 눌러요. 첫 번째는 교과서의 스마트 화분, 두 번째는 같은 원리를 다른 장치에 적용해 보는 문제예요.</p>
+    <div id="orderGame"></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 -->
+<section class="page" data-name="함께 해결하기" data-acc="#d64535">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 편리한 사물 인터넷 시스템</h2><p>교과서 29쪽 · 사물 인터넷 기술을 나의 일상생활에 적용해 보자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>내 주변의 사물 인터넷을 찾아보고, 생활하며 불편했던 점을 사물 인터넷으로 해결하는 시스템을 <b>DNPC로 설계</b>해 봐요. 짝과 이야기한 뒤 적어요. 적은 내용은 마지막 질문폼의 바탕이 돼요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🔍 1. 우리 주변의 사물 인터넷 시스템</h3>
+      <div class="memo">
+        <label>내가 쓰거나 본 사물 인터넷 시스템과 그 주요 기능 <small>두 가지 이상</small></label>
+        <textarea data-memo="aroundIot" rows="3" placeholder="예: 버스 정류장 안내판 — 버스가 몇 분 뒤 도착하는지 알려 준다"></textarea><div class="saved"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>💡 2. 사물 인터넷을 적용하면 편리할 주제</h3>
+      <div class="memo">
+        <label>일상생활에서 불편했던 물건이나 상황, 그리고 사물 인터넷을 적용한 주제</label>
+        <textarea data-memo="myTopic" rows="2" placeholder="예: 급식실 줄이 얼마나 긴지 교실에서 알려 주는 안내판"></textarea><div class="saved"></div>
+        <label>이 시스템의 편리한 점 <small>관리하는 사람, 쓰는 사람 쪽에서 각각</small></label>
+        <textarea data-memo="myGood" rows="2"></textarea><div class="saved"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🧩 3. 내 주제를 DNPC로 설계하기</h3>
+    <p class="muted" style="margin-top:0">교과서는 그림으로 그려 보라고 해요. 여기서는 먼저 DNPC 칸을 채워 설계를 정리하고, 그림은 공책에 그려도 좋아요. 03의 스마트 화분 순서를 참고해요.</p>
+    <div class="memo dnpc-plan">
+      <label><i style="--k:#e0702b">D</i> 디바이스: 어떤 센서로 무엇을 감지하고, 무엇이 움직이나요?</label>
+      <textarea data-memo="planD" rows="2" placeholder="예: 인체 감지 센서로 사람의 움직임을 감지"></textarea><div class="saved"></div>
+      <label><i style="--k:#d64535">N</i> 네트워크: 어떤 통신 기술로 연결할까요? <small>여러 개 골라도 돼요</small></label>
+      <div id="planNet"></div>
+      <label><i style="--k:#2f6fd0">P</i> 플랫폼: 무엇을 저장하고, 어떻게 분석해 판단하나요?</label>
+      <textarea data-memo="planP" rows="2"></textarea><div class="saved"></div>
+      <label><i style="--k:#1f9d74">C</i> 서비스: 사용자에게 무엇을 알려 주고, 사용자는 어떤 명령을 보낼 수 있나요?</label>
+      <textarea data-memo="planC" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</p>
+    <ol class="iot-blanks">
+      <li>하이패스처럼 사람이 명령하지 않아도 사물들이 서로 정보를 주고받으며 스스로 작동하게 해 주는 기술이 <button class="blank" data-a="사물 인터넷">?</button>이다.</li>
+      <li>스마트 홈에서 기기들을 무선으로 이어 주는 와이파이는 <button class="blank" data-a="네트워크">?</button>, 거실에서 사람의 움직임을 감지하는 인체 감지 센서는 <button class="blank" data-a="디바이스">?</button>, 집 밖에서 스마트폰으로 전등을 끄게 해 주는 원격 제어는 <button class="blank" data-a="서비스">?</button>, 기기들의 데이터를 저장하고 분석하는 클라우드는 <button class="blank" data-a="플랫폼">?</button>에 해당한다.</li>
+      <li>스마트 화분에서 흙의 수분을 재는 일은 <button class="blank" data-a="데이터 수집">?</button>, 잰 값을 네트워크로 보내는 일은 <button class="blank" data-a="데이터 전달">?</button>, 클라우드가 물이 부족한지 판단하는 일은 <button class="blank" data-a="데이터 처리 및 분석">?</button>, 스마트폰에 물 줄 시기를 알려 주는 일은 <button class="blank" data-a="서비스 제공">?</button> 단계에 해당한다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">사물 인터넷의 구성과 동작 원리를 분석할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0"><b>사물 인터넷</b>은 사물에 센서와 통신 기능을 장착해 사물 간에 정보를 주고받게 하여, 사물이 하던 것 이상의 새로운 가치를 제공하는 기술이다. 연결된 사물은 사람이 직접 명령하지 않아도 스스로 작동할 수 있다.</div>
+    <div style="--k:#e0702b">사물 인터넷 시스템은 데이터를 생성하는 <b>디바이스(D)</b>, 연결하는 <b>네트워크(N)</b>, 저장·분석하는 <b>플랫폼(P)</b>, 결과를 제공하는 <b>서비스(C)</b>로 구성된다.</div>
+    <div style="--k:#1f9d74">사물 인터넷 시스템은 <b>데이터 수집 → 데이터 전달 → 데이터 처리 및 분석 → 서비스 제공</b>의 과정으로 동작하며, 사용자의 명령은 다시 사물로 전달되어 사물을 움직인다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 생각을 떠올리며, 오늘의 질문에 배운 낱말(DNPC, 동작 과정)을 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템은 무엇으로 이루어져 있고, 어떤 과정으로 동작할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>스마트 홈 속 장치·기술을 D·N·P·C로 나누며 <b>헷갈렸던 것 하나</b>를 골라, 어떤 역할을 하기 때문에 그 구성 요소인지 설명하기</li>
+      <li>스마트 화분이 물 부족을 알리고 물을 주기까지를 <b>동작 과정의 순서</b>대로 설명하고, 사용자 명령이 어느 쪽으로 전달되는지 쓰기</li>
+      <li>내가 구상한 사물 인터넷 시스템의 <b>디바이스·네트워크·플랫폼·서비스</b>와 편리한 점 쓰기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

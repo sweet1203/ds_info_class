@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사물 인터넷 기술로 인한 변화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+
+  /* 01 사례 카드 */
+  #lifeCards .tcard{height:180px}
+
+  /* 02 장단점 */
+  .pc-list{margin:6px 0 0;padding-left:18px;font-size:.92rem}
+  .pc-list li{margin:4px 0}
+  #pcVote button{font-size:1.02rem}
+
+  /* 03 스마트 시티 · 스마트팜 */
+  .cg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+  @media (max-width:900px){.cg-grid{grid-template-columns:1fr 1fr}}
+  .cg-grid>div{background:#fbfaf7;border-radius:10px;padding:8px 10px;border-top:4px solid var(--acc);font-size:.86rem;line-height:1.45}
+  .cg-grid>div i{font-style:normal;font-size:1.3rem;margin-right:4px}
+  .cg-grid>div b{font-size:.95rem}
+  .cg-grid>div span{display:block;margin-top:2px}
+  .sf-flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
+  .sf-flow>div{flex:1;min-width:150px;background:#fbfaf7;border-radius:10px;padding:8px 10px;border-left:5px solid var(--k)}
+  .sf-flow>div b{display:block}
+  .sf-flow>div span{font-size:.86rem}
+  .sf-flow>em{font-style:normal;align-self:center;font-weight:900;color:var(--muted)}
+  @media (max-width:560px){.sf-flow>em{display:none}}
+
+  /* 04 함께 해결하기 */
+  .fd-hint{background:#f4effa;border-radius:10px;padding:8px 12px;font-size:.9rem;margin-top:10px}
+  .fd-hint ul{margin:4px 0 0;padding-left:18px}
+  .fd-hint li{margin:3px 0}
+  .iot-blanks li{margin:8px 0;line-height:1.9}
+  .iot-blanks .blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .iot-blanks .blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>사물 인터넷은 나와<br>우리 사회를<br>어떻게 바꾸고 있을까?</h1>
+      <div class="story"><b>어느 가족의 아침</b><br>인공지능 스피커가 실시간 교통 상황을 보고 기상 시간을 계산해 나를 깨워요. 아침을 먹는 동안에는 내가 좋아하는 음악을 틀어 주고, 냉장고는 문을 열지 않아도 안에 있는 재료로 만들 수 있는 요리를 추천해 줘요. 남은 식료품이 부족하면 마트에 주문까지 해 줘요.</div>
+      <p>사물 인터넷 기술의 발달로 우리의 일상에는 이미 많은 변화가 생겼어요. 앞으로 <b>개인의 삶</b>과 <b>사회</b>에는 어떤 변화가 생길까요? 좋은 점만 있을까요? 오늘은 변화를 살펴보고 평가한 뒤, 우리가 어떻게 대처할지 정리해요.</p>
+      <ol>
+        <li>개인의 삶은 어떻게 달라질까?</li><li>좋은 점과 걱정되는 점</li><li>사회는 어떻게 변화할까?</li>
+        <li>함께 해결하기 · 사물 인터넷의 영향</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🏠 ⌚</i><div><b>개인의 삶</b><small>스마트 홈 · 건강 관리 · 맞춤형 콘텐츠</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>⚖️</i><div><b>좋은 점과 걱정되는 점</b><small>편리함과 안전 · 해킹, 사생활, 관계 단절</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🏙️ 🌾</i><div><b>사회의 변화</b><small>스마트 시티 · 스마트팜</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧭</i><div><b>어떻게 대처할까?</b><small>능동적으로 활용하고 개발하기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>사물 인터넷 기술로 <b>개인의 삶</b>이 어떻게 달라지는지 사례 카드로 살펴보고, 그 변화의 <b>장점과 단점</b>을 따져 내 입장을 정합니다. 이어서 <b>스마트 시티</b>와 <b>스마트팜</b>으로 사회의 변화를 알아보고, 환경·교육·예술 중 한 분야를 골라 변화와 <b>대처 방안</b>을 이야기합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">오늘 배울 사례와 비교할 수 있도록, 내 하루를 먼저 떠올려 봐요.</p>
+        <div class="memo"><label>오늘 아침부터 지금까지 내가 쓰거나 본 사물 인터넷 기기·서비스는 무엇인가요?</label><textarea data-memo="planToday" rows="2" placeholder="생각나는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">오늘 마지막에 이 질문에 내 말로 답해 봐요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>사물 인터넷 기술로 인한 개인과 사회의 변화를 평가할 수 있다.</li>
+          <li>사물 인터넷 기술로 인한 변화에 대처하는 능력을 기를 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 사물 인터넷 기술 · 개인의 변화 · 사회의 변화</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 개인의 삶은 어떻게 달라질까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 개인의 삶 -->
+<section class="page" data-name="개인의 삶" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>사물 인터넷 사용으로 개인의 삶은 어떻게 달라질까?</h2><p>교과서 30~31쪽 · 우리 가족의 하루</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷은 생활을 <b>편리하게</b> 해 주고, 예전에는 <b>불편하거나 해결하기 어려웠던 문제</b>를 푸는 데 도움을 줘요. 집 안 기기를 밖에서 조절하고, 내 몸 상태를 실시간으로 알고, 내 취향에 맞춘 콘텐츠를 받는 삶이 이미 시작됐어요.</span></div>
+  <div class="cards3">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🏠</div><h4>편리하고 안전한 집</h4><p>스마트 홈 시스템으로 가전 기기들을 어디서나 원격으로 제어하고, 방범 기능을 손쉽게 조작해 안전하게 생활해요.</p></div>
+    <div class="kc" style="--k:#d64535"><div class="ic">❤️</div><h4>나에게 맞춘 건강 관리</h4><p>실시간으로 파악되는 자신의 건강 정보와 바이오 리듬에 따라 의료 서비스를 받을 수 있어요.</p></div>
+    <div class="kc" style="--k:#9b4fc4"><div class="ic">🎵</div><h4>나에게 맞춘 콘텐츠</h4><p>자신의 취향에 맞는 사용자 맞춤형 콘텐츠를 제공받아 더 편리하고 쾌적한 삶을 누려요.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🃏 사례 카드 뒤집기 <span class="muted" style="font-weight:400;font-size:.88rem">(30~31쪽 · 카드를 눌러 보세요)</span></h3>
+    <p class="muted" style="margin-top:0">앞면의 이름을 보고 어떤 일을 할지 먼저 짐작한 뒤 뒤집어 확인해요. 내가 써 본 것, 가장 써 보고 싶은 것을 찾아봐요.</p>
+    <div class="tcards" id="lifeCards"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 장점과 단점 -->
+<section class="page" data-name="장점과 단점" data-acc="#d64535">
+  <div class="head"><div class="num">02</div><div><h2>좋은 점과 걱정되는 점</h2><p>교과서 30~31쪽 · 변화를 평가하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷 기기는 대부분 <b>인터넷에 연결</b>되어 있어요. 그래서 편리한 만큼 <b>해커의 공격 대상</b>이 될 수도 있어요. 변화를 제대로 평가하려면 좋은 점과 걱정되는 점을 함께 따져 봐야 해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#1f9d74"><div class="ic">👍</div><h4>장점</h4>
+      <ul class="pc-list">
+        <li>일상생활에 여러 <b>편리함</b>을 제공한다.</li>
+        <li>불편하거나 해결이 어려웠던 다양한 <b>문제를 해결</b>하는 데 도움을 준다.</li>
+        <li>원격 제어와 방범 기능으로 <b>안전한 주거 생활</b>이 가능하다.</li>
+        <li>건강 정보에 따른 의료 서비스, <b>맞춤형 콘텐츠</b>를 받을 수 있다.</li>
+      </ul></div>
+    <div class="kc" style="--k:#d64535"><div class="ic">👎</div><h4>단점</h4>
+      <ul class="pc-list">
+        <li>대부분 인터넷에 연결되어 있어 <b>해커들의 공격 대상</b>이 될 수 있다.</li>
+        <li>신체 정보를 인식하는 센서가 있는 기기가 해커에게 노출되면 <b>개인 정보 유출, 사생활 침해</b>가 생길 수 있다.</li>
+        <li>사람이 만나 소통하지 않아도 기계가 알아서 데이터를 교환하므로 <b>인간관계가 단절되고 소외</b>되는 현상이 생길 수 있다.</li>
+      </ul></div>
+  </div>
+  <div class="callout">이러한 문제들을 해결하는 <b>방안에 관한 연구</b>뿐만 아니라 <b>단점을 극복할 기술 개발</b>이 계속 이루어져야 해요(31쪽). 「네트워크」에서 무선 매체는 이동이 자유롭지만 보안이 취약하다고 배운 것도 떠올려 봐요(14쪽).</div>
+  <div class="card">
+    <h3>🗳️ 투표: 사물 인터넷이 가져온 변화, 어느 쪽이 더 클까?</h3>
+    <p class="muted" style="margin-top:0">01의 사례 카드를 떠올리며 내 생각에 가까운 쪽을 골라요. 고르면 근거를 적는 칸이 열려요.</p>
+    <div id="pcVote"></div>
+    <div class="reveal" id="pcMemo">
+      <div class="memo">
+        <label id="pcWhyLb">내가 고른 근거 <small>01의 사례 하나를 들어서</small></label>
+        <textarea data-memo="pcWhy" rows="2"></textarea><div class="saved"></div>
+        <label>단점 하나를 골라, 그 단점을 줄이려면 어떤 기술이나 방법이 필요할까요? <small>기기를 만드는 사람, 쓰는 사람 쪽에서 생각해 봐요</small></label>
+        <textarea data-memo="pcFix" rows="2"></textarea><div class="saved"></div>
+      </div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 사회의 변화 -->
+<section class="page" data-name="사회의 변화" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>사물 인터넷 시스템을 활용하면 사회는 어떻게 변화할까?</h2><p>교과서 32~33쪽 · 스마트 시티와 스마트팜</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷은 한 사람의 생활을 넘어 <b>도시와 농장 전체</b>를 바꾸고 있어요. 사회의 여러 분야에서 <b>생산성과 효율성</b>을 높이고 <b>새로운 부가가치</b>를 만들며, 국가 사업의 문제를 해결하는 수단으로도 쓰여요.</span></div>
+  <div class="card">
+    <h3>🏙️ 스마트 시티로의 변화</h3>
+    <div class="callout" style="margin-top:4px">도시 전체가 네트워크로 연결되어 곳곳에 설치된 <b>센서의 정보를 그때그때 입력받아</b> 문제가 생기면 바로 해결해요. 그래서 도시의 <b>안전성과 효율성</b>이 높아지고, 삶의 질이 향상되며, 지속 가능한 도시를 만드는 데 도움을 줘요.</div>
+    <div class="cg-grid">
+      <div><i>🔥</i><b>스마트 방재</b><span>실시간으로 온도, 습도, 연기 등의 정보를 얻어 재난이 생기면 신속하게 대응해요.</span></div>
+      <div><i>🌫️</i><b>스마트 환경 모니터링</b><span>악취, 소음, 유해 가스 누출 등을 실시간으로 감시하여 정보를 전달해요.</span></div>
+      <div><i>🅿️</i><b>스마트 주차장</b><span>각 층에 주차 공간이 얼마나 남았는지, 어느 자리가 비었는지 알려 줘요.</span></div>
+      <div><i>🚰</i><b>스마트 수질 관리</b><span>실시간 수질 측정, 자동 관 세척 등을 관리하고 수돗물 정보를 알려 신뢰도를 높여요.</span></div>
+      <div><i>🗑️</i><b>스마트 폐기물 관리</b><span>쓰레기통 위치와 실시간 상태를 추적·분석해 비용을 줄이고 효율적으로 운영해요.</span></div>
+      <div><i>🌃</i><b>스마트 가로등</b><span>주변의 밝기나 사물의 움직임을 감지하여 자동으로 밝기를 조절해요.</span></div>
+      <div><i>🚘</i><b>스마트 차량</b><span>원격 시동, 통행료 자동 결제, 긴급 상황 자동 알림과 출동, 교통 상황 전송, 음성 인식 조작 등을 제공해요.</span></div>
+      <div><i>🚌</i><b>버스 도착 알림 서비스</b><span>교통 흐름을 파악하여 버스 도착 시간을 알려 줘요.</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🌾 스마트팜으로의 변화</h3>
+    <p style="margin-top:0"><b>스마트팜</b>은 사물 인터넷, 빅데이터 등을 활용해 <b>최적의 생육 환경을 자동으로 제어</b>할 수 있는 지능화된 농장이에요. 작업 효율을 높이고 수확량을 늘릴 수 있어요.</p>
+    <div class="sf-flow">
+      <div style="--k:#e0702b"><b>감지</b><span>온도, 습도, 토양, 이산화탄소 등을 감지하는 센서</span></div><em>→</em>
+      <div style="--k:#2f6fd0"><b>분석</b><span>흙의 온습도, 햇빛의 양, 물과 비료 주는 시기를 분석</span></div><em>→</em>
+      <div style="--k:#1f9d74"><b>자동 제어 · 원격 관리</b><span>온습도 조절, 자동 급수를 하고 사용자는 모바일 기기로 원격 관리</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🎯 개인의 변화일까, 사회의 변화일까?</h3>
+    <p class="muted" style="margin-top:0">사례를 읽고 01에서 본 <b>개인의 삶</b>의 변화인지, 이 화면의 <b>스마트 시티</b>나 <b>스마트팜</b>의 변화인지 골라요.</p>
+    <div id="whereGame"></div>
+  </div>
+  <div class="callout">사물 인터넷 기술의 발전으로 일상은 더 편리해지고 <b>도시와 농촌의 경계가 사라지면서</b> 사회가 크게 변하고 있어요. 또 사물 인터넷과 <b>인공지능이 결합</b>하면서 발전 속도가 더욱 빨라지고 적용 분야도 넓어지고 있어요(33쪽).</div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 -->
+<section class="page" data-name="함께 해결하기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 사물 인터넷 시스템의 영향</h2><p>교과서 33쪽 · 변화를 찾아보고 대처 방안을 이야기해 보자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>교과서는 이런 변화에 <b>능동적으로 대처</b>해야 한다고 말해요. 사물 인터넷을 <b>적극적으로 활용</b>하고 <b>시스템을 개발</b>해 더 나은 사회를 만드는 거예요. 모둠에서 한 분야를 골라 변화를 조사하고, 우리는 어떻게 대처할지 이야기해 봐요.</span></div>
+  <div class="card">
+    <h3>🔍 1. 분야를 골라 변화 조사하기</h3>
+    <p class="muted" style="margin-top:0">환경, 교육, 예술 중 한 분야를 골라요.</p>
+    <div id="fieldPick"></div>
+    <div class="fd-hint" id="fieldHint"></div>
+    <div class="memo">
+      <label>이 분야에서 사물 인터넷 시스템을 사용해 생기는 변화 <small>어떤 센서·기기가 무엇을 바꾸는지</small></label>
+      <textarea data-memo="fieldChange" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💬 2. 영향과 대처 방안 토의하기</h3>
+    <div class="memo">
+      <label>이 변화가 개인과 사회에 미치는 영향 <small>좋은 점과 걱정되는 점을 하나씩</small></label>
+      <textarea data-memo="fieldEffect" rows="2"></textarea><div class="saved"></div>
+      <label>우리가 갖추어야 할 태도 <small>여러 개 골라도 돼요</small></label>
+      <div id="copePick"></div>
+      <label>이 변화에 나는 어떻게 대처할까요? <small>오늘부터 할 수 있는 행동으로</small></label>
+      <textarea data-memo="fieldCope" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</p>
+    <ol class="iot-blanks">
+      <li>약 먹을 시간을 문자로 알려 주는 약병, 운동량을 재는 신발은 모두 <button class="blank" data-a="사물 인터넷 기술">?</button>을 내 생활에 적용한 예이다.</li>
+      <li>약병이 알려 주는 투약 시간은 한 사람의 생활을 바꾸는 <button class="blank" data-a="개인의 변화">?</button>이고, 도시 곳곳의 센서로 재난에 빠르게 대응하는 스마트 시티는 <button class="blank" data-a="사회의 변화">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">사물 인터넷 기술로 인한 개인의 삶과 사회의 변화를 예측할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">사물 인터넷 기술은 <b>개인의 삶</b>에 편리함을 주고 어려웠던 문제를 해결하도록 돕는다. 스마트 홈의 원격 제어와 방범, 건강 정보에 따른 의료 서비스, 맞춤형 콘텐츠가 그 예이다.</div>
+    <div style="--k:#d64535">대부분 인터넷에 연결되어 있어 <b>해킹, 개인 정보 유출, 사생활 침해</b>가 생길 수 있고 <b>인간관계가 단절</b>될 수 있다. 해결 방안 연구와 단점을 극복할 기술 개발이 계속 필요하다.</div>
+    <div style="--k:#e0702b"><b>스마트 시티</b>와 <b>스마트팜</b>처럼 사회의 생산성과 효율성이 높아지고, 인공지능과 결합해 변화가 더 빨라진다. 우리는 사물 인터넷을 적극 활용하고 개발하며 <b>능동적으로 대처</b>해야 한다.</div>
+  </div>
+  <div class="card">
+    <h3>핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 하루의 사물 인터넷과 오늘 본 사례를 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li><b>개인의 삶</b>의 변화 사례와 <b>사회</b>(스마트 시티·스마트팜)의 변화 사례를 하나씩 골라 무엇이 달라졌는지 비교하기</li>
+      <li>장점과 단점 중 무엇이 더 크다고 <b>투표</b>했는지와 근거, 그리고 단점 하나를 줄일 기술이나 방법 제안하기</li>
+      <li>고른 분야(환경·교육·예술)에서 생기는 변화와 그 영향, <b>내가 대처할 방법</b> 쓰기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u1-iot-change.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u1-iot-change', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 30~33쪽) — 오답도 교과서 문장에서, 극단어 피하기 */
+const QUIZ={
+ 1:[{q:'스마트 홈 시스템을 사용하면 달라지는 점으로 교과서가 든 것은?',o:['집안일이 더 늘어난다','집 밖에서도 가전 기기를 제어한다','방범을 위해 사람이 밤새 집을 지켜야 한다'],a:1,w:'스마트 홈 시스템을 사용하면 가전 기기들을 어디서나 원격으로 제어하고 방범 기능을 손쉽게 조작해 안전하게 생활할 수 있어요(30쪽).'},
+    {q:'문을 열지 않고도 안의 재료를 인식해 요리를 추천하고, 부족한 식료품을 마트에 주문해 주는 것은?',o:['스마트 약병','스마트 냉장고','인공지능 스피커'],a:1,w:'스마트 냉장고는 남은 식료품의 양이나 유통 기한을 파악해 부족한 식료품을 마트에 주문해 줘요. 인공지능 스피커는 기상 시간을 계산해 깨워 주고 음악을 들려줘요(30쪽).'},
+    {q:'가속 센서와 압력 센서로 걷고 뛰는 움직임을 감지해 운동량과 열량 소모량을 측정하는 것은?',o:['스마트 신발','스마트 바지','스마트 목걸이'],a:0,w:'스마트 신발은 센서로 움직임을 감지해 운동량을 측정해요. 스마트 바지는 인공 근육으로 보행을 돕고, 스마트 목걸이는 반려동물의 위치와 활동량을 알려 줘요(31쪽).'}],
+ 2:[{q:'사물 인터넷 시스템이 해커들의 공격 대상이 될 수 있는 까닭은?',o:['전력을 적게 써서','대부분 인터넷에 연결되어 있어서','사람이 직접 명령을 내려야 해서'],a:1,w:'사물 인터넷 시스템의 대부분은 인터넷에 연결되어 있기 때문에 해커들의 공격 대상이 될 수 있어요(31쪽).'},
+    {q:'사람이 서로 만나 소통하지 않아도 기계가 알아서 데이터를 교환할 때 생길 수 있는 문제는?',o:['기기 가격 상승','전기 요금 감소','인간관계의 단절과 소외'],a:2,w:'기계가 알아서 데이터를 교환하므로 사람 사이의 만남과 소통이 줄어 인간관계가 단절되고 소외되는 현상이 생길 수 있어요(31쪽).'}],
+ 3:[{q:'스마트 시티에 대한 설명으로 옳은 것은?',o:['사람이 직접 도시 곳곳을 돌며 점검한다','도시와 농촌을 네트워크에서 분리해 따로 관리한다','도시 곳곳의 센서 정보를 그때그때 입력받아 문제를 바로 해결한다'],a:2,w:'스마트 시티는 도시 전체가 네트워크로 연결되어 센서 정보로 문제를 바로 해결하므로 안전성과 효율성이 높아지고 삶의 질이 향상돼요(32쪽).'},
+    {q:'주변의 밝기나 사물의 움직임을 감지하여 자동으로 밝기를 조절하는 것은?',o:['스마트 가로등','스마트 주차장','스마트 수질 관리'],a:0,w:'스마트 가로등은 주변의 밝기나 움직임을 감지해 스스로 밝기를 조절해요(32쪽).'},
+    {q:'스마트팜에 대한 설명으로 알맞은 것은?',o:['도시의 주차 공간을 알려 주는 서비스','최적의 생육 환경을 자동으로 제어하는 지능화된 농장','농산물을 도시로 빠르게 실어 나르는 무인 배송 트럭 서비스'],a:1,w:'스마트팜은 사물 인터넷, 빅데이터 등을 활용해 최적의 생육 환경을 자동으로 제어하는 농장으로, 작업 효율을 높이고 수확량을 늘려요(33쪽).'}],
+ 4:[{q:'교과서가 강조한, 사물 인터넷 기술로 인한 변화에 대처하는 태도는?',o:['능동적으로 활용하고 개발한다','변화가 끝날 때까지 기다린다','새 기술은 위험하니 되도록 쓰지 않는다'],a:0,w:'우리는 변화에 능동적으로 대처하기 위해 사물 인터넷을 적극적으로 활용하고 시스템을 개발하여 더 나은 사회를 만들려고 노력해야 해요(33쪽).'},
+    {q:'사물 인터넷과 인공지능이 결합하면서 나타나는 변화는?',o:['도시와 농촌의 차이가 더 커진다','사물 인터넷의 적용 분야가 줄어든다','사물 인터넷 시스템의 발전 속도가 더욱 빨라진다'],a:2,w:'사물 인터넷과 인공지능이 결합하면서 발전 속도가 더욱 빨라지고 적용 분야도 넓어지고 있어요. 도시와 농촌의 경계는 오히려 사라지고 있어요(33쪽).'}],
+ 5:[{q:'사물 인터넷 시스템이 사회에 가져온 변화로 교과서가 든 것은?',o:['생산성과 효율성 향상','새로운 부가가치가 줄어듦','농촌의 작업 효율이 낮아짐'],a:0,w:'사물 인터넷 시스템은 사회의 다양한 분야에서 생산성과 효율성을 높이고 새로운 부가가치를 만드는 데 도움을 줘요(32쪽).'},
+    {q:'사물 인터넷 기기에서 개인 정보 유출이나 사생활 침해가 생길 수 있는 경우는?',o:['기기 전원이 꺼져 있을 때','기기가 네트워크에 연결되지 않았을 때','신체 정보를 인식하는 센서가 있는 기기가 해커에게 노출될 때'],a:2,w:'사람의 신체 정보를 인식하는 센서가 있는 기기가 해커에게 노출되면 개인 정보 유출, 사생활 침해 등의 문제가 생길 수 있어요(31쪽).'},
+    {q:'실시간으로 온도, 습도, 연기 등의 정보를 얻어 재난이 생겼을 때 신속하게 대응하도록 돕는 것은?',o:['스마트 방재','스마트 가로등','스마트 환경 모니터링'],a:0,w:'스마트 방재는 온도·습도·연기 정보로 재난에 빠르게 대응하게 해요. 스마트 환경 모니터링은 악취, 소음, 유해 가스 누출 등을 감시해요(32쪽).'}]
+};
+
+const QK='ds-u1-iot-change-quiz'+WHO.sfx;
+const MK='ds-u1-iot-change-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 01 사례 카드 (30~31쪽) */
+flipCards('lifeCards',[
+ {ic:'💡',f:'스마트 전등',s:'집 안',b:'스마트폰으로 조명의 색상과 밝기를 조절하고, 전등을 켜고 꺼요.',x:'달라진 점: 자리에서 일어나지 않고 조명 조절'},
+ {ic:'🔊',f:'인공지능 스피커',s:'집 안',b:'실시간 교통 상황 정보로 기상 시간을 계산해 깨워 주고, 식사하는 동안 평소 좋아하는 음악을 들려줘요.',x:'달라진 점: 나에게 맞춘 콘텐츠'},
+ {ic:'🧊',f:'스마트 냉장고',s:'집 안',b:'문을 열지 않고 안의 재료를 인식해 요리를 추천하고, 남은 양과 유통 기한을 파악해 부족한 식료품을 주문해요.',x:'달라진 점: 장보기와 식단 고민이 줄어요'},
+ {ic:'🏡',f:'스마트 홈 케어',s:'집 밖에서',b:'집 밖에서도 전등을 켜고 끄거나 보일러를 조절하고, CCTV의 방범 기능을 선택해요.',x:'달라진 점: 원격 제어와 안전한 주거'},
+ {ic:'💊',f:'스마트 약병',s:'건강',b:'투약 시간을 문자로 알려 주어 잊지 않고 약을 먹을 수 있어요.',x:'달라진 점: 복용 시간을 놓치지 않아요'},
+ {ic:'👕',f:'스마트 의류',s:'건강',b:'피부 온도와 심장 박동을 측정해, 내장 배터리의 전력으로 체온을 안정적으로 유지해요.',x:'달라진 점: 몸 상태에 맞춰 옷이 반응'},
+ {ic:'🐕',f:'스마트 목걸이',s:'반려동물',b:'반려동물의 위치를 추적하고 활동량을 측정해서 건강 상태를 알려 줘요.',x:'달라진 점: 반려동물을 잃어버릴 걱정이 줄어요'},
+ {ic:'👟',f:'스마트 신발',s:'건강',b:'신발 속 가속 센서와 압력 센서가 움직임을 감지해 운동량과 열량 소모량을 측정해요.',x:'달라진 점: 운동 기록이 저절로 쌓여요'},
+ {ic:'👓',f:'스마트 안경',s:'외출',b:'전화, 음악 듣기, 영상 시청, 사진 찍기 등을 할 수 있어요.',x:'달라진 점: 손에 들지 않고 기기 사용'},
+ {ic:'⌚',f:'스마트 팔찌',s:'건강',b:'스마트폰과 연동해 심박수나 혈압을 실시간으로 체크하고, 운동량과 열량을 측정해요.',x:'달라진 점: 실시간 건강 관리'},
+ {ic:'👖',f:'스마트 바지',s:'건강',b:'인공 근육이 들어 있어 근력이 약한 사람이나 고령자가 잘 걸을 수 있도록 도와줘요.',x:'달라진 점: 어려웠던 문제를 해결'},
+ {ic:'❄️',f:'스마트 에어컨',s:'집 안',b:'인체 감지 센서로 냉난방기가 자동으로 조절되어 집 안을 쾌적하게 만들어요.',x:'달라진 점: 사람이 조절하지 않아도 쾌적'},
+ {ic:'🤖',f:'로봇 청소기',s:'집 안',b:'스스로 장애물을 피해 가며 집 안 구석구석을 청소해요.',x:'달라진 점: 집안일이 줄어요'},
+ {ic:'🚏',f:'스마트폰 앱',s:'외출',b:'앱으로 버스 도착 시간을 확인해요.',x:'달라진 점: 정류장에서 기다리는 시간이 줄어요'},
+]);
+
+/* 02 투표 */
+vote('pcVote','pcPick',[['👍 장점이 더 커요','편리함 · 안전 · 건강 관리'],['👎 단점이 더 커요','해킹 · 사생활 침해 · 관계 단절']],i=>{
+  $('pcMemo').classList.add('on');
+  $('pcWhyLb').innerHTML=i===0?'장점이 더 크다고 본 근거 <small>01의 사례 하나를 들어서</small>':'단점이 더 크다고 본 근거 <small>교과서의 단점과 01의 사례를 이어서</small>';
+});
+
+/* 03 개인·사회 분류 */
+sorter('whereGame',{
+  cats:[{n:'👤 개인의 삶',k:'#2f6fd0'},{n:'🏙️ 스마트 시티',k:'#e0702b'},{n:'🌾 스마트팜',k:'#1f9d74'}],
+  items:[
+    {t:'약병이 먹을 시간을 문자로 알려 주어 약을 잊지 않고 먹는다',short:'스마트 약병',c:0,ic:'💊',w:'한 사람의 건강 관리를 돕는 개인의 변화예요.'},
+    {t:'신발 속 센서가 내 운동량과 열량 소모량을 측정한다',short:'스마트 신발',c:0,ic:'👟',w:'나의 운동을 기록하는 개인의 변화예요.'},
+    {t:'냉장고가 부족한 식료품을 알아서 마트에 주문한다',short:'스마트 냉장고',c:0,ic:'🧊',w:'우리 집 생활을 편리하게 하는 개인의 변화예요.'},
+    {t:'주차장 각 층의 빈자리를 알려 준다',short:'스마트 주차장',c:1,ic:'🅿️',w:'도시 시설의 효율성을 높이는 스마트 시티의 변화예요.'},
+    {t:'쓰레기통 위치와 상태를 추적해 폐기물 관리 비용을 줄인다',short:'스마트 폐기물 관리',c:1,ic:'🗑️',w:'도시를 효율적으로 운영하는 스마트 시티의 변화예요.'},
+    {t:'수돗물의 수질을 실시간으로 측정하고 정보를 알려 준다',short:'스마트 수질 관리',c:1,ic:'🚰',w:'도시 전체의 수돗물 신뢰도를 높이는 스마트 시티의 변화예요.'},
+    {t:'온도, 습도, 연기 정보를 실시간으로 얻어 재난에 빠르게 대응한다',short:'스마트 방재',c:1,ic:'🔥',w:'도시의 안전성을 높이는 스마트 시티의 변화예요.'},
+    {t:'흙의 온습도와 햇빛의 양을 분석해 작물에 물과 비료를 줄 시기를 정하고 자동으로 물을 준다',short:'자동 급수',c:2,ic:'💧',w:'최적의 생육 환경을 자동으로 제어하는 스마트팜의 변화예요.'},
+    {t:'이산화탄소를 감지하는 센서로 작물이 자랄 환경을 조절한다',short:'생육 환경 제어',c:2,ic:'🌱',w:'센서로 생육 환경을 관리해 수확량을 늘리는 스마트팜의 변화예요.'},
+    {t:'작물이 자라는 비닐하우스의 온습도를 모바일 기기로 원격 관리한다',short:'농장 원격 관리',c:2,ic:'📱',w:'작업 효율을 높이는 스마트팜의 변화예요.'},
+  ],
+  end:'<b>정리</b> 개인의 변화는 <b>나와 우리 가족의 생활</b>이 편리하고 안전해지는 것이고, 사회의 변화는 <b>도시나 농장 전체</b>의 안전성·효율성·생산성이 높아지는 것이에요.'
+});
+
+/* 04 함께 해결하기 */
+const FIELD={
+  '환경':'<ul><li>03에서 본 <b>스마트 환경 모니터링</b>(악취·소음·유해 가스 누출 실시간 감시), <b>스마트 수질 관리</b>, <b>스마트 폐기물 관리</b>가 우리 동네에 있다면 무엇이 달라질까요?</li><li>26쪽의 <b>가스 센서</b>(유해 성분 감지)나 <b>토양 수분 센서</b>를 학교 화단·교실에 둔다면? 좋아지는 점과 함께 비용, 고장 같은 걱정도 떠올려 봐요.</li></ul>',
+  '교육':'<ul><li>26쪽의 <b>인체 감지 센서</b>(전등), <b>조도 센서</b>(블라인드), <b>온습도 센서</b>(에어컨)가 교실에 쓰이면 수업 환경이 어떻게 바뀔까요?</li><li>출석을 자동으로 처리하는 <b>스마트 교실</b>, 30쪽의 <b>사용자 맞춤형 콘텐츠</b>가 공부에 쓰인다면 좋은 점과 걱정되는 점(사생활, 친구와의 소통)은 무엇일까요?</li></ul>',
+  '예술':'<ul><li><b>비콘</b>은 블루투스 기반으로 근거리에서 데이터를 전송하는 기술로, 박물관·전시회에 쓰여요(26쪽). 작품 앞에 서면 내 스마트폰으로 무엇을 받아 볼 수 있을까요?</li><li>30쪽의 <b>사용자 맞춤형 콘텐츠</b>, 31쪽 <b>스마트 안경</b>(음악 듣기·영상 시청·사진 찍기)이 공연·전시 감상을 어떻게 바꿀지, 위치 정보가 모일 때 걱정되는 점도 생각해 봐요.</li></ul>',
+};
+chips('fieldPick','fieldPickV',Object.keys(FIELD));
+const fieldHint=()=>{const v=(MEMO.fieldPickV||'').trim(); $('fieldHint').innerHTML=v&&FIELD[v]?`<b>${v} 분야 생각거리</b>${FIELD[v]}`:'분야를 고르면 생각할 거리가 나와요.';};
+$('fieldPick').addEventListener('memo',fieldHint); fieldHint();
+chips('copePick','copePickV',['사물 인터넷을 적극적으로 활용하기','필요한 시스템을 직접 개발해 보기','단점을 극복할 방안·기술 찾기','개인 정보를 지키며 사용하기'],true);
+chips('selfCheck','selfCheckPick',['개인의 삶의 변화를 사례로 말할 수 있다','사회의 변화를 스마트 시티·스마트팜으로 설명할 수 있다','장점과 단점을 근거를 들어 평가할 수 있다','변화에 대처하는 방법을 말할 수 있다'],true);
+document.querySelectorAll('.iot-blanks .blank').forEach(b=>b.onclick=()=>{b.textContent=b.dataset.a; b.classList.add('on');});
+
+/* 05 마무리 */
+const MEMOLIST=[['planToday','오늘 내가 쓰거나 본 사물 인터넷'],['pcPick','투표: 장점과 단점 중 더 큰 쪽'],['pcWhy','투표의 근거'],['pcFix','단점을 줄일 기술이나 방법'],['fieldPickV','함께 해결하기 · 고른 분야'],['fieldChange','이 분야에서 생기는 변화'],['fieldEffect','개인과 사회에 미치는 영향'],['copePickV','우리가 갖추어야 할 태도'],['fieldCope','나의 대처 방법'],['selfCheckPick','성취도 평가: 할 수 있게 된 것'],['keyQ','핵심 질문에 대한 내 답']];
+onShow[5]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

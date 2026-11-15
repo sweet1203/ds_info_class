@@ -1,0 +1,405 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>빈 교실의 불,<br>스스로 꺼지게 할 수 있을까?</h1>
+      <div class="story"><b>아무도 없는 교실에 불이 켜져 있다</b><br>이동 수업으로 교실을 서둘러 나오다 보면 전등 끄는 것을 잊곤 해요. 교실에서 사람의 움직임이 느껴지지 않으면 전등이 <b>저절로 꺼지거나</b>, 밖에서도 끌 수 있다면 어떨까요?</div>
+      <p>오늘은 이 문제에 맞는 <b>장치를 고르고</b>, 라즈베리파이 피코에 LED와 버튼을 <b>직접 연결</b>한 뒤 코드를 입력해 불을 켜고 꺼 봐요. 다음 시간에 인체 감지 센서를 더해 스마트 조명을 완성해요.</p>
+      <ol>
+        <li>문제에 맞는 장치 고르기</li><li>피코와 Thonny 준비</li><li>LED 켜고 끄기</li>
+        <li>버튼으로 LED 켜기</li><li>함께 해결하기 · 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🏫</i><div><b>문제 찾기</b><small>빈 교실에 켜진 전등</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🔎 💡</i><div><b>장치 고르기</b><small>무엇을 입력받고, 무엇을 출력할까</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>⌨️</i><div><b>코드 직접 입력</b><small>Thonny · 마이크로파이썬</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🔘 → 💡</i><div><b>입력으로 출력 바꾸기</b><small>버튼을 누르면 LED가 켜져요</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>문제를 해결하는 데 필요한 <b>입력 장치</b>와 <b>출력 장치</b>를 고르고, 이 장치들을 연결해 제어하는 <b>마이크로컨트롤러</b>(라즈베리파이 피코)를 준비합니다. 코드를 한 줄씩 <b>직접 입력하고 실행</b>하며 LED를 켜고 끄고, <b>버튼</b>이라는 입력에 따라 LED가 바뀌는 것을 확인합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo"><label>빈 교실 전등을 저절로 끄려면 어떤 장치가 필요할까요? <small>떠오르는 대로</small></label><textarea data-memo="planLight" rows="2"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+          <li><b>오늘의 질문</b> · 문제를 해결하려면 어떤 장치를 골라 어떻게 연결하고 제어할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>문제 해결에 적합한 피지컬 컴퓨팅 시스템 장치를 선택할 수 있다.</li>
+          <li>사물 인터넷 시스템을 설계할 수 있다. <small class="muted">(다음 시간까지 이어서)</small></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 마이크로컨트롤러 · 센서 · 입력 · 출력 · 사물 인터넷 설계</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🧰 오늘의 준비물 <span class="muted" style="font-weight:400;font-size:.88rem">(1인 1키트)</span></h3>
+      <div class="d1-kit">
+        <span>라즈베리파이 피코 H</span><span>USB 케이블</span><span>브레드보드</span><span>LED 1개</span><span>저항 1개 (220Ω)</span><span>버튼 1개</span><span>점퍼선 몇 개</span><span>Thonny가 있는 컴퓨터</span>
+      </div>
+      <p class="note">교과서는 ESP32 보드로 실습해요. 우리는 같은 마이크로컨트롤러인 <b>라즈베리파이 피코 H</b>로 실습해요. 교과서 26쪽 마이크로컨트롤러 사진에도 함께 나와요.</p>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제에 맞는 장치 고르기부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 장치 고르기 -->
+<section class="page" data-name="장치 고르기" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>문제에 맞는 장치 고르기</h2><p>교과서 34~35쪽 · 스마트 조명 입출력 설계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>스마트 조명을 만들려면 사람의 움직임을 <b>알아채는 장치(입력)</b>와 불을 <b>켜고 끄는 장치(출력)</b>가 필요해요. 그리고 입력을 받아 출력을 <b>제어하는 작은 컴퓨터</b>, 마이크로컨트롤러가 둘을 이어 줘요.</span></div>
+  <div class="card">
+    <h3>💡 사물 인터넷 기술을 조명에 접목하면</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#f2a516"><div class="ic">⏰</div><h4>아침에</h4><p>기상 시간에 맞춰 은은한 불빛으로 잠을 깨워 줘요.</p></div>
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🚶</div><h4>움직임·어둠을 느끼면</h4><p>사람의 움직임을 감지하거나 주위가 어두워지면 조명의 밝기를 조절해요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🏠</div><h4>집을 비울 때</h4><p>전등을 주기적으로 켜고 꺼서 범죄 예방에 도움을 줘요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔌 스마트 조명 입출력 설계</h3>
+    <div class="flow2">
+      <div style="--k:#2f6fd0"><b>입력 · 인체 감지 센서</b><span>사람의 움직임을 감지한다.</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#9b4fc4"><b>마이크로컨트롤러</b><span>입출력 장치를 연결해 제어한다. 센서 값을 받아 판단하고 LED에 명령을 보낸다.</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#e0702b"><b>출력 · LED</b><span>전등을 켜고 끈다.</span></div>
+    </div>
+  </div>
+  <div class="cards2">
+    <div class="kc" style="--k:#e0702b">
+      <div class="ic">💡</div><h4>LED</h4>
+      <p>전원을 연결하여 전류가 흐를 때 빛을 내는 반도체 소자예요. <b>극성</b>이 있어서 방향을 맞춰 꽂아야 해요.</p>
+      <p>• <b>긴 다리가 +극</b>, 짧은 다리가 −극이에요. +쪽을 VCC(전압)에, −쪽을 GND(접지)에 연결해요.<br>• 과도한 전류가 흐르면 쉽게 망가지므로 <b>저항</b>을 함께 써서 전류를 제한해요. 저항이 내장된 LED는 저항을 따로 연결하지 않아도 돼요.</p>
+      <small>어디에 쓰일까? 신호등, 자동차 헤드라이트, 스마트 가로등, 전광판</small>
+    </div>
+    <div class="kc" style="--k:#2f6fd0">
+      <div class="ic">🚶</div><h4>인체 감지 센서</h4>
+      <p>적외선을 통해 사람의 움직임을 감지하는 <b>입력 센서</b>예요. 사람 몸(표면 온도 20~35℃)에서 나오는 적외선의 변화를 이용해요. 우리 키트에서는 <b>PIR 센서</b>라고 불러요.</p>
+      <p>• 가변 저항 두 개로 조절해요. 하나는 <b>감도</b>(최대 7m 거리까지 감지), 다른 하나는 <b>감지 유지 시간</b>(0.3초~5분)이에요.</p>
+      <small>어디에 쓰일까? 손을 대면 바람이 나오는 공용 화장실 핸드 드라이어</small>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 입력일까, 출력일까?</h3>
+    <p class="muted" style="margin-top:0">장치를 보고 어느 쪽인지 골라 보세요. 교과서 26쪽 장치와 우리 키트 부품이 섞여 있어요.</p>
+    <div id="devSort"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 피코와 Thonny -->
+<section class="page" data-name="피코와 Thonny" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>피코와 Thonny 준비</h2><p>교과서 26·36쪽 · 마이크로컨트롤러와 마이크로파이썬</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>피코에게 명령하려면 두 가지가 필요해요. 내 컴퓨터에서 코드를 쓰는 프로그램 <b>Thonny</b>, 그리고 피코 안에서 파이썬을 알아듣게 해 주는 <b>마이크로파이썬</b>이에요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#1f9d74"><div class="ic">🧠</div><h4>마이크로컨트롤러</h4><p>소형 CPU와 입출력 모듈을 하나의 칩으로 구성하여 사용자가 원하는 기능을 수행하는 <b>작은 컴퓨터</b>예요. 라즈베리파이 피코, ESP32, 아두이노가 모두 마이크로컨트롤러예요.</p></div>
+    <div class="kc" style="--k:#9b4fc4"><div class="ic">🐍</div><h4>마이크로파이썬</h4><p>하드웨어를 제어하는 기능을 제공하는 <b>파이썬용 펌웨어</b>예요. 마이크로컨트롤러마다 구성이 달라서 보드에 맞는 마이크로파이썬을 설치해야 해요.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>⚖️ 교과서의 ESP32와 우리의 피코 H</h3>
+    <div class="d1-tw"><table class="tbl d1-cmp">
+      <tr><th class="l"></th><th class="l">ESP32 (교과서)</th><th class="l">라즈베리파이 피코 H (우리)</th></tr>
+      <tr><td><b>종류</b></td><td>마이크로컨트롤러</td><td>마이크로컨트롤러</td></tr>
+      <tr><td><b>범용 입출력(GPIO) 핀</b></td><td>34개</td><td>26개</td></tr>
+      <tr><td><b>와이파이·블루투스</b></td><td>있음</td><td><b>없음</b></td></tr>
+      <tr><td><b>프로그램</b></td><td>Thonny + 마이크로파이썬</td><td>Thonny + 마이크로파이썬</td></tr>
+    </table></div>
+    <p class="note">코드의 모양은 거의 같아요. 장치를 연결한 <b>핀 번호</b>만 우리 보드에 맞게 바꿔요. 와이파이가 없다는 점은 다음 시간에 다시 이야기해요.</p>
+  </div>
+  <div class="card">
+    <h3>🛠️ 준비하기 <span class="muted" style="font-weight:400;font-size:.88rem">(선생님 안내에 따라)</span></h3>
+    <ol class="vsteps">
+      <li><b>Thonny 열기</b><p>학교 컴퓨터에는 이미 설치되어 있을 수 있어요. 없으면 선생님 안내에 따라 설치해요.</p></li>
+      <li><b>피코를 USB 케이블로 컴퓨터에 연결하기</b><p>처음 마이크로파이썬을 설치할 때만 보드의 <b>BOOTSEL</b> 버튼을 누른 채로 연결해요. 이미 설치되어 있다면 그냥 꽂아요.</p></li>
+      <li><b>Thonny 오른쪽 아래에서 인터프리터 고르기</b><p>「MicroPython (Raspberry Pi Pico)」를 골라요. 마이크로파이썬이 없다고 나오면 선생님 안내에 따라 「Install MicroPython」으로 설치해요.</p></li>
+      <li><b>아래쪽 셸(Shell)에 <span class="mono">&gt;&gt;&gt;</span>가 보이면 준비 끝</b><p>셸에 <span class="mono">print('hello')</span>를 입력하고 Enter를 눌러 보세요.</p></li>
+    </ol>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ① 피코 보드 위 LED(온보드 LED) 켜기</h3>
+    <p class="muted" style="margin-top:0">피코에는 보드 자체에 작은 LED가 하나 있어요. 회로를 꾸미지 않고도 바로 켜 볼 수 있어요. 아래 코드를 <b>직접 입력</b>해요.</p>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBoard">
+<span class="l">from machine import Pin</span>
+<span class="l">led = Pin(25, Pin.OUT)</span>
+<span class="l">led.value(1)</span>
+</pre>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>1</b></td><td>하드웨어를 다루는 machine 모듈에서 Pin을 준비해요.</td></tr>
+          <tr><td><b>2</b></td><td>25번 핀(온보드 LED)을 <b>출력</b>(Pin.OUT)으로 정해 led라는 이름을 붙여요.</td></tr>
+          <tr><td><b>3</b></td><td>값을 1로 정해 LED를 켜요. 0이면 꺼져요.</td></tr>
+        </table>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li>코드를 입력하고 초록색 <b>▶ 실행</b>을 눌러요. 저장할 곳을 물으면 선생님 안내대로 골라요.</li>
+      <li>보드 위 LED가 켜졌는지 확인해요.</li>
+      <li>3줄의 <span class="mono">1</span>을 <span class="mono">0</span>으로 바꿔 다시 실행해요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkBoard"></div>
+      <label>실행했을 때 일어난 일, 막혔던 점과 해결한 방법</label>
+      <textarea data-memo="boardMemo" rows="2" placeholder="예: 처음엔 오류가 났는데 인터프리터를 다시 골랐더니 켜졌다"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 막혔을 때 확인할 것 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>「장치를 찾을 수 없어요」, 셸에 <span class="mono">&gt;&gt;&gt;</span>가 안 보여요</b> → 오른쪽 아래 인터프리터(포트)를 다시 골라요. 목록에 피코가 없으면 케이블을 뺐다가 다시 꽂아요.</li>
+      <li><b>케이블을 꽂아도 반응이 없어요</b> → 충전만 되는 케이블일 수 있어요. 다른 케이블로 바꿔 봐요.</li>
+      <li><b>「Backend is busy」 같은 말이 나와요</b> → 빨간 <b>■ 정지</b>를 누른 뒤 다시 실행해요.</li>
+      <li><b>오류 메시지가 나와요</b> → 마지막 줄의 <b>줄 번호</b>를 보고 그 줄을 확인해요. 대소문자(<span class="mono">Pin</span>, <span class="mono">OUT</span>), 괄호, 쉼표, 따옴표를 하나씩 비교해요.</li>
+      <li><b>보드에 마이크로파이썬이 없대요</b> → 선생님께 알려요. 함께 설치해요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 LED 켜고 끄기 -->
+<section class="page" data-name="LED 켜고 끄기" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>LED 켜고 끄기</h2><p>교과서 34·36쪽 · 출력 장치를 핀에 연결하고 제어하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>LED를 피코의 한 핀에 연결하고, 그 핀의 값을 <b>1로 하면 켜지고 0으로 하면 꺼져요.</b> 사이에 <b>기다리는 시간</b>을 넣고 계속 반복하면 LED가 깜박여요.</span></div>
+  <div class="card">
+    <h3>🔧 회로 연결하기</h3>
+    <div class="grid2 d1-g">
+      <div class="d1-cir" id="cirLed"></div>
+      <div>
+        <table class="tbl d1-pin">
+          <tr><th class="l">부품</th><th class="l">피코 연결</th></tr>
+          <tr><td>LED 긴 다리(+)</td><td>저항(220Ω)을 거쳐 <b>GP14</b> (보드 핀 19)</td></tr>
+          <tr><td>LED 짧은 다리(−)</td><td><b>GND</b> (보드 핀 18)</td></tr>
+        </table>
+        <div class="callout"><b>번호가 두 가지예요.</b> 코드에 쓰는 번호는 <b>GP 번호</b>(GP14 → 14)예요. 보드 가장자리 순서대로 센 <b>보드 핀 번호</b>(19)와 달라요. GND 핀은 여러 개라 가까운 것을 써도 돼요.</div>
+        <p class="note">피코는 브레드보드 <b>가운데 홈에 걸쳐</b> 꽂고, 선은 쓰려는 핀과 <b>같은 세로줄</b> 구멍에 꽂아요. 브레드보드는 세로 다섯 구멍이 한 줄로 이어져 있어서 부품 다리도 같은 줄에 꽂아야 연결돼요.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ② LED를 1초마다 켜고 끄기</h3>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBlink">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">while True:</span>
+<span class="l">    LED.value(1)</span>
+<span class="l">    time.sleep(<i class="d1-t">1</i>)</span>
+<span class="l">    LED.value(0)</span>
+<span class="l">    time.sleep(<i class="d1-t">1</i>)</span>
+</pre>
+        <p class="note">5~8줄 앞은 <b>네 칸 들여쓰기</b>해요. Thonny는 <span class="mono">while True:</span> 다음 줄을 자동으로 들여 써 줘요.</p>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>2</b></td><td>시간을 기다리는 데 쓰는 time 모듈을 준비해요.</td></tr>
+          <tr><td><b>3</b></td><td>14번 핀(GP14)을 LED의 <b>출력</b>으로 정해요.</td></tr>
+          <tr><td><b>4</b></td><td>아래 들여 쓴 줄들을 끝없이 반복해요.</td></tr>
+          <tr><td><b>5·7</b></td><td>값 1(HIGH)이면 켜기, 0(LOW)이면 끄기</td></tr>
+          <tr><td><b>6·8</b></td><td>괄호 안의 초만큼 기다리기</td></tr>
+        </table>
+        <p class="note">교과서 36쪽 코드와 같아요. 교과서는 ESP32의 2번 핀, 우리는 피코의 14번 핀을 써요.</p>
+      </div>
+    </div>
+    <h4 style="margin-top:12px">▶ 실행하기 전에 화면에서 먼저 돌려 보기</h4>
+    <div class="d1-sim" id="blinkSim">
+      <div class="d1-led" id="blinkLed"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="bulb" d="M14 52V28a16 16 0 0 1 32 0v24z"/><rect x="10" y="52" width="40" height="6" rx="2" class="rim"/><line x1="24" y1="58" x2="24" y2="78" class="leg"/><line x1="36" y1="58" x2="36" y2="72" class="leg"/></svg><b id="blinkVal">LED.value = 0</b></div>
+      <div class="d1-ctl">
+        <div class="row"><button class="btn sm" id="blinkRun">▶ 실행</button><button class="btn sm ghost" id="blinkStep">한 줄씩</button><button class="btn sm ghost" id="blinkStop">■ 정지</button></div>
+        <div class="row" style="margin-top:8px"><span style="font-size:.9rem;font-weight:700">기다리는 시간</span><div class="chips" id="blinkT" style="margin:0"></div></div>
+        <div class="d1-msg" id="blinkMsg">▶ 실행을 누르면 위 코드가 한 줄씩 실행되는 모습을 보여 줘요.</div>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li>회로를 꾸미고, 코드를 입력해 실행해요. LED가 1초마다 켜졌다 꺼지나요?</li>
+      <li>6·8줄의 <span class="mono">1</span>을 다른 수로 바꾸기 전에 <b>결과를 먼저 예측</b>하고 실행해요.</li>
+      <li>멈출 때는 Thonny의 <b>■ 정지</b>를 눌러요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkLed"></div>
+      <label>기다리는 시간을 바꿨을 때 <small>예측한 것 → 실제 결과</small></label>
+      <textarea data-memo="ledMemo" rows="2" placeholder="예: 0.2로 바꾸면 더 빨리 깜박일 것 같다 → 실제로 ..."></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 LED가 켜지지 않을 때 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>다리 방향</b> → 긴 다리(+)가 저항 쪽, 짧은 다리(−)가 GND 쪽인지 확인해요. 반대로 꽂으면 켜지지 않아요.</li>
+      <li><b>같은 줄</b> → 저항 끝과 LED 긴 다리가 브레드보드의 같은 세로줄에 있는지 봐요. 가운데 홈을 건너면 이어지지 않아요.</li>
+      <li><b>핀 번호</b> → 선을 꽂은 곳이 GP14(보드 핀 19)인지, 코드의 숫자가 14인지 맞춰 봐요.</li>
+      <li><b>코드는 도는데 반응이 없어요</b> → 온보드 LED 코드(25번)로 보드가 살아 있는지 먼저 확인해요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 버튼으로 LED 켜기 -->
+<section class="page" data-name="버튼으로 LED 켜기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>버튼으로 LED 켜기</h2><p>교과서 37쪽 코드 구조로 · 입력에 따라 출력 바꾸기</p></div></div>
+  <div class="callout" style="margin-top:-6px"><b>이 화면은 이렇게 해요.</b> 아래 <b>화면 시뮬레이션은 모두</b> 해 봐요. <b>실물 버튼 회로</b>는 실습 ②(LED 깜박이기)를 마친 사람만 이어서 해요.</div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>버튼은 <b>누르면 1, 떼면 0</b>을 보내는 입력 장치예요. 마이크로컨트롤러가 <b>if 문</b>으로 입력값을 확인해서 LED를 켜거나 꺼요. 다음 시간에 버튼 자리에 <b>인체 감지 센서</b>를 넣으면 스마트 조명이 돼요.</span></div>
+  <div class="card">
+    <h3>🔧 회로에 버튼 더하기</h3>
+    <div class="grid2 d1-g">
+      <div class="d1-cir" id="cirBtn"></div>
+      <div>
+        <table class="tbl d1-pin">
+          <tr><th class="l">부품</th><th class="l">피코 연결</th></tr>
+          <tr><td>LED</td><td>그대로 (GP14 · GND)</td></tr>
+          <tr><td>버튼 다리 하나</td><td><b>GP15</b> (보드 핀 20)</td></tr>
+          <tr><td>그 <b>대각선</b> 쪽 다리</td><td><b>3V3</b> (보드 핀 36)</td></tr>
+        </table>
+        <p class="note">버튼은 브레드보드 <b>가운데 홈에 걸쳐</b> 꽂아요. 다리가 네 개인데, <b>대각선으로 마주 보는 두 다리</b>를 쓰면 방향과 상관없이 연결돼요. 버튼을 누르면 GP15와 3V3이 이어지면서 GP15의 값이 1이 돼요.</p>
+        <div class="callout d1-warn">⚠️ 버튼 선은 <b>3V3(보드 핀 36)</b>에만 꽂아요. <b>핀 39·40(5V)과 핀 37(3V3_EN)에는 꽂지 않아요.</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ③ 버튼을 누르는 동안 LED 켜기 <span class="muted" style="font-weight:400;font-size:.88rem">(실물은 실습 ②를 마친 사람)</span></h3>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBtn">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">BTN = Pin(15, Pin.IN, Pin.PULL_DOWN)</span>
+<span class="l">while True:</span>
+<span class="l">    if BTN.value() == 1:</span>
+<span class="l">        LED.value(1)</span>
+<span class="l">    else:</span>
+<span class="l">        LED.value(0)</span>
+<span class="l">    time.sleep(0.1)</span>
+</pre>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>4</b></td><td>15번 핀을 버튼의 <b>입력</b>(Pin.IN)으로 정해요. <span class="mono">Pin.PULL_DOWN</span>은 버튼을 누르지 않았을 때 값이 0으로 안정되게 하는 설정이에요.</td></tr>
+          <tr><td><b>6</b></td><td>버튼의 값이 1이면(누르고 있으면)</td></tr>
+          <tr><td><b>7</b></td><td>LED 켜기</td></tr>
+          <tr><td><b>8·9</b></td><td>그렇지 않으면 LED 끄기</td></tr>
+          <tr><td><b>10</b></td><td>0.1초 쉬고 다시 확인해요.</td></tr>
+        </table>
+      </div>
+    </div>
+    <h4 style="margin-top:12px">▶ 화면 시뮬레이션 (모두)</h4>
+    <div class="d1-sim">
+      <div class="d1-pair">
+        <button class="d1-push" id="btnPush" aria-label="버튼 누르기"><i></i><span>누르고 있기</span></button>
+        <div class="d1-led" id="btnLed"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="bulb" d="M14 52V28a16 16 0 0 1 32 0v24z"/><rect x="10" y="52" width="40" height="6" rx="2" class="rim"/><line x1="24" y1="58" x2="24" y2="78" class="leg"/><line x1="36" y1="58" x2="36" y2="72" class="leg"/></svg></div>
+      </div>
+      <div class="d1-ctl">
+        <div class="d1-vals"><span>BTN.value() = <b id="btnVal">0</b></span><span>LED.value = <b id="btnLedVal">0</b></span></div>
+        <div class="d1-msg" id="btnMsg">왼쪽 버튼을 누르고 있으면 코드의 어느 줄이 실행되는지 위 코드 상자에 표시돼요.</div>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li><b>모두</b> · 시뮬레이션 버튼을 눌렀다 떼며 6~9줄 중 어느 줄이 실행되는지 확인해요.</li>
+      <li><b>모두</b> · 7줄과 9줄의 1과 0을 서로 바꾸면 어떻게 될지 <b>예측</b>해 메모해요.</li>
+      <li><b>실물</b>(실습 ②를 마친 사람) · 버튼을 꽂고 코드를 입력해 실행하고, 예측이 맞는지 확인해요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkBtn"></div>
+      <label>이 코드에서 입력과 출력은 각각 어느 줄일까요? 버튼 대신 인체 감지 센서를 쓴다면 무엇을 바꾸면 될까요?</label>
+      <textarea data-memo="btnMemo" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 버튼을 눌러도 반응이 없을 때 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>버튼 다리</b> → 대각선 두 다리에 선을 연결했는지 봐요. 가운데 홈에 걸쳐 있어야 해요.</li>
+      <li><b>3V3 자리</b> → 보드 핀 36(3V3)인지 확인해요. ⚠️ 핀 39·40(5V)과 37(3V3_EN)에는 꽂지 않아요.</li>
+      <li><b>철자</b> → <span class="mono">Pin.IN</span>, <span class="mono">Pin.PULL_DOWN</span>의 대문자와 밑줄을 확인해요.</li>
+      <li><b>LED가 계속 켜져 있어요</b> → 4줄에 <span class="mono">Pin.PULL_DOWN</span>이 빠졌는지 봐요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 함께 해결하기 · 정리 -->
+<section class="page" data-name="함께 해결하기" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>함께 해결하기 · 개념 정리</h2><p>교과서 37쪽 · 문제 해결에 맞는 장치 구성</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>오늘 한 것처럼 <b>문제 → 입력 장치 → 출력 장치</b> 순서로 생각하면 다른 문제에도 장치를 고를 수 있어요. 짝과 이야기하며 정해 봐요.</span></div>
+  <div class="card">
+    <h3>🌀 함께 해결하기: 스마트 선풍기</h3>
+    <div class="callout" style="margin-top:4px"><b>온도가 내려가면 선풍기(모터)가 자동으로 꺼지는</b> 스마트 선풍기에 필요한 장치를 구성해 봐요. 교과서 26쪽 센서와 모터 설명을 참고해요.</div>
+    <div class="memo">
+      <label>입력 장치 <small>하나 고르기</small></label><div id="fanIn"></div>
+      <label>출력 장치 <small>하나 고르기</small></label><div id="fanOut"></div>
+      <label>이렇게 고른 까닭과 동작 순서 <small>예: ○○가 ○○를 측정하면 → 마이크로컨트롤러가 ○○ → ○○가 멈춘다</small></label>
+      <textarea data-memo="fanWhy" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기 <span class="muted" style="font-weight:400;font-size:.88rem">(빈칸을 눌러 확인)</span></h3>
+    <ol class="d1-blanks">
+      <li>복도에 사람이 지나가면 불이 켜지게 하려고, 몸에서 나오는 적외선의 변화로 움직임을 알아채는 <button class="d1-blank" data-a="인체 감지 센서">?</button>를 천장에 달았다.</li>
+      <li>이 복도 조명에서 움직임 값을 받아들이는 센서는 <button class="d1-blank" data-a="입력 장치">?</button>, 불을 켜고 끄는 LED는 <button class="d1-blank" data-a="출력 장치">?</button>이다.</li>
+      <li>센서 값을 받아 판단하고 LED에 명령을 보내는 피코 같은 작은 컴퓨터를 <button class="d1-blank" data-a="마이크로컨트롤러">?</button>라고 한다.</li>
+      <li>새로 산 피코에서 파이썬 코드를 실행하려면 먼저 보드에 맞는 <button class="d1-blank" data-a="마이크로파이썬">?</button>을 설치해야 한다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(할 수 있게 된 것을 모두 골라요)</span></h3>
+    <div id="selfCheck"></div>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">문제를 해결하려면 무엇을 <b>입력</b>받고 무엇을 <b>출력</b>할지 정해 장치를 고른다. 스마트 조명은 <b>인체 감지 센서(입력)</b>와 <b>LED(출력)</b>로 만든다.</div>
+    <div style="--k:#1f9d74">입출력 장치는 <b>마이크로컨트롤러</b>에 연결해 제어한다. 파이썬으로 제어하려면 Thonny와 보드에 맞는 <b>마이크로파이썬</b>이 필요하다.</div>
+    <div style="--k:#9b4fc4">핀을 <b>출력</b>으로 정하면 값 1·0으로 LED를 켜고 끄고, <b>입력</b>으로 정하면 버튼 같은 장치의 값을 읽어 <b>if 문</b>으로 출력을 바꿀 수 있다.</div>
+  </div>
+  <div class="card">
+    <h3>오늘의 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 고른 장치와 직접 해 본 실습을 넣어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">문제를 해결하려면 어떤 장치를 골라 어떻게 연결하고 제어할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>빈 교실 전등(또는 스마트 선풍기) 문제에 필요한 <b>입력 장치와 출력 장치</b>, 각각의 역할</li>
+      <li>LED 실습에서 <b>값 1·0과 기다리는 시간</b>을 바꾸며 직접 확인한 결과</li>
+      <li>버튼 코드(실물 또는 시뮬레이션)의 <b>입력과 출력</b>, 버튼 대신 <b>인체 감지 센서</b>를 쓸 때 달라질 점 예상</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

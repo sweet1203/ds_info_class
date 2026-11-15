@@ -1,0 +1,69 @@
+  /* 준비물 */
+  .d1-kit{display:flex;flex-wrap:wrap;gap:6px}
+  .d1-kit span{background:#fbfaf7;border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.9rem}
+  /* 표 상자 (폰에서 가로 스크롤) */
+  .d1-tw{overflow-x:auto}
+  .d1-cmp{min-width:420px}
+  .d1-cmp td,.d1-cmp th{text-align:left}
+  .d1-ex td:first-child{width:40px;color:var(--acc);white-space:nowrap}
+  .d1-ex td{font-size:.9rem}
+  .d1-pin td,.d1-pin th{text-align:left;font-size:.9rem}
+  /* 코드 상자: 줄 번호는 화면에만, 학생이 직접 입력 */
+  pre.code{background:#0f2742;color:#e8eef6;border-radius:12px;padding:10px 14px 10px 0;margin:6px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.65;overflow-x:auto;max-width:100%;counter-reset:ln;white-space:pre}
+  pre.code .l{display:block;position:relative;padding-left:3em;min-height:1.65em;border-radius:4px;transition:background .15s}
+  pre.code .l::before{counter-increment:ln;content:counter(ln);position:absolute;left:0;width:2.1em;text-align:right;color:#6f86a6}
+  pre.code .l.on{background:rgba(242,165,22,.32)}
+  pre.code i{font-style:normal}
+  /* 실습 상자 */
+  .d1-lab{border-top:6px solid var(--acc)}
+  .d1-do{margin:10px 0 0;padding-left:22px;font-size:.95rem}
+  .d1-do li{margin:4px 0}
+  .d1-help summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .d1-help[open] summary{margin-bottom:6px}
+  .d1-help ul{margin:0;padding-left:20px;font-size:.93rem}
+  .d1-help li{margin:6px 0}
+  /* 체크리스트 칩 */
+  .d1-lab .chk button::before{content:"☐ ";}
+  .d1-lab .chk button.on::before{content:"☑ ";}
+  /* 회로 그림 */
+  .d1-g{grid-template-columns:1.5fr 1fr}
+  .d1-cir{overflow-x:auto}
+  .d1-cir svg{min-width:420px;max-width:690px}
+  .pc-b{fill:#1e7a46}
+  .pc-usb{fill:#c9ced6;stroke:#8a94a3}
+  .pc-nm{font-size:13px;fill:#e5f4ea;text-anchor:middle;font-weight:700}
+  .pc-p{fill:#d8c27a;stroke:#5c4d17;stroke-width:1}
+  .pc-p.on{stroke:#fff;stroke-width:2}
+  .pc-n{font-size:10px;fill:#e5f4ea;text-anchor:middle;font-weight:700}
+  .wire{fill:none;stroke-width:3.5;stroke-linejoin:round;stroke-linecap:round}
+  .w-gnd{stroke:#33393f}.w-pwr{stroke:#d64535}.w-14{stroke:#e0702b}.w-15{stroke:#9b4fc4}
+  .cl{font-size:12px;font-weight:700;fill:var(--ink)}
+  .cl.m{text-anchor:middle}.cl.e{text-anchor:end}
+  .cl.s{font-size:11px;fill:var(--muted);font-weight:400}
+  .res{fill:#e9d6a8;stroke:#8a6d2a}
+  .res-b{fill:#8a3b12}
+  .led-d{fill:#ef5a4c;stroke:#a32d22}
+  .leg{stroke:#8a94a3;stroke-width:3}
+  .btn-b{fill:#5b6776}.btn-c{fill:#9b4fc4}
+  /* 시뮬레이션 */
+  .d1-sim{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fbfaf7;border-radius:12px;padding:12px 14px;margin-top:6px}
+  @media (max-width:560px){.d1-sim{grid-template-columns:1fr}}
+  .d1-led{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .d1-led svg{width:64px}
+  .d1-led .bulb{fill:#f3c2bd;stroke:#a32d22;stroke-width:2;transition:fill .1s}
+  .d1-led .rim{fill:#e0a29b}
+  .d1-led.on .bulb{fill:#ff3b2b;filter:drop-shadow(0 0 10px #ff6a50)}
+  .d1-led b{font-size:.85rem;font-family:ui-monospace,Menlo,monospace}
+  .d1-msg{margin-top:8px;background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.92rem;min-height:2.8em}
+  .d1-pair{display:flex;gap:18px;align-items:center}
+  .d1-push{all:unset;box-sizing:border-box;cursor:pointer;width:96px;height:96px;border-radius:14px;background:#5b6776;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff;font-size:.78rem;touch-action:none;user-select:none;-webkit-user-select:none}
+  .d1-push i{display:block;width:44px;height:44px;border-radius:50%;background:#9b4fc4;box-shadow:0 5px 0 #5e2f7a;transition:transform .08s, box-shadow .08s}
+  .d1-push.on i{transform:translateY(4px);box-shadow:0 1px 0 #5e2f7a}
+  .d1-push:focus-visible{outline:3px solid var(--amber)}
+  .d1-vals{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:ui-monospace,Menlo,monospace;font-size:.92rem}
+  .d1-vals b{color:var(--acc);font-size:1.1rem}
+  /* 빈칸 */
+  .d1-blanks li{margin:8px 0;line-height:1.9}
+  .d1-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .d1-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  .d1-warn{background:#fdecea;border-left-color:var(--red);font-size:.92rem}

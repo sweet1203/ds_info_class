@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사물 인터넷 시스템 설계 ① 장치 고르기와 연결</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  /* 준비물 */
+  .d1-kit{display:flex;flex-wrap:wrap;gap:6px}
+  .d1-kit span{background:#fbfaf7;border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.9rem}
+  /* 표 상자 (폰에서 가로 스크롤) */
+  .d1-tw{overflow-x:auto}
+  .d1-cmp{min-width:420px}
+  .d1-cmp td,.d1-cmp th{text-align:left}
+  .d1-ex td:first-child{width:40px;color:var(--acc);white-space:nowrap}
+  .d1-ex td{font-size:.9rem}
+  .d1-pin td,.d1-pin th{text-align:left;font-size:.9rem}
+  /* 코드 상자: 줄 번호는 화면에만, 학생이 직접 입력 */
+  pre.code{background:#0f2742;color:#e8eef6;border-radius:12px;padding:10px 14px 10px 0;margin:6px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.65;overflow-x:auto;max-width:100%;counter-reset:ln;white-space:pre}
+  pre.code .l{display:block;position:relative;padding-left:3em;min-height:1.65em;border-radius:4px;transition:background .15s}
+  pre.code .l::before{counter-increment:ln;content:counter(ln);position:absolute;left:0;width:2.1em;text-align:right;color:#6f86a6}
+  pre.code .l.on{background:rgba(242,165,22,.32)}
+  pre.code i{font-style:normal}
+  /* 실습 상자 */
+  .d1-lab{border-top:6px solid var(--acc)}
+  .d1-do{margin:10px 0 0;padding-left:22px;font-size:.95rem}
+  .d1-do li{margin:4px 0}
+  .d1-help summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .d1-help[open] summary{margin-bottom:6px}
+  .d1-help ul{margin:0;padding-left:20px;font-size:.93rem}
+  .d1-help li{margin:6px 0}
+  /* 체크리스트 칩 */
+  .d1-lab .chk button::before{content:"☐ ";}
+  .d1-lab .chk button.on::before{content:"☑ ";}
+  /* 회로 그림 */
+  .d1-g{grid-template-columns:1.5fr 1fr}
+  .d1-cir{overflow-x:auto}
+  .d1-cir svg{min-width:420px;max-width:690px}
+  .pc-b{fill:#1e7a46}
+  .pc-usb{fill:#c9ced6;stroke:#8a94a3}
+  .pc-nm{font-size:13px;fill:#e5f4ea;text-anchor:middle;font-weight:700}
+  .pc-p{fill:#d8c27a;stroke:#5c4d17;stroke-width:1}
+  .pc-p.on{stroke:#fff;stroke-width:2}
+  .pc-n{font-size:10px;fill:#e5f4ea;text-anchor:middle;font-weight:700}
+  .wire{fill:none;stroke-width:3.5;stroke-linejoin:round;stroke-linecap:round}
+  .w-gnd{stroke:#33393f}.w-pwr{stroke:#d64535}.w-14{stroke:#e0702b}.w-15{stroke:#9b4fc4}
+  .cl{font-size:12px;font-weight:700;fill:var(--ink)}
+  .cl.m{text-anchor:middle}.cl.e{text-anchor:end}
+  .cl.s{font-size:11px;fill:var(--muted);font-weight:400}
+  .res{fill:#e9d6a8;stroke:#8a6d2a}
+  .res-b{fill:#8a3b12}
+  .led-d{fill:#ef5a4c;stroke:#a32d22}
+  .leg{stroke:#8a94a3;stroke-width:3}
+  .btn-b{fill:#5b6776}.btn-c{fill:#9b4fc4}
+  /* 시뮬레이션 */
+  .d1-sim{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fbfaf7;border-radius:12px;padding:12px 14px;margin-top:6px}
+  @media (max-width:560px){.d1-sim{grid-template-columns:1fr}}
+  .d1-led{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .d1-led svg{width:64px}
+  .d1-led .bulb{fill:#f3c2bd;stroke:#a32d22;stroke-width:2;transition:fill .1s}
+  .d1-led .rim{fill:#e0a29b}
+  .d1-led.on .bulb{fill:#ff3b2b;filter:drop-shadow(0 0 10px #ff6a50)}
+  .d1-led b{font-size:.85rem;font-family:ui-monospace,Menlo,monospace}
+  .d1-msg{margin-top:8px;background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.92rem;min-height:2.8em}
+  .d1-pair{display:flex;gap:18px;align-items:center}
+  .d1-push{all:unset;box-sizing:border-box;cursor:pointer;width:96px;height:96px;border-radius:14px;background:#5b6776;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff;font-size:.78rem;touch-action:none;user-select:none;-webkit-user-select:none}
+  .d1-push i{display:block;width:44px;height:44px;border-radius:50%;background:#9b4fc4;box-shadow:0 5px 0 #5e2f7a;transition:transform .08s, box-shadow .08s}
+  .d1-push.on i{transform:translateY(4px);box-shadow:0 1px 0 #5e2f7a}
+  .d1-push:focus-visible{outline:3px solid var(--amber)}
+  .d1-vals{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:ui-monospace,Menlo,monospace;font-size:.92rem}
+  .d1-vals b{color:var(--acc);font-size:1.1rem}
+  /* 빈칸 */
+  .d1-blanks li{margin:8px 0;line-height:1.9}
+  .d1-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .d1-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  .d1-warn{background:#fdecea;border-left-color:var(--red);font-size:.92rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>빈 교실의 불,<br>스스로 꺼지게 할 수 있을까?</h1>
+      <div class="story"><b>아무도 없는 교실에 불이 켜져 있다</b><br>이동 수업으로 교실을 서둘러 나오다 보면 전등 끄는 것을 잊곤 해요. 교실에서 사람의 움직임이 느껴지지 않으면 전등이 <b>저절로 꺼지거나</b>, 밖에서도 끌 수 있다면 어떨까요?</div>
+      <p>오늘은 이 문제에 맞는 <b>장치를 고르고</b>, 라즈베리파이 피코에 LED와 버튼을 <b>직접 연결</b>한 뒤 코드를 입력해 불을 켜고 꺼 봐요. 다음 시간에 인체 감지 센서를 더해 스마트 조명을 완성해요.</p>
+      <ol>
+        <li>문제에 맞는 장치 고르기</li><li>피코와 Thonny 준비</li><li>LED 켜고 끄기</li>
+        <li>버튼으로 LED 켜기</li><li>함께 해결하기 · 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🏫</i><div><b>문제 찾기</b><small>빈 교실에 켜진 전등</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🔎 💡</i><div><b>장치 고르기</b><small>무엇을 입력받고, 무엇을 출력할까</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>⌨️</i><div><b>코드 직접 입력</b><small>Thonny · 마이크로파이썬</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🔘 → 💡</i><div><b>입력으로 출력 바꾸기</b><small>버튼을 누르면 LED가 켜져요</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>문제를 해결하는 데 필요한 <b>입력 장치</b>와 <b>출력 장치</b>를 고르고, 이 장치들을 연결해 제어하는 <b>마이크로컨트롤러</b>(라즈베리파이 피코)를 준비합니다. 코드를 한 줄씩 <b>직접 입력하고 실행</b>하며 LED를 켜고 끄고, <b>버튼</b>이라는 입력에 따라 LED가 바뀌는 것을 확인합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo"><label>빈 교실 전등을 저절로 끄려면 어떤 장치가 필요할까요? <small>떠오르는 대로</small></label><textarea data-memo="planLight" rows="2"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+          <li><b>오늘의 질문</b> · 문제를 해결하려면 어떤 장치를 골라 어떻게 연결하고 제어할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>문제 해결에 적합한 피지컬 컴퓨팅 시스템 장치를 선택할 수 있다.</li>
+          <li>사물 인터넷 시스템을 설계할 수 있다. <small class="muted">(다음 시간까지 이어서)</small></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 마이크로컨트롤러 · 센서 · 입력 · 출력 · 사물 인터넷 설계</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🧰 오늘의 준비물 <span class="muted" style="font-weight:400;font-size:.88rem">(1인 1키트)</span></h3>
+      <div class="d1-kit">
+        <span>라즈베리파이 피코 H</span><span>USB 케이블</span><span>브레드보드</span><span>LED 1개</span><span>저항 1개 (220Ω)</span><span>버튼 1개</span><span>점퍼선 몇 개</span><span>Thonny가 있는 컴퓨터</span>
+      </div>
+      <p class="note">교과서는 ESP32 보드로 실습해요. 우리는 같은 마이크로컨트롤러인 <b>라즈베리파이 피코 H</b>로 실습해요. 교과서 26쪽 마이크로컨트롤러 사진에도 함께 나와요.</p>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제에 맞는 장치 고르기부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 장치 고르기 -->
+<section class="page" data-name="장치 고르기" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>문제에 맞는 장치 고르기</h2><p>교과서 34~35쪽 · 스마트 조명 입출력 설계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>스마트 조명을 만들려면 사람의 움직임을 <b>알아채는 장치(입력)</b>와 불을 <b>켜고 끄는 장치(출력)</b>가 필요해요. 그리고 입력을 받아 출력을 <b>제어하는 작은 컴퓨터</b>, 마이크로컨트롤러가 둘을 이어 줘요.</span></div>
+  <div class="card">
+    <h3>💡 사물 인터넷 기술을 조명에 접목하면</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#f2a516"><div class="ic">⏰</div><h4>아침에</h4><p>기상 시간에 맞춰 은은한 불빛으로 잠을 깨워 줘요.</p></div>
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🚶</div><h4>움직임·어둠을 느끼면</h4><p>사람의 움직임을 감지하거나 주위가 어두워지면 조명의 밝기를 조절해요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🏠</div><h4>집을 비울 때</h4><p>전등을 주기적으로 켜고 꺼서 범죄 예방에 도움을 줘요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔌 스마트 조명 입출력 설계</h3>
+    <div class="flow2">
+      <div style="--k:#2f6fd0"><b>입력 · 인체 감지 센서</b><span>사람의 움직임을 감지한다.</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#9b4fc4"><b>마이크로컨트롤러</b><span>입출력 장치를 연결해 제어한다. 센서 값을 받아 판단하고 LED에 명령을 보낸다.</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#e0702b"><b>출력 · LED</b><span>전등을 켜고 끈다.</span></div>
+    </div>
+  </div>
+  <div class="cards2">
+    <div class="kc" style="--k:#e0702b">
+      <div class="ic">💡</div><h4>LED</h4>
+      <p>전원을 연결하여 전류가 흐를 때 빛을 내는 반도체 소자예요. <b>극성</b>이 있어서 방향을 맞춰 꽂아야 해요.</p>
+      <p>• <b>긴 다리가 +극</b>, 짧은 다리가 −극이에요. +쪽을 VCC(전압)에, −쪽을 GND(접지)에 연결해요.<br>• 과도한 전류가 흐르면 쉽게 망가지므로 <b>저항</b>을 함께 써서 전류를 제한해요. 저항이 내장된 LED는 저항을 따로 연결하지 않아도 돼요.</p>
+      <small>어디에 쓰일까? 신호등, 자동차 헤드라이트, 스마트 가로등, 전광판</small>
+    </div>
+    <div class="kc" style="--k:#2f6fd0">
+      <div class="ic">🚶</div><h4>인체 감지 센서</h4>
+      <p>적외선을 통해 사람의 움직임을 감지하는 <b>입력 센서</b>예요. 사람 몸(표면 온도 20~35℃)에서 나오는 적외선의 변화를 이용해요. 우리 키트에서는 <b>PIR 센서</b>라고 불러요.</p>
+      <p>• 가변 저항 두 개로 조절해요. 하나는 <b>감도</b>(최대 7m 거리까지 감지), 다른 하나는 <b>감지 유지 시간</b>(0.3초~5분)이에요.</p>
+      <small>어디에 쓰일까? 손을 대면 바람이 나오는 공용 화장실 핸드 드라이어</small>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 입력일까, 출력일까?</h3>
+    <p class="muted" style="margin-top:0">장치를 보고 어느 쪽인지 골라 보세요. 교과서 26쪽 장치와 우리 키트 부품이 섞여 있어요.</p>
+    <div id="devSort"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 피코와 Thonny -->
+<section class="page" data-name="피코와 Thonny" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>피코와 Thonny 준비</h2><p>교과서 26·36쪽 · 마이크로컨트롤러와 마이크로파이썬</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>피코에게 명령하려면 두 가지가 필요해요. 내 컴퓨터에서 코드를 쓰는 프로그램 <b>Thonny</b>, 그리고 피코 안에서 파이썬을 알아듣게 해 주는 <b>마이크로파이썬</b>이에요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#1f9d74"><div class="ic">🧠</div><h4>마이크로컨트롤러</h4><p>소형 CPU와 입출력 모듈을 하나의 칩으로 구성하여 사용자가 원하는 기능을 수행하는 <b>작은 컴퓨터</b>예요. 라즈베리파이 피코, ESP32, 아두이노가 모두 마이크로컨트롤러예요.</p></div>
+    <div class="kc" style="--k:#9b4fc4"><div class="ic">🐍</div><h4>마이크로파이썬</h4><p>하드웨어를 제어하는 기능을 제공하는 <b>파이썬용 펌웨어</b>예요. 마이크로컨트롤러마다 구성이 달라서 보드에 맞는 마이크로파이썬을 설치해야 해요.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>⚖️ 교과서의 ESP32와 우리의 피코 H</h3>
+    <div class="d1-tw"><table class="tbl d1-cmp">
+      <tr><th class="l"></th><th class="l">ESP32 (교과서)</th><th class="l">라즈베리파이 피코 H (우리)</th></tr>
+      <tr><td><b>종류</b></td><td>마이크로컨트롤러</td><td>마이크로컨트롤러</td></tr>
+      <tr><td><b>범용 입출력(GPIO) 핀</b></td><td>34개</td><td>26개</td></tr>
+      <tr><td><b>와이파이·블루투스</b></td><td>있음</td><td><b>없음</b></td></tr>
+      <tr><td><b>프로그램</b></td><td>Thonny + 마이크로파이썬</td><td>Thonny + 마이크로파이썬</td></tr>
+    </table></div>
+    <p class="note">코드의 모양은 거의 같아요. 장치를 연결한 <b>핀 번호</b>만 우리 보드에 맞게 바꿔요. 와이파이가 없다는 점은 다음 시간에 다시 이야기해요.</p>
+  </div>
+  <div class="card">
+    <h3>🛠️ 준비하기 <span class="muted" style="font-weight:400;font-size:.88rem">(선생님 안내에 따라)</span></h3>
+    <ol class="vsteps">
+      <li><b>Thonny 열기</b><p>학교 컴퓨터에는 이미 설치되어 있을 수 있어요. 없으면 선생님 안내에 따라 설치해요.</p></li>
+      <li><b>피코를 USB 케이블로 컴퓨터에 연결하기</b><p>처음 마이크로파이썬을 설치할 때만 보드의 <b>BOOTSEL</b> 버튼을 누른 채로 연결해요. 이미 설치되어 있다면 그냥 꽂아요.</p></li>
+      <li><b>Thonny 오른쪽 아래에서 인터프리터 고르기</b><p>「MicroPython (Raspberry Pi Pico)」를 골라요. 마이크로파이썬이 없다고 나오면 선생님 안내에 따라 「Install MicroPython」으로 설치해요.</p></li>
+      <li><b>아래쪽 셸(Shell)에 <span class="mono">&gt;&gt;&gt;</span>가 보이면 준비 끝</b><p>셸에 <span class="mono">print('hello')</span>를 입력하고 Enter를 눌러 보세요.</p></li>
+    </ol>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ① 피코 보드 위 LED(온보드 LED) 켜기</h3>
+    <p class="muted" style="margin-top:0">피코에는 보드 자체에 작은 LED가 하나 있어요. 회로를 꾸미지 않고도 바로 켜 볼 수 있어요. 아래 코드를 <b>직접 입력</b>해요.</p>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBoard">
+<span class="l">from machine import Pin</span>
+<span class="l">led = Pin(25, Pin.OUT)</span>
+<span class="l">led.value(1)</span>
+</pre>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>1</b></td><td>하드웨어를 다루는 machine 모듈에서 Pin을 준비해요.</td></tr>
+          <tr><td><b>2</b></td><td>25번 핀(온보드 LED)을 <b>출력</b>(Pin.OUT)으로 정해 led라는 이름을 붙여요.</td></tr>
+          <tr><td><b>3</b></td><td>값을 1로 정해 LED를 켜요. 0이면 꺼져요.</td></tr>
+        </table>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li>코드를 입력하고 초록색 <b>▶ 실행</b>을 눌러요. 저장할 곳을 물으면 선생님 안내대로 골라요.</li>
+      <li>보드 위 LED가 켜졌는지 확인해요.</li>
+      <li>3줄의 <span class="mono">1</span>을 <span class="mono">0</span>으로 바꿔 다시 실행해요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkBoard"></div>
+      <label>실행했을 때 일어난 일, 막혔던 점과 해결한 방법</label>
+      <textarea data-memo="boardMemo" rows="2" placeholder="예: 처음엔 오류가 났는데 인터프리터를 다시 골랐더니 켜졌다"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 막혔을 때 확인할 것 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>「장치를 찾을 수 없어요」, 셸에 <span class="mono">&gt;&gt;&gt;</span>가 안 보여요</b> → 오른쪽 아래 인터프리터(포트)를 다시 골라요. 목록에 피코가 없으면 케이블을 뺐다가 다시 꽂아요.</li>
+      <li><b>케이블을 꽂아도 반응이 없어요</b> → 충전만 되는 케이블일 수 있어요. 다른 케이블로 바꿔 봐요.</li>
+      <li><b>「Backend is busy」 같은 말이 나와요</b> → 빨간 <b>■ 정지</b>를 누른 뒤 다시 실행해요.</li>
+      <li><b>오류 메시지가 나와요</b> → 마지막 줄의 <b>줄 번호</b>를 보고 그 줄을 확인해요. 대소문자(<span class="mono">Pin</span>, <span class="mono">OUT</span>), 괄호, 쉼표, 따옴표를 하나씩 비교해요.</li>
+      <li><b>보드에 마이크로파이썬이 없대요</b> → 선생님께 알려요. 함께 설치해요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 LED 켜고 끄기 -->
+<section class="page" data-name="LED 켜고 끄기" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>LED 켜고 끄기</h2><p>교과서 34·36쪽 · 출력 장치를 핀에 연결하고 제어하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>LED를 피코의 한 핀에 연결하고, 그 핀의 값을 <b>1로 하면 켜지고 0으로 하면 꺼져요.</b> 사이에 <b>기다리는 시간</b>을 넣고 계속 반복하면 LED가 깜박여요.</span></div>
+  <div class="card">
+    <h3>🔧 회로 연결하기</h3>
+    <div class="grid2 d1-g">
+      <div class="d1-cir" id="cirLed"></div>
+      <div>
+        <table class="tbl d1-pin">
+          <tr><th class="l">부품</th><th class="l">피코 연결</th></tr>
+          <tr><td>LED 긴 다리(+)</td><td>저항(220Ω)을 거쳐 <b>GP14</b> (보드 핀 19)</td></tr>
+          <tr><td>LED 짧은 다리(−)</td><td><b>GND</b> (보드 핀 18)</td></tr>
+        </table>
+        <div class="callout"><b>번호가 두 가지예요.</b> 코드에 쓰는 번호는 <b>GP 번호</b>(GP14 → 14)예요. 보드 가장자리 순서대로 센 <b>보드 핀 번호</b>(19)와 달라요. GND 핀은 여러 개라 가까운 것을 써도 돼요.</div>
+        <p class="note">피코는 브레드보드 <b>가운데 홈에 걸쳐</b> 꽂고, 선은 쓰려는 핀과 <b>같은 세로줄</b> 구멍에 꽂아요. 브레드보드는 세로 다섯 구멍이 한 줄로 이어져 있어서 부품 다리도 같은 줄에 꽂아야 연결돼요.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ② LED를 1초마다 켜고 끄기</h3>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBlink">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">while True:</span>
+<span class="l">    LED.value(1)</span>
+<span class="l">    time.sleep(<i class="d1-t">1</i>)</span>
+<span class="l">    LED.value(0)</span>
+<span class="l">    time.sleep(<i class="d1-t">1</i>)</span>
+</pre>
+        <p class="note">5~8줄 앞은 <b>네 칸 들여쓰기</b>해요. Thonny는 <span class="mono">while True:</span> 다음 줄을 자동으로 들여 써 줘요.</p>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>2</b></td><td>시간을 기다리는 데 쓰는 time 모듈을 준비해요.</td></tr>
+          <tr><td><b>3</b></td><td>14번 핀(GP14)을 LED의 <b>출력</b>으로 정해요.</td></tr>
+          <tr><td><b>4</b></td><td>아래 들여 쓴 줄들을 끝없이 반복해요.</td></tr>
+          <tr><td><b>5·7</b></td><td>값 1(HIGH)이면 켜기, 0(LOW)이면 끄기</td></tr>
+          <tr><td><b>6·8</b></td><td>괄호 안의 초만큼 기다리기</td></tr>
+        </table>
+        <p class="note">교과서 36쪽 코드와 같아요. 교과서는 ESP32의 2번 핀, 우리는 피코의 14번 핀을 써요.</p>
+      </div>
+    </div>
+    <h4 style="margin-top:12px">▶ 실행하기 전에 화면에서 먼저 돌려 보기</h4>
+    <div class="d1-sim" id="blinkSim">
+      <div class="d1-led" id="blinkLed"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="bulb" d="M14 52V28a16 16 0 0 1 32 0v24z"/><rect x="10" y="52" width="40" height="6" rx="2" class="rim"/><line x1="24" y1="58" x2="24" y2="78" class="leg"/><line x1="36" y1="58" x2="36" y2="72" class="leg"/></svg><b id="blinkVal">LED.value = 0</b></div>
+      <div class="d1-ctl">
+        <div class="row"><button class="btn sm" id="blinkRun">▶ 실행</button><button class="btn sm ghost" id="blinkStep">한 줄씩</button><button class="btn sm ghost" id="blinkStop">■ 정지</button></div>
+        <div class="row" style="margin-top:8px"><span style="font-size:.9rem;font-weight:700">기다리는 시간</span><div class="chips" id="blinkT" style="margin:0"></div></div>
+        <div class="d1-msg" id="blinkMsg">▶ 실행을 누르면 위 코드가 한 줄씩 실행되는 모습을 보여 줘요.</div>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li>회로를 꾸미고, 코드를 입력해 실행해요. LED가 1초마다 켜졌다 꺼지나요?</li>
+      <li>6·8줄의 <span class="mono">1</span>을 다른 수로 바꾸기 전에 <b>결과를 먼저 예측</b>하고 실행해요.</li>
+      <li>멈출 때는 Thonny의 <b>■ 정지</b>를 눌러요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkLed"></div>
+      <label>기다리는 시간을 바꿨을 때 <small>예측한 것 → 실제 결과</small></label>
+      <textarea data-memo="ledMemo" rows="2" placeholder="예: 0.2로 바꾸면 더 빨리 깜박일 것 같다 → 실제로 ..."></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 LED가 켜지지 않을 때 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>다리 방향</b> → 긴 다리(+)가 저항 쪽, 짧은 다리(−)가 GND 쪽인지 확인해요. 반대로 꽂으면 켜지지 않아요.</li>
+      <li><b>같은 줄</b> → 저항 끝과 LED 긴 다리가 브레드보드의 같은 세로줄에 있는지 봐요. 가운데 홈을 건너면 이어지지 않아요.</li>
+      <li><b>핀 번호</b> → 선을 꽂은 곳이 GP14(보드 핀 19)인지, 코드의 숫자가 14인지 맞춰 봐요.</li>
+      <li><b>코드는 도는데 반응이 없어요</b> → 온보드 LED 코드(25번)로 보드가 살아 있는지 먼저 확인해요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 버튼으로 LED 켜기 -->
+<section class="page" data-name="버튼으로 LED 켜기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>버튼으로 LED 켜기</h2><p>교과서 37쪽 코드 구조로 · 입력에 따라 출력 바꾸기</p></div></div>
+  <div class="callout" style="margin-top:-6px"><b>이 화면은 이렇게 해요.</b> 아래 <b>화면 시뮬레이션은 모두</b> 해 봐요. <b>실물 버튼 회로</b>는 실습 ②(LED 깜박이기)를 마친 사람만 이어서 해요.</div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>버튼은 <b>누르면 1, 떼면 0</b>을 보내는 입력 장치예요. 마이크로컨트롤러가 <b>if 문</b>으로 입력값을 확인해서 LED를 켜거나 꺼요. 다음 시간에 버튼 자리에 <b>인체 감지 센서</b>를 넣으면 스마트 조명이 돼요.</span></div>
+  <div class="card">
+    <h3>🔧 회로에 버튼 더하기</h3>
+    <div class="grid2 d1-g">
+      <div class="d1-cir" id="cirBtn"></div>
+      <div>
+        <table class="tbl d1-pin">
+          <tr><th class="l">부품</th><th class="l">피코 연결</th></tr>
+          <tr><td>LED</td><td>그대로 (GP14 · GND)</td></tr>
+          <tr><td>버튼 다리 하나</td><td><b>GP15</b> (보드 핀 20)</td></tr>
+          <tr><td>그 <b>대각선</b> 쪽 다리</td><td><b>3V3</b> (보드 핀 36)</td></tr>
+        </table>
+        <p class="note">버튼은 브레드보드 <b>가운데 홈에 걸쳐</b> 꽂아요. 다리가 네 개인데, <b>대각선으로 마주 보는 두 다리</b>를 쓰면 방향과 상관없이 연결돼요. 버튼을 누르면 GP15와 3V3이 이어지면서 GP15의 값이 1이 돼요.</p>
+        <div class="callout d1-warn">⚠️ 버튼 선은 <b>3V3(보드 핀 36)</b>에만 꽂아요. <b>핀 39·40(5V)과 핀 37(3V3_EN)에는 꽂지 않아요.</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="card d1-lab">
+    <h3>🧪 실습 ③ 버튼을 누르는 동안 LED 켜기 <span class="muted" style="font-weight:400;font-size:.88rem">(실물은 실습 ②를 마친 사람)</span></h3>
+    <div class="grid2">
+      <div>
+<pre class="code" id="codeBtn">
+<span class="l">from machine import Pin</span>
+<span class="l">import time</span>
+<span class="l">LED = Pin(14, Pin.OUT)</span>
+<span class="l">BTN = Pin(15, Pin.IN, Pin.PULL_DOWN)</span>
+<span class="l">while True:</span>
+<span class="l">    if BTN.value() == 1:</span>
+<span class="l">        LED.value(1)</span>
+<span class="l">    else:</span>
+<span class="l">        LED.value(0)</span>
+<span class="l">    time.sleep(0.1)</span>
+</pre>
+      </div>
+      <div>
+        <table class="tbl d1-ex">
+          <tr><td><b>4</b></td><td>15번 핀을 버튼의 <b>입력</b>(Pin.IN)으로 정해요. <span class="mono">Pin.PULL_DOWN</span>은 버튼을 누르지 않았을 때 값이 0으로 안정되게 하는 설정이에요.</td></tr>
+          <tr><td><b>6</b></td><td>버튼의 값이 1이면(누르고 있으면)</td></tr>
+          <tr><td><b>7</b></td><td>LED 켜기</td></tr>
+          <tr><td><b>8·9</b></td><td>그렇지 않으면 LED 끄기</td></tr>
+          <tr><td><b>10</b></td><td>0.1초 쉬고 다시 확인해요.</td></tr>
+        </table>
+      </div>
+    </div>
+    <h4 style="margin-top:12px">▶ 화면 시뮬레이션 (모두)</h4>
+    <div class="d1-sim">
+      <div class="d1-pair">
+        <button class="d1-push" id="btnPush" aria-label="버튼 누르기"><i></i><span>누르고 있기</span></button>
+        <div class="d1-led" id="btnLed"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="bulb" d="M14 52V28a16 16 0 0 1 32 0v24z"/><rect x="10" y="52" width="40" height="6" rx="2" class="rim"/><line x1="24" y1="58" x2="24" y2="78" class="leg"/><line x1="36" y1="58" x2="36" y2="72" class="leg"/></svg></div>
+      </div>
+      <div class="d1-ctl">
+        <div class="d1-vals"><span>BTN.value() = <b id="btnVal">0</b></span><span>LED.value = <b id="btnLedVal">0</b></span></div>
+        <div class="d1-msg" id="btnMsg">왼쪽 버튼을 누르고 있으면 코드의 어느 줄이 실행되는지 위 코드 상자에 표시돼요.</div>
+      </div>
+    </div>
+    <ol class="d1-do">
+      <li><b>모두</b> · 시뮬레이션 버튼을 눌렀다 떼며 6~9줄 중 어느 줄이 실행되는지 확인해요.</li>
+      <li><b>모두</b> · 7줄과 9줄의 1과 0을 서로 바꾸면 어떻게 될지 <b>예측</b>해 메모해요.</li>
+      <li><b>실물</b>(실습 ②를 마친 사람) · 버튼을 꽂고 코드를 입력해 실행하고, 예측이 맞는지 확인해요.</li>
+    </ol>
+    <div class="memo">
+      <label>해낸 것에 표시해요</label><div id="chkBtn"></div>
+      <label>이 코드에서 입력과 출력은 각각 어느 줄일까요? 버튼 대신 인체 감지 센서를 쓴다면 무엇을 바꾸면 될까요?</label>
+      <textarea data-memo="btnMemo" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <details class="card d1-help">
+    <summary>🆘 버튼을 눌러도 반응이 없을 때 (눌러서 펼치기)</summary>
+    <ul>
+      <li><b>버튼 다리</b> → 대각선 두 다리에 선을 연결했는지 봐요. 가운데 홈에 걸쳐 있어야 해요.</li>
+      <li><b>3V3 자리</b> → 보드 핀 36(3V3)인지 확인해요. ⚠️ 핀 39·40(5V)과 37(3V3_EN)에는 꽂지 않아요.</li>
+      <li><b>철자</b> → <span class="mono">Pin.IN</span>, <span class="mono">Pin.PULL_DOWN</span>의 대문자와 밑줄을 확인해요.</li>
+      <li><b>LED가 계속 켜져 있어요</b> → 4줄에 <span class="mono">Pin.PULL_DOWN</span>이 빠졌는지 봐요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 함께 해결하기 · 정리 -->
+<section class="page" data-name="함께 해결하기" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>함께 해결하기 · 개념 정리</h2><p>교과서 37쪽 · 문제 해결에 맞는 장치 구성</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>오늘 한 것처럼 <b>문제 → 입력 장치 → 출력 장치</b> 순서로 생각하면 다른 문제에도 장치를 고를 수 있어요. 짝과 이야기하며 정해 봐요.</span></div>
+  <div class="card">
+    <h3>🌀 함께 해결하기: 스마트 선풍기</h3>
+    <div class="callout" style="margin-top:4px"><b>온도가 내려가면 선풍기(모터)가 자동으로 꺼지는</b> 스마트 선풍기에 필요한 장치를 구성해 봐요. 교과서 26쪽 센서와 모터 설명을 참고해요.</div>
+    <div class="memo">
+      <label>입력 장치 <small>하나 고르기</small></label><div id="fanIn"></div>
+      <label>출력 장치 <small>하나 고르기</small></label><div id="fanOut"></div>
+      <label>이렇게 고른 까닭과 동작 순서 <small>예: ○○가 ○○를 측정하면 → 마이크로컨트롤러가 ○○ → ○○가 멈춘다</small></label>
+      <textarea data-memo="fanWhy" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기 <span class="muted" style="font-weight:400;font-size:.88rem">(빈칸을 눌러 확인)</span></h3>
+    <ol class="d1-blanks">
+      <li>복도에 사람이 지나가면 불이 켜지게 하려고, 몸에서 나오는 적외선의 변화로 움직임을 알아채는 <button class="d1-blank" data-a="인체 감지 센서">?</button>를 천장에 달았다.</li>
+      <li>이 복도 조명에서 움직임 값을 받아들이는 센서는 <button class="d1-blank" data-a="입력 장치">?</button>, 불을 켜고 끄는 LED는 <button class="d1-blank" data-a="출력 장치">?</button>이다.</li>
+      <li>센서 값을 받아 판단하고 LED에 명령을 보내는 피코 같은 작은 컴퓨터를 <button class="d1-blank" data-a="마이크로컨트롤러">?</button>라고 한다.</li>
+      <li>새로 산 피코에서 파이썬 코드를 실행하려면 먼저 보드에 맞는 <button class="d1-blank" data-a="마이크로파이썬">?</button>을 설치해야 한다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(할 수 있게 된 것을 모두 골라요)</span></h3>
+    <div id="selfCheck"></div>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">문제를 해결하려면 무엇을 <b>입력</b>받고 무엇을 <b>출력</b>할지 정해 장치를 고른다. 스마트 조명은 <b>인체 감지 센서(입력)</b>와 <b>LED(출력)</b>로 만든다.</div>
+    <div style="--k:#1f9d74">입출력 장치는 <b>마이크로컨트롤러</b>에 연결해 제어한다. 파이썬으로 제어하려면 Thonny와 보드에 맞는 <b>마이크로파이썬</b>이 필요하다.</div>
+    <div style="--k:#9b4fc4">핀을 <b>출력</b>으로 정하면 값 1·0으로 LED를 켜고 끄고, <b>입력</b>으로 정하면 버튼 같은 장치의 값을 읽어 <b>if 문</b>으로 출력을 바꿀 수 있다.</div>
+  </div>
+  <div class="card">
+    <h3>오늘의 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 고른 장치와 직접 해 본 실습을 넣어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">문제를 해결하려면 어떤 장치를 골라 어떻게 연결하고 제어할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>빈 교실 전등(또는 스마트 선풍기) 문제에 필요한 <b>입력 장치와 출력 장치</b>, 각각의 역할</li>
+      <li>LED 실습에서 <b>값 1·0과 기다리는 시간</b>을 바꾸며 직접 확인한 결과</li>
+      <li>버튼 코드(실물 또는 시뮬레이션)의 <b>입력과 출력</b>, 버튼 대신 <b>인체 감지 센서</b>를 쓸 때 달라질 점 예상</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u1-iot-design-1.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u1-iot-design-1', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 26·34~37쪽, 피코 실습) — 보기는 짧은 것부터, 극단어 피하기 */
+const QUIZ={
+ 1:[{q:'스마트 조명에서 사람의 움직임을 감지하는 인체 감지 센서는 어떤 장치일까?',o:['출력 장치','입력 장치','저장 장치'],a:1,w:'인체 감지 센서는 사람의 움직임을 감지해 값을 받아들이는 입력 센서예요(34~35쪽).'},
+    {q:'LED를 연결하는 방법으로 알맞은 것은?',o:['짧은 다리를 +극에 연결한다','저항 없이 큰 전류를 흘려 더 밝게 한다','긴 다리를 VCC(+)에, 짧은 다리를 GND에 연결한다'],a:2,w:'LED는 극성이 있어서 긴 다리가 +극이에요. 과도한 전류가 흐르면 망가지므로 저항을 함께 써요(34쪽).'},
+    {q:'인체 감지 센서에 있는 두 개의 가변 저항으로 조절하는 것은?',o:['LED의 밝기','감도와 감지 유지 시간','와이파이 신호 세기와 연결 속도'],a:1,w:'한 개는 감지 거리를 정하는 감도, 다른 한 개는 감지 신호를 얼마나 유지할지 정하는 시간을 조절해요(35쪽).'}],
+ 2:[{q:'마이크로파이썬에 대한 설명으로 알맞은 것은?',o:['피코를 연결하는 USB 케이블','파이썬 코드를 입력하는 통합 개발 프로그램','하드웨어를 제어하는 기능을 제공하는 파이썬용 펌웨어'],a:2,w:'마이크로파이썬은 보드에 설치하는 파이썬용 펌웨어예요. 코드를 입력하는 통합 개발 프로그램은 Thonny예요(36쪽).'},
+    {q:'온보드 LED를 켠 코드에서 led.value(1)의 1을 0으로 바꾸어 실행하면?',o:['LED가 꺼진다','LED가 더 밝아진다','LED가 1초마다 깜박인다'],a:0,w:'출력 핀의 값을 1로 정하면 켜지고, 0으로 정하면 꺼져요.'}],
+ 3:[{q:'LED = Pin(14, Pin.OUT)에서 Pin.OUT이 뜻하는 것은?',o:['LED를 14초 동안 켠다','14번 핀을 출력으로 쓴다','14번 핀을 입력으로 쓴다'],a:1,w:'LED는 빛을 내보내는 출력 장치이므로 연결한 핀을 출력으로 정해요. 14는 기다리는 시간이 아니라 GP 번호예요.'},
+    {q:'깜박이기 코드에서 time.sleep(1)을 time.sleep(0.2)로 바꾸면 LED는?',o:['꺼진 채로 있다','더 빠르게 깜박인다','더 느리게 깜박인다'],a:1,w:'켜진 채, 꺼진 채 기다리는 시간이 1초에서 0.2초로 짧아지므로 더 빨리 깜박여요.'},
+    {q:'LED를 꽂고 코드를 실행했는데 켜지지 않는다. 먼저 확인할 것은?',o:['저항의 색 띠 순서','LED의 색깔(빨강·초록)','LED 다리 방향과 연결한 핀 번호'],a:2,w:'LED는 극성이 있어 반대로 꽂으면 켜지지 않아요. 선을 꽂은 핀과 코드의 핀 번호가 같은지도 확인해요. 저항은 방향이 없고, LED 색깔은 켜지는지와 관계없어요.'}],
+ 4:[{q:'버튼으로 LED를 켜는 회로에서 버튼은 어떤 장치일까?',o:['입력 장치','출력 장치','마이크로컨트롤러'],a:0,w:'버튼은 눌렀는지를 값(1 또는 0)으로 보내는 입력 장치예요. 그래서 핀을 Pin.IN으로 정했어요.'},
+    {q:'버튼 코드의 if BTN.value() == 1: 이 뜻하는 것은?',o:['버튼이 고장 나면','LED가 켜져 있으면','버튼을 누르고 있으면'],a:2,w:'버튼을 누르면 GP15가 3V3과 이어져 값이 1이 돼요. 이때 if 아래 줄이 실행되어 LED가 켜져요.'}],
+ 6:[{q:'LED를 피코의 보드 핀 19번(GP14)에 꽂았다. 코드 LED = Pin(□, Pin.OUT)의 □에 쓸 번호는?',o:['14','19','25'],a:0,w:'코드에는 보드 가장자리 순서(보드 핀 번호 19)가 아니라 GP 번호 14를 써요. 25는 온보드 LED의 번호예요.'},
+    {q:'교과서의 ESP32와 달리 우리가 쓰는 라즈베리파이 피코 H에 없는 기능은?',o:['와이파이','USB 연결','GPIO 핀'],a:0,w:'ESP32에는 와이파이와 블루투스 모듈이 들어 있지만 피코 H에는 없어요. 둘 다 GPIO 핀이 있고 USB로 연결해요.'},
+    {q:'마이크로컨트롤러가 하는 일로 알맞은 것은?',o:['빛을 내 전등을 켠다','사람의 움직임을 감지한다','입력을 받아 판단하고 출력 장치를 제어한다'],a:2,w:'빛을 내는 것은 출력 장치, 움직임을 감지하는 것은 입력 장치의 일이에요. 마이크로컨트롤러는 둘을 연결해 제어해요(35쪽).'}]
+};
+
+const QK='ds-u1-iot-design-1-quiz'+WHO.sfx;
+const MK='ds-u1-iot-design-1-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 코드 상자: 줄 사이 빈 글자 마디를 지워 한 줄씩 깔끔하게 */
+document.querySelectorAll('pre.code').forEach(p=>[...p.childNodes].forEach(n=>{ if(n.nodeType===3&&!n.textContent.trim()) n.remove(); }));
+/* 코드 상자에서 줄 강조 (0부터 센 줄 번호 목록) */
+function d1hl(id,rows){ document.querySelectorAll('#'+id+' .l').forEach((l,i)=>l.classList.toggle('on',rows.includes(i))); }
+/* 지금 보이는 화면에 있는지 */
+const d1vis=id=>{ const e=document.getElementById(id); return !!(e&&e.offsetParent); };
+
+/* 회로 그림: 피코 H(위 줄 핀 40→21, 아래 줄 핀 1→20)와 LED·버튼 */
+function d1circuit(withBtn){
+  const s=22,x0=60,by=50,yT=by+14,yB=by+90;
+  const X=n=>n<=20?x0+(n-1)*s:x0+(40-n)*s, Y=n=>n<=20?yB:yT;
+  const used={19:'#e0702b',18:'#33393f'}; if(withBtn){used[20]='#9b4fc4';used[36]='#d64535';}
+  const W=(pts,c)=>`<polyline class="wire ${c}" points="${pts.map(p=>p.join(',')).join(' ')}"/>`;
+  let g=`<rect x="40" y="${by}" width="458" height="104" rx="8" class="pc-b"/><rect x="22" y="${by+38}" width="26" height="28" rx="3" class="pc-usb"/>`
+    +`<text x="269" y="${by+57}" class="pc-nm">Raspberry Pi Pico H</text><text x="16" y="${by+84}" class="cl s">USB</text>`;
+  for(let n=1;n<=40;n++){ const u=used[n];
+    g+=`<circle cx="${X(n)}" cy="${Y(n)}" r="${u?6.5:4}" class="pc-p${u?' on':''}"${u?` style="fill:${u}"`:''}/>`;
+    if(u||[1,20,21,40].includes(n)) g+=`<text x="${X(n)}" y="${n<=20?yB-11:yT+19}" class="pc-n">${n}</text>`; }
+  /* LED 줄: GP14(핀 19) → 저항 → LED + / LED − → GND(핀 18) */
+  const yc=265, yg=310;
+  g+=W([[X(19),yB],[X(19),yc],[476,yc]],'w-14')+W([[520,yc],[552,yc]],'w-14');
+  g+=`<rect x="476" y="${yc-7}" width="44" height="14" rx="6" class="res"/><rect x="486" y="${yc-7}" width="4" height="14" class="res-b"/><rect x="496" y="${yc-7}" width="4" height="14" class="res-b"/><rect x="506" y="${yc-7}" width="4" height="14" class="res-b"/>`;
+  g+=`<text x="498" y="${yc+22}" class="cl m">저항 220Ω</text>`;
+  g+=`<line x1="552" y1="226" x2="552" y2="${yc}" class="leg"/><line x1="568" y1="226" x2="568" y2="255" class="leg"/>`
+    +`<path d="M544 221v-14a16 16 0 0 1 32 0v14z" class="led-d"/><rect x="540" y="221" width="40" height="5" rx="2" class="led-d"/>`
+    +`<text x="586" y="206" class="cl">LED</text><text x="586" y="222" class="cl s">긴 다리가 +</text><text x="546" y="248" class="cl e">+</text><text x="574" y="248" class="cl">−</text>`;
+  g+=W([[568,255],[568,yg],[X(18),yg],[X(18),yB]],'w-gnd');
+  g+=`<text x="${X(18)-6}" y="${yg-6}" class="cl e">GND (핀 18)</text><text x="${X(19)+6}" y="${yc-25}" class="cl">GP14 (핀 19)</text>`;
+  if(withBtn){
+    const yb=175;
+    g+=W([[X(20),yB],[X(20),yb],[588,yb]],'w-15')+W([[620,yb],[672,yb],[672,22],[X(36),22],[X(36),yT]],'w-pwr');
+    g+=`<rect x="588" y="${yb-16}" width="32" height="32" rx="4" class="btn-b"/><circle cx="604" cy="${yb}" r="9" class="btn-c"/><text x="604" y="${yb-22}" class="cl m">버튼</text>`;
+    g+=`<text x="${X(20)+8}" y="${yb-6}" class="cl">GP15 (핀 20)</text><text x="${X(36)+8}" y="16" class="cl">3V3 (핀 36)</text>`;
+  }
+  return `<svg viewBox="0 0 690 330" role="img" aria-label="피코 H와 ${withBtn?'LED·버튼':'LED'} 연결 그림">${g}</svg>`;
+}
+$('cirLed').innerHTML=d1circuit(false);
+$('cirBtn').innerHTML=d1circuit(true);
+
+/* 01 입력·출력·마이크로컨트롤러 분류 */
+sorter('devSort',{
+  cats:[{n:'입력 장치',k:'#2f6fd0'},{n:'출력 장치',k:'#e0702b'},{n:'마이크로컨트롤러',k:'#9b4fc4'}],
+  items:[
+    {t:'인체 감지 센서',ic:'🚶',c:0,w:'사람의 움직임을 감지해 값을 보내요.'},
+    {t:'조도 센서',ic:'🌗',c:0,w:'빛의 밝기를 측정해요.'},
+    {t:'토양 수분 센서',ic:'🪴',c:0,w:'흙의 수분을 측정해요.'},
+    {t:'버튼',ic:'🔘',c:0,w:'누르면 1, 떼면 0을 보내요. 오늘 실습에서 써요.'},
+    {t:'LED',ic:'💡',c:1,w:'빛을 내서 전등을 켜고 꺼요.'},
+    {t:'모터',ic:'🌀',c:1,w:'속도와 회전 방향을 제어해 선풍기를 돌려요.'},
+    {t:'부저',ic:'🔔',c:1,w:'소리를 내서 알려 줘요. 다음 시간에 써 볼 수 있어요.'},
+    {t:'라즈베리파이 피코',ic:'🟩',c:2,w:'입출력 장치를 연결해 제어하는 작은 컴퓨터예요.'},
+    {t:'ESP32',ic:'🟦',c:2,w:'교과서가 쓰는 마이크로컨트롤러예요. 와이파이와 블루투스가 들어 있어요.'}
+  ],
+  end:'입력 장치는 <b>값을 받아들이고</b>, 출력 장치는 <b>결과를 내보내요</b>. 마이크로컨트롤러는 그 사이에서 판단하고 제어해요.'
+});
+
+/* 체크리스트 · 고르기 */
+chips('chkBoard','chkBoardPick',['셸에 >>>가 보였다','코드를 직접 입력했다','온보드 LED가 켜졌다','0으로 바꿔 꺼 봤다'],true);
+chips('chkLed','chkLedPick',['LED 다리 방향을 확인했다','회로를 연결했다','1초마다 깜박였다','기다리는 시간을 바꿔 봤다','■ 정지로 멈췄다'],true);
+chips('chkBtn','chkBtnPick',['시뮬레이션으로 if·else 줄을 확인했다','1과 0을 바꾼 결과를 예측했다','(실물) 대각선 두 다리로 버튼을 꽂았다','(실물) 누르는 동안 LED가 켜졌다'],true);
+chips('fanIn','fanInPick',['인체 감지 센서','조도 센서','온습도 센서','초음파 센서','버튼'],false);
+chips('fanOut','fanOutPick',['LED','모터','부저'],false);
+chips('selfCheck','selfCheckPick',['문제에 맞는 입력·출력 장치를 고를 수 있다','LED를 극성에 맞게 연결할 수 있다','Thonny로 피코에 코드를 실행할 수 있다','버튼 입력으로 LED를 제어할 수 있다'],true);
+
+/* 03 깜박이기 시뮬레이션: 코드 줄을 따라 LED 켜고 끄기 */
+(function(){
+  let t=1, pc=0, timer=null, loops=0, on=0;
+  const tb=$('blinkT');
+  tb.innerHTML=['1','0.5','0.2'].map(v=>`<button class="chip${v==='1'?' on':''}" data-v="${v}">${v}초</button>`).join('');
+  tb.querySelectorAll('button').forEach(b=>b.onclick=()=>{ t=+b.dataset.v; tb.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('#codeBlink .d1-t').forEach(i=>i.textContent=b.dataset.v); });
+  const msg=[ 'machine 모듈에서 Pin을 준비해요.','time 모듈을 준비해요.','14번 핀을 LED의 출력으로 정해요.',
+    'while True: 아래 들여 쓴 줄을 끝없이 반복해요.','LED.value(1) → LED가 <b>켜져요</b>.','', 'LED.value(0) → LED가 <b>꺼져요</b>.','' ];
+  function show(){
+    d1hl('codeBlink',[pc]);
+    if(pc===4) on=1; if(pc===6) on=0; if(pc===3) loops++;
+    $('blinkLed').classList.toggle('on',!!on); $('blinkVal').textContent='LED.value = '+on;
+    const m=(pc===5||pc===7)?`${t}초 기다려요. 그동안 LED는 ${on?'켜진':'꺼진'} 채로 있어요.`:msg[pc];
+    $('blinkMsg').innerHTML=`<b>${pc+1}줄</b> · ${m}${loops?` <span class="muted">(반복 ${loops}번째)</span>`:''}`;
+  }
+  function next(){ pc = pc<7 ? pc+1 : 3; }
+  function tick(){
+    if(!d1vis('blinkSim')){ stop(); return; }
+    show(); const wait=(pc===5||pc===7)?t*1000:450; next(); timer=setTimeout(tick,wait);
+  }
+  function stop(){ clearTimeout(timer); timer=null; }
+  $('blinkRun').onclick=()=>{ if(timer) return; tick(); };
+  $('blinkStep').onclick=()=>{ stop(); show(); next(); };
+  $('blinkStop').onclick=()=>{ stop(); pc=0; loops=0; d1hl('codeBlink',[]); $('blinkMsg').innerHTML='■ 정지했어요. 다시 ▶ 실행하면 1줄부터 시작해요. (실제 보드에서는 멈춘 순간의 LED 상태가 남아 있을 수 있어요.)'; };
+})();
+
+/* 04 버튼 시뮬레이션: 누르고 있는 동안 if 쪽, 떼면 else 쪽 */
+(function(){
+  let pressed=0, timer=null;
+  const push=$('btnPush');
+  const down=e=>{ if(e) e.preventDefault(); pressed=1; push.classList.add('on'); };
+  const up=()=>{ pressed=0; push.classList.remove('on'); };
+  push.addEventListener('pointerdown',down); ['pointerup','pointerleave','pointercancel'].forEach(ev=>push.addEventListener(ev,up));
+  push.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); e.stopPropagation(); down(); } });
+  push.addEventListener('keyup',e=>{ if(e.key===' '||e.key==='Enter') up(); });
+  push.addEventListener('blur',up); window.addEventListener('blur',up);
+  function tick(){
+    if(!d1vis('btnPush')){ clearInterval(timer); timer=null; d1hl('codeBtn',[]); return; }
+    d1hl('codeBtn', pressed?[5,6]:[7,8]);
+    $('btnVal').textContent=pressed; $('btnLedVal').textContent=pressed;
+    $('btnLed').classList.toggle('on',!!pressed);
+    $('btnMsg').innerHTML=pressed?'<b>6·7줄</b> · BTN.value()가 1이라 if 아래 줄이 실행돼요. LED가 켜져요.':'<b>8·9줄</b> · BTN.value()가 0이라 else 아래 줄이 실행돼요. LED가 꺼져요.';
+  }
+  onShow[4]=()=>{ if(!timer) timer=setInterval(tick,120); };
+})();
+
+/* 05 빈칸 확인 */
+document.querySelectorAll('.d1-blank').forEach(b=>b.onclick=()=>{ b.textContent=b.dataset.a; b.classList.add('on'); });
+
+const MEMOLIST=[['planLight','빈 교실 전등을 끄려면 필요한 장치'],['chkBoardPick','실습 ① 온보드 LED: 해낸 것'],['boardMemo','실습 ① 일어난 일과 막혔던 점'],['chkLedPick','실습 ② LED 깜박이기: 해낸 것'],['ledMemo','실습 ② 기다리는 시간: 예측 → 결과'],['chkBtnPick','실습 ③ 버튼: 해낸 것'],['btnMemo','실습 ③ 입력과 출력, 센서로 바꾼다면'],['fanInPick','스마트 선풍기: 입력 장치'],['fanOutPick','스마트 선풍기: 출력 장치'],['fanWhy','스마트 선풍기: 까닭과 동작 순서'],['selfCheckPick','성취도 평가: 할 수 있게 된 것'],['keyQ','오늘의 질문에 대한 내 답']];
+onShow[6]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* 01 컴퓨팅 시스템 그림 */
+  .ns-hub{display:grid;grid-template-columns:1fr 150px 1fr;gap:14px;align-items:center}
+  @media (max-width:900px){.ns-hub{grid-template-columns:1fr}}
+  .ns-side{display:grid;gap:10px}
+  .ns-side .kc h4{font-size:1rem}
+  .ns-core{display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border-radius:50%;border:4px solid var(--acc);background:var(--acc-soft);text-align:center;padding:10px}
+  .ns-core span{font-size:2rem}
+  .ns-netdev ul{margin:8px 0 0;padding-left:18px;font-size:.9rem}
+  .ns-netdev li{margin:5px 0}
+  .ns-netdev li b{color:var(--k);margin-right:4px}
+  /* 01 짝짓기 */
+  .ns-match{display:grid;grid-template-columns:minmax(180px,.6fr) 1.4fr;gap:14px}
+  .ns-match .l,.ns-match .r{display:grid;gap:6px;align-content:start}
+  .ns-match button{position:relative;text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-size:.93rem;cursor:pointer;color:var(--ink)}
+  .ns-match .l button{font-weight:900}
+  .ns-match .l button span{margin-right:6px}
+  .ns-match button.sel{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+  .ns-match button.done{border-color:var(--k);background:color-mix(in srgb,var(--k) 10%,#fff);cursor:default}
+  .ns-match button.done::after{content:attr(data-n);position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--k);color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;font-size:.78rem;font-weight:900}
+  .ns-match .r button.done{padding-right:36px}
+  .ns-match button.ng{animation:nsShake .4s}
+  .ns-mmsg{margin-top:10px;background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.93rem}
+  @keyframes nsShake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  /* 02 화면 설명 그림 */
+  .ns-warn{background:#fff4d6;border-left-color:var(--amber)}
+  .ns-win{border:1px solid #c5ccd5;border-radius:8px;overflow:hidden;font-size:.8rem;margin:8px 0;background:#fff}
+  .ns-win .bar{background:#eef0f3;padding:4px 8px;font-weight:700}
+  .ns-win .tabs{display:flex;gap:2px;padding:4px 6px 0;border-bottom:1px solid #c5ccd5;flex-wrap:wrap}
+  .ns-win .tabs span{padding:2px 8px;border:1px solid transparent;border-bottom:0;border-radius:4px 4px 0 0;color:var(--muted)}
+  .ns-win .tabs span.on{border-color:#c5ccd5;background:#fff;color:var(--ink);font-weight:900;box-shadow:0 0 0 2px var(--amber)}
+  .ns-win .body{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}
+  .ns-win .body small{color:var(--muted)}
+  .ns-win .b{border:1px solid #8a94a3;border-radius:4px;padding:1px 10px;background:#fbfaf7}
+  .ns-win .row2{display:flex;justify-content:space-between;width:100%;max-width:220px;font-weight:700}
+  .ns-win .tg{display:inline-block;width:26px;height:14px;border-radius:999px;background:#2f6fd0;position:relative}
+  .ns-win .tg::after{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+  .ns-win .row2.off{color:var(--muted);font-weight:400}
+  .ns-win .row2.off .tg{background:#c5ccd5}.ns-win .row2.off .tg::after{right:auto;left:2px}
+  .ns-win.mac .row2:first-child{box-shadow:0 0 0 2px var(--amber);border-radius:4px;padding:0 4px}
+  .ns-five .kc h4{font-size:.98rem}
+  #cloudSteps.chk{flex-direction:column;align-items:stretch}
+  #cloudSteps.chk button{text-align:left;border-radius:10px}
+  #cloudSteps.chk button.on::before{content:"✔ "}
+  /* 04 경로 찾기 */
+  .ns-route{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  @media (max-width:900px){.ns-route{grid-template-columns:1fr}}
+  .ns-route .map svg{width:100%;max-width:480px;display:block;margin:auto;background:#fbfaf7;border-radius:14px}
+  .ns-route line.e{stroke:#b9c0ca;stroke-width:6;stroke-linecap:round}
+  .ns-route line.e.on{stroke:var(--acc);stroke-width:8}
+  .ns-route circle.wb{fill:#fff;stroke:#d64535;stroke-width:1.5}
+  .ns-route text.wt{font-size:14px;font-weight:900;fill:#d64535;text-anchor:middle}
+  .ns-route g.n{cursor:pointer}
+  .ns-route g.n circle{fill:#fff;stroke:#8a94a3;stroke-width:3}
+  .ns-route g.n text.l{font-size:20px;font-weight:900;text-anchor:middle;fill:var(--ink)}
+  .ns-route g.n text.nm{font-size:12px;font-weight:700;text-anchor:middle;fill:var(--muted)}
+  .ns-route g.n.in circle{fill:var(--acc);stroke:var(--acc)}
+  .ns-route g.n.in text.l{fill:#fff}
+  .ns-route g.n.cur circle{stroke:var(--amber);stroke-width:5}
+  .ns-route g.n.can circle{stroke:var(--acc);stroke-dasharray:5 4;stroke-width:3}
+  .ns-route g.n:focus{outline:none}.ns-route g.n:focus circle{stroke-width:5}
+  .ns-now{background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.93rem;margin-bottom:8px;min-height:3.2em}
+  .ns-mx{margin-top:10px;max-width:360px}
+  .ns-mx th,.ns-mx td{border:1px solid var(--line);padding:4px 6px;font-size:.88rem;width:14%}
+  .ns-mx td.x{background:#c5ccd5}
+  .ns-mx td.ex{color:#8a94a3}
+  .ns-mx td.me{color:#2f6fd0;font-weight:900;background:#e6eefb}
+  .ns-found{margin-top:10px;font-size:.92rem}
+  .ns-found ul{margin:4px 0 6px;padding-left:18px}
+  /* 05 정리 */
+  .ns-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;vertical-align:middle;margin-right:4px}
+  .ns-seq{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-bottom:10px}
+  .ns-seq span{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--acc);color:#fff;font-weight:900;font-size:1.2rem}
+  .ns-seq span.fix{background:var(--navy)}
+  .ns-seq span.emp{background:#fff;color:var(--muted);border:2px dashed var(--line)}
+  .ns-seq i{font-style:normal;color:var(--muted);font-weight:900}
+  .ns-opts{display:grid;gap:6px}
+  .ns-opts button{text-align:left;border:2px solid var(--line);background:#fff;border-radius:10px;padding:7px 12px;font:inherit;font-size:.93rem;cursor:pointer;color:var(--ink)}
+  .ns-opts button b{color:var(--acc);margin-right:4px}
+  .ns-opts button:disabled{opacity:.4;cursor:default}
+  .ns-ofb{margin-top:10px;font-size:.93rem}
+  .ns-ofb ul{margin:4px 0;padding-left:18px}
+  .ns-blanks li{margin:8px 0;line-height:1.9}
+  .ns-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .ns-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+  .ns-extra{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .ns-extra.on{display:block}
+  .ns-extra p{margin-top:0}
+  .ns-mx th.hd{font-size:.72rem;white-space:nowrap;width:auto}

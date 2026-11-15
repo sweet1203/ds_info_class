@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>협력적 창의·융합 프로젝트 · Ⅰ단원 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  /* 요소 이름표 */
+  .rv-k{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--k);color:#fff;font-size:.8rem;margin-right:4px}
+  /* 발표 대본 틀 */
+  .rv-pitch{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+  @media (max-width:900px){.rv-pitch{grid-template-columns:1fr 1fr}}
+  .rv-pitch>div{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .rv-pitch b{display:block;color:var(--k)}
+  .rv-pitch span{font-size:.88rem}
+  .rv-crit summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .rv-crit[open] summary{margin-bottom:8px}
+  .rv-tw{overflow-x:auto}
+  .rv-tw td{text-align:left;vertical-align:top;font-size:.92rem}
+  /* 설계 카드 */
+  .rv-card{border:2px solid var(--navy);border-radius:16px;overflow:hidden;background:#fff}
+  .rv-card .rv-hd{background:var(--navy);color:#fff;padding:10px 16px}
+  .rv-card .rv-hd b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem}
+  .rv-card .rv-hd small{display:block;color:#c8d6e8;font-size:.86rem;margin-top:2px}
+  .rv-card .pb{padding:10px 16px;background:#fff8e6;border-bottom:1px solid var(--line);font-size:.93rem}
+  .rv-dnpc{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .rv-dnpc>div{padding:10px 12px;border-right:1px solid var(--line);border-top:5px solid var(--k);font-size:.9rem;min-height:110px}
+  .rv-dnpc>div:last-child{border-right:0}
+  .rv-dnpc h5{margin:0 0 4px;color:var(--k);font-size:.95rem}
+  .rv-card .e{color:#aab2bd}
+  .rv-card .fl{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+  .rv-card .fl>div{padding:10px 16px;font-size:.9rem;white-space:pre-wrap}
+  .rv-card .fl>div+div{border-left:1px solid var(--line)}
+  .rv-card .fl h5{margin:0 0 4px;font-size:.92rem;color:var(--navy)}
+  .rv-opt summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .rv-opt[open] summary{margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 협력적 창의·융합 프로젝트</span>
+      <h1>미래의 학교 공간을<br>설계해 볼까?</h1>
+      <div class="story"><b>사물 인터넷 개발자가 되어 보자</b><br>학교에서 불편했던 공간을 떠올려 봐요. 붐비는 곳, 어두운 곳, 늘 무언가를 잊어버리는 곳이 있었나요? 오늘은 모둠이 함께 <b>사물 인터넷 기술로 학교 공간 하나를 바꾸는 설계</b>를 하고 발표를 준비해요.</div>
+      <p>설계는 <b>문제 → 필요한 센서·장치 → 동작 과정 → 기대 효과</b> 순서로 해요. 설계를 마치면 사물 인터넷 개발자의 이야기를 읽고, 발표를 준비한 뒤 Ⅰ단원 전체를 정리해요.</p>
+      <ol>
+        <li>모둠 · 문제 발견</li><li>시스템 설계하기</li><li>진로: 사물 인터넷 개발자</li>
+        <li>발표 준비 · 평가</li><li>Ⅰ단원 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔍</i><div><b>문제 발견</b><small>학교에서 불편한 공간 찾기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>D N P C</i><div><b>시스템 설계</b><small>장치 · 네트워크 · 플랫폼 · 서비스</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧑‍💻</i><div><b>진로</b><small>사물 인터넷 개발자 · 나의 진로 카드</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🎤 📚</i><div><b>발표 준비 · 단원 정리</b><small>1분 발표 · 개념 확인</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>모둠별로 학교에서 개선하고 싶은 공간을 찾고, 사물 인터넷 기술로 해결하는 <b>미래의 학교 공간</b>을 설계합니다. 지금까지 배운 <b>디바이스 · 네트워크 · 플랫폼 · 서비스</b>로 시스템을 구성하고, 동작 과정과 기대 효과를 정리해 <b>발표</b>를 준비합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">모둠 정하기</span>
+        <div class="memo">
+          <label>모둠명</label><input type="text" data-memo="team" placeholder="예: 똑똑한 사물함">
+          <label>모둠원과 역할 <small>예: 기록, 설계 그림, 발표, 시간 관리</small></label><textarea data-memo="roles" rows="2"></textarea><div class="saved"></div>
+        </div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>네트워크</b> · 가장 효율적인 네트워크 경로를 어떻게 구성할 수 있을까?</li>
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>모둠 정하기 <b>2분</b> → 문제 발견 <b>7분</b></li>
+          <li>시스템 설계 <b>14분</b> → 진로 <b>5분</b></li>
+          <li>발표 준비 <b>7분</b> → 단원 정리 <b>8분</b> → 마무리 <b>7분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">모둠이 함께 이야기하되, 메모는 각자 내 화면에 적어요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제 발견부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 문제 발견 · 해결 방안 -->
+<section class="page" data-name="문제 발견" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>문제 발견 · 해결 방안 계획</h2><p>교과서 42쪽 · 프로젝트 1~2단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>먼저 <b>어디가, 왜 불편한지</b>를 분명히 해요. 문제가 분명해야 어떤 센서로 무엇을 감지하고 무엇을 알려 줄지 정할 수 있어요.</span></div>
+  <div class="card">
+    <h3>🔍 1. 문제 발견하기</h3>
+    <div class="memo">
+      <label>① 불편함을 느꼈거나 개선이 필요한 학교 공간 <small>하나 고르기</small></label><div id="placePick"></div>
+      <label>떠올리는 데 도움이 되는 주제 <small>여럿 골라도 돼요</small></label><div id="topicPick"></div>
+      <label>② 불편함을 느꼈던 원인이나 개선이 필요한 이유 <small>누가, 언제, 무엇 때문에 불편한지</small></label>
+      <textarea data-memo="why" rows="2" placeholder="예: 교실 뒤 사물함 쪽이 어두워서 쉬는 시간에 물건을 찾기 힘들다"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💡 2. 해결 방안 계획 세우기</h3>
+    <div class="memo">
+      <label>사물 인터넷으로 문제를 해결하는 방법과 <b>주요 기능</b> <small>무엇을 감지해서, 누구에게, 무엇을 해 주는지</small></label>
+      <textarea data-memo="func" rows="3" placeholder="예: 사물함 앞에 사람이 오면 조명이 켜지고, 오래 열려 있으면 담임 선생님 앱으로 알림을 보낸다"></textarea><div class="saved"></div>
+    </div>
+    <p class="note">지난 시간에 만든 인체 감지 스마트 조명, 교과서 26쪽의 여러 센서를 떠올려 봐요. 필요하면 선생님이 알려 주는 자료를 함께 찾아봐요.</p>
+  </div>
+</section>
+
+<!-- 2 시스템 설계 -->
+<section class="page" data-name="시스템 설계" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>시스템 구성 및 설계하기</h2><p>교과서 26~28·43쪽 · 프로젝트 3단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>우리 시스템을 <b>D · N · P · C</b> 네 칸으로 나누어 채워요. 칸을 채우면 아래 <b>설계 카드</b>가 저절로 완성돼요. 이 카드가 발표 자료의 뼈대가 돼요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🧩 필요한 요소 고르기</h3>
+      <div class="memo">
+        <label><b class="rv-k" style="--k:#2f6fd0">D</b> 디바이스: 센서 <small>여럿 골라도 돼요</small></label><div id="dSensor"></div>
+        <label><b class="rv-k" style="--k:#2f6fd0">D</b> 디바이스: 출력 장치</label><div id="dOut"></div>
+        <label>센서가 무엇을 감지하고 출력 장치가 무엇을 하는지</label><textarea data-memo="dHow" rows="2"></textarea>
+        <label><b class="rv-k" style="--k:#1f9d74">N</b> 네트워크 <small>하나 고르기</small></label><div id="nPick"></div>
+        <label><b class="rv-k" style="--k:#9b4fc4">P</b> 플랫폼: 무엇을 저장하고 분석할까?</label><textarea data-memo="pHow" rows="2"></textarea>
+        <label><b class="rv-k" style="--k:#e0702b">C</b> 서비스: 누구에게 무엇을 보여 주거나 해 줄까?</label><textarea data-memo="cHow" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔄 동작 과정과 기대 효과</h3>
+      <div class="memo">
+        <label>동작 과정 <small>데이터 수집 → 전달 → 처리 및 분석 → 서비스 제공 순서로 한 줄씩</small></label>
+        <textarea data-memo="flow" rows="5" placeholder="① 수집: &#10;② 전달: &#10;③ 처리 및 분석: &#10;④ 서비스 제공: "></textarea>
+        <label>기대 효과 <small>누가 어떻게 편리해지거나 안전해질까?</small></label>
+        <textarea data-memo="effect" rows="2"></textarea>
+        <label>주의할 점 <small>개인 정보, 고장, 비용 등</small></label>
+        <textarea data-memo="caution" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 우리 모둠 설계 카드 <span class="muted" style="font-weight:400;font-size:.88rem">(적은 내용이 바로 나타나요)</span></h3>
+    <div id="designCard"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 진로 -->
+<section class="page" data-name="진로" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>물건에 디지털 기술을 불어넣는 사물 인터넷 개발자</h2><p>교과서 44쪽 · 상상을 현실로 도전하는 사람들</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷 시스템은 사람의 도움 없이 알아서 데이터를 주고받으며 필요한 정보를 제공해요. 이런 세상을 만드는 사람이 <b>사물 인터넷 개발자</b>예요. 카드를 눌러 인터뷰 내용을 확인해 봐요.</span></div>
+  <div class="tcards" id="careerCards"></div>
+  <div class="card" style="margin-top:18px">
+    <h3>🪪 나의 진로 카드</h3>
+    <div class="memo">
+      <label>내 주변 전자 기기 하나와, 그 기기를 사물 인터넷으로 더 편리하게 바꿀 방법</label><textarea data-memo="career" rows="2" placeholder="예: 학교 정수기 — 필터 교체 시기를 관리실 앱으로 알려 준다"></textarea>
+      <label>사물 인터넷 개발자로 성장하려면 내가 기르고 싶은 역량 <small>여럿 골라도 돼요</small></label><div id="careerSkill"></div>
+      <div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 발표 준비 · 평가 -->
+<section class="page" data-name="발표 준비" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>발표 준비 · 평가하기</h2><p>교과서 43쪽 · 프로젝트 평가하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>설계 카드를 보며 <b>1분 발표</b>를 준비해요. <b>문제 → 장치 → 동작 과정 → 기대 효과</b> 순서로 말하면 듣는 사람이 따라오기 쉬워요.</span></div>
+  <div class="card">
+    <h3>🎤 1분 발표 대본</h3>
+    <div class="rv-pitch">
+      <div style="--k:#2f6fd0"><b>① 문제</b><span>「우리 학교의 ○○에서는 ○○ 때문에 불편합니다.」</span></div>
+      <div style="--k:#1f9d74"><b>② 장치와 연결</b><span>「○○ 센서로 ○○를 감지하고, ○○로 전송합니다.」</span></div>
+      <div style="--k:#9b4fc4"><b>③ 동작 과정</b><span>「플랫폼에서 ○○를 분석해 ○○에게 ○○를 알려 줍니다.」</span></div>
+      <div style="--k:#e0702b"><b>④ 기대 효과</b><span>「그러면 ○○가 ○○해집니다.」</span></div>
+    </div>
+    <div class="memo"><label>내가 맡은 부분 또는 모둠 대본</label><textarea data-memo="pitch" rows="4"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✅ 자기 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(잘한 것을 모두 골라요)</span></h3>
+      <div id="selfEval"></div>
+      <h4 style="margin-top:14px">이 프로젝트로 길러진 역량</h4>
+      <div id="compPick"></div>
+    </div>
+    <details class="card rv-opt">
+      <summary>👂 동료 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다른 모둠 발표를 들은 뒤)</span></summary>
+      <div class="memo">
+        <label>가장 좋았던 모둠과 그 까닭 <small>평가 기준의 말로</small></label><textarea data-memo="peer" rows="3"></textarea>
+        <label>그 모둠에 건넬 질문이나 제안 하나</label><textarea data-memo="peerAsk" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <details class="card rv-crit">
+    <summary>📋 평가 기준 보기 (눌러서 펼치기)</summary>
+    <div class="rv-tw"><table class="tbl">
+      <tr><th class="l">항목</th><th class="l">평가 기준</th></tr>
+      <tr><td><b>주제 선정</b></td><td>학교 공간에서 해결 가능한 주제를 선정하고 모둠원의 역할을 적절히 분배하였는가?</td></tr>
+      <tr><td><b>해결 과정</b></td><td>문제의 초기 상태와 목표 상태를 파악하였는가? 사물 인터넷 시스템 동작 과정에 맞게 해결하였는가?</td></tr>
+      <tr><td><b>평가 및 성찰</b></td><td>발표한 결과물이 일반화하기 적절하였는가?</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<!-- 5 단원 정리 -->
+<section class="page" data-name="Ⅰ단원 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>Ⅰ단원 정리: 컴퓨팅 시스템</h2><p>교과서 45쪽 · 주요 개념 정리</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>네트워크(주소·장치·범위)와 사물 인터넷 시스템(구성·변화)을 한 번에 돌아봐요. 먼저 D·N·P·C 분류 게임을 하고, 아래 퀴즈로 확인해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🌐</div><h4>네트워크</h4><p>라우터 · 스위치 · IP 주소 · 도메인 이름과 DNS 서버 · 서브넷(LAN · MAN · WAN) · 게이트웨이 · 패킷 · 네트워크 공유</p></div>
+    <div class="kc" style="--k:#1f9d74"><div class="ic">📡</div><h4>사물 인터넷 시스템</h4><p>사물 인터넷 · 디바이스 · 네트워크 · 플랫폼 · 서비스 · 동작 원리 · 스마트 홈 · 스마트팜 · 스마트 시티 · 사물 인터넷 시스템 설계</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 D · N · P · C 중 어디일까?</h3>
+    <div id="dnpcSort"></div>
+  </div>
+  <details class="card rv-opt">
+    <summary>✅ 역량 Check! <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 이 단원에서 길러진 역량을 모두 골라요)</span></summary>
+    <div id="unitComp" style="margin-top:8px"></div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">사물 인터넷 시스템 설계는 <b>문제 발견 → 해결 방안 → D·N·P·C 구성 → 동작 과정</b> 순서로 한다. 문제가 분명해야 알맞은 센서와 장치를 고를 수 있다.</div>
+    <div style="--k:#9b4fc4">사물 인터넷 개발자는 사물에 컴퓨팅 기술과 인터넷을 연결해 편리한 세상을 만든다. 늘 <b>새로운 지식을 배우려는 열정</b>과 주변 기기를 주의 깊게 <b>관찰</b>하는 태도가 필요하다.</div>
+    <div style="--k:#d64535">네트워크로 연결된 컴퓨팅 시스템은 다양한 사물에 쓰여 <b>사물 인터넷 시스템</b>으로 발전하며, 개인의 삶과 사회를 바꾸고 있다.</div>
+  </div>
+  <div class="card">
+    <h3>Ⅰ단원 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 설계한 우리 모둠 시스템을 예로 들어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>우리 모둠이 고른 <b>학교 공간의 문제</b>와 설계한 <b>D·N·P·C</b></li>
+      <li>우리 시스템의 <b>동작 과정</b>(수집 → 전달 → 처리 및 분석 → 서비스 제공)과 <b>기대 효과</b></li>
+      <li>진로 카드: 사물 인터넷으로 바꿔 보고 싶은 <b>생활 속 기기</b>와 방법, 기르고 싶은 역량</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u1-review.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u1-review', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 13~16·24~28·32·42~45쪽) — 단원 정리 문항은 새로 만든 문장, 보기는 짧은 것부터 */
+const QUIZ={
+ 2:[{q:'교실 창가에 단 가스 센서가 공기 속 유해 성분을 감지했다. 이 센서는 D·N·P·C 중 어디에 속할까?',o:['서비스(C)','네트워크(N)','디바이스(D)'],a:2,w:'센서는 데이터를 만들어 내는 디바이스에 속해요(26쪽).'},
+    {q:'센서가 수집한 값을 와이파이로 서버에 보내는 부분은 D·N·P·C 중 어디일까?',o:['플랫폼(P)','디바이스(D)','네트워크(N)'],a:2,w:'유무선 통신으로 데이터를 전송하는 매개체는 네트워크예요. 와이파이·블루투스·RFID 등이 있어요(26쪽).'}],
+ 3:[{q:'교과서 인터뷰 속 사물 인터넷 개발자가 하는 일로 알맞은 것은?',o:['농작물 수확','자동차 엔진 정비','전자 제품을 원격으로 작동하는 프로그램 개발'],a:2,w:'인터뷰 속 개발자는 전자 제품을 원격으로 작동하는 데 필요한 사용자 원격 제어 프로그램을 개발해요(44쪽).'},
+    {q:'인터뷰에서 사물 인터넷 개발자가 되려면 필요하다고 한 태도는?',o:['새로운 지식을 배우려는 열정','예전 기술을 그대로 지키려는 마음','기기를 쓰지 않고 멀리하려는 습관'],a:0,w:'여러 첨단 기술을 쓰는 분야라 늘 새로운 기술을 익혀야 하므로, 새로운 지식을 배우려는 열정이 필요하다고 했어요(44쪽).'}],
+ 5:[{q:'우리 학교 1반 노트북에서 옆 학교 1반으로 파일을 보낼 때, 두 학교 네트워크를 이어 주고 갈 길을 정해 주는 장치는?',o:['스위치','라우터','DNS 서버'],a:1,w:'서로 다른 네트워크를 연결하고 효율적인 경로를 알려 주는 장치는 라우터예요. 스위치는 한 네트워크 안의 장치들을 연결해요(13~14쪽).'},
+    {q:'학교 본관 건물 안의 컴퓨터실과 교무실 컴퓨터를 유선 케이블과 와이파이로 묶은 네트워크는 어느 범위에 속할까?',o:['LAN','MAN','WAN'],a:0,w:'건물 안 정도 범위의 유무선 혼합 네트워크는 LAN이에요. 도시 안을 잇는 것은 MAN, 도시를 벗어난 범위는 WAN이에요(14쪽).'},
+    {q:'노트북의 네트워크 설정 화면에서 「192.168.1.1」처럼 외부 네트워크로 나가는 장치의 주소를 적는 칸은?',o:['IP 주소','게이트웨이','서브넷 마스크'],a:1,w:'외부 네트워크를 연결해 주는 장치의 주소는 게이트웨이 칸에 들어가요. 보통 라우터의 주소예요(16쪽 표 Ⅰ-1).'}],
+ 6:[{q:'급식실 대기 줄 알림 시스템에서 학생 스마트폰 앱에 「지금 줄이 짧아요」라고 보여 주는 부분은?',o:['플랫폼(P)','서비스(C)','디바이스(D)'],a:1,w:'분석한 결과를 사용자에게 알맞게 제공하는 부분은 서비스예요(27쪽). 줄 길이를 재는 센서는 디바이스, 값을 모아 분석하는 곳은 플랫폼이에요.'},
+    {q:'딸기 비닐하우스의 온습도 센서 값을 분석해 창문을 열고 물을 주는 일을 자동으로 하는 농장을 무엇이라고 할까?',o:['스마트팜','스마트 홈','스마트 시티'],a:0,w:'센서와 데이터로 작물이 자라기 좋은 환경을 자동으로 맞추는 농장이 스마트팜이에요(32쪽). 스마트 시티는 도시 전체가 네트워크로 연결된 경우예요.'},
+    {q:'미래의 학교 공간 프로젝트에서 가장 먼저 한 단계는?',o:['문제 발견하기','발표 자료 꾸미기','부품 가격 비교하기'],a:0,w:'불편한 공간과 그 원인을 찾는 문제 발견이 먼저예요. 문제가 분명해야 알맞은 장치와 기능을 정할 수 있어요(42쪽).'}]
+};
+
+const QK='ds-u1-review-quiz'+WHO.sfx;
+const MK='ds-u1-review-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 01 문제 발견 */
+chips('placePick','placePickName',['교실','도서관','급식실','복도·계단','운동장·체육관','화장실','과학실·특별실','기타'],false);
+chips('topicPick','topicPickName',['학생','교사','교실','안전','알림','학교 환경'],true);
+
+/* 02 시스템 설계: 고르기 */
+chips('dSensor','dSensorPick',['인체 감지 센서','조도 센서','온습도 센서','초음파 센서','가스 센서','토양 수분 센서','이미지 센서(카메라)','압력 센서','버튼'],true);
+chips('dOut','dOutPick',['LED','모터','부저','디스플레이','스피커','따로 없음(앱 알림)'],true);
+chips('nPick','nPickName',['와이파이','블루투스','RFID','NFC','ZigBee(지그비)','Beacon(비콘)','유선'],false);
+
+/* 02 설계 카드: 적은 메모로 바로 채우기 */
+function rvCard(){
+  const v=k=>(MEMO[k]||'').trim();
+  const t=(k,ph)=>v(k)?esc(v(k)):`<span class="e">${ph}</span>`;
+  const team=v('team')||'우리 모둠', place=v('placePickName');
+  $('designCard').innerHTML=`<div class="rv-card">
+    <div class="rv-hd"><b>${esc(team)}${place?' · '+esc(place):''}</b><small>미래의 학교 공간 설계 카드</small></div>
+    <div class="pb"><b>문제</b> ${t('why','01 화면에서 불편한 이유를 적어요')}<br><b>주요 기능</b> ${t('func','01 화면에서 해결 방안을 적어요')}</div>
+    <div class="rv-dnpc">
+      <div style="--k:#2f6fd0"><h5>D 디바이스</h5>${t('dSensorPick','센서 고르기')}${v('dOutPick')?' → '+esc(v('dOutPick')):''}<br>${t('dHow','')}</div>
+      <div style="--k:#1f9d74"><h5>N 네트워크</h5>${t('nPickName','네트워크 고르기')}</div>
+      <div style="--k:#9b4fc4"><h5>P 플랫폼</h5>${t('pHow','무엇을 저장·분석할까')}</div>
+      <div style="--k:#e0702b"><h5>C 서비스</h5>${t('cHow','누구에게 무엇을')}</div>
+    </div>
+    <div class="fl"><div><h5>동작 과정</h5>${t('flow','수집 → 전달 → 처리 및 분석 → 서비스 제공')}</div><div><h5>기대 효과 · 주의할 점</h5>${t('effect','기대 효과')}<br>${t('caution','주의할 점')}</div></div>
+  </div>`;
+}
+document.addEventListener('input',e=>{ if(e.target.matches&&e.target.matches('[data-memo]')) rvCard(); });
+['dSensor','dOut','nPick','placePick'].forEach(id=>$(id).addEventListener('memo',rvCard));
+onShow[2]=rvCard;
+
+/* 04 발표 준비 · 평가 */
+chips('selfEval','selfEvalPick',['해결 가능한 주제를 골랐다','모둠원의 역할을 나누었다','초기 상태와 목표 상태를 파악했다','동작 과정에 맞게 설계했다','다른 학교에도 쓸 수 있는 설계다'],true);
+chips('compPick','compPickName',['지식 정보 처리','창의적 사고','협력적 소통','공동체 역량'],true);
+
+/* 03 진로: 인터뷰 카드 (교과서 44쪽 내용을 줄여서) */
+flipCards('careerCards',[
+  {ic:'🛠️',f:'어떤 일을 하시나요?',s:'눌러서 답 보기',b:'전자 제품 제조 회사에서 일해요. 전자 제품을 멀리서 작동할 수 있게 하는 <b>원격 제어 프로그램</b>을 개발해요.'},
+  {ic:'📚',f:'무엇을 준비해야 하나요?',s:'눌러서 답 보기',b:'전자 기술, 데이터 과학, 네트워크, 인공지능 같은 첨단 기술을 쓰는 분야라 새 기술을 계속 익혀야 해요. <b>새로운 지식을 배우려는 열정</b>이 필요해요.'},
+  {ic:'🔭',f:'앞으로의 전망은?',s:'눌러서 답 보기',b:'예전에는 사람과 사람을 잇는 통신 기술이 중심이었다면, 앞으로는 사람과 다양한 사물이 연결되는 <b>초연결 시대</b>예요. 그래서 전망이 밝다고 해요.'},
+  {ic:'💬',f:'청소년에게 한마디',s:'눌러서 답 보기',b:'주변 전자 기기의 기능과 쓰임을 <b>주의 깊게 관찰</b>하고, 과학 기술로 삶을 더 편리하게 만들 방법을 생각해 보세요.'},
+  {ic:'🏫',f:'오늘 우리가 한 일은?',s:'눌러서 보기',b:'학교 공간의 문제를 찾고 D·N·P·C로 시스템을 설계했어요. 사물 인터넷 개발자가 하는 일의 <b>첫 단계</b>와 같아요.'}
+]);
+chips('careerSkill','careerSkillPick',['새로운 지식을 배우려는 열정','주변 기기를 관찰하는 습관','프로그래밍','네트워크 이해','데이터 분석','협업과 소통'],true);
+
+/* 05 단원 정리 */
+sorter('dnpcSort',{
+  cats:[{n:'D 디바이스',k:'#2f6fd0'},{n:'N 네트워크',k:'#1f9d74'},{n:'P 플랫폼',k:'#9b4fc4'},{n:'C 서비스',k:'#e0702b'}],
+  items:[
+    {t:'교실 창가에 단 미세 먼지 측정기 (센서와 와이파이 모듈, 작은 보드가 들어 있음)',ic:'🌫️',c:0,short:'미세 먼지 측정기',w:'센서로 데이터를 만들어 내고 통신 모듈까지 갖춘 장치예요.'},
+    {t:'토양 수분 센서가 달린 화분',ic:'🪴',c:0,w:'센서로 데이터를 수집하는 사물이에요.'},
+    {t:'센서가 모은 값을 와이파이로 보낸다',ic:'📶',c:1,short:'와이파이로 값 보내기',w:'유무선 통신으로 데이터를 전달해요.'},
+    {t:'RFID 무선 통신이 차량 단말기와 톨게이트 사이에 결제 정보를 실어 나른다',ic:'🚗',c:1,short:'RFID 무선 통신',w:'RFID는 무선 주파수로 사물을 식별하는 통신 기술이에요.'},
+    {t:'여러 교실 측정기에서 온 값을 클라우드에 모아 저장하고, 미세 먼지가 많은 교실을 골라낸다',ic:'☁️',c:2,short:'클라우드에 모아 분석',w:'플랫폼은 클라우드에 데이터를 저장하고 분석해요.'},
+    {t:'Blynk처럼 장치와 앱 사이에서 명령과 데이터를 이어 주는 곳',ic:'🔗',c:2,short:'Blynk',w:'지난 시간 코드 읽기에서 본 사물 인터넷 플랫폼이에요.'},
+    {t:'스마트폰 앱에 화분에 물을 줄 때라고 알려 준다',ic:'📱',c:3,short:'물 주기 알림',w:'분석 결과를 사용자에게 제공하는 서비스예요.'},
+    {t:'분석한 결과를 사용자에게 맞춤형으로 제공한다',ic:'🎁',c:3,short:'맞춤형 제공',w:'헬스케어, 스마트 가전처럼 여러 분야의 서비스가 있어요.'}
+  ],
+  end:'<b>D</b>가 모으고 → <b>N</b>이 보내고 → <b>P</b>가 저장·분석하고 → <b>C</b>가 사용자에게 제공해요.'
+});
+chips('unitComp','unitCompPick',['컴퓨팅 사고력','추상화 능력','자동화 능력','창의·융합 능력','디지털 문화 소양','디지털 의사소통·협업 능력','디지털 윤리 의식','디지털 기술 활용 능력','인공지능 소양','인공지능 문제 해결력','데이터 문해력','인공지능 윤리 의식'],true);
+
+const MEMOLIST=[['team','모둠명'],['roles','모둠원과 역할'],['placePickName','고른 학교 공간'],['topicPickName','주제'],['why','불편한 원인·개선이 필요한 이유'],['func','해결 방법과 주요 기능'],['dSensorPick','D 센서'],['dOutPick','D 출력 장치'],['dHow','D 감지와 동작'],['nPickName','N 네트워크'],['pHow','P 플랫폼'],['cHow','C 서비스'],['flow','동작 과정'],['effect','기대 효과'],['caution','주의할 점'],['pitch','발표 대본'],['selfEvalPick','자기 평가'],['compPickName','길러진 역량'],['peer','동료 평가: 좋았던 모둠과 까닭'],['peerAsk','동료 평가: 질문이나 제안'],['career','진로 카드: 바꿔 보고 싶은 기기'],['careerSkillPick','진로 카드: 기르고 싶은 역량'],['unitCompPick','역량 Check'],['keyQ','핵심 질문에 대한 내 답']];
+onShow[6]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

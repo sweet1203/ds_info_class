@@ -1,0 +1,29 @@
+  /* 요소 이름표 */
+  .rv-k{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--k);color:#fff;font-size:.8rem;margin-right:4px}
+  /* 발표 대본 틀 */
+  .rv-pitch{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+  @media (max-width:900px){.rv-pitch{grid-template-columns:1fr 1fr}}
+  .rv-pitch>div{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .rv-pitch b{display:block;color:var(--k)}
+  .rv-pitch span{font-size:.88rem}
+  .rv-crit summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .rv-crit[open] summary{margin-bottom:8px}
+  .rv-tw{overflow-x:auto}
+  .rv-tw td{text-align:left;vertical-align:top;font-size:.92rem}
+  /* 설계 카드 */
+  .rv-card{border:2px solid var(--navy);border-radius:16px;overflow:hidden;background:#fff}
+  .rv-card .rv-hd{background:var(--navy);color:#fff;padding:10px 16px}
+  .rv-card .rv-hd b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem}
+  .rv-card .rv-hd small{display:block;color:#c8d6e8;font-size:.86rem;margin-top:2px}
+  .rv-card .pb{padding:10px 16px;background:#fff8e6;border-bottom:1px solid var(--line);font-size:.93rem}
+  .rv-dnpc{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .rv-dnpc>div{padding:10px 12px;border-right:1px solid var(--line);border-top:5px solid var(--k);font-size:.9rem;min-height:110px}
+  .rv-dnpc>div:last-child{border-right:0}
+  .rv-dnpc h5{margin:0 0 4px;color:var(--k);font-size:.95rem}
+  .rv-card .e{color:#aab2bd}
+  .rv-card .fl{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+  .rv-card .fl>div{padding:10px 16px;font-size:.9rem;white-space:pre-wrap}
+  .rv-card .fl>div+div{border-left:1px solid var(--line)}
+  .rv-card .fl h5{margin:0 0 4px;font-size:.92rem;color:var(--navy)}
+  .rv-opt summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .rv-opt[open] summary{margin-bottom:8px}

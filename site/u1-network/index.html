@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>네트워크의 특성</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+
+  /* 0 시작 */
+  .nw-more{margin-top:12px}
+  .nw-more summary{cursor:pointer;font-weight:900;font-size:.95rem;color:var(--acc)}
+  /* 01 주소 구조 */
+  .nw-ipv4,.nw-dom{display:flex;flex-wrap:wrap;align-items:flex-end;gap:4px;margin:10px 0 14px}
+  .nw-ipv4 span,.nw-dom span{display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid var(--k,var(--acc));border-radius:10px;padding:4px 10px;min-width:58px}
+  .nw-ipv4 b,.nw-dom b{font-family:ui-monospace,Menlo,monospace;font-size:1.25rem}
+  .nw-ipv4 small,.nw-dom small{font-size:.72rem;color:var(--muted);white-space:nowrap}
+  .nw-ipv4 i,.nw-dom i{font-style:normal;font-weight:900;font-size:1.4rem;padding-bottom:16px}
+  .nw-dt{min-width:360px}
+  .nw-dt td,.nw-dt th{border:1px solid var(--line);font-size:.88rem;padding:5px 8px}
+  .kc small.mono{word-break:break-all}
+  /* 02 교실 구성도 */
+  .nw-lg{display:inline-flex;align-items:center;gap:4px;font-size:.84rem;margin-left:6px;color:var(--ink)}
+  .nw-lg i{display:inline-block;width:22px;height:0;border-top:3px solid #e0702b}
+  .nw-lg i.w0{border-top:3px dashed #2f6fd0}
+  .nw-class{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+  @media (max-width:720px){.nw-class{grid-template-columns:1fr}}
+  .nw-room{border:2px solid var(--k);border-radius:14px;padding:10px;background:#fbfaf7}
+  .nw-room h5{margin:0 0 8px;color:var(--k);font-size:.95rem}
+  .nw-devs{display:flex;flex-wrap:wrap;gap:6px}
+  .nw-devs .d{background:#fff;border-radius:10px;padding:4px 9px;font-size:.85rem;font-weight:700;border-bottom:3px solid #e0702b}
+  .nw-devs .d.wl{border-bottom:3px dashed #2f6fd0}
+  .nw-devs .d.on,.nw-sw.on,.nw-rt.on{box-shadow:0 0 0 2px var(--amber)}
+  .nw-class em{font-style:normal;color:#b07600;font-weight:900;margin-left:2px}
+  .nw-sw{margin:8px 0;background:var(--navy);color:#fff;border-radius:10px;padding:6px 10px;font-weight:900;text-align:center;font-size:.9rem}
+  .nw-mid{text-align:center}
+  .nw-rt{display:inline-block;background:#fff4d6;border:2px solid var(--amber);border-radius:14px;padding:8px 12px;font-weight:900;max-width:220px}
+  .nw-rt small{display:block;font-weight:400;font-size:.76rem;color:var(--muted);margin-top:2px}
+  /* 표 */
+  .nw-tbl{min-width:520px}
+  .nw-tbl td,.nw-tbl th{text-align:left;vertical-align:top;font-size:.9rem;border:1px solid var(--line)}
+  .nw-tbl th{background:#fbfaf7}
+  /* 범위 */
+  .nw-nest .w{border:2px solid var(--k);border-radius:14px;padding:8px 10px;margin-top:6px;background:color-mix(in srgb,var(--k) 6%,#fff)}
+  .nw-nest>.w{margin-top:0}
+  .nw-nest b{color:var(--k)}
+  .nw-nest small{font-size:.8rem;color:var(--muted)}
+  /* 03 전송 단계 */
+  .nw-track{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px}
+  .nw-track span{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;background:#fff;border:2px solid var(--line);border-radius:12px;padding:5px 9px;font-size:.78rem;font-weight:700;cursor:pointer;min-width:72px}
+  .nw-track span i{font-style:normal;font-size:1.3rem}
+  .nw-track span.done{border-color:var(--mint);background:#e6f5ee}
+  .nw-track span.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .nw-step{background:#fbfaf7;border-radius:12px;padding:12px 14px;min-height:170px}
+  .nw-st-h{font-size:1.05rem}.nw-st-h i{font-style:normal;font-size:1.3rem}
+  .nw-st-d{font-size:.93rem}.nw-st-d i{color:#8a5a00}
+  .nw-tray .nw-row,.nw-tray .nw-lane{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
+  .nw-tray .nw-lane{background:#fff;border-radius:10px;padding:4px 8px}
+  .nw-tray .nw-lane.busy{background:#fde8e6}
+  .nw-tray .nw-lane small{min-width:96px;font-weight:700;color:var(--muted)}
+  .nw-tray .pk{display:inline-flex;align-items:stretch;border-radius:8px;overflow:hidden;background:var(--c);color:#fff;font-weight:900;font-size:1rem;animation:fadein .4s both}
+  .nw-tray .pk{padding:3px 8px}
+  .nw-tray .pk i{font-style:normal;background:#fff;color:var(--ink);margin:-3px 6px -3px -8px;padding:3px 6px;font-size:.8rem;display:flex;align-items:center}
+  .nw-tray .pic{background:#fff;border:2px solid var(--line);border-radius:10px;padding:4px 10px;font-weight:900}
+  .nw-tray .ar{color:var(--muted)}
+  .nw-cnt{font-size:.88rem}
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* 04 마스크 · DHCP */
+  .nw-mask{margin-top:10px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .nw-mask>div{font-family:ui-monospace,Menlo,monospace;font-size:1.1rem;font-weight:700}
+  .nw-mask small{font-family:inherit;font-size:.78rem;color:var(--muted);margin-left:8px;font-weight:400}
+  .nw-mask p{margin:6px 0 0;font-size:.9rem}
+  .nw-mask .n,.nw-check .n,.nw-oct .n{color:#2f6fd0}
+  .nw-mask .h,.nw-check .h,.nw-oct .h{color:#d64535}
+  .nw-mode{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .nw-mode button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-weight:700;cursor:pointer;color:var(--ink)}
+  .nw-mode button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .nw-pool{background:#fbfaf7;border-radius:12px;padding:8px 12px;font-size:.88rem;margin-bottom:10px}
+  .nw-pool div{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+  .nw-pool span{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;background:#e6f5ee;border-radius:6px;padding:2px 6px}
+  .nw-pool span.used{background:#eef0f3;color:#8a94a3;text-decoration:line-through}
+  .nw-devl{display:grid;gap:6px}
+  .nw-dv{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 10px}
+  @media (max-width:560px){.nw-dv{grid-template-columns:auto 1fr}.nw-dv .ac{grid-column:1/-1}}
+  .nw-dv.on{border-color:var(--mint)}
+  .nw-dv.bad{border-color:var(--red);background:#fde8e6}
+  .nw-dv .ic{font-size:1.5rem}
+  .nw-dv .tx b{display:block;font-size:.92rem}
+  .nw-dv .tx small{display:block;font-size:.76rem;word-break:break-all}
+  .nw-dv .ac{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .nw-dv input{width:72px;padding:4px 6px}
+  .nw-pre{font-size:.85rem}
+  .nw-stat{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 6px;font-size:.9rem}
+  .nw-msg{background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.92rem;min-height:2.6em}
+  /* 05 내 기기 */
+  .nw-warn{background:#fff4d6;border-left-color:var(--amber)}
+  .nw-path{margin:10px 0;background:var(--acc-soft);border-radius:10px;padding:8px 12px;font-size:.92rem}
+  .nw-path:empty{display:none}
+  .nw-plan td:first-child{width:130px}
+  .nw-plan td small{font-weight:400;color:var(--muted)}
+  .nw-plan input{min-width:0}
+  .nw-check{margin-top:8px;background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.92rem}
+  .nw-oct{display:flex;align-items:center;gap:2px;margin:6px 0;font-family:ui-monospace,Menlo,monospace;font-size:1.15rem;font-weight:900}
+  .nw-oct span{background:#fff;border:2px solid currentColor;border-radius:8px;padding:0 8px}
+  .nw-oct .m{color:#9b4fc4}
+  .nw-oct i{font-style:normal}
+  .nw-blanks li{margin:8px 0;line-height:1.9}
+  .nw-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .nw-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 1. 네트워크</span>
+      <h1>내 컴퓨터와 친구 컴퓨터는<br>어떻게 연결될까?</h1>
+      <div class="story"><b>‘LOGIN’을 보내려다 ‘LO’에서 멈춘 첫 통신</b><br>1969년, 최초의 컴퓨터 통신 테스트에서 ‘LOGIN’이라는 단어를 보내려고 했지만 겨우 ‘L’과 ‘O’ 두 글자를 보내는 데 그쳤어요. 이것이 인터넷의 시초예요. 그 뒤 통신 기술이 끊임없이 발전해서, 지금은 다른 곳에 있는 친구와 가상 공간에서 함께 게임을 하고 여러 명이 동시에 영상 회의도 해요.</div>
+      <p>오늘은 컴퓨터들이 <b>무엇으로 연결</b>되고, 서로를 <b>어떤 주소로 구분</b>하며, 데이터가 <b>어떤 길로 전송</b>되는지 살펴봐요. 마지막에는 내 기기의 네트워크 구성을 직접 확인해요.</p>
+      <ol>
+        <li>네트워크란 무엇일까?</li><li>우리 교실은 어떤 네트워크에 속할까?</li><li>데이터는 어떻게 전송될까?</li>
+        <li>네트워크 환경은 어떻게 설정할까?</li><li>함께 해결하기 · 내 컴퓨터의 네트워크 구성</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">단원 도입 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>💻</i><div><b>내 컴퓨터</b><small>IP 주소로 나를 구분해요</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🔀 🌐</i><div><b>스위치 · 라우터</b><small>기기를 잇고, 네트워크를 잇고</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🏫 🏙️ 🌏</i><div><b>LAN · MAN · WAN</b><small>패킷으로 나뉘어 여러 길로</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🖥️</i><div><b>친구 컴퓨터</b><small>패킷을 다시 합쳐 읽어요</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">단원 도입 · Ⅰ. 컴퓨팅 시스템</span>
+      <p>네트워크를 통한 효율적인 데이터 이동과 이를 활용한 <b>사물 인터넷 시스템</b> 기술은 개인의 삶과 사회를 편리하게 발전시키고 있어요. 이 단원에서는 <b>네트워크 환경 설정</b>과 <b>사물 인터넷 시스템의 구성 및 동작 과정</b>을 살펴보고, 컴퓨팅 기기 간에 데이터를 공유하는 방법과 사물 인터넷 시스템을 설계하는 방법을 익혀요.</p>
+    </div>
+    <div class="cards2" style="margin:14px 0">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🛣️</div><h4>단원 핵심 질문 · 네트워크</h4><p>가장 효율적인 네트워크 경로를 어떻게 구성할 수 있을까?</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🏙️</div><h4>단원 핵심 질문 · 사물 인터넷 시스템</h4><p>사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</p></div>
+    </div>
+    <div class="card">
+      <h3>🎒 나의 학습 준비 · 2030 학교 <span class="muted" style="font-weight:400;font-size:.88rem">(10~11쪽)</span></h3>
+      <p style="margin-top:0">네트워크로 연결된 컴퓨팅 시스템은 다양한 사물에 쓰이면서 <b>사물 인터넷 시스템</b>으로 발전하고 있어요. 2021년 기준 전 세계 사물 인터넷 시스템 수는 100억 개에 달했고, 2025년 이후에는 인터넷에 연결되는 기기가 약 500억 개 이상이 될 것으로 예상해요. 교과서 그림 속 2030 학교에는 강당의 자동 실내 환경 시스템, 교실의 자동 출석 확인 시스템, 도서관의 열람실 현황 시스템, 급식실의 자동 급식 확인 시스템이 있어요.</p>
+      <p style="margin-bottom:4px"><b>우리 학교에 가장 먼저 생기면 좋겠는 시스템은?</b> <span class="muted" style="font-size:.88rem">이 단원 끝의 프로젝트 「미래의 학교 공간을 설계해 볼까?」로 이어져요.</span></p>
+      <div class="vote" id="unitVote"></div>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">생각해 볼까요? · 1. 네트워크 (12쪽)</span>
+        <p style="margin:0 0 6px;font-size:.92rem">블록을 쌓아 구조물을 만드는 3D 건설 게임을 다른 곳에 있는 친구와 함께 할 수 있는 것은, 컴퓨터가 <b>네트워크로 연결</b>되고 <b>인터넷 서비스</b>로 발전했기 때문이에요.</p>
+        <p style="margin:0;font-size:.88rem" class="muted">단원 목표: 네트워크를 통해 여러 개의 컴퓨팅 시스템 간 연결의 원리를 파악하고, 데이터를 공유할 수 있다.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>네트워크</b> · 가장 효율적인 네트워크 경로를 어떻게 구성할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 내가 사용하는 컴퓨팅 시스템과 친구가 사용하는 컴퓨팅 시스템을 연결하려면 무엇이 필요할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>네트워크 개념과 유무선 네트워크의 특성을 설명할 수 있다.</li>
+          <li>네트워크 환경을 구성할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 네트워크 · 서브넷 · IP 주소 · 도메인 이름</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>내가 가진 자료를 친구 컴퓨터로 보내려면 무엇이 필요할까요? 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 답해 보고 비교해요.</small></label><textarea data-memo="planNet" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 네트워크란 무엇일까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 네트워크·IP 주소·도메인 이름 -->
+<section class="page" data-name="네트워크와 주소" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>네트워크란 무엇일까?</h2><p>교과서 13쪽 · 16쪽 · 네트워크, IP 주소, 도메인 이름</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>택배가 집 주소를 보고 찾아오듯, 네트워크에서도 기기마다 <b>고유한 주소(IP 주소)</b>가 있어야 데이터를 주고받을 수 있어요. 숫자 주소는 외우기 어려우니 사람은 <b>이름(도메인 이름)</b>을 쓰고, <b>DNS 서버</b>가 이름을 숫자 주소로 바꿔 줘요.</span></div>
+  <div class="card">
+    <h3>🕸️ 네트워크</h3>
+    <p style="margin-top:0">초기 컴퓨터는 다른 컴퓨터와 연결되지 않고 독립적으로 쓰였지만, 컴퓨터와 전기 통신 기술이 결합하면서 여러 컴퓨터가 연결되는 컴퓨터 네트워크가 만들어졌어요. <b>네트워크</b>는 컴퓨터나 다양한 디지털 장치들이 유선 또는 무선 중계기인 <b>라우터</b>와 <b>스위치</b>를 통해 연결되어, 각각 <b>고유의 네트워크 주소</b>로 서로를 구분하고 데이터를 송수신하는 통신망이에요.</p>
+    <div class="cards2">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🌐</div><h4>라우터(router)</h4><p>서로 다른 네트워크를 연결하고, 인터넷 경로상에 가장 효율적인 길을 알려 주는 장치</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🔀</div><h4>스위치(switch)</h4><p>네트워크 안에서 컴퓨터 장치들을 연결하고, 해당 장치와 패킷을 주고받는 장치</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔢 IP 주소</h3>
+    <p style="margin-top:0"><b>IP 주소</b>는 통신할 때 송신자와 수신자를 구분하려고 컴퓨터에 부여하는 고유의 주소예요. <span class="muted">(프로토콜은 데이터를 주고받으려고 약속한 통신 규약이고, IP는 출발과 도착 주소로 목적지에 데이터를 전송하는 프로토콜이에요. 이때 쓰는 주소가 IP 주소예요.)</span></p>
+    <div class="nw-ipv4" aria-label="IPv4 주소의 구조">
+      <span><b>192</b><small>8비트 · 0~255</small></span><i>.</i><span><b>168</b><small>8비트 · 0~255</small></span><i>.</i><span><b>1</b><small>8비트 · 0~255</small></span><i>.</i><span><b>130</b><small>8비트 · 0~255</small></span>
+    </div>
+    <div class="cards2">
+      <div class="kc" style="--k:#2f6fd0"><h4>IPv4</h4><p><b>32비트</b> 주소 체계. 8비트씩 <b>4개 영역</b>으로 나누고, 그 사이를 <b>마침표(.)</b>로 구분해 <b>십진수</b>로 나타내요. 한 영역은 0~255예요.</p><small class="mono">예) 192.168.1.130</small></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>IPv6</h4><p><b>128비트</b> 주소 체계. 16비트씩 <b>8개 영역</b>으로 나누고, 그 사이를 <b>콜론(:)</b>으로 구분해 <b>16진수</b>로 나타내요.</p><small class="mono">예) 2001:0DB8:0000:0000:0000:0000:1428:57AB</small></div>
+    </div>
+    <p class="note">IP 주소로 IPv4를 많이 써 왔지만, 컴퓨팅 시스템이 늘어나 IPv4 주소가 부족해지자 주소 길이를 128비트로 늘려 더 많은 IP 주소를 줄 수 있는 IPv6를 도입했어요.</p>
+  </div>
+  <div class="card">
+    <h3>🏷️ 도메인 이름과 DNS 서버</h3>
+    <p style="margin-top:0">전화를 걸 때 친구 이름을 고르면 자동으로 전화번호로 연결되지요. 이처럼 인터넷 서비스를 쓸 때는 IP 주소 대신 <b>도메인 이름</b>만 입력해요. <b>DNS 서버</b>가 자동으로 도메인 이름을 IP 주소로 바꿔 주기 때문에 복잡한 IP 주소를 기억하지 않아도 돼요.</p>
+    <div class="flow2">
+      <div style="--k:#e0702b"><b>📱 휴대폰</b><span>주소록 이름 「김샛별」 → 지정된 번호 010-1234-5678로 연결</span></div>
+      <div style="--k:#2f6fd0"><b>💻 컴퓨터</b><span>도메인 이름 → <b>DNS 서버</b>가 변환 → 지정된 IP 주소 110.165.22.169로 연결</span></div>
+    </div>
+    <p style="margin:12px 0 4px"><b>도메인 이름에 담긴 의미</b> <span class="muted" style="font-size:.88rem">(교과서 예시)</span></p>
+    <div class="nw-dom" aria-label="도메인 이름의 구성">
+      <span style="--k:#8a94a3"><b>www</b><small>컴퓨터 이름(웹)</small></span><i>.</i><span style="--k:#2f6fd0"><b>ebs</b><small>기관 이름</small></span><i>.</i><span style="--k:#1f9d74"><b>co</b><small>기관의 성격</small></span><i>.</i><span style="--k:#e0702b"><b>kr</b><small>국가명</small></span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="nw-dt">
+        <tr><th>구분</th><th>도메인</th><th>형태</th><th>도메인</th><th>형태</th></tr>
+        <tr><td rowspan="4"><b>기관 성격</b></td><td class="mono">com, co</td><td>기업</td><td class="mono">net, ne</td><td>네트워크</td></tr>
+        <tr><td class="mono">gov, go</td><td>정부</td><td class="mono">re</td><td>연구</td></tr>
+        <tr><td class="mono">edu, ac</td><td>교육</td><td class="mono">mil</td><td>군사</td></tr>
+        <tr><td class="mono">org, or</td><td>비영리</td><td></td><td></td></tr>
+        <tr><td><b>국가</b></td><td class="mono">kr</td><td>대한민국</td><td class="mono">us · sg</td><td>미국 · 싱가포르</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card"><h3>🎯 이 주소는 무엇일까?</h3><p class="muted" style="margin-top:0">주소를 보고 알맞은 종류를 골라요. IPv4는 영역 수와 숫자 범위를 꼭 세어 봐요.</p><div id="addrGame"></div></div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 교실 네트워크·유무선·종류 -->
+<section class="page" data-name="유무선 네트워크" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>우리 교실은 어떤 네트워크에 속할까?</h2><p>교과서 14~15쪽 · 서브넷, 유무선 네트워크, 네트워크 종류</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>교실의 컴퓨터·노트북·프린터는 <b>스위치</b>에 모이고, 스위치는 <b>라우터</b>를 거쳐 다른 네트워크와 이어져요. 교실 하나는 큰 네트워크를 잘게 나눈 <b>서브넷</b>이에요. 연결 방법은 <b>선(유선)</b>과 <b>전파(무선)</b>가 있고, 각각 장단점이 달라요.</span></div>
+  <div class="card">
+    <h3>🏫 교실의 유무선 네트워크 구성도 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅰ-1을 다시 그림)</span></h3>
+    <p class="muted" style="margin-top:0">A 학교 1반 노트북(무선)에서 B 학교 1반 노트북(스위치에 유선 연결)으로 데이터를 보내는 길을 번호 순서대로 따라가 봐요. <span class="nw-lg"><i class="w1"></i>유선</span> <span class="nw-lg"><i class="w0"></i>무선</span></p>
+    <div class="nw-class">
+      <div class="nw-room" style="--k:#e0702b">
+        <h5>A 학교 1반</h5>
+        <div class="nw-devs">
+          <span class="d wl on">💻 노트북 <em>①</em></span>
+          <span class="d wd">🖥️ 컴퓨터</span>
+          <span class="d wd">🖨️ 프린터</span>
+          <span class="d wd on">📶 AP <em>②</em></span>
+        </div>
+        <div class="nw-sw on">🔀 스위치 <em>③</em></div>
+      </div>
+      <div class="nw-mid"><div class="nw-rt on">🌐 라우터 <em>④</em><small>서로 다른 네트워크(A 학교 1반 ↔ B 학교 1반)를 연결하고 효율적인 길을 알려 줘요</small></div></div>
+      <div class="nw-room" style="--k:#2f6fd0">
+        <h5>B 학교 1반</h5>
+        <div class="nw-sw on">🔀 스위치 <em>⑤</em></div>
+        <div class="nw-devs">
+          <span class="d wd on">💻 노트북 <em>⑥</em></span>
+          <span class="d wd">📶 AP</span>
+          <span class="d wl">📱 스마트폰</span>
+          <span class="d wl">🖨️ 프린터</span>
+          <span class="d wd">🖥️ 컴퓨터</span>
+        </div>
+      </div>
+    </div>
+    <div class="cards2" style="margin-top:12px">
+      <div class="kc" style="--k:#1f9d74"><h4>서브넷(subnet)</h4><p>IP 주소에서 네트워크 영역을 부분적으로 나눈 부분망(부분 네트워크). 교실은 서브넷에 속하고, 접속 환경에 따라 유선 네트워크와 무선 네트워크로 나뉘어요.</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>궁금해요! 우리 집 공유기도 라우터일까?</h4><p>초창기 라우터는 규모가 큰 네트워크 장치였지만, 기술이 발전해 지금의 유무선 공유기인 소형(가정용) 라우터가 나왔어요. 라우팅 기능 없이 무선 공유만 하고 싶다면 유선을 무선으로 바꿔 주는 <b>AP</b>(Access Point)를 쓸 수 있어요.</p></div>
+    </div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <h3>🔌 유무선 네트워크</h3>
+    <p style="margin-top:0">초기에는 유선 매체를 주로 썼지만 점점 무선 매체가 늘었어요. 최근에는 사용자 환경에 맞춰 <b>유선과 무선을 결합</b>한 형태가 널리 보급되어 네트워크 효율을 더욱 높이고 있어요.</p>
+    <table class="nw-tbl">
+      <tr><th></th><th>특징</th><th>장점</th><th>단점</th></tr>
+      <tr><td><b>유선</b></td><td>물리적 통신 매체인 UTP 케이블 또는 광섬유 케이블로 통신</td><td>· 신뢰도가 높다<br>· 속도가 빠르다</td><td>· 이동이 어렵다<br>· 모든 컴퓨터를 선으로 직접 연결해야 하므로 회선이 복잡하다</td></tr>
+      <tr><td><b>무선</b></td><td>같은 무선 주파수를 사용하여 통신</td><td>· 이동이 자유롭다<br>· 물리적 연결이 필요 없다<br>· 많은 사용자가 동시에 이용할 수 있다</td><td>· 보안이 취약하다<br>· 신호 감쇄가 심하다<br>· 유선에 비해 속도가 느릴 수 있다<br>· 전송 범위를 벗어나면 연결이 어렵다</td></tr>
+    </table>
+    <p class="note">유선 매체: UTP 케이블, 광섬유 케이블 · 무선 매체: NFC, RFID, 와이파이, 블루투스</p>
+  </div>
+  <div class="card">
+    <h3>🗺️ 범위에 따른 네트워크 종류</h3>
+    <p style="margin-top:0">서브넷은 가정이나 학교의 각 반 같은 소규모 네트워크예요. <b>LAN</b>은 가장 많이 쓰이는 서브넷으로, 여러 LAN이 모여 도시 안 네트워크인 <b>MAN</b>을, MAN이 모여 <b>WAN</b>을 이뤄요. 그래서 <b>인터넷에 접속한다는 것은 도시의 범위(MAN)를 넘어 WAN에 접속한다</b>는 뜻이에요.</p>
+    <div class="nw-nest">
+      <div class="w" style="--k:#d64535"><b>WAN</b> <small>Wide Area Network · 수십 km 이상, 도시를 벗어난 범위</small>
+        <div class="w" style="--k:#9b4fc4"><b>MAN</b> <small>Metropolitan Area Network · 수 km~수십 km, 도시 안</small>
+          <div class="w" style="--k:#1f9d74"><b>LAN</b> <small>Local Area Network · 수 m~수 km, 교실이나 회사 건물 안</small>
+            <div class="w" style="--k:#2f6fd0"><b>PAN</b> <small>Personal Area Network · 수 m 정도 (무선 키보드·마우스, 블루투스, 에어드랍)</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><h3>🎯 유선일까, 무선일까?</h3><p class="muted" style="margin-top:0">특징·장점·단점이나 매체를 보고 유선과 무선 중 어디에 해당하는지 골라요.</p><div id="wireGame"></div>
+    <div class="memo" style="margin-top:14px"><label>우리 교실이나 집에서 쓰는 유선 연결과 무선 연결을 하나씩 찾아 적어요. 왜 그 자리에 그 방식을 썼을지도 함께 적어요. <small>예: 교실 데스크톱은 랜선(유선) — 자리를 옮기지 않고 빠르고 안정적이어야 해서 / 내 노트북은 와이파이(무선) — 들고 다니며 써야 해서</small></label><textarea data-memo="wiredWireless" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 데이터 전송 과정 -->
+<section class="page" data-name="데이터 전송" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>데이터는 어떻게 전송될까?</h2><p>교과서 15쪽 · 네트워크 전송 구성도, 패킷</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>큰 사진을 통째로 보내지 않고 <b>작은 조각(패킷)</b>으로 나눠, 조각마다 받는 사람 주소를 붙여 보내요. 조각들은 길이 붐비면 <b>서로 다른 길</b>로 가기도 하고, 도착하면 주소를 떼고 <b>다시 합쳐요</b>.</span></div>
+  <div class="card">
+    <h3>✈️ 서울에서 보스턴까지 사진 보내기 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅰ-2 · 패킷 전송 예시)</span></h3>
+    <p class="muted" style="margin-top:0">서울의 A가 보스턴 하버드 대학교의 B에게 사진을 보내요. <b>다음 →</b>을 눌러 한 단계씩 따라가 보세요.</p>
+    <div id="sendSim"></div>
+  </div>
+  <div class="card">
+    <h3>📦 패킷(packet)</h3>
+    <p style="margin-top:0">네트워크로 전송하기 쉽도록 데이터를 적당한 크기로 자른 <b>최소 전송 단위</b>예요. 데이터는 패킷 단위로 작게 나뉘어 <b>통신 매체의 용량 제한</b>과 <b>네트워크의 혼잡도</b>에 따라 패킷마다 다른 경로로 전송돼요. 각 패킷에는 <b>수신자의 주소</b>와 여러 데이터가 담겨 있고, 서로 다른 경로로 도착한 패킷들은 수신자가 <b>주소를 뺀 데이터를 조합</b>해 원래 데이터로 다시 만들어 읽어요.</p>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 네트워크 환경 설정 -->
+<section class="page" data-name="네트워크 환경 설정" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>네트워크 환경은 어떻게 설정할까?</h2><p>교과서 16~17쪽 · IP 주소, 서브넷 마스크, 게이트웨이, DNS 서버, DHCP</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>네트워크에 들어가려면 기기마다 <b>IP 주소</b>와 <b>DNS 서버 주소</b> 같은 설정값이 필요해요. 하나하나 직접 입력하지 않아도, <b>DHCP</b>(동적 호스트 구성 프로토콜)가 기기가 요청할 때마다 <b>자동으로 나눠 줘요</b>.</span></div>
+  <div class="card" style="overflow-x:auto">
+    <h3>📋 네트워크 환경 설정에 쓰는 주요 용어 <span class="muted" style="font-weight:400;font-size:.88rem">(표 Ⅰ-1)</span></h3>
+    <table class="nw-tbl">
+      <tr><th>용어</th><th>설명</th><th>예</th></tr>
+      <tr><td><b>IP 주소</b></td><td>네트워크에서 사용하는 고유 주소</td><td class="mono">192.168.1.130</td></tr>
+      <tr><td><b>서브넷 마스크</b></td><td>네트워크 영역을 구분하는 주소. IP 주소를 <b>네트워크 주소</b> 부분과 <b>호스트 주소</b> 부분으로 나누는 값</td><td class="mono">255.255.255.0</td></tr>
+      <tr><td><b>게이트웨이</b></td><td>외부 네트워크를 연결해 주는 장치의 주소</td><td class="mono">192.168.1.1</td></tr>
+      <tr><td><b>DNS 서버</b></td><td>도메인 이름을 IP 주소로 바꿔 줌</td><td class="mono">도메인 이름 → 110.165.22.169</td></tr>
+    </table>
+    <div class="nw-mask">
+      <div><span class="n">192.168.1.</span><span class="h">130</span><small>IP 주소</small></div>
+      <div><span class="n">255.255.255.</span><span class="h">0</span><small>서브넷 마스크</small></div>
+      <p><b class="n">네트워크 주소</b> 부분은 같은 서브넷이면 같고, <b class="h">호스트 주소</b> 부분으로 그 안의 기기를 구분해요.</p>
+    </div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🛂 게이트웨이</h3>
+      <p style="margin-top:0">다른 나라를 여행할 때 출입국 관리소를 지나듯, 내가 속한 네트워크에서 다른 네트워크로 가려면 <b>게이트웨이</b>라는 통신 중계기를 거쳐야 해요. 보통은 라우터가 게이트웨이 기능을 포함하고 있어서, 게이트웨이 주소는 <b>라우터의 주소</b>가 돼요.</p>
+    </div>
+    <div class="card">
+      <h3>🤖 DHCP</h3>
+      <p style="margin-top:0">각 컴퓨팅 시스템은 IP 주소를 미리 정해 두지 않아요. <b>DHCP 서버</b>가 네트워크에 필요한 IP 주소를 모두 가지고 있다가, 컴퓨팅 시스템이 IP 주소를 요구할 때마다 <b>자동으로 할당</b>해요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🧪 DHCP 서버가 되어 보기</h3>
+    <p class="muted" style="margin-top:0">기기를 우리 반 네트워크에 연결해 보세요. <b>자동(DHCP)</b>과 <b>직접 입력</b>을 바꿔 가며, 어느 쪽이 편하고 안전한지 비교해 봐요.</p>
+    <div id="dhcpSim"></div>
+    <div class="memo" style="margin-top:12px"><label>자동(DHCP)과 직접 입력을 둘 다 해 보고 알게 된 차이 <small>입력한 칸 수, 충돌, 주소가 모자랄 때·나간 뒤 다시 쓰기 등에서 겪은 것</small></label><textarea data-memo="dhcpNote" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>⚙️ 운영체제별 설정 화면 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅰ-3~Ⅰ-6 · 화면 설명)</span></h3>
+    <p class="muted" style="margin-top:0">🔒 지금은 읽기만 해요. 학교 컴퓨터에서 편집·수동 입력 버튼은 누르지 않아요.</p>
+    <div class="cards2">
+      <div class="kc" style="--k:#2f6fd0"><h4>윈도</h4><p>설정 → &lt;네트워크 및 인터넷&gt; → 연결된 네트워크의 ‘속성’ → &lt;IP 할당&gt;과 &lt;DNS 서버 할당&gt;이 ‘자동(DHCP)’인지 봐요. 필요하면 편집 버튼으로 수동 입력도 할 수 있어요.</p></div>
+      <div class="kc" style="--k:#8a94a3"><h4>맥 OS</h4><p>시스템 설정 → 연결된 네트워크 → &lt;세부 사항&gt; → &lt;TCP/IP&gt; 항목의 IPv4 구성이 ‘DHCP 사용’인지 봐요. 필요하면 수동 항목을 골라 직접 입력할 수 있어요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>안드로이드</h4><p>연결된 Wi-Fi 옆의 설정(⚙) 버튼 → 아래쪽 IP 설정이 ‘DHCP’인지 봐요.</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>iOS</h4><p>연결된 Wi-Fi 옆의 정보(ⓘ) 버튼 → &lt;IP 구성&gt;과 &lt;DNS 구성&gt;이 ‘자동’이면 DHCP를 쓰는 거예요.</p></div>
+    </div>
+    <div class="callout" style="margin-bottom:0"><b>궁금해요! DHCP는 왜 쓸까?</b> 같은 IP 주소를 쓰려는 두 사용자 사이의 <b>충돌을 막아 주고</b>, 네트워크 범위 안에서 <b>높은 이동성</b>을 보장하며, IP 주소 등을 <b>수동으로 입력하는 번거로움이 없어</b> 네트워크를 효율적으로 관리할 수 있어요.</div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 함께 해결하기 -->
+<section class="page" data-name="내 네트워크 구성" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>함께 해결하기 · 내 컴퓨터의 네트워크 구성</h2><p>교과서 17쪽 · 조사 · 실습</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>지금 쓰는 노트북이나 휴대폰이 <b>어떤 네트워크에, 어떤 주소로</b> 연결되어 있는지 직접 찾아 적어 보는 시간이에요. 앞에서 배운 IP 주소·서브넷 마스크·게이트웨이·DNS 서버가 실제로 어떻게 보이는지 확인해요.</span></div>
+  <div class="callout nw-warn"><b>🔒 설정은 바꾸지 않고 「확인만」 해요.</b> 설정 화면의 ‘편집’, ‘수동’ 같은 버튼은 누르지 않아요. 학교 컴퓨터는 관리자 권한이 막혀 있어 화면이 안 열릴 수 있고, 값을 잘못 바꾸면 인터넷이 끊길 수 있어요. 열리지 않는 단계는 건너뛰고, 휴대폰으로 확인해도 괜찮아요.</div>
+  <div class="card">
+    <h3>1️⃣ 내 기기의 네트워크 환경 찾기 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 2번)</span></h3>
+    <p class="muted" style="margin-top:0">확인할 기기를 고르면 찾아가는 길이 나와요. <b>안 보이는 칸은 비워 둬요.</b> 윈도 설정 화면에는 서브넷 마스크나 게이트웨이가 보이지 않을 수 있어요.</p>
+    <div class="vote" id="devVote"></div>
+    <div class="nw-path" id="devPath"></div>
+    <table class="plan nw-plan">
+      <tr><td>연결 방식</td><td><div id="netTypeChips"></div></td></tr>
+      <tr><td>네트워크 이름</td><td><input type="text" data-memo="netName" placeholder="연결된 Wi-Fi 이름 또는 이더넷"></td></tr>
+      <tr><td>IP 주소 (IPv4)</td><td><input type="text" data-memo="myIP" placeholder="예: 192.168.1.130" inputmode="decimal"></td></tr>
+      <tr><td>서브넷 마스크</td><td><input type="text" data-memo="myMask" placeholder="안 보이면 비워 둬요" inputmode="decimal"></td></tr>
+      <tr><td>게이트웨이 <small>(iOS는 「라우터」)</small></td><td><input type="text" data-memo="myGw" placeholder="안 보이면 비워 둬요" inputmode="decimal"></td></tr>
+      <tr><td>DNS 서버</td><td><input type="text" data-memo="myDns" placeholder="안 보이면 비워 둬요"></td></tr>
+      <tr><td>IP 할당 방식</td><td><div id="ipModeChips"></div></td></tr>
+    </table>
+    <div class="nw-check" id="ipCheck"></div>
+  </div>
+  <div class="card">
+    <h3>2️⃣ 연결이 잘 되는지 확인하기 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 1번 · 윈도 컴퓨터)</span></h3>
+    <ol class="vsteps">
+      <li><b>키보드의 윈도 키를 눌러요.</b></li>
+      <li><b>cmd를 입력해 명령 프롬프트 창을 열어요.</b><p class="muted">학교 컴퓨터에서 열리지 않으면 이 단계는 건너뛰어요.</p></li>
+      <li><b><span class="mono">ping IP 주소</span> 또는 <span class="mono">ping 도메인 이름</span>을 입력해요.</b>
+        <p>· 1️⃣에서 찾은 <b>게이트웨이 주소</b>로 ping을 보내면, 내 기기와 라우터 사이, 곧 <b>같은 네트워크 안의 연결</b>이 되는지 확인할 수 있어요.<br>· 선생님이 알려 주는 <b>도메인 이름</b>으로 보내면 인터넷 너머까지 닿는지 볼 수 있어요.<br>· 응답이 몇 번 돌아왔는지, 시간이 얼마나 걸렸는지 봐요.</p>
+        <p class="muted">학교 네트워크는 ping을 막아 두기도 해요. 그러면 인터넷이 되는데도 「요청 시간이 만료되었습니다」(요청 시간 초과)가 나올 수 있어요.</p></li>
+    </ol>
+    <div class="memo"><label>ping 결과 <small>예: 게이트웨이로 4번 보내 4번 응답, 시간 2ms 안팎 / 요청 시간 초과 / 창이 열리지 않아 건너뜀</small></label><input type="text" data-memo="pingRes"><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>📝 주요 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="nw-blanks">
+      <li>옆 학교로 가는 길이 여러 갈래일 때, 그 가운데 가장 효율적인 길을 알려 주며 서로 다른 네트워크를 이어 주는 장치는 <button class="nw-blank" data-a="라우터">?</button>다.</li>
+      <li>주소 창에 학교 누리집 이름을 치면 DNS 서버가 그 이름에 연결된 숫자 주소를 찾아 준다. 이때 내가 친 이름은 <button class="nw-blank" data-a="도메인 이름">?</button>, DNS 서버가 찾아 준 숫자 주소는 <button class="nw-blank" data-a="IP 주소">?</button>다.</li>
+      <li>2학년 3반 교실의 컴퓨터들은 IP 주소의 앞부분(네트워크 주소)이 서로 같다. 이렇게 큰 네트워크를 부분적으로 나눈 한 구역을 <button class="nw-blank" data-a="서브넷">?</button>이라고 한다.</li>
+      <li>교실에 새 노트북을 켜기만 해도 IP 주소와 DNS 서버 주소가 저절로 정해지는 것은 <button class="nw-blank" data-a="DHCP">?</button> 덕분이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 스스로 점검하기</h3>
+    <p style="margin-top:0">교과서 성취도 평가: 아래에서 할 수 있게 된 것을 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0"><b>네트워크</b>는 여러 디지털 장치가 라우터와 스위치로 연결되어 <b>고유의 주소(IP 주소)</b>로 서로를 구분하고 데이터를 주고받는 통신망이다. 사람은 <b>도메인 이름</b>을 쓰고, DNS 서버가 IP 주소로 바꿔 준다.</div>
+    <div style="--k:#1f9d74">교실은 <b>서브넷</b>에 속하며 <b>유선</b>(신뢰도·속도)과 <b>무선</b>(이동성·동시 이용)이 섞여 쓰인다. LAN이 모여 MAN, MAN이 모여 WAN을 이루고, 데이터는 <b>패킷</b>으로 나뉘어 여러 경로로 전송된 뒤 다시 합쳐진다.</div>
+    <div style="--k:#9b4fc4">네트워크 환경 설정에는 <b>IP 주소·서브넷 마스크·게이트웨이·DNS 서버</b>가 필요하고, <b>DHCP</b>가 이를 자동으로 할당해 충돌을 막고 관리를 편하게 한다.</div>
+  </div>
+  <div class="card">
+    <h3>오늘의 질문에 다시 답하기</h3>
+    <p class="muted" style="margin-top:0">처음에 적은 생각과 비교하며, 오늘 배운 낱말(IP 주소, 스위치, 라우터, 패킷, DHCP 등)을 넣어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">내가 사용하는 컴퓨팅 시스템과 친구가 사용하는 컴퓨팅 시스템을 연결하려면 무엇이 필요할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>서울의 A가 보스턴의 B에게 사진을 보내는 과정을 단계별로 따라가 보았습니다. 사진이 B의 컴퓨터에 도착하기까지의 과정을 <b>라우터, LAN·MAN·WAN, 패킷</b>이라는 말을 넣어 자기 말로 설명하세요.</li>
+      <li>교실이나 집에서 쓰는 <b>유선 연결 하나와 무선 연결 하나</b>를 찾아 적었습니다. 각각 어떤 장점 때문에 그 자리에 그 방식이 쓰였다고 생각하는지, 그 방식의 단점도 하나씩 들어 설명하세요.</li>
+      <li>「DHCP 서버가 되어 보기」에서 <b>자동(DHCP)과 직접 입력</b>으로 기기를 연결해 보았습니다. 두 방식에서 겪은 차이(입력한 칸 수, 충돌, 주소가 모자랄 때와 나간 뒤 다시 쓰기)를 쓰고, 이를 근거로 DHCP를 쓰면 좋은 점을 설명하세요. 내 기기의 IP 할당 방식을 확인했다면 그 결과도 덧붙이세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u1-network.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u1-network', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 */
+const QUIZ={
+ 1:[{q:'IPv4 주소에서 마침표로 구분한 영역 하나에 들어갈 수 있는 수의 범위는?',o:['0~255','1~256','0~999'],a:0,w:'한 영역은 8비트라서 0부터 255까지 나타낼 수 있어요.'},
+    {q:'인터넷 서비스를 쓸 때 입력한 도메인 이름을 IP 주소로 바꿔 주는 것은?',o:['라우터','스위치','DNS 서버'],a:2,w:'주소록 이름을 누르면 전화번호로 연결되듯, DNS 서버가 이름을 숫자 주소로 바꿔 줘요.'},
+    {q:'IPv6를 도입하게 된 까닭은?',o:['통신 속도를 높이려고','IPv4 주소가 부족해져서','도메인 이름을 쓰지 않으려고'],a:1,w:'컴퓨팅 시스템이 늘어나 IPv4 주소가 모자라자, 주소 길이를 128비트로 늘린 IPv6를 도입했어요.'}],
+ 2:[{q:'한 건물이나 작은 지역 범위에 설치되어 가장 많이 쓰이는 서브넷은?',o:['LAN','MAN','WAN'],a:0,w:'LAN이 모여 도시 안 네트워크인 MAN을, MAN이 모여 WAN을 이뤄요.'},
+    {q:'무선 네트워크의 단점에 해당하는 것은?',o:['이동이 어렵다','보안이 취약하다','회선이 복잡하다'],a:1,w:'전파로 통신하니 이동은 자유롭지만 보안이 취약하고 신호 감쇄가 심해요. 이동이 어렵고 회선이 복잡한 것은 유선의 단점이에요.'},
+    {q:'인터넷에 접속한다는 것은 어느 범위의 네트워크에 접속한다는 뜻일까?',o:['PAN','LAN','WAN'],a:2,w:'인터넷 접속은 도시의 범위(MAN)를 넘어 WAN에 접속한다는 뜻이에요.'}],
+ 3:[{q:'네트워크로 전송하기 쉽도록 데이터를 적당한 크기로 자른 최소 전송 단위는?',o:['패킷','서브넷','도메인'],a:0,w:'사진 같은 큰 데이터는 패킷으로 나뉘어 전송돼요.'},
+    {q:'같은 사진에서 나온 패킷들이 서로 다른 경로로 전송되기도 하는 까닭은?',o:['받는 사람이 여러 명이라서','패킷마다 받는 주소가 달라서','길마다 혼잡한 정도가 달라서'],a:2,w:'길마다 붐비는 정도와 실어 나를 수 있는 양이 달라서, 패킷마다 알맞은 경로로 나뉘어 가요.'},
+    {q:'서로 다른 경로로 도착한 패킷으로 원래 데이터를 만들 때 수신자가 하는 일은?',o:['패킷을 다시 보낸다','주소를 떼고 데이터를 조합한다','받은 순서대로 패킷을 그대로 읽는다'],a:1,w:'패킷에는 주소와 데이터가 함께 담겨 있어서, 주소를 뺀 데이터를 원래 순서로 조합해 읽어요.'}],
+ 4:[{q:'IP 주소와 DNS 서버 주소를 자동으로 할당받을 수 있게 해 주는 프로토콜은?',o:['DHCP','IPv6','DNS 서버'],a:0,w:'DHCP(동적 호스트 구성 프로토콜) 서버가 기기가 요구할 때마다 주소를 자동으로 나눠 줘요.'},
+    {q:'내 네트워크에서 다른 네트워크로 갈 때 거치는, 출입국 관리소 같은 통신 중계기는?',o:['AP','스위치','게이트웨이'],a:2,w:'게이트웨이는 다른 네트워크로 들어가는 관문이고, 보통 라우터가 이 기능을 맡아요.'},
+    {q:'서브넷 마스크가 255.255.255.0일 때, IP 주소 192.168.1.130에서 호스트 주소 부분은?',o:['130','192.168','192.168.1'],a:0,w:'마스크가 255인 앞 세 칸(192.168.1)은 네트워크 주소, 0인 마지막 칸(130)은 호스트 주소예요.'}],
+ 6:[{q:'네트워크에서 DHCP를 쓰면 좋은 점은?',o:['통신 속도가 빨라진다','도메인 이름이 짧아진다','같은 IP 주소를 쓰는 충돌을 막는다'],a:2,w:'DHCP 서버가 겹치지 않게 주소를 나눠 주니 충돌이 없고, 직접 입력하는 번거로움도 사라져요.'},
+    {q:'여러 사람이 노트북을 들고 자리를 자주 옮기는 도서관 열람실에 더 알맞은 연결은?',o:['유선 네트워크','무선 네트워크','광섬유 케이블'],a:1,w:'무선은 이동이 자유롭고 물리적 연결이 필요 없으며 많은 사용자가 동시에 쓸 수 있어요. 광섬유 케이블은 유선 매체예요.'},
+    {q:'IPv4 주소는 모두 몇 비트로 이루어질까?',o:['8비트','32비트','128비트'],a:1,w:'8비트 영역 4개라서 32비트예요. 128비트는 IPv6예요.'}],
+};
+
+const QK='ds-u1-network-quiz'+WHO.sfx;
+const MK='ds-u1-network-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+
+/* 0 시작 · 2030 학교 */
+vote('unitVote','unitPick',[['🏀 자동 실내 환경 시스템','강당'],['🚪 자동 출석 확인 시스템','교실'],['📚 열람실 현황 시스템','도서관'],['🍱 자동 급식 확인 시스템','급식실']]);
+
+/* 01 이 주소는 무엇일까? */
+sorter('addrGame',{
+  cats:[{n:'IPv4 주소',k:'#2f6fd0'},{n:'IPv6 주소',k:'#9b4fc4'},{n:'도메인 이름',k:'#1f9d74'},{n:'IPv4 규칙에 어긋남',k:'#d64535'}],
+  items:[
+    {t:'<span class="mono">192.168.1.130</span>',c:0,ic:'🔢',w:'0~255 사이 숫자 4개를 마침표로 구분했어요.'},
+    {t:'<span class="mono">110.165.22.169</span>',c:0,ic:'🔢',w:'영역 4개, 모두 0~255예요. 교과서에서 도메인 이름이 연결된 IP 주소예요.'},
+    {t:'<span class="mono">2001:0DB8:0000:0000:0000:0000:1428:57AB</span>',c:1,ic:'🔣',w:'16진수 8개 영역을 콜론(:)으로 구분했어요.'},
+    {t:'<span class="mono">FE80:0000:0000:0000:0202:B3FF:FE1E:8329</span>',c:1,ic:'🔣',w:'0~9와 A~F로 쓴 16진수 8개 영역, 콜론 구분이에요.'},
+    {t:'<span class="mono">www.○○○.go.kr</span>',c:2,ic:'🏷️',w:'go는 정부, kr은 대한민국이에요. DNS 서버가 IP 주소로 바꿔 줘요.'},
+    {t:'<span class="mono">www.○○○.ac.kr</span>',c:2,ic:'🏷️',w:'ac는 교육 기관이에요. 사람이 기억하기 쉬운 이름이지요.'},
+    {t:'<span class="mono">192.168.1.300</span>',c:3,ic:'⚠️',w:'300은 한 영역에 들어갈 수 있는 0~255를 벗어나요.'},
+    {t:'<span class="mono">10.20.30</span>',c:3,ic:'⚠️',w:'영역이 3개뿐이에요. IPv4는 4개 영역이어야 해요.'},
+  ],
+  end:'<b>정리</b> IPv4는 <b>0~255 숫자 4개 + 마침표</b>, IPv6는 <b>16진수 8개 + 콜론</b>, 도메인 이름은 <b>사람이 읽는 이름</b>이에요.'
+});
+
+/* 02 유선일까, 무선일까? */
+sorter('wireGame',{
+  cats:[{n:'🔌 유선',k:'#e0702b'},{n:'📶 무선',k:'#2f6fd0'}],
+  items:[
+    {t:'신뢰도가 높다',c:0,ic:'👍',w:'케이블로 직접 이어져 있어 안정적이에요.'},
+    {t:'속도가 빠르다',c:0,ic:'⚡',w:'유선의 장점이에요. 무선은 유선에 비해 느릴 수 있어요.'},
+    {t:'이동이 어렵다',c:0,ic:'🪢',w:'선에 묶여 있으니 자리를 옮기기 어려워요.'},
+    {t:'모든 컴퓨터를 선으로 이어야 해서 회선이 복잡하다',c:0,ic:'🧶',w:'기기가 많아질수록 케이블이 늘어나요.'},
+    {t:'광섬유 케이블',c:0,ic:'🧵',w:'UTP 케이블과 함께 대표적인 유선 매체예요.'},
+    {t:'이동이 자유롭다',c:1,ic:'🚶',w:'선이 없으니 들고 다니며 쓸 수 있어요.'},
+    {t:'많은 사용자가 동시에 이용할 수 있다',c:1,ic:'👥',w:'같은 무선 주파수를 여러 기기가 함께 써요.'},
+    {t:'보안이 취약하다',c:1,ic:'🔓',w:'전파는 주변으로 퍼지기 때문에 보안에 더 신경 써야 해요.'},
+    {t:'전송 범위를 벗어나면 연결이 어렵다',c:1,ic:'📉',w:'신호 감쇄가 심해서 멀어지면 연결이 약해져요.'},
+    {t:'블루투스',c:1,ic:'🎧',w:'와이파이, NFC, RFID와 함께 무선 매체예요.'},
+  ],
+  end:'<b>생각해 보기</b> 우리 교실에서 유선으로 연결된 기기와 무선으로 연결된 기기는 각각 무엇인가요? 왜 그렇게 연결했을까요?'
+});
+
+/* 03 데이터 전송 단계별 보기 */
+(function(){
+  const STOPS=[['💻','A 컴퓨터'],['🌐','라우터'],['🏙️','서울 MAN'],['🌏','WAN'],['🏙️','보스턴 MAN'],['🏛️','하버드 LAN'],['🖥️','B 컴퓨터']];
+  const STEP=[
+    {t:'사진을 패킷으로 나누기',d:'사진이 너무 커서 한 번에 보내기 어려워요. <i>「너무 크니까 주소를 주고 1,500byte씩 나누자.」</i> 사진을 작은 패킷으로 나누고, 패킷마다 받는 사람(B)의 주소를 붙여요.',pk:'split'},
+    {t:'유선 케이블 → 라우터',d:'A의 컴퓨터에 연결된 유선 케이블을 통해 패킷이 라우터로 가요. 라우터는 서로 다른 네트워크를 연결하고 효율적인 길을 알려 주는 장치예요.',pk:'go'},
+    {t:'서울 MAN',d:'가정·학교·회사의 여러 LAN이 모여 이룬 도시 안 네트워크(MAN)를 지나요.',pk:'go'},
+    {t:'WAN · 패킷마다 다른 길',d:'도시의 범위를 넘어 WAN으로 들어가요. 통신 매체의 용량 제한과 네트워크의 혼잡도에 따라 <b>패킷마다 다른 경로</b>로 전송돼요.',pk:'routes'},
+    {t:'보스턴 MAN',d:'<i>「보스턴을 거쳐서 하버드 대학으로 가세요.」</i> 패킷에 붙은 수신자 주소를 보고 목적지 쪽으로 찾아가요.',pk:'routes'},
+    {t:'하버드 대학교 LAN에 도착',d:'<i>「어서 오세요. 이곳이 하버드 대학입니다.」</i> 서로 다른 길로 온 패킷들이 해당 지역의 LAN으로 모여요. 도착한 순서는 보낸 순서와 다를 수 있어요.',pk:'arrive'},
+    {t:'B 컴퓨터 · 다시 합치기',d:'<i>「도착한 패킷들을 다시 합쳐 보자.」</i> B의 컴퓨터는 <b>주소를 뺀 데이터</b>를 원래 순서대로 조합해 사진을 다시 만들어 읽어요.',pk:'merge'},
+  ];
+  const C=['#d64535','#2f6fd0','#1f9d74','#f2a516'], N='①②③④';
+  const pk=(i,addr)=>`<span class="pk" style="--c:${C[i]}">${addr?'<i>B</i>':''}${N[i]}</span>`;
+  const B=$('sendSim'); let s=0;
+  B.innerHTML=`<div class="nw-track">${STOPS.map((x,i)=>`<span data-i="${i}"><i>${x[0]}</i>${x[1]}</span>`).join('')}</div>
+    <div class="nw-step"><div class="nw-st-h"></div><p class="nw-st-d"></p><div class="nw-tray"></div></div>
+    <div class="row" style="margin-top:10px"><button class="btn ghost sm" data-k="p">← 이전</button><button class="btn sm" data-k="n">다음 →</button><button class="btn ghost sm" data-k="r">처음부터</button><span class="muted nw-cnt"></span></div>`;
+  const stops=[...B.querySelectorAll('.nw-track span')];
+  function tray(k){
+    if(k==='split') return `<div class="nw-row"><span class="pic">🖼️ 사진</span><b class="ar">✂️ →</b>${[0,1,2,3].map(i=>pk(i,1)).join('')}</div><small class="muted">흰 칸 <b>B</b> = 패킷마다 붙은 수신자 주소</small>`;
+    if(k==='go') return `<div class="nw-row"><b class="ar">🚚</b>${[0,1,2,3].map(i=>pk(i,1)).join('')}<b class="ar">→</b></div>`;
+    if(k==='routes') return `<div class="nw-lane"><small>경로 ㉮</small>${pk(0,1)}${pk(2,1)}<b class="ar">→</b></div><div class="nw-lane busy"><small>경로 ㉯ (붐빔)</small>${pk(1,1)}<b class="ar">→</b></div><div class="nw-lane"><small>경로 ㉰</small>${pk(3,1)}<b class="ar">→</b></div>`;
+    if(k==='arrive') return `<div class="nw-row"><small class="muted">도착한 순서</small>${[2,0,3,1].map(i=>pk(i,1)).join('')}</div>`;
+    return `<div class="nw-row"><small class="muted">주소를 떼고 순서대로</small>${[0,1,2,3].map(i=>pk(i,0)).join('')}<b class="ar">→</b><span class="pic">🖼️ 사진 완성!</span></div>`;
+  }
+  function draw(){
+    stops.forEach((x,i)=>{x.classList.toggle('on',i===s); x.classList.toggle('done',i<s);});
+    const st=STEP[s]; B.querySelector('.nw-st-h').innerHTML=`<i>${STOPS[s][0]}</i> <b>${s+1}. ${st.t}</b>`;
+    B.querySelector('.nw-st-d').innerHTML=st.d; B.querySelector('.nw-tray').innerHTML=tray(st.pk);
+    B.querySelector('.nw-cnt').textContent=`${s+1} / ${STEP.length}`;
+    B.querySelector('[data-k=p]').disabled=s===0; B.querySelector('[data-k=n]').disabled=s===STEP.length-1;
+    const tr=B.querySelector('.nw-track'), on=stops[s]; tr.scrollLeft=on.offsetLeft-tr.clientWidth/2+on.clientWidth/2;
+  }
+  B.querySelector('[data-k=p]').onclick=()=>{if(s>0){s--;draw();}};
+  B.querySelector('[data-k=n]').onclick=()=>{if(s<STEP.length-1){s++;draw();}};
+  B.querySelector('[data-k=r]').onclick=()=>{s=0;draw();};
+  stops.forEach((x,i)=>x.onclick=()=>{s=i;draw();});
+  draw();
+})();
+
+/* 04 DHCP 서버가 되어 보기 */
+(function(){
+  const DEV=[['💻','내 노트북'],['📱','친구 휴대폰'],['🖨️','교실 프린터'],['🖥️','선생님 컴퓨터'],['⌚','스마트 워치']];
+  const POOL=[100,101,102,103];
+  const B=$('dhcpSim'); let mode='auto', ip=DEV.map(()=>null), val=DEV.map(()=>''), typed=0, msg='';
+  function conflict(i){return ip[i]!=null && ip.some((v,j)=>j!==i&&v===ip[i]);}
+  function draw(){
+    const used=new Set(ip.filter(v=>v!=null));
+    const anyC=ip.some((_,i)=>conflict(i));
+    B.innerHTML=`<div class="nw-mode"><button data-m="auto" class="${mode==='auto'?'on':''}">🤖 자동(DHCP)</button><button data-m="man" class="${mode==='man'?'on':''}">✍️ 직접 입력</button></div>
+      ${mode==='auto'?`<div class="nw-pool"><b>DHCP 서버가 가진 IP 주소</b> (4개 · 기기는 5대예요)<div>${POOL.map(p=>`<span class="${used.has(p)?'used':''}">192.168.1.${p}</span>`).join('')}</div></div>`
+        :`<div class="nw-pool"><b>직접 입력</b> 기기마다 IP 주소의 마지막 칸을 정해요 (이 활동에서는 2~254). 서브넷 마스크·게이트웨이·DNS 서버도 기기마다 하나씩 입력해야 해요.</div>`}
+      <div class="nw-devl">${DEV.map((d,i)=>{const c=conflict(i);
+        return `<div class="nw-dv ${ip[i]!=null?'on':''} ${c?'bad':''}"><span class="ic">${d[0]}</span><div class="tx"><b>${d[1]}</b>${ip[i]!=null?`<small class="mono">IP 192.168.1.${ip[i]} · 마스크 255.255.255.0 · 게이트웨이 192.168.1.1</small>${c?'<small class="ng">⚠️ 같은 IP 주소를 쓰는 기기가 있어 충돌!</small>':''}`:'<small class="muted">연결 안 됨</small>'}</div>
+        <div class="ac">${ip[i]!=null?`<button class="btn ghost sm" data-out="${i}">나가기</button>`:(mode==='auto'?`<button class="btn sm" data-in="${i}">연결</button>`:`<span class="mono nw-pre">192.168.1.</span><input type="number" min="2" max="254" data-n="${i}" value="${val[i]}" aria-label="${d[1]} IP 주소 마지막 칸"><button class="btn sm" data-in="${i}">연결</button>`)}</div></div>`;}).join('')}</div>
+      <div class="nw-stat"><span>직접 입력한 칸 <b>${typed}</b>칸</span><span>충돌 <b class="${anyC?'ng':''}">${anyC?'있음':'없음'}</b></span></div>
+      <div class="nw-msg">${msg||(mode==='auto'?'기기의 <b>연결</b>을 눌러 보세요. DHCP 서버가 주소를 알아서 나눠 줘요.':'두 기기에 <b>같은 숫자</b>를 넣으면 어떻게 될까요?')}</div>`;
+    B.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=b.dataset.m; ip=DEV.map(()=>null); val=DEV.map(()=>''); typed=0;
+      msg=mode==='auto'?'자동(DHCP)으로 바꿨어요. 모든 기기의 연결을 끊고 새로 시작해요.':'직접 입력으로 바꿨어요. 이제 기기마다 주소를 정해 입력해야 해요.'; draw();});
+    B.querySelectorAll('[data-n]').forEach(x=>x.oninput=()=>{val[+x.dataset.n]=x.value;});
+    B.querySelectorAll('[data-in]').forEach(b=>b.onclick=()=>{const i=+b.dataset.in;
+      if(mode==='auto'){const free=POOL.find(p=>!used.has(p)); if(free==null){msg=`<b class="ng">남은 주소가 없어요.</b> DHCP 서버의 주소 4개를 모두 나눠 주었어요. 연결된 기기 하나를 <b>나가기</b>로 내보내면 그 주소를 <b>${DEV[i][1]}</b>에 다시 나눠 줄 수 있어요.`;}
+        else{ip[i]=free; msg=`DHCP 서버가 <b>${DEV[i][1]}</b>에 비어 있는 주소 하나(<b>192.168.1.${free}</b>)를 자동으로 할당했어요. 서브넷 마스크·게이트웨이·DNS 서버 주소도 함께 받았어요. 직접 입력한 칸은 없어요.`;}}
+      else{const v=+val[i]; if(val[i]==='') {msg='마지막 칸에 넣을 숫자를 먼저 적어요.'; draw(); return;}
+        if(!Number.isInteger(v)||v<2||v>254){msg='2~254 사이의 숫자를 넣어 주세요. (192.168.1.1은 게이트웨이인 라우터의 주소예요.)';}
+        else{ip[i]=v; val[i]=''; typed+=4; msg=conflict(i)?`<b class="ng">충돌!</b> 같은 주소(192.168.1.${v})를 이미 다른 기기가 쓰고 있어요. 데이터가 어느 기기로 가야 할지 알 수 없어요.`:`<b>${DEV[i][1]}</b>에 주소(192.168.1.${v})를 넣었어요. IP 주소, 서브넷 마스크, 게이트웨이, DNS 서버까지 <b>4칸</b>을 직접 입력했어요.`;}}
+      draw();});
+    B.querySelectorAll('[data-out]').forEach(b=>b.onclick=()=>{const i=+b.dataset.out, v=ip[i]; ip[i]=null;
+      msg=mode==='auto'?`<b>${DEV[i][1]}</b> 연결을 끊었어요. 쓰던 주소(192.168.1.${v})는 DHCP 서버로 돌아가서 다른 기기가 다시 쓸 수 있어요.`:`<b>${DEV[i][1]}</b> 연결을 끊었어요. 다시 연결하려면 주소를 또 입력해야 해요.`; draw();});
+  }
+  draw();
+})();
+
+/* 05 내 기기의 네트워크 환경 */
+const DEVPATH={
+  '윈도 컴퓨터':'<b>설정</b> → <b>네트워크 및 인터넷</b> → 연결된 <b>와이파이</b>(또는 <b>이더넷</b>)의 <b>속성</b> → 아래쪽의 IP 할당, IPv4 주소, DNS 서버를 봐요. <span class="muted">명령 프롬프트가 열린다면 <span class="mono">ipconfig</span>를 입력해도 IPv4 주소, 서브넷 마스크, 기본 게이트웨이를 한 번에 볼 수 있어요.</span>',
+  '맥':'<b>시스템 설정</b> → <b>Wi-Fi</b>(또는 <b>네트워크</b>) → 연결된 네트워크의 <b>세부 사항</b> → <b>TCP/IP</b>에서 IPv4 구성, IP 주소, 서브넷 마스크, 라우터를 봐요. DNS 서버는 <b>DNS</b> 항목에 있어요.',
+  '안드로이드':'<b>설정</b> → <b>연결</b>(또는 네트워크) → <b>Wi-Fi</b> → 연결된 Wi-Fi 옆의 <b>설정(⚙)</b> 버튼 → IP 주소와 IP 설정(DHCP)을 봐요. 기종에 따라 <b>더보기</b>나 <b>자세히</b> 아래에 있어요.',
+  '아이폰·아이패드':'<b>설정</b> → <b>Wi-Fi</b> → 연결된 Wi-Fi 옆의 <b>ⓘ</b> → IPv4 주소 아래의 <b>IP 구성</b>, <b>IP 주소</b>, <b>서브넷 마스크</b>, <b>라우터</b>(게이트웨이)를 보고, 아래쪽 <b>DNS 구성</b>도 봐요.',
+};
+vote('devVote','myDevice',Object.keys(DEVPATH).map(k=>[k]),i=>{$('devPath').innerHTML=`🧭 ${DEVPATH[Object.keys(DEVPATH)[i]]}<br><small class="muted">값은 읽기만 하고, 편집·수동 버튼은 누르지 않아요.</small>`;});
+chips('netTypeChips','netType',['유선(이더넷)','무선(와이파이)']);
+chips('ipModeChips','ipMode',['자동(DHCP)','수동','잘 모르겠음']);
+(function(){
+  const box=$('ipCheck'), f=k=>document.querySelector(`[data-memo="${k}"]`);
+  function p4(s){s=(s||'').trim(); if(!s) return {e:'empty'}; if(s.includes(':')) return {e:'v6',m:'콜론(:)이 있어요. 마침표(.)로 나뉜 IPv4 형식으로 적어 주세요.'};
+    const a=s.split('.'); if(a.length!==4) return {e:`영역이 ${a.length}개예요. IPv4는 마침표로 나뉜 4개 영역이에요.`};
+    const n=a.map(x=>/^\d{1,3}$/.test(x.trim())?+x:NaN); const bad=n.findIndex(x=>isNaN(x)||x>255);
+    if(bad>=0) return {e:`${bad+1}번째 영역 「${a[bad]}」이 0~255 범위의 숫자가 아니에요.`}; return {n};}
+  function draw(){
+    const ip=p4(f('myIP').value), mk=p4(f('myMask').value), gw=p4(f('myGw').value);
+    if(ip.e==='empty'){box.innerHTML='<span class="muted">IP 주소를 적으면 여기서 구조를 확인해 줘요.</span>';return;}
+    if(ip.e==='v6'){box.innerHTML='콜론(:)이 있으니 <b>IPv6 주소</b>예요. 이 칸에는 마침표로 된 <b>IPv4 주소</b>를 찾아 적어 보세요.';return;}
+    if(ip.e){box.innerHTML=`<span class="ng">다시 확인해요</span> ${ip.e}`;return;}
+    let h='<b class="ok">IPv4 주소예요.</b> 4개 영역, 모두 0~255예요.';
+    if(mk.n){
+      h+=`<div class="nw-oct">${ip.n.map((v,i)=>`<span class="${mk.n[i]===255?'n':mk.n[i]===0?'h':'m'}">${v}</span>`).join('<i>.</i>')}</div>`;
+      const net=ip.n.filter((_,i)=>mk.n[i]===255), host=ip.n.filter((_,i)=>mk.n[i]===0);
+      h+=mk.n.every(v=>v===255||v===0)?`<b class="n">네트워크 주소</b> 부분 ${net.join('.')||'-'} · <b class="h">호스트 주소</b> 부분 ${host.join('.')||'-'}`:'서브넷 마스크가 255나 0이 아닌 칸은 그 칸 안에서 네트워크 주소와 호스트 주소가 나뉘어요.';
+      if(gw.n){const same=ip.n.every((v,i)=>(v&mk.n[i])===(gw.n[i]&mk.n[i]));
+        h+=same?'<br>게이트웨이와 <b>네트워크 주소 부분이 같아요</b>. 내 기기와 라우터가 같은 서브넷에 있어요.':'<br><span class="ng">게이트웨이와 네트워크 주소 부분이 달라요.</span> 숫자를 다시 확인해 보세요.';}
+      else if(gw.e && gw.e!=='empty') h+=`<br><span class="ng">게이트웨이 다시 확인</span> ${gw.m||gw.e}`;
+    } else if(mk.e && mk.e!=='empty') h+=`<br><span class="ng">서브넷 마스크 다시 확인</span> ${mk.m||mk.e}`;
+    else h+=(gw.e && gw.e!=='empty'?`<br><span class="ng">게이트웨이 다시 확인</span> ${gw.m||gw.e}`:'')+'<br><span class="muted">서브넷 마스크가 보이지 않으면 비워 둬도 괜찮아요. 적으면 네트워크 주소와 호스트 주소로 나눠 보여 줘요.</span>';
+    box.innerHTML=h;
+  }
+  ['myIP','myMask','myGw'].forEach(k=>f(k).addEventListener('input',draw));
+  onShow[5]=draw;
+})();
+document.querySelectorAll('.nw-blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+chips('selfCheck','selfCheckPick',['유무선 네트워크의 특성을 설명할 수 있다','IP 주소와 도메인 이름의 관계를 말할 수 있다','내 기기의 IP 주소와 게이트웨이를 찾을 수 있다','DHCP를 쓰는 까닭을 말할 수 있다'],true);
+
+/* 06 마무리 */
+const MEMOLIST=[['planNet','처음 생각 · 친구 컴퓨터로 자료를 보내려면'],['unitPick','2030 학교 · 먼저 생기면 좋겠는 시스템'],['wiredWireless','우리 교실·집의 유선·무선 연결'],['dhcpNote','자동(DHCP)과 직접 입력의 차이'],['pingRes','ping 결과'],['myDevice','확인한 기기'],['netType','연결 방식'],['netName','네트워크 이름'],['myIP','IP 주소'],['myMask','서브넷 마스크'],['myGw','게이트웨이'],['myDns','DNS 서버'],['ipMode','IP 할당 방식'],['selfCheckPick','스스로 점검: 할 수 있게 된 것'],['keyQ','오늘의 질문에 대한 내 답']];
+onShow[6]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

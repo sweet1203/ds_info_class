@@ -1,0 +1,225 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#1f9d74">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 2. 사물 인터넷 시스템</span>
+      <h1>사물 인터넷은 나와<br>우리 사회를<br>어떻게 바꾸고 있을까?</h1>
+      <div class="story"><b>어느 가족의 아침</b><br>인공지능 스피커가 실시간 교통 상황을 보고 기상 시간을 계산해 나를 깨워요. 아침을 먹는 동안에는 내가 좋아하는 음악을 틀어 주고, 냉장고는 문을 열지 않아도 안에 있는 재료로 만들 수 있는 요리를 추천해 줘요. 남은 식료품이 부족하면 마트에 주문까지 해 줘요.</div>
+      <p>사물 인터넷 기술의 발달로 우리의 일상에는 이미 많은 변화가 생겼어요. 앞으로 <b>개인의 삶</b>과 <b>사회</b>에는 어떤 변화가 생길까요? 좋은 점만 있을까요? 오늘은 변화를 살펴보고 평가한 뒤, 우리가 어떻게 대처할지 정리해요.</p>
+      <ol>
+        <li>개인의 삶은 어떻게 달라질까?</li><li>좋은 점과 걱정되는 점</li><li>사회는 어떻게 변화할까?</li>
+        <li>함께 해결하기 · 사물 인터넷의 영향</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🏠 ⌚</i><div><b>개인의 삶</b><small>스마트 홈 · 건강 관리 · 맞춤형 콘텐츠</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>⚖️</i><div><b>좋은 점과 걱정되는 점</b><small>편리함과 안전 · 해킹, 사생활, 관계 단절</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🏙️ 🌾</i><div><b>사회의 변화</b><small>스마트 시티 · 스마트팜</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧭</i><div><b>어떻게 대처할까?</b><small>능동적으로 활용하고 개발하기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>사물 인터넷 기술로 <b>개인의 삶</b>이 어떻게 달라지는지 사례 카드로 살펴보고, 그 변화의 <b>장점과 단점</b>을 따져 내 입장을 정합니다. 이어서 <b>스마트 시티</b>와 <b>스마트팜</b>으로 사회의 변화를 알아보고, 환경·교육·예술 중 한 분야를 골라 변화와 <b>대처 방안</b>을 이야기합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">오늘 배울 사례와 비교할 수 있도록, 내 하루를 먼저 떠올려 봐요.</p>
+        <div class="memo"><label>오늘 아침부터 지금까지 내가 쓰거나 본 사물 인터넷 기기·서비스는 무엇인가요?</label><textarea data-memo="planToday" rows="2" placeholder="생각나는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">오늘 마지막에 이 질문에 내 말로 답해 봐요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>사물 인터넷 기술로 인한 개인과 사회의 변화를 평가할 수 있다.</li>
+          <li>사물 인터넷 기술로 인한 변화에 대처하는 능력을 기를 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 사물 인터넷 기술 · 개인의 변화 · 사회의 변화</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 개인의 삶은 어떻게 달라질까부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 개인의 삶 -->
+<section class="page" data-name="개인의 삶" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>사물 인터넷 사용으로 개인의 삶은 어떻게 달라질까?</h2><p>교과서 30~31쪽 · 우리 가족의 하루</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷은 생활을 <b>편리하게</b> 해 주고, 예전에는 <b>불편하거나 해결하기 어려웠던 문제</b>를 푸는 데 도움을 줘요. 집 안 기기를 밖에서 조절하고, 내 몸 상태를 실시간으로 알고, 내 취향에 맞춘 콘텐츠를 받는 삶이 이미 시작됐어요.</span></div>
+  <div class="cards3">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🏠</div><h4>편리하고 안전한 집</h4><p>스마트 홈 시스템으로 가전 기기들을 어디서나 원격으로 제어하고, 방범 기능을 손쉽게 조작해 안전하게 생활해요.</p></div>
+    <div class="kc" style="--k:#d64535"><div class="ic">❤️</div><h4>나에게 맞춘 건강 관리</h4><p>실시간으로 파악되는 자신의 건강 정보와 바이오 리듬에 따라 의료 서비스를 받을 수 있어요.</p></div>
+    <div class="kc" style="--k:#9b4fc4"><div class="ic">🎵</div><h4>나에게 맞춘 콘텐츠</h4><p>자신의 취향에 맞는 사용자 맞춤형 콘텐츠를 제공받아 더 편리하고 쾌적한 삶을 누려요.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🃏 사례 카드 뒤집기 <span class="muted" style="font-weight:400;font-size:.88rem">(30~31쪽 · 카드를 눌러 보세요)</span></h3>
+    <p class="muted" style="margin-top:0">앞면의 이름을 보고 어떤 일을 할지 먼저 짐작한 뒤 뒤집어 확인해요. 내가 써 본 것, 가장 써 보고 싶은 것을 찾아봐요.</p>
+    <div class="tcards" id="lifeCards"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 장점과 단점 -->
+<section class="page" data-name="장점과 단점" data-acc="#d64535">
+  <div class="head"><div class="num">02</div><div><h2>좋은 점과 걱정되는 점</h2><p>교과서 30~31쪽 · 변화를 평가하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷 기기는 대부분 <b>인터넷에 연결</b>되어 있어요. 그래서 편리한 만큼 <b>해커의 공격 대상</b>이 될 수도 있어요. 변화를 제대로 평가하려면 좋은 점과 걱정되는 점을 함께 따져 봐야 해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#1f9d74"><div class="ic">👍</div><h4>장점</h4>
+      <ul class="pc-list">
+        <li>일상생활에 여러 <b>편리함</b>을 제공한다.</li>
+        <li>불편하거나 해결이 어려웠던 다양한 <b>문제를 해결</b>하는 데 도움을 준다.</li>
+        <li>원격 제어와 방범 기능으로 <b>안전한 주거 생활</b>이 가능하다.</li>
+        <li>건강 정보에 따른 의료 서비스, <b>맞춤형 콘텐츠</b>를 받을 수 있다.</li>
+      </ul></div>
+    <div class="kc" style="--k:#d64535"><div class="ic">👎</div><h4>단점</h4>
+      <ul class="pc-list">
+        <li>대부분 인터넷에 연결되어 있어 <b>해커들의 공격 대상</b>이 될 수 있다.</li>
+        <li>신체 정보를 인식하는 센서가 있는 기기가 해커에게 노출되면 <b>개인 정보 유출, 사생활 침해</b>가 생길 수 있다.</li>
+        <li>사람이 만나 소통하지 않아도 기계가 알아서 데이터를 교환하므로 <b>인간관계가 단절되고 소외</b>되는 현상이 생길 수 있다.</li>
+      </ul></div>
+  </div>
+  <div class="callout">이러한 문제들을 해결하는 <b>방안에 관한 연구</b>뿐만 아니라 <b>단점을 극복할 기술 개발</b>이 계속 이루어져야 해요(31쪽). 「네트워크」에서 무선 매체는 이동이 자유롭지만 보안이 취약하다고 배운 것도 떠올려 봐요(14쪽).</div>
+  <div class="card">
+    <h3>🗳️ 투표: 사물 인터넷이 가져온 변화, 어느 쪽이 더 클까?</h3>
+    <p class="muted" style="margin-top:0">01의 사례 카드를 떠올리며 내 생각에 가까운 쪽을 골라요. 고르면 근거를 적는 칸이 열려요.</p>
+    <div id="pcVote"></div>
+    <div class="reveal" id="pcMemo">
+      <div class="memo">
+        <label id="pcWhyLb">내가 고른 근거 <small>01의 사례 하나를 들어서</small></label>
+        <textarea data-memo="pcWhy" rows="2"></textarea><div class="saved"></div>
+        <label>단점 하나를 골라, 그 단점을 줄이려면 어떤 기술이나 방법이 필요할까요? <small>기기를 만드는 사람, 쓰는 사람 쪽에서 생각해 봐요</small></label>
+        <textarea data-memo="pcFix" rows="2"></textarea><div class="saved"></div>
+      </div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 사회의 변화 -->
+<section class="page" data-name="사회의 변화" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>사물 인터넷 시스템을 활용하면 사회는 어떻게 변화할까?</h2><p>교과서 32~33쪽 · 스마트 시티와 스마트팜</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷은 한 사람의 생활을 넘어 <b>도시와 농장 전체</b>를 바꾸고 있어요. 사회의 여러 분야에서 <b>생산성과 효율성</b>을 높이고 <b>새로운 부가가치</b>를 만들며, 국가 사업의 문제를 해결하는 수단으로도 쓰여요.</span></div>
+  <div class="card">
+    <h3>🏙️ 스마트 시티로의 변화</h3>
+    <div class="callout" style="margin-top:4px">도시 전체가 네트워크로 연결되어 곳곳에 설치된 <b>센서의 정보를 그때그때 입력받아</b> 문제가 생기면 바로 해결해요. 그래서 도시의 <b>안전성과 효율성</b>이 높아지고, 삶의 질이 향상되며, 지속 가능한 도시를 만드는 데 도움을 줘요.</div>
+    <div class="cg-grid">
+      <div><i>🔥</i><b>스마트 방재</b><span>실시간으로 온도, 습도, 연기 등의 정보를 얻어 재난이 생기면 신속하게 대응해요.</span></div>
+      <div><i>🌫️</i><b>스마트 환경 모니터링</b><span>악취, 소음, 유해 가스 누출 등을 실시간으로 감시하여 정보를 전달해요.</span></div>
+      <div><i>🅿️</i><b>스마트 주차장</b><span>각 층에 주차 공간이 얼마나 남았는지, 어느 자리가 비었는지 알려 줘요.</span></div>
+      <div><i>🚰</i><b>스마트 수질 관리</b><span>실시간 수질 측정, 자동 관 세척 등을 관리하고 수돗물 정보를 알려 신뢰도를 높여요.</span></div>
+      <div><i>🗑️</i><b>스마트 폐기물 관리</b><span>쓰레기통 위치와 실시간 상태를 추적·분석해 비용을 줄이고 효율적으로 운영해요.</span></div>
+      <div><i>🌃</i><b>스마트 가로등</b><span>주변의 밝기나 사물의 움직임을 감지하여 자동으로 밝기를 조절해요.</span></div>
+      <div><i>🚘</i><b>스마트 차량</b><span>원격 시동, 통행료 자동 결제, 긴급 상황 자동 알림과 출동, 교통 상황 전송, 음성 인식 조작 등을 제공해요.</span></div>
+      <div><i>🚌</i><b>버스 도착 알림 서비스</b><span>교통 흐름을 파악하여 버스 도착 시간을 알려 줘요.</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🌾 스마트팜으로의 변화</h3>
+    <p style="margin-top:0"><b>스마트팜</b>은 사물 인터넷, 빅데이터 등을 활용해 <b>최적의 생육 환경을 자동으로 제어</b>할 수 있는 지능화된 농장이에요. 작업 효율을 높이고 수확량을 늘릴 수 있어요.</p>
+    <div class="sf-flow">
+      <div style="--k:#e0702b"><b>감지</b><span>온도, 습도, 토양, 이산화탄소 등을 감지하는 센서</span></div><em>→</em>
+      <div style="--k:#2f6fd0"><b>분석</b><span>흙의 온습도, 햇빛의 양, 물과 비료 주는 시기를 분석</span></div><em>→</em>
+      <div style="--k:#1f9d74"><b>자동 제어 · 원격 관리</b><span>온습도 조절, 자동 급수를 하고 사용자는 모바일 기기로 원격 관리</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🎯 개인의 변화일까, 사회의 변화일까?</h3>
+    <p class="muted" style="margin-top:0">사례를 읽고 01에서 본 <b>개인의 삶</b>의 변화인지, 이 화면의 <b>스마트 시티</b>나 <b>스마트팜</b>의 변화인지 골라요.</p>
+    <div id="whereGame"></div>
+  </div>
+  <div class="callout">사물 인터넷 기술의 발전으로 일상은 더 편리해지고 <b>도시와 농촌의 경계가 사라지면서</b> 사회가 크게 변하고 있어요. 또 사물 인터넷과 <b>인공지능이 결합</b>하면서 발전 속도가 더욱 빨라지고 적용 분야도 넓어지고 있어요(33쪽).</div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 -->
+<section class="page" data-name="함께 해결하기" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 사물 인터넷 시스템의 영향</h2><p>교과서 33쪽 · 변화를 찾아보고 대처 방안을 이야기해 보자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>교과서는 이런 변화에 <b>능동적으로 대처</b>해야 한다고 말해요. 사물 인터넷을 <b>적극적으로 활용</b>하고 <b>시스템을 개발</b>해 더 나은 사회를 만드는 거예요. 모둠에서 한 분야를 골라 변화를 조사하고, 우리는 어떻게 대처할지 이야기해 봐요.</span></div>
+  <div class="card">
+    <h3>🔍 1. 분야를 골라 변화 조사하기</h3>
+    <p class="muted" style="margin-top:0">환경, 교육, 예술 중 한 분야를 골라요.</p>
+    <div id="fieldPick"></div>
+    <div class="fd-hint" id="fieldHint"></div>
+    <div class="memo">
+      <label>이 분야에서 사물 인터넷 시스템을 사용해 생기는 변화 <small>어떤 센서·기기가 무엇을 바꾸는지</small></label>
+      <textarea data-memo="fieldChange" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💬 2. 영향과 대처 방안 토의하기</h3>
+    <div class="memo">
+      <label>이 변화가 개인과 사회에 미치는 영향 <small>좋은 점과 걱정되는 점을 하나씩</small></label>
+      <textarea data-memo="fieldEffect" rows="2"></textarea><div class="saved"></div>
+      <label>우리가 갖추어야 할 태도 <small>여러 개 골라도 돼요</small></label>
+      <div id="copePick"></div>
+      <label>이 변화에 나는 어떻게 대처할까요? <small>오늘부터 할 수 있는 행동으로</small></label>
+      <textarea data-memo="fieldCope" rows="2"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요.</p>
+    <ol class="iot-blanks">
+      <li>약 먹을 시간을 문자로 알려 주는 약병, 운동량을 재는 신발은 모두 <button class="blank" data-a="사물 인터넷 기술">?</button>을 내 생활에 적용한 예이다.</li>
+      <li>약병이 알려 주는 투약 시간은 한 사람의 생활을 바꾸는 <button class="blank" data-a="개인의 변화">?</button>이고, 도시 곳곳의 센서로 재난에 빠르게 대응하는 스마트 시티는 <button class="blank" data-a="사회의 변화">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">사물 인터넷 기술로 인한 개인의 삶과 사회의 변화를 예측할 수 있나요? 할 수 있게 된 것을 모두 골라 보세요.</p>
+    <div id="selfCheck"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">사물 인터넷 기술은 <b>개인의 삶</b>에 편리함을 주고 어려웠던 문제를 해결하도록 돕는다. 스마트 홈의 원격 제어와 방범, 건강 정보에 따른 의료 서비스, 맞춤형 콘텐츠가 그 예이다.</div>
+    <div style="--k:#d64535">대부분 인터넷에 연결되어 있어 <b>해킹, 개인 정보 유출, 사생활 침해</b>가 생길 수 있고 <b>인간관계가 단절</b>될 수 있다. 해결 방안 연구와 단점을 극복할 기술 개발이 계속 필요하다.</div>
+    <div style="--k:#e0702b"><b>스마트 시티</b>와 <b>스마트팜</b>처럼 사회의 생산성과 효율성이 높아지고, 인공지능과 결합해 변화가 더 빨라진다. 우리는 사물 인터넷을 적극 활용하고 개발하며 <b>능동적으로 대처</b>해야 한다.</div>
+  </div>
+  <div class="card">
+    <h3>핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에 적은 내 하루의 사물 인터넷과 오늘 본 사례를 넣어 답해 보세요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li><b>개인의 삶</b>의 변화 사례와 <b>사회</b>(스마트 시티·스마트팜)의 변화 사례를 하나씩 골라 무엇이 달라졌는지 비교하기</li>
+      <li>장점과 단점 중 무엇이 더 크다고 <b>투표</b>했는지와 근거, 그리고 단점 하나를 줄일 기술이나 방법 제안하기</li>
+      <li>고른 분야(환경·교육·예술)에서 생기는 변화와 그 영향, <b>내가 대처할 방법</b> 쓰기</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

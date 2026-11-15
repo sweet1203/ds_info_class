@@ -1,0 +1,234 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅰ. 컴퓨팅 시스템 · 협력적 창의·융합 프로젝트</span>
+      <h1>미래의 학교 공간을<br>설계해 볼까?</h1>
+      <div class="story"><b>사물 인터넷 개발자가 되어 보자</b><br>학교에서 불편했던 공간을 떠올려 봐요. 붐비는 곳, 어두운 곳, 늘 무언가를 잊어버리는 곳이 있었나요? 오늘은 모둠이 함께 <b>사물 인터넷 기술로 학교 공간 하나를 바꾸는 설계</b>를 하고 발표를 준비해요.</div>
+      <p>설계는 <b>문제 → 필요한 센서·장치 → 동작 과정 → 기대 효과</b> 순서로 해요. 설계를 마치면 사물 인터넷 개발자의 이야기를 읽고, 발표를 준비한 뒤 Ⅰ단원 전체를 정리해요.</p>
+      <ol>
+        <li>모둠 · 문제 발견</li><li>시스템 설계하기</li><li>진로: 사물 인터넷 개발자</li>
+        <li>발표 준비 · 평가</li><li>Ⅰ단원 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔍</i><div><b>문제 발견</b><small>학교에서 불편한 공간 찾기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>D N P C</i><div><b>시스템 설계</b><small>장치 · 네트워크 · 플랫폼 · 서비스</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧑‍💻</i><div><b>진로</b><small>사물 인터넷 개발자 · 나의 진로 카드</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🎤 📚</i><div><b>발표 준비 · 단원 정리</b><small>1분 발표 · 개념 확인</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>모둠별로 학교에서 개선하고 싶은 공간을 찾고, 사물 인터넷 기술로 해결하는 <b>미래의 학교 공간</b>을 설계합니다. 지금까지 배운 <b>디바이스 · 네트워크 · 플랫폼 · 서비스</b>로 시스템을 구성하고, 동작 과정과 기대 효과를 정리해 <b>발표</b>를 준비합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">모둠 정하기</span>
+        <div class="memo">
+          <label>모둠명</label><input type="text" data-memo="team" placeholder="예: 똑똑한 사물함">
+          <label>모둠원과 역할 <small>예: 기록, 설계 그림, 발표, 시간 관리</small></label><textarea data-memo="roles" rows="2"></textarea><div class="saved"></div>
+        </div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>네트워크</b> · 가장 효율적인 네트워크 경로를 어떻게 구성할 수 있을까?</li>
+          <li><b>사물 인터넷 시스템</b> · 사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>모둠 정하기 <b>2분</b> → 문제 발견 <b>7분</b></li>
+          <li>시스템 설계 <b>14분</b> → 진로 <b>5분</b></li>
+          <li>발표 준비 <b>7분</b> → 단원 정리 <b>8분</b> → 마무리 <b>7분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">모둠이 함께 이야기하되, 메모는 각자 내 화면에 적어요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제 발견부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 문제 발견 · 해결 방안 -->
+<section class="page" data-name="문제 발견" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>문제 발견 · 해결 방안 계획</h2><p>교과서 42쪽 · 프로젝트 1~2단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>먼저 <b>어디가, 왜 불편한지</b>를 분명히 해요. 문제가 분명해야 어떤 센서로 무엇을 감지하고 무엇을 알려 줄지 정할 수 있어요.</span></div>
+  <div class="card">
+    <h3>🔍 1. 문제 발견하기</h3>
+    <div class="memo">
+      <label>① 불편함을 느꼈거나 개선이 필요한 학교 공간 <small>하나 고르기</small></label><div id="placePick"></div>
+      <label>떠올리는 데 도움이 되는 주제 <small>여럿 골라도 돼요</small></label><div id="topicPick"></div>
+      <label>② 불편함을 느꼈던 원인이나 개선이 필요한 이유 <small>누가, 언제, 무엇 때문에 불편한지</small></label>
+      <textarea data-memo="why" rows="2" placeholder="예: 교실 뒤 사물함 쪽이 어두워서 쉬는 시간에 물건을 찾기 힘들다"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💡 2. 해결 방안 계획 세우기</h3>
+    <div class="memo">
+      <label>사물 인터넷으로 문제를 해결하는 방법과 <b>주요 기능</b> <small>무엇을 감지해서, 누구에게, 무엇을 해 주는지</small></label>
+      <textarea data-memo="func" rows="3" placeholder="예: 사물함 앞에 사람이 오면 조명이 켜지고, 오래 열려 있으면 담임 선생님 앱으로 알림을 보낸다"></textarea><div class="saved"></div>
+    </div>
+    <p class="note">지난 시간에 만든 인체 감지 스마트 조명, 교과서 26쪽의 여러 센서를 떠올려 봐요. 필요하면 선생님이 알려 주는 자료를 함께 찾아봐요.</p>
+  </div>
+</section>
+
+<!-- 2 시스템 설계 -->
+<section class="page" data-name="시스템 설계" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>시스템 구성 및 설계하기</h2><p>교과서 26~28·43쪽 · 프로젝트 3단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>우리 시스템을 <b>D · N · P · C</b> 네 칸으로 나누어 채워요. 칸을 채우면 아래 <b>설계 카드</b>가 저절로 완성돼요. 이 카드가 발표 자료의 뼈대가 돼요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🧩 필요한 요소 고르기</h3>
+      <div class="memo">
+        <label><b class="rv-k" style="--k:#2f6fd0">D</b> 디바이스: 센서 <small>여럿 골라도 돼요</small></label><div id="dSensor"></div>
+        <label><b class="rv-k" style="--k:#2f6fd0">D</b> 디바이스: 출력 장치</label><div id="dOut"></div>
+        <label>센서가 무엇을 감지하고 출력 장치가 무엇을 하는지</label><textarea data-memo="dHow" rows="2"></textarea>
+        <label><b class="rv-k" style="--k:#1f9d74">N</b> 네트워크 <small>하나 고르기</small></label><div id="nPick"></div>
+        <label><b class="rv-k" style="--k:#9b4fc4">P</b> 플랫폼: 무엇을 저장하고 분석할까?</label><textarea data-memo="pHow" rows="2"></textarea>
+        <label><b class="rv-k" style="--k:#e0702b">C</b> 서비스: 누구에게 무엇을 보여 주거나 해 줄까?</label><textarea data-memo="cHow" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔄 동작 과정과 기대 효과</h3>
+      <div class="memo">
+        <label>동작 과정 <small>데이터 수집 → 전달 → 처리 및 분석 → 서비스 제공 순서로 한 줄씩</small></label>
+        <textarea data-memo="flow" rows="5" placeholder="① 수집: &#10;② 전달: &#10;③ 처리 및 분석: &#10;④ 서비스 제공: "></textarea>
+        <label>기대 효과 <small>누가 어떻게 편리해지거나 안전해질까?</small></label>
+        <textarea data-memo="effect" rows="2"></textarea>
+        <label>주의할 점 <small>개인 정보, 고장, 비용 등</small></label>
+        <textarea data-memo="caution" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 우리 모둠 설계 카드 <span class="muted" style="font-weight:400;font-size:.88rem">(적은 내용이 바로 나타나요)</span></h3>
+    <div id="designCard"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 진로 -->
+<section class="page" data-name="진로" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>물건에 디지털 기술을 불어넣는 사물 인터넷 개발자</h2><p>교과서 44쪽 · 상상을 현실로 도전하는 사람들</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>사물 인터넷 시스템은 사람의 도움 없이 알아서 데이터를 주고받으며 필요한 정보를 제공해요. 이런 세상을 만드는 사람이 <b>사물 인터넷 개발자</b>예요. 카드를 눌러 인터뷰 내용을 확인해 봐요.</span></div>
+  <div class="tcards" id="careerCards"></div>
+  <div class="card" style="margin-top:18px">
+    <h3>🪪 나의 진로 카드</h3>
+    <div class="memo">
+      <label>내 주변 전자 기기 하나와, 그 기기를 사물 인터넷으로 더 편리하게 바꿀 방법</label><textarea data-memo="career" rows="2" placeholder="예: 학교 정수기 — 필터 교체 시기를 관리실 앱으로 알려 준다"></textarea>
+      <label>사물 인터넷 개발자로 성장하려면 내가 기르고 싶은 역량 <small>여럿 골라도 돼요</small></label><div id="careerSkill"></div>
+      <div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 발표 준비 · 평가 -->
+<section class="page" data-name="발표 준비" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>발표 준비 · 평가하기</h2><p>교과서 43쪽 · 프로젝트 평가하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>설계 카드를 보며 <b>1분 발표</b>를 준비해요. <b>문제 → 장치 → 동작 과정 → 기대 효과</b> 순서로 말하면 듣는 사람이 따라오기 쉬워요.</span></div>
+  <div class="card">
+    <h3>🎤 1분 발표 대본</h3>
+    <div class="rv-pitch">
+      <div style="--k:#2f6fd0"><b>① 문제</b><span>「우리 학교의 ○○에서는 ○○ 때문에 불편합니다.」</span></div>
+      <div style="--k:#1f9d74"><b>② 장치와 연결</b><span>「○○ 센서로 ○○를 감지하고, ○○로 전송합니다.」</span></div>
+      <div style="--k:#9b4fc4"><b>③ 동작 과정</b><span>「플랫폼에서 ○○를 분석해 ○○에게 ○○를 알려 줍니다.」</span></div>
+      <div style="--k:#e0702b"><b>④ 기대 효과</b><span>「그러면 ○○가 ○○해집니다.」</span></div>
+    </div>
+    <div class="memo"><label>내가 맡은 부분 또는 모둠 대본</label><textarea data-memo="pitch" rows="4"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✅ 자기 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(잘한 것을 모두 골라요)</span></h3>
+      <div id="selfEval"></div>
+      <h4 style="margin-top:14px">이 프로젝트로 길러진 역량</h4>
+      <div id="compPick"></div>
+    </div>
+    <details class="card rv-opt">
+      <summary>👂 동료 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다른 모둠 발표를 들은 뒤)</span></summary>
+      <div class="memo">
+        <label>가장 좋았던 모둠과 그 까닭 <small>평가 기준의 말로</small></label><textarea data-memo="peer" rows="3"></textarea>
+        <label>그 모둠에 건넬 질문이나 제안 하나</label><textarea data-memo="peerAsk" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <details class="card rv-crit">
+    <summary>📋 평가 기준 보기 (눌러서 펼치기)</summary>
+    <div class="rv-tw"><table class="tbl">
+      <tr><th class="l">항목</th><th class="l">평가 기준</th></tr>
+      <tr><td><b>주제 선정</b></td><td>학교 공간에서 해결 가능한 주제를 선정하고 모둠원의 역할을 적절히 분배하였는가?</td></tr>
+      <tr><td><b>해결 과정</b></td><td>문제의 초기 상태와 목표 상태를 파악하였는가? 사물 인터넷 시스템 동작 과정에 맞게 해결하였는가?</td></tr>
+      <tr><td><b>평가 및 성찰</b></td><td>발표한 결과물이 일반화하기 적절하였는가?</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<!-- 5 단원 정리 -->
+<section class="page" data-name="Ⅰ단원 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>Ⅰ단원 정리: 컴퓨팅 시스템</h2><p>교과서 45쪽 · 주요 개념 정리</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>네트워크(주소·장치·범위)와 사물 인터넷 시스템(구성·변화)을 한 번에 돌아봐요. 먼저 D·N·P·C 분류 게임을 하고, 아래 퀴즈로 확인해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🌐</div><h4>네트워크</h4><p>라우터 · 스위치 · IP 주소 · 도메인 이름과 DNS 서버 · 서브넷(LAN · MAN · WAN) · 게이트웨이 · 패킷 · 네트워크 공유</p></div>
+    <div class="kc" style="--k:#1f9d74"><div class="ic">📡</div><h4>사물 인터넷 시스템</h4><p>사물 인터넷 · 디바이스 · 네트워크 · 플랫폼 · 서비스 · 동작 원리 · 스마트 홈 · 스마트팜 · 스마트 시티 · 사물 인터넷 시스템 설계</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 D · N · P · C 중 어디일까?</h3>
+    <div id="dnpcSort"></div>
+  </div>
+  <details class="card rv-opt">
+    <summary>✅ 역량 Check! <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 이 단원에서 길러진 역량을 모두 골라요)</span></summary>
+    <div id="unitComp" style="margin-top:8px"></div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">사물 인터넷 시스템 설계는 <b>문제 발견 → 해결 방안 → D·N·P·C 구성 → 동작 과정</b> 순서로 한다. 문제가 분명해야 알맞은 센서와 장치를 고를 수 있다.</div>
+    <div style="--k:#9b4fc4">사물 인터넷 개발자는 사물에 컴퓨팅 기술과 인터넷을 연결해 편리한 세상을 만든다. 늘 <b>새로운 지식을 배우려는 열정</b>과 주변 기기를 주의 깊게 <b>관찰</b>하는 태도가 필요하다.</div>
+    <div style="--k:#d64535">네트워크로 연결된 컴퓨팅 시스템은 다양한 사물에 쓰여 <b>사물 인터넷 시스템</b>으로 발전하며, 개인의 삶과 사회를 바꾸고 있다.</div>
+  </div>
+  <div class="card">
+    <h3>Ⅰ단원 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 설계한 우리 모둠 시스템을 예로 들어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">사물 인터넷 시스템으로 개인의 삶과 사회는 어떻게 변화하고 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>우리 모둠이 고른 <b>학교 공간의 문제</b>와 설계한 <b>D·N·P·C</b></li>
+      <li>우리 시스템의 <b>동작 과정</b>(수집 → 전달 → 처리 및 분석 → 서비스 제공)과 <b>기대 효과</b></li>
+      <li>진로 카드: 사물 인터넷으로 바꿔 보고 싶은 <b>생활 속 기기</b>와 방법, 기르고 싶은 역량</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
