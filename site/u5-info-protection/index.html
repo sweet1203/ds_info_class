@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정보 보호와 정보 공유</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+/* u5-info-protection 전용 */
+  .ip-scroll{overflow-x:auto}
+
+  /* 0 확진자 안내문 */
+  #openShow{margin-top:4px}
+  .ip-notice{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--acc)}
+  .ip-notice.on{display:block}
+  .ip-nhead{margin:0 0 8px;font-weight:700}
+  .ip-ntbl{font-size:.88rem;min-width:620px}
+  .ip-ntbl th,.ip-ntbl td{text-align:center;white-space:nowrap}
+
+  /* 낱말 알약 */
+  .ip-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .ip-pills span{border:2px solid var(--k,var(--acc));color:var(--k,var(--acc));background:#fff;border-radius:999px;padding:2px 11px;font-size:.88rem;font-weight:700}
+  .ip-pills.sm span{font-size:.82rem;padding:1px 9px}
+
+  /* 01 개인 · 기업 · 국가 */
+  #valBtns.ip-3{grid-template-columns:repeat(3,1fr);margin-bottom:12px}
+  .ip-val{display:grid;gap:6px;background:color-mix(in srgb,var(--k) 7%,#fff);border-radius:12px;padding:12px 16px;border-left:5px solid var(--k)}
+  .ip-val .lb{font-size:.8rem;font-weight:700;color:var(--muted)}
+  .ip-val p,.ip-val ul{margin:2px 0 0}
+  .ip-val ul{padding-left:20px}
+  .ip-val .ar{color:var(--k);font-weight:900;text-align:center}
+  .ip-val .v b{color:var(--k);font-size:1.05rem}
+
+  /* 03 법적 장치 */
+  .ip-lawh{display:inline-block;margin:12px 0 8px;background:var(--k);color:#fff;font-weight:700;border-radius:999px;padding:2px 14px;font-size:.92rem}
+  .ip-laws .kc h4{font-size:.95rem;line-height:1.35}
+  .ip-laws ul{margin:4px 0 0;padding-left:18px;font-size:.86rem}
+  .ip-laws li{margin:2px 0}
+
+  /* 04 실천 방법 */
+  .ip-do ul{margin:6px 0 0;padding-left:18px;font-size:.9rem}
+  .ip-path{margin-top:10px;background:#f3f6fb;border-radius:10px;padding:8px 10px;font-size:.84rem}
+  .ip-path b{display:block;margin-bottom:2px}
+  .ip-path span{display:block}
+
+  /* 05 기사 */
+  .ip-news{background:#fbfaf7;border-radius:12px;padding:12px 16px;border-left:5px solid var(--acc);line-height:1.85}
+  .ip-news p{margin:6px 0}
+  .ip-nt{font-weight:900;font-size:1.02rem}
+  .ip-w{font:inherit;color:inherit;background:none;border:0;border-bottom:2px solid var(--acc);cursor:pointer;padding:0 2px;border-radius:4px;transition:.15s;line-height:inherit}
+  .ip-w:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+  .ip-w:hover{background:var(--acc-soft)}
+  .ip-w.on{background:#fff4d6;font-weight:700}
+  .ip-w.ok{background:#e3f6ec;border-bottom-color:var(--green,#1f9d74);font-weight:700}
+  .ip-w.ng{background:#fde8e6;border-bottom-color:var(--red,#d64535);text-decoration:line-through}
+  .ip-w.miss{border-bottom:2px dashed var(--green,#1f9d74);background:#f2fbf6}
+  .ip-msg{font-size:.92rem;min-height:1.4em;margin-top:8px}
+  .ip-k{padding:0 4px;border-radius:4px}
+  .ip-k.miss{border-bottom:2px dashed var(--green,#1f9d74)}
+  .ip-k.ng{background:#fde8e6}
+
+  /* 개념 정리하기 빈칸 */
+  .ip-blanks li{margin:8px 0;line-height:1.9}
+  .ip-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .ip-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+
+  /* 시간 되면(접어 둠) */
+  details.ip-more>summary{cursor:pointer;font-weight:700;font-size:1.05rem}
+  details.ip-more[open]>summary{margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#d64535">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅴ. 디지털 문화 · 2. 정보 보호와 보안</span>
+      <h1>내 정보는 지키고,<br>필요한 정보는 나누려면?</h1>
+      <div class="story"><b>2020년, 코로나19가 전 세계로 퍼졌어요.</b><br>감염 경로를 알리려고 확진자의 성별, 나이, 거주지, 직장 이름, 방문 경로까지 자세히 공개했어요. 그런데 필요 이상으로 공개된 정보 때문에 확진자의 사생활 침해가 심각해졌어요. 그 뒤로 정보 공개는 제한적으로 하게 되었고, 확진자 정보를 모으고 저장하는 정보 시스템의 정보 보안도 중요하게 다루게 되었어요.</div>
+      <p>오늘은 <b>정보 보호</b>가 왜 가치 있는지, <b>정보 공유</b>는 왜 필요한지 알아보고, 둘을 가르는 기준과 <b>올바른 정보 보호 실천 방법</b>을 찾아요.</p>
+      <ol>
+        <li>정보 보호의 가치</li><li>정보 공유의 필요성 · 함께 해결하기</li><li>정보 보호를 위한 제도</li>
+        <li>올바른 정보 보호 실천 방법</li><li>스스로 해결하기 · 기사 분석</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔒</i><div><b>정보 보호</b><small>개인 · 기업 · 국가의 정보 지키기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">⇅</div>
+      <div class="st" style="animation-delay:.8s"><i>🤝</i><div><b>정보 공유</b><small>편리한 서비스 · 일자리 · 사회 투명성</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>⚖️</i><div><b>정보 보호 제도</b><small>정보를 지키는 법적 장치</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>✅</i><div><b>생활 속 실천</b><small>기기 · 온라인 활동 · 보안 기능</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>개인, 기업, 국가의 정보를 <b>보호</b>해야 하는 까닭과, 정보를 <b>공유</b>했을 때 생기는 좋은 점을 함께 살펴봐요. 그다음 보호해야 할 정보와 공유해야 할 정보를 가려 보고, 나라가 마련한 <b>법적 장치</b>와 내가 생활에서 할 수 있는 <b>정보 보호 실천 방법</b>을 정리해요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>정보 보호와 보안</b> · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 나의 정보가 보호되도록 최소한의 정보만 공유하기 위한 실천 방법은 무엇일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">핵심 질문의 답은 다음 시간(정보 보안)까지 배운 뒤 적어요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>보호해야 할 정보와 공유해야 할 정보를 구분할 수 있다.</li>
+          <li>올바른 정보 보호 방법을 찾아 실천할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 정보 보호 · 정보 공유</p>
+      </div>
+      <div class="why">
+        <span class="kicker">학습 계획</span>
+        <p style="margin:0 0 6px;font-size:.9rem">「정보 보호와 보안」을 배우면서 꼭 알고 싶은 것이나 스스로 정한 계획을 적어요.</p>
+        <div class="memo"><textarea data-memo="planNote" rows="3"></textarea><div class="saved"></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>🤔 생각해 볼까요? · 확진자 정보, 어디까지 알려야 할까?</h3>
+      <p style="margin-top:0">감염병 확진자가 나왔어요. 확진자와 접촉한 사람들이 스스로 알아차리도록 안내문을 만들어야 해요. <b>안내문에 넣을 정보</b>만 골라 보세요.</p>
+      <div id="openPick"></div>
+      <div class="memo" style="margin-top:10px"><label>그렇게 고른 까닭 <small>감염을 막는 데 꼭 필요한지, 확진자가 누구인지 드러나지 않는지 생각해요.</small></label><input type="text" data-memo="openWhy"><div class="saved"></div></div>
+      <button class="btn ghost sm" id="openShow">실제로 바뀐 공개 방침 보기</button>
+      <div class="ip-notice" id="openReveal">
+        <p class="ip-nhead">🔒 개인 정보 · 성별, 나이 등 확진자의 개인을 특정하는 정보는 공개하지 않습니다.</p>
+        <div class="ip-scroll">
+          <table class="tbl ip-ntbl">
+            <tr><th colspan="5">장소 · 이동 수단</th><th rowspan="2">노출 일시</th><th rowspan="2">소독 여부</th></tr>
+            <tr><th>시도</th><th>시군구</th><th>장소 유형</th><th>상호명</th><th>주소</th></tr>
+            <tr><td>○○도</td><td>○○시</td><td>음식점</td><td>○○식당</td><td>○○도 ○○시 ○○로</td><td>○월 ○일 18:00~19:30</td><td>소독 완료</td></tr>
+            <tr><td>○○시</td><td>○○구</td><td>체육 시설</td><td>○○체육관</td><td>○○시 ○○구 ○○길</td><td>○월 ○일 10:00~11:00</td><td>소독 완료</td></tr>
+          </table>
+        </div>
+        <p class="note" style="margin-bottom:0">교과서 222쪽 안내문의 항목을 본떠 새로 만든 예시예요. 사람이 아니라 <b>장소와 시간</b>을 알려 주어도 접촉한 사람이 스스로 알아차릴 수 있어요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 정보 보호의 가치부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 정보 보호의 가치 -->
+<section class="page" data-name="정보 보호의 가치" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>정보 보호의 가치는 무엇일까?</h2><p>교과서 223쪽 · 정보 보호, 개인 정보</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보 보호는 허락받지 않은 사람이 정보를 <b>몰래 보거나, 쓰거나, 퍼뜨리거나, 멈추게 하거나, 바꾸거나, 없애지</b> 못하게 지키는 일이에요. 지켜야 할 정보는 나 한 사람의 것만이 아니라 <b>기업</b>과 <b>국가</b>의 것도 있어요.</span></div>
+  <div class="card">
+    <h3>🔒 정보 보호란?</h3>
+    <div class="grid2">
+      <div>
+        <p style="margin-top:0"><b>정보 보호</b>는 여러 가지 위협, 즉 불법적 접근과 사용, 공개, 중단, 수정이나 파괴로부터 정보를 보호하는 조치를 말해요.</p>
+        <p>디지털 기술을 활용한 서비스가 늘어나면서 무분별한 정보의 수집과 공유로 다음과 같은 문제가 끊임없이 일어나고 있어요.</p>
+        <div class="ip-pills"><span>개인 정보 침해</span><span>법률 위반</span><span>정보 오남용</span><span>정보에 대한 책임 소재의 불분명</span></div>
+      </div>
+      <div>
+        <div class="kc" style="--k:#2f6fd0"><h4>📇 개인 정보</h4><p>이름, 주민 등록 번호, 주소, 얼굴 등과 같이 <b>개인을 식별할 수 있는 정보</b>예요.</p></div>
+        <div class="callout" style="margin-bottom:0">💡 개인 정보 침해로 생긴 피해는 퍼지는 속도가 빨라지고 규모도 커지고 있어 <b>2차, 3차 피해</b>로 이어질 수 있어 위험해요.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🏠🏢🏛️ 개인, 기업, 국가의 정보 보호 가치 <span class="muted" style="font-weight:400;font-size:.88rem">(눌러서 비교해 봐요)</span></h3>
+    <p style="margin-top:0">개인, 기업, 국가의 주요 정보를 안전하게 보호하는 것은 다양한 피해를 막기 위해서일 뿐만 아니라 안전한 사회와 국가를 유지하는 데 매우 중요해요.</p>
+    <div class="apps ip-3" id="valBtns"></div>
+    <div class="cview" id="valView"></div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 누구의 정보가 새어 나갔을까?</h3>
+    <p class="muted" style="margin-top:0">사건을 읽고, 새어 나간 정보가 개인, 기업, 국가 가운데 어디의 주요 정보인지 골라요.</p>
+    <div id="whoGame"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 정보 공유 -->
+<section class="page" data-name="정보 공유의 필요성" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>정보 공유는 왜 필요할까?</h2><p>교과서 224쪽 · 정보 공유, 보호해야 할 정보와 공유해야 할 정보</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>좋은 정보를 나누면 <b>편리한 서비스</b>가 생기고, <b>새로운 일자리</b>가 만들어지고, 사회가 <b>투명</b>해져요. 그렇지만 <b>개인 정보</b>와 <b>저작권이 있는 저작물</b>은 지켜야 해요. 정보를 주기도 하고 쓰기도 하는 우리는 둘을 가려낼 줄 알아야 해요.</span></div>
+  <div class="card">
+    <h3>🔄 정보를 대하는 생각이 바뀌었어요</h3>
+    <div class="flow2">
+      <div style="--k:#8a94a6"><b>📚 디지털 사회 이전</b><span>특정 지식과 정보를 가진 개인이나 기업에게 지식과 정보에 대한 <b>사유 재산 권한</b>을 인정하며 <b>정보 보호</b>에 힘을 쏟았어요.</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#1f9d74"><b>🌐 디지털 사회</b><span>사물 인터넷, 빅데이터, 인공지능 같은 디지털 기술을 날마다 쓰면서 <b>정보 공유에 따른 가치 재생산</b>에 더 관심이 모이고 있어요.</span></div>
+    </div>
+    <p class="note">💡 네트워크가 발전해 사물과 사물, 사물과 사람이 연결되면서 정보 공유는 피할 수 없는 일이 되고 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>✨ 정보 공유의 다양한 장점</h3>
+    <div class="cards4">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🔍</div><h4>사회 투명성 증가</h4></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🏥</div><h4>공공 서비스 제공</h4></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">💼</div><h4>새로운 일자리 창출</h4></div>
+      <div class="kc" style="--k:#9b4fc4"><div class="ic">♻️</div><h4>가치 재생산</h4></div>
+    </div>
+    <p style="margin-bottom:6px"><b>예시 · 편리함을 주는 정보 공유 서비스</b> <span class="muted" style="font-size:.88rem">(그림 Ⅴ-7)</span></p>
+    <div class="flow2">
+      <div style="--k:#2f6fd0"><b>📥 모은 정보</b><span>데이터 수집, 시민 제보, 교통 흐름 데이터, 기상청 날씨</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#1f9d74"><b>🗺️ 공유</b><span>도로교통공단 웹 페이지에서 교통사고 위험 지역을 미리 공개</span></div>
+      <div class="ar">→</div>
+      <div style="--k:#e0702b"><b>📉 결과</b><span>교통사고율을 낮추었어요.</span></div>
+    </div>
+    <p style="margin-bottom:0">이처럼 기술과 서비스를 발전시키면서도 <b>정보 침해가 일어나지 않는 범위</b>에서 정보를 공유해야 해요. 정보 제공자이면서 정보 사용자인 우리는 <b>보호해야 할 정보와 공유해야 할 정보를 분별하는 능력</b>이 필요해요.</p>
+  </div>
+  <div class="card">
+    <h3>⚖️ 보호해야 할 정보와 공유해야 할 정보를 가르는 기준</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#d64535"><h4>🔒 보호해야 할 정보</h4><p><b>개인 정보와 저작권이 있는 저작물</b>은 보호해야 해요.</p><div class="ip-pills sm"><span>인적 정보</span><span>금융 정보</span><span>군사 정보</span><span>위치 정보</span><span>의료 정보</span></div></div>
+      <div class="kc" style="--k:#1f9d74"><h4>🤝 공유해야 할 정보</h4><p><b>개인과 공공의 이익</b>을 위해서는 공유할 수 있어요.</p><div class="ip-pills sm"><span>구인 정보</span><span>교통 정보</span><span>지역 정보</span><span>경제 정보</span><span>재난 정보</span><span>여행 정보</span><span>컴퓨터 바이러스 정보</span><span>해킹 정보</span><span>건강 상식</span><span>맛집 정보</span><span>환경 정보</span></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 지킬까, 나눌까?</h3>
+    <p class="muted" style="margin-top:0">생활 속 정보를 읽고, 보호해야 할 정보인지 공유해도 좋은 정보인지 골라요.</p>
+    <div id="shareGame"></div>
+  </div>
+  <div class="card">
+    <h3>💬 함께 해결하기 · 정보 보호와 정보 공유의 가치 <span class="muted" style="font-weight:400;font-size:.88rem">(분석 · 토의)</span></h3>
+    <p style="margin-top:0">아래 보기에서 한 가지를 골라, 정보 보호와 정보 공유의 측면에서 그 정보의 가치를 적은 뒤 짝과 이야기를 나누어요.</p>
+    <div id="pickInfo"></div>
+    <div class="cards2" style="margin-top:10px">
+      <div class="memo"><label>🔒 정보 보호의 가치 <small>새어 나가면 누가 어떤 피해를 볼까요?</small></label><textarea data-memo="protectVal" rows="3"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>🤝 정보 공유의 가치 <small>알맞게 나누면 누구에게 어떤 도움이 될까요?</small></label><textarea data-memo="shareVal" rows="3"></textarea><div class="saved"></div></div>
+    </div>
+    <p class="note">짝과 서로 다른 정보를 골랐다면, 두 정보의 보호 가치와 공유 가치를 견주어 봐요.</p>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">정보 보호와 정보 공유의 가치와 필요성을 설명할 수 있나요?</p>
+    <div class="vote" id="ck1Vote"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 정보 보호 제도 -->
+<section class="page" data-name="정보 보호를 위한 제도" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>정보를 보호하기 위해 어떤 제도를 마련하였을까?</h2><p>교과서 225쪽 · 개인 정보의 오남용, 정보 보호에 관한 법적 장치</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보가 한곳에 많이 모이면 <b>부주의</b>로 새어 나가거나 <b>나쁜 목적</b>으로 쓰일 수 있어요. 그래서 나라에서는 정보를 보호하고, 정보 침해 행위를 규제하는 여러 <b>법</b>을 만들었어요.</span></div>
+  <div class="card">
+    <h3>⚠️ 한곳에 모인 정보의 위험</h3>
+    <p style="margin-top:0">사물 인터넷 기능이 있는 다양한 기기를 쓰게 되면서 여러 종류의 방대한 개인 정보가 특정 서버에 저장되고 있어요. 이렇게 한곳에 모인 데이터는 개인뿐만 아니라 대기업, 공공 기관의 <b>부주의</b> 때문에 중요한 정보가 유출되기도 하고, <b>악의적인 목적</b>으로 쓰이기도 해요.</p>
+    <div class="cards2">
+      <div class="kc" style="--k:#d64535"><div class="ic">🕵️</div><h4>홈쇼핑 회원 개인 정보 유출 판매</h4><p>홈쇼핑 회원의 개인 정보가 유출되어 판매된 경우예요.</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">📧</div><h4>상품 안내 이메일에 고객 정보 첨부</h4><p>상품 안내 이메일에 고객 정보가 첨부되어 함께 보내진 경우예요.</p></div>
+    </div>
+    <p class="note">그림 Ⅴ-8 개인 정보의 오남용 사례를 글로 옮긴 것이에요. 💡 정보의 오남용은 개인의 사생활을 침해할 뿐만 아니라 사회, 경제적으로 큰 피해를 주고, 유출된 정보가 또 다른 범죄에 이용되어 심각한 사회 문제를 만들기도 해요.</p>
+  </div>
+  <div class="card">
+    <h3>⚖️ 정보 보호에 관한 법적 장치 <span class="muted" style="font-weight:400;font-size:.88rem">(출처: 한국인터넷진흥원)</span></h3>
+    <p style="margin-top:0">국가는 정보를 보호하고 정보 침해 행위를 규제하기 위해 여러 가지 법적 장치를 마련하고 있어요.</p>
+    <p class="ip-lawh" style="--k:#9b4fc4">📘 포괄적인 내용 제시</p>
+    <div class="cards2 ip-laws">
+      <div class="kc" style="--k:#9b4fc4"><h4>개인 정보 보호법</h4><ul><li>개인 정보의 처리 및 보호에 관한 사항 결정</li></ul></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>정보 통신망 이용 촉진 및 정보 보호 등에 관한 법률</h4><ul><li>정보 통신 서비스 이용자 보호</li><li>정보 통신망 이용 촉진 및 정보 보호 등에 관한 시책 마련</li></ul></div>
+    </div>
+    <p class="ip-lawh" style="--k:#2f8fb0">📗 구체적인 지침 안내</p>
+    <div class="cards4 ip-laws">
+      <div class="kc" style="--k:#2f8fb0"><h4>전기 통신 사업법</h4><ul><li>통신 비밀의 보호</li><li>불법 촬영물 유통 방지</li><li>청소년 유해 매체물 등의 차단</li><li>이동 통신 단말 장치 부정 이용 방지</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>소프트웨어 진흥법</h4><ul><li>소프트웨어 지식 재산권 보호</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>전자 문서 및 전자 거래 기본법</h4><ul><li>전자 상거래의 안전성 확보 및 소비자 보호(개인 정보 보호, 영업 비밀 보호)</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>지능 정보화 기본법</h4><ul><li>지능 정보 기술 및 지능 정보 서비스 이용의 안전성 및 신뢰성 보장</li><li>정보 보호, 정보 격차 해소, 이용자의 권익 보호 및 지식 재산권의 보호</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>위치 정보의 보호 및 이용 등에 관한 법률</h4><ul><li>위치 정보의 안전한 이용 환경 조성</li><li>위치 정보의 유출, 오용 및 남용으로부터 사생활의 비밀 등 보호</li><li>위치 정보의 이용을 활성화하여 국민 생활의 향상과 공공복리의 증진</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>인터넷 주소 자원에 관한 법률</h4><ul><li>인터넷 주소 사용자의 개인 정보 보호</li><li>인터넷 주소 관련 정보와 시설의 보호에 관한 사항</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>전자 정부법</h4><ul><li>개인 정보 및 사생활 보호</li></ul></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>클라우드 컴퓨팅 발전 및 이용자 보호에 관한 법률</h4><ul><li>클라우드 컴퓨팅 서비스의 신뢰성 향상 및 이용자 보호</li><li>클라우드 컴퓨팅 서비스의 품질, 성능에 관한 기준 및 정보 보호에 관한 기준</li></ul></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어느 법과 관련 있을까?</h3>
+    <p class="muted" style="margin-top:0">상황을 읽고, 위의 법 가운데 어느 법의 내용과 가장 관련 있는지 골라요.</p>
+    <div id="lawGame"></div>
+    <div class="memo" style="margin-top:12px"><label>개인 정보 오남용 사례 하나(위의 두 사례나 들어 본 사례)와, 그것을 막는 데 관련 있는 법을 한 줄로 적어요.</label><input type="text" data-memo="misuseLaw"><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 실천 방법 -->
+<section class="page" data-name="정보 보호 실천 방법" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>올바른 정보 보호 실천 방법은 무엇일까?</h2><p>교과서 226쪽 · 정보 기기, 온라인 활동, 보안 기능에서의 정보 보호</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>내 정보와 <b>내가 가진 다른 사람의 정보</b>를 지키는 일은 모두의 사생활을 존중하고 사회의 신뢰를 지키는 기본이에요. 스마트폰을 잠자는 시간까지 쓰는 요즘, 각자 자기 기기를 책임감 있게 관리해야 해요.</span></div>
+  <div class="card">
+    <h3>✅ 세 가지 정보 보호 실천 방법</h3>
+    <div class="cards3 ip-do">
+      <div class="kc" style="--k:#2f6fd0">
+        <h4>📱 개인의 정보 기기 보호</h4>
+        <p>컴퓨터나 스마트폰에 쉽게 유추할 수 없는 <b>강력한 암호</b>와 얼굴, 지문 같은 <b>생체 인증</b>을 함께 사용해 기기 안의 데이터를 보호한다.</p>
+        <ul><li>비밀번호를 주기적으로 변경한다.</li><li>스마트폰 앱 설치 시 <b>개인 정보 접근 권한</b>을 살펴보고 동의한다.</li></ul>
+        <div class="ip-path"><b>앱 권한을 확인하는 곳</b><span>안드로이드폰 · 설정 → 애플리케이션</span><span>아이폰 · 설정 → 개인 정보 보호 및 보안</span></div>
+      </div>
+      <div class="kc" style="--k:#1f9d74">
+        <h4>🌐 온라인 활동 시 개인 정보 보호</h4>
+        <p>불특정 다수가 접근할 수 있는 사이트에 나와 가족의 생년월일, 집 주소, 이름, 전화번호 같은 개인 정보를 게시하지 않는다. 의심스러운 링크를 누르거나 내용을 알 수 없는 첨부 파일을 내려받지 않는다.</p>
+        <ul><li>SNS에 올릴 사진과 동영상에 개인 정보가 담겼는지 확인한다.</li><li>출처를 알 수 없는 문자, 이메일, SNS 메시지에 포함된 링크는 열지 않는다.</li><li>공용 PC에서는 금융 서비스를 이용하지 않는다.</li></ul>
+      </div>
+      <div class="kc" style="--k:#9b4fc4">
+        <h4>🛡️ 보안 기능을 활용하여 정보 보호</h4>
+        <p>다른 사람과 중요한 정보를 주고받을 때는 암호화된 전자 메일 보안 기능을 쓰거나, 암호화된 메시지를 주고받는 <b>보안 메시징 앱</b>을 쓴다. 보안되지 않은 네트워크로는 중요한 정보를 보내지 않는다.</p>
+        <ul><li>클라우드 서비스에 개인 정보 파일을 올릴 때는 <b>암호화</b>하여 올린다.</li><li>최신 보안 프로그램을 설치하고 실시간 검사 기능을 실행한다.</li></ul>
+      </div>
+    </div>
+    <div class="callout" style="margin-bottom:0">🤔 <b>생각해 보기</b> · 내 스마트폰에 개인 암호가 설정되어 있나요? 오늘은 어디서 설정하는지만 떠올려 보고, <b>실제 암호는 화면이나 메모, 질문폼 어디에도 적지 마세요.</b></div>
+  </div>
+  <div class="card">
+    <h3>📝 나의 정보 보호 실천 점검</h3>
+    <p class="muted" style="margin-top:0">지금 <b>이미 하고 있는 것</b>을 모두 골라요. 고르지 못한 것이 오늘부터 실천할 거리예요.</p>
+    <div id="doNow"></div>
+    <div class="memo" style="margin-top:10px"><label>아직 하지 못하는 실천 방법 하나를 골라, 지키지 않으면 <b>나와 다른 사람에게</b> 어떤 일이 생길 수 있는지와 앞으로 어떻게 실천할지 적어요. <small>실제 비밀번호나 개인 정보는 적지 마세요.</small></label><textarea data-memo="myPlan" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어떤 실천 방법일까?</h3>
+    <p class="muted" style="margin-top:0">친구들의 행동을 읽고, 세 가지 실천 방법 가운데 어디에 해당하는지 골라요.</p>
+    <div id="doGame"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 스스로 해결하기 -->
+<section class="page" data-name="스스로 해결하기 · 기사 분석" data-acc="#c0392b">
+  <div class="head"><div class="num">05</div><div><h2>스스로 해결하기 · 정보 보호 실천 방법</h2><p>교과서 227쪽 · 분석 · 서술</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보 유출 기사를 읽고 <b>어떤 개인 정보</b>가 새어 나갔는지 찾아요. 시간이 되면 기관이 <b>무엇을 지키지 않았는지</b>, 내가 가진 <b>다른 사람의 정보</b>를 어떻게 지킬지도 써요.</span></div>
+  <div class="card">
+    <h3>📰 기사 읽기 <span class="muted" style="font-weight:400;font-size:.88rem">(수업을 위해 지어낸 가상의 기사예요)</span></h3>
+    <div class="ip-news" id="newsBox">
+      <p class="ip-nt">“△△시 청소년 수련관 캠프 신청 서버 해킹… 참가 학생 정보 새어 나간 듯”</p>
+      <p>△△시 청소년 수련관은 여름 캠프 신청을 받던 서버에 누군가 몰래 접속한 흔적이 발견되어 경찰에 수사를 의뢰했다고 밝혔다. 수련관 관계자는 “서버에는 캠프에 신청한 학생들의 <button type="button" class="ip-w" data-p="1">이름</button>, <button type="button" class="ip-w" data-p="1">학교와 학년</button>, <button type="button" class="ip-w" data-p="1">생년월일</button>, <button type="button" class="ip-w" data-p="1">보호자 휴대 전화 번호</button>가 저장되어 있었다.”라며 “일부 학생이 적어 낸 <button type="button" class="ip-w" data-p="1">알레르기 등 건강 메모</button>도 함께 새어 나갔을 수 있다.”라고 말했다.</p>
+      <p>조사 결과 이 서버의 관리자 비밀번호는 처음 설치할 때의 값 그대로였고, 신청 파일은 암호화되지 않은 채 저장되어 있었다. 수련관 측은 함께 저장되어 있던 <button type="button" class="ip-w" data-p="0">캠프 일정표</button>와 <button type="button" class="ip-w" data-p="0">프로그램 안내문</button>은 원래 누리집에 공개해 둔 자료라고 덧붙였다. 수련관은 신청자 보호자에게 안내 문자를 보내고, 비밀번호를 바꾸는 등 대책을 마련하고 있다.</p>
+    </div>
+    <p style="margin-bottom:6px"><b>1. 기사에서 새어 나간 개인 정보의 종류를 찾아요.</b> <span class="muted" style="font-size:.9rem">밑줄 친 낱말(버튼) 가운데 개인 정보라고 생각하는 것을 모두 눌러 표시한 뒤 확인해요.</span></p>
+    <div class="row"><button class="btn sm" id="newsCheck">확인하기</button><button class="btn ghost sm" id="newsReset">다시 고르기</button></div>
+    <div class="ip-msg" id="newsMsg"></div>
+  </div>
+  <details class="card ip-more">
+    <summary>⚖️ 시간 되면 · 2. 정보 관리 책임 기관이 지키지 않은 것</summary>
+    <p style="margin-top:0">기사 속 근거(무엇을 소홀히 했는지)를 찾고, 03에서 본 법 가운데 관련 있다고 생각하는 법을 골라요.</p>
+    <div id="lawPick"></div>
+    <div class="memo" style="margin-top:10px"><label>수련관이 소홀히 한 점과 그렇게 생각한 까닭</label><textarea data-memo="lawWhy" rows="2"></textarea><div class="saved"></div></div>
+    <p class="note">⏱️ 시간이 되면(10분 안쪽) <b>선생님이 알려 주는 사이트</b>(한국인터넷진흥원)의 정보 보호 법령에서 관련 내용을 찾아 확인해요. 못 하면 다음 시간 전까지 해 와도 좋아요.</p>
+  </details>
+  <details class="card ip-more">
+    <summary>✍️ 시간 되면 · 3. 내가 가진 다른 사람의 정보 지키기</summary>
+    <p style="margin-top:0">내가 가지고 있는 <b>다른 사람의 정보</b>의 종류를 골라요. (목록에 없으면 「직접 정하기」)</p>
+    <div id="othersInfo"></div>
+    <div class="memo" style="margin-top:10px"><label>그 정보가 유출되었을 때 미칠 영향을 생각하며, 나만의 정보 보호 실천 방법을 <b>까닭 → 방법</b> 순서로 논리적으로 써요. <small>실제 이름, 번호 같은 정보는 적지 마세요.</small></label><textarea data-memo="myRule" rows="3"></textarea><div class="saved"></div></div>
+  </details>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">실제 사례를 통해 개인 정보를 포함한 정보 보호 실천이 왜 필요한지 이해하고, 실천 방법을 나열할 수 있나요?</p>
+    <div class="vote" id="ck2Vote"></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말(정보 보호, 정보 공유 가운데 하나)을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="ip-blanks">
+      <li>준호는 모둠 과제 파일에 친구들 연락처가 들어 있어 파일에 암호를 걸어 두었다. 준호의 행동은 <button class="ip-blank" data-a="정보 보호">?</button>의 한 모습이다.</li>
+      <li>구청이 동네 공영 주차장의 빈자리 수를 앱으로 알려 주자 주민들이 주차할 곳을 쉽게 찾게 되었다. 이것은 <button class="ip-blank" data-a="정보 공유">?</button>의 좋은 예이다.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 오늘의 질문 답하기 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0"><b>정보 보호</b>는 불법적 접근과 사용, 공개, 중단, 수정이나 파괴 같은 위협으로부터 정보를 지키는 조치다. 개인에게는 사생활을, 기업에게는 이익을, 국가에게는 국민과 사회의 안전을 지켜 준다.</div>
+    <div style="--k:#1f9d74">알맞게 나눈 정보는 공공 서비스와 새로운 가치를 만들어 낸다. 다만 <b>개인 정보와 저작권이 있는 저작물은 보호</b>하고, 개인과 공공의 이익이 되는 정보는 <b>공유</b>하도록 가려내는 눈이 필요하다.</div>
+    <div style="--k:#e0702b">나라는 <b>개인 정보 보호법</b> 같은 법적 장치로 정보 침해를 규제한다. 나는 내 기기에 잠금을 걸고, 온라인에 올리는 정보를 살피고, 암호화 같은 보안 기능을 써서 <b>나와 다른 사람의 정보</b>를 함께 지킨다.</div>
+  </div>
+  <div class="card">
+    <h3>오늘의 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면의 확진자 안내문 고르기, 02의 분류와 함께 해결하기, 04의 실천 점검을 근거로 써 보세요.</p>
+    <b style="font-size:.93rem">나의 정보가 보호되도록 최소한의 정보만 공유하기 위한 실천 방법은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>확진자 안내문 사례나 「지킬까, 나눌까?」 분류를 떠올리며, <b>보호해야 할 정보와 공유해야 할 정보</b>를 가르는 기준을 내 말로 설명하고 각각의 예를 하나씩 드세요.</li>
+      <li>함께 해결하기에서 고른 정보(의료 서비스 정보, 기업의 재무 정보, 법 집행 기관의 정보, 교육 정보 가운데 하나)의 <b>정보 보호 가치</b>와 <b>정보 공유 가치</b>를 각각 설명하세요.</li>
+      <li>개인 정보의 오남용 사례 하나를 들고, 이를 막기 위해 국가가 마련한 <b>법적 장치</b>와 내가 생활에서 할 수 있는 <b>정보 보호 실천 방법</b>을 함께 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요. 실제 비밀번호나 개인 정보는 쓰지 마세요.</p>
+    <a class="go" href="../forms/info-u5-info-protection.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u5-info-protection', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 */
+const QUIZ={
+ 1:[{q:'불법적 접근과 사용, 공개, 중단, 수정이나 파괴와 같은 위협으로부터 정보를 지키는 조치는?',o:['정보 공개','정보 공유','정보 보호'],a:2,w:'여러 가지 위협으로부터 정보를 보호하는 조치를 정보 보호라고 해요.'},
+    {q:'개인을 식별할 수 있는 정보인 개인 정보의 예로 알맞은 것은?',o:['얼굴 사진','오늘의 날씨','버스 노선도'],a:0,w:'이름, 주민 등록 번호, 주소, 얼굴처럼 그 사람이 누구인지 알아볼 수 있게 하는 정보가 개인 정보예요.'},
+    {q:'영업 비밀, 지적 재산, 전략 계획 같은 정보를 지키는 것이 중요한 까닭으로 알맞은 것은?',o:['군사 기밀 유지','기업의 이익 보호','교통사고율 낮추기'],a:1,w:'이런 정보가 새어 나가면 금전적 손실과 신뢰도 하락이 생기므로, 지키는 것이 곧 이익을 지키는 일이에요.'}],
+ 2:[{q:'시청이 한 해 예산을 어디에 썼는지 누리집에 자세히 공개했다. 이런 정보 공유의 장점으로 알맞은 것은?',o:['일자리가 줄어든다','사회의 투명성이 높아진다','정보 책임 소재가 흐려진다'],a:1,w:'시민이 예산의 쓰임을 직접 확인할 수 있어 사회가 더 투명해져요.'},
+    {q:'보호해야 할 정보와 공유할 수 있는 정보를 가르는 기준으로 알맞은 것은?',o:['정보가 최신인가','정보의 양이 많은가','개인 정보나 저작물인가'],a:2,w:'개인 정보와 저작권이 있는 저작물은 보호하고, 개인과 공공의 이익이 되는 정보는 공유할 수 있어요.'},
+    {q:'다음 가운데 여러 사람에게 널리 알려도 좋은 정보는?',o:['태풍 대피 안내','친구의 진료 기록','가족의 카드 번호'],a:0,w:'재난 소식은 많은 사람이 알수록 피해를 줄일 수 있지만, 진료 기록과 카드 번호는 개인 정보라서 지켜야 해요.'}],
+ 3:[{q:'정보 보호에 관한 법적 장치 가운데, 구체적인 지침이 아니라 포괄적인 내용을 제시하는 법은?',o:['소프트웨어 진흥법','개인 정보 보호법','위치 정보의 보호 및 이용 등에 관한 법률'],a:1,w:'개인 정보의 처리 및 보호에 관한 사항을 정한 이 법은 정보 보호의 큰 틀을 제시해요.'},
+    {q:'남의 휴대폰을 몰래 개통해 쓰는 것처럼 휴대폰을 부정하게 이용하는 일을 막는 내용이 담긴 법은?',o:['전자 정부법','전기 통신 사업법','인터넷 주소 자원에 관한 법률'],a:1,w:'이동 통신 단말 장치 부정 이용 방지는 전기 통신 사업법이 다루는 내용이에요.'}],
+ 4:[{q:'학교 도서관의 공용 PC를 쓸 때 할 일로 알맞은 것은?',o:['금융 업무는 집에서 한다','로그인 정보를 저장해 둔다','은행 앱 대신 웹으로 송금한다'],a:0,w:'여러 사람이 함께 쓰는 컴퓨터에는 입력한 정보가 남을 수 있어 금융 서비스는 이용하지 않아요.'},
+    {q:'스마트폰에 새 앱을 설치할 때 알맞은 정보 보호 실천 방법은?',o:['인기 순위를 보고 설치한다','친구가 쓰는 앱이면 바로 설치한다','개인 정보 접근 권한을 살펴보고 동의한다'],a:2,w:'앱이 어떤 개인 정보에 접근하려는지 확인한 뒤 동의해야 필요 없는 정보까지 넘기지 않아요.'}],
+ 6:[{q:'코로나19 확진자 정보 공개 방침이 바뀐 뒤, 공개하지 않게 된 정보는?',o:['방문 장소','노출 일시','성별과 나이'],a:2,w:'장소와 시간만 알려도 접촉한 사람이 스스로 알 수 있으므로, 확진자를 특정하는 정보는 공개하지 않게 되었어요.'},
+    {q:'정보 제공자이면서 정보 사용자인 우리에게 필요한 능력으로 알맞은 것은?',o:['정보 분별 능력','빠른 검색 능력','많은 정보를 외우는 능력'],a:0,w:'보호해야 할 정보와 공유해야 할 정보를 가려낼 줄 알아야 정보 침해 없이 정보를 나눌 수 있어요.'}],
+};
+
+const QK='ds-u5-info-protection-quiz'+WHO.sfx;
+const MK='ds-u5-info-protection-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 0 생각해 볼까요? · 확진자 안내문 */
+chips('openPick','openPick',['성별','나이','사는 아파트 동','직장 이름','다녀간 가게 이름과 주소','다녀간 날짜와 시간','이용한 버스 번호','소독 여부'],true);
+$('openShow').onclick=()=>{const r=$('openReveal'), on=!r.classList.contains('on'); r.classList.toggle('on',on); $('openShow').textContent=on?'공개 방침 접기':'실제로 바뀐 공개 방침 보기';};
+
+/* 01 개인 · 기업 · 국가의 정보 보호 가치 (그림 Ⅴ-6) */
+const VAL=[
+  {n:'개인',ic:'🏠',k:'#1f9d74',leak:'개인 정보 유출 (신분증, 신용 카드 정보)',prob:['개인 정보 침해','법률 위반과 개인 정보 오남용','정보에 대한 책임 소재의 불분명'],val:'개인의 정보 보호 중요'},
+  {n:'기업',ic:'🏢',k:'#d64535',leak:'기업 정보 유출 (영업 비밀, 지적 재산, 전략 계획)',prob:['기업의 금전적 손실','기업의 신뢰도 하락','정보에 대한 책임 소재 불분명'],val:'기업의 이익 보호 중요'},
+  {n:'국가',ic:'🏛️',k:'#4a5fc1',leak:'국가 정보 유출 (안보 정보, 외교 정보, 군사 기밀 정보)',prob:['경제적 손실','국가 안보 위협','정보 오남용','정보에 대한 책임 소재의 불분명'],val:'국민과 사회 안전 유지 중요'},
+];
+tabs('valBtns','valView',VAL,c=>`<div class="ip-val" style="--k:${c.k}"><div><span class="lb">무엇이 새어 나가나</span><p>${c.leak}</p></div><div class="ar">↓</div><div><span class="lb">정보 유출로 생긴 문제 예시</span><ul>${c.prob.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="ar">↓</div><div class="v"><b>➥ ${c.val}</b></div></div>`);
+
+/* 01 누구의 정보가 새어 나갔을까? */
+sorter('whoGame',{
+  cats:[{n:'🏠 개인',k:'#1f9d74'},{n:'🏢 기업',k:'#d64535'},{n:'🏛️ 국가',k:'#4a5fc1'}],
+  items:[
+    {t:'택배 상자에 붙은 송장을 이름, 주소, 전화번호가 보이는 채로 찍어 SNS에 올렸다.',c:0,ic:'📦',short:'송장 사진을 SNS에',w:'이름, 주소, 전화번호는 한 사람을 알아볼 수 있게 하는 개인 정보예요.'},
+    {t:'단체 대화방에 학생증 사진과 계좌 번호를 잘못 올렸다.',c:0,ic:'🪪',short:'학생증, 계좌 번호',w:'신분증과 금융 정보가 새어 나가면 개인 정보 침해와 오남용으로 이어져요.'},
+    {t:'아직 발표하지 않은 새 과자의 조리법과 판매 계획 파일이 경쟁 회사로 넘어갔다.',c:1,ic:'🍪',short:'조리법, 판매 계획',w:'영업 비밀과 전략 계획이 새어 나가면 금전적 손실이 생겨요.'},
+    {t:'게임 회사 직원이 개발 중인 게임의 설계 자료를 USB에 담아 몰래 가지고 나갔다.',c:1,ic:'🎮',short:'개발 중인 설계 자료',w:'지적 재산이 새어 나가면 손실과 함께 신뢰도도 떨어져요.'},
+    {t:'다른 나라와 협상하고 있는 내용이 담긴 문서가 인터넷에 퍼졌다.',c:2,ic:'🤝',short:'협상 문서',w:'외교 정보가 새어 나가면 국민과 사회의 안전에 영향을 줄 수 있어요.'},
+    {t:'부대가 어디에 어떻게 배치되어 있는지 담긴 파일이 해킹으로 빠져나갔다.',c:2,ic:'🪖',short:'부대 배치 파일',w:'군사 기밀 정보가 새어 나가면 국가 안보가 위협받아요.'},
+  ],
+  end:'개인 정보는 <b>개인의 정보 보호</b>, 기업 정보는 <b>기업의 이익 보호</b>, 국가 정보는 <b>국민과 사회 안전 유지</b>를 위해 지켜야 해요.'
+});
+
+/* 02 지킬까, 나눌까? */
+sorter('shareGame',{
+  cats:[{n:'🔒 보호해야 할 정보',k:'#d64535'},{n:'🤝 공유해도 좋은 정보',k:'#1f9d74'}],
+  items:[
+    {t:'카드 번호와 통장 비밀번호를 적어 둔 메모',c:0,ic:'💳',short:'카드 번호 메모',w:'금융 정보가 새어 나가면 바로 금전적 피해로 이어져요.'},
+    {t:'우리 반 친구들의 이름과 전화번호가 담긴 연락처 파일',c:0,ic:'📇',short:'반 연락처 파일',w:'인적 정보는 개인을 알아볼 수 있게 해 주므로 지켜야 해요.'},
+    {t:'인기 웹툰의 유료 회차를 통째로 캡처한 이미지',c:0,ic:'🖼️',short:'유료 웹툰 캡처',w:'저작권이 있는 저작물은 허락 없이 나누면 안 돼요.'},
+    {t:'요즘 퍼지는 가짜 택배 문자 수법과 대처 방법',c:1,ic:'📲',short:'가짜 문자 수법',w:'해킹이나 악성 코드 수법을 알려 주면 다른 사람의 피해를 막을 수 있어요.'},
+    {t:'지하철 고장으로 열차가 늦어진다는 소식',c:1,ic:'🚇',short:'지하철 지연 소식',w:'교통 정보는 공공의 이익을 위해 나누는 정보예요.'},
+    {t:'동네 빵집의 주말 아르바이트 모집 공고',c:1,ic:'🥐',short:'아르바이트 모집',w:'구인 정보는 일할 사람과 일자리를 이어 줘요.'},
+  ],
+  end:'<b>개인 정보와 저작권이 있는 저작물</b>은 보호하고, <b>개인과 공공의 이익</b>이 되는 정보는 공유할 수 있어요.'
+});
+
+/* 02 함께 해결하기 · 성취도 평가 */
+chips('pickInfo','pickInfo',['의료 서비스 정보','기업의 재무 정보','법 집행 기관의 정보','교육 정보'],false);
+vote('ck1Vote','ck1',[['예','설명할 수 있어요'],['아니요','01·02를 다시 봐요']]);
+
+/* 03 어느 법과 관련 있을까? */
+sorter('lawGame',{
+  cats:[{n:'개인 정보 보호법',k:'#9b4fc4'},{n:'전기 통신 사업법',k:'#2f8fb0'},{n:'소프트웨어 진흥법',k:'#e0702b'},{n:'위치 정보의 보호 및 이용 등에 관한 법률',k:'#1f9d74'}],
+  items:[
+    {t:'동아리가 신청서로 받은 회원들의 이름과 연락처를 어떻게 다루고 언제 지울지 정한다.',c:0,ic:'📋',short:'회원 명단 처리와 보호',w:'개인 정보를 어떻게 처리하고 보호할지에 관한 사항을 정하는 법이에요.'},
+    {t:'몰래 찍은 영상이 메신저 단체방으로 퍼지지 않도록 막는다.',c:1,ic:'📵',short:'불법 촬영물 유통 방지',w:'불법 촬영물 유통 방지는 이 법이 다루는 내용이에요.'},
+    {t:'청소년에게 해로운 영상이 휴대폰에서 보이지 않도록 차단한다.',c:1,ic:'🚫',short:'청소년 유해 매체물 차단',w:'청소년 유해 매체물 등의 차단도 이 법에 들어 있어요.'},
+    {t:'정부가 앱과 프로그램을 개발한 사람의 지식 재산권이 보호되도록 정책을 마련한다.',c:2,ic:'💿',short:'개발자의 지식 재산권 보호',w:'소프트웨어 지식 재산권 보호가 이 법이 다루는 내용이에요.'},
+    {t:'친구 몰래 그 친구의 휴대폰이 지금 어디 있는지 계속 확인하는 앱을 깔았다.',c:3,ic:'📍',short:'몰래 행선지 추적',w:'어디에 있는지에 관한 정보가 새거나 남용되지 않도록 사생활을 지키는 법이에요.'},
+  ],
+  end:'정보 보호의 큰 틀은 <b>포괄적인 법</b>이, 통신, 소프트웨어, 위치처럼 분야별 내용은 <b>구체적인 지침을 안내하는 법</b>이 다뤄요.'
+});
+
+/* 04 어떤 실천 방법일까? */
+sorter('doGame',{
+  cats:[{n:'📱 개인의 정보 기기 보호',k:'#2f6fd0'},{n:'🌐 온라인 활동 시 개인 정보 보호',k:'#1f9d74'},{n:'🛡️ 보안 기능 활용',k:'#9b4fc4'}],
+  items:[
+    {t:'휴대폰 잠금을 지문 인식과 쉽게 짐작하기 어려운 암호로 함께 걸어 두었다.',c:0,ic:'👆',short:'지문 + 강력한 암호',w:'강력한 암호와 생체 인증을 함께 쓰면 기기 안의 데이터를 지킬 수 있어요.'},
+    {t:'손전등 앱이 연락처와 위치에 접근하겠다고 해서 동의하지 않고 다른 앱을 찾았다.',c:0,ic:'🔦',short:'앱 접근 권한 살피기',w:'앱 설치 때 개인 정보 접근 권한을 살펴보는 일은 교과서에서 「개인의 정보 기기 보호」로 묶어요.'},
+    {t:'반 단체 사진을 올리기 전에 뒤쪽 게시판의 연락처가 찍혔는지 확대해 보았다.',c:1,ic:'📸',short:'올릴 사진 확인',w:'SNS에 올릴 사진과 동영상에 개인 정보가 담겼는지 확인하는 것은 온라인 활동에서의 실천이에요.'},
+    {t:'학교 컴퓨터실 컴퓨터로는 은행 업무를 보지 않고 집에 가서 하기로 했다.',c:1,ic:'🏦',short:'여럿이 쓰는 PC에서 금융 X',w:'공용 PC에서 금융 서비스를 이용하지 않는 일은 교과서에서 「온라인 활동 시 개인 정보 보호」로 묶어요.'},
+    {t:'모둠 과제 파일에 친구들의 연락처가 있어서 암호를 걸어 클라우드에 올렸다.',c:2,ic:'☁️',short:'파일 암호화해 올리기',w:'클라우드에 개인 정보 파일을 올릴 때는 암호화해서 올려요.'},
+    {t:'카페의 비밀번호 없는 무선 인터넷에서는 중요한 파일을 보내지 않았다.',c:2,ic:'📶',short:'안전하지 않은 망 피하기',w:'보안되지 않은 네트워크로는 중요한 정보를 보내지 않아요.'},
+  ],
+  end:'<b>기기</b>를 잠그고, <b>온라인</b>에 올리는 정보를 살피고, <b>보안 기능</b>을 활용하면 나와 다른 사람의 정보를 함께 지킬 수 있어요.'
+});
+
+/* 04 나의 정보 보호 실천 점검 */
+chips('doNow','doNow',['화면 잠금과 생체 인증','비밀번호 주기적으로 바꾸기','앱 접근 권한 살피기','사진 올리기 전 개인 정보 확인','모르는 링크 열지 않기','공용 PC에서 금융 서비스 안 쓰기','중요한 파일 암호화','보안 프로그램 실시간 검사'],true);
+
+/* 05 기사에서 개인 정보 찾기 */
+(function(){
+  const ws=[...document.querySelectorAll('#newsBox .ip-w')], msg=$('newsMsg'); let done=false;
+  ws.forEach(w=>w.onclick=()=>{ if(done) return; w.classList.toggle('on'); });
+  $('newsCheck').onclick=()=>{
+    done=true; let hit=0, miss=0, wrong=0;
+    ws.forEach(w=>{const p=w.dataset.p==='1', on=w.classList.contains('on'); w.classList.remove('ok','ng','miss');
+      if(p&&on){hit++; w.classList.add('ok');} else if(p){miss++; w.classList.add('miss');} else if(on){wrong++; w.classList.add('ng');}});
+    const all=ws.filter(w=>w.dataset.p==='1').length;
+    msg.innerHTML=`개인 정보 ${all}개 가운데 <b>${hit}개</b>를 찾았어요.`+(miss?` <span class="ip-k miss">점선</span>은 놓친 개인 정보예요.`:'')+(wrong?` <span class="ip-k ng">빨간색</span>은 원래 공개해 둔 자료라 개인 정보가 아니에요.`:'')+' 이름, 학교와 학년, 생년월일, 연락처처럼 하나하나 또는 합쳐서 <b>누구인지 알아볼 수 있게 하는 정보</b>가 개인 정보이고, 건강 메모는 보호해야 할 <b>의료 정보</b>예요.';
+    MEMO.newsFound=`기사 속 개인 정보 ${all}개 중 ${hit}개 찾음`+(wrong?`, 개인 정보가 아닌 것 ${wrong}개 고름`:''); store.set(MK,MEMO);
+  };
+  $('newsReset').onclick=()=>{ done=false; ws.forEach(w=>w.classList.remove('on','ok','ng','miss')); msg.textContent=''; };
+})();
+chips('lawPick','lawPick',['개인 정보 보호법','정보 통신망 이용 촉진 및 정보 보호 등에 관한 법률','전자 정부법','지능 정보화 기본법','잘 모르겠다'],true);
+chips('othersInfo','othersInfo',['친구들의 연락처','친구가 나온 사진과 영상','가족의 생일과 주소','친구와 나눈 대화 내용','모둠 과제 파일','직접 정하기'],true);
+vote('ck2Vote','ck2',[['예','이해하고 나열할 수 있어요'],['아니요','04·05를 다시 봐요']]);
+
+/* 05 개념 정리하기 빈칸 */
+document.querySelectorAll('.ip-blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+
+/* 06 마무리 */
+const MEMOLIST=[['planNote','학습 계획'],['openPick','확진자 안내문에 넣을 정보(처음 생각)'],['openWhy','그렇게 고른 까닭'],['pickInfo','함께 해결하기 · 고른 정보'],['protectVal','정보 보호의 가치'],['shareVal','정보 공유의 가치'],['ck1','성취도 평가(정보 보호와 공유의 가치)'],['misuseLaw','오남용 사례와 관련 법'],['doNow','이미 하고 있는 정보 보호 실천'],['myPlan','새로 실천할 정보 보호 방법'],['newsFound','기사 속 개인 정보 찾기 결과'],['lawPick','관련 있다고 생각한 법'],['lawWhy','기관이 소홀히 한 점'],['othersInfo','내가 가진 다른 사람의 정보'],['myRule','나만의 정보 보호 실천 방법'],['ck2','성취도 평가(정보 보호 실천)'],['keyQ','오늘의 질문에 대한 내 답'],['newLearn','새롭게 알게 된 점']];
+/* 접어 둔(시간 되면) 메모는 쓴 것만 모아 보기에 보여 줌 */
+const OPT=[['lawPick','lawWhy'],['othersInfo','myRule']];
+onShow[6]=()=>{const hide=OPT.filter(g=>!g.some(k=>String(MEMO[k]||'').trim())).flat(); memoSummary('msum',MEMOLIST.filter(([k])=>!hide.includes(k)));};
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

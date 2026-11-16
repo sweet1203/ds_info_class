@@ -43,7 +43,7 @@ def concept_shingles():
         return _CONCEPT
     _CONCEPT = set()
     w = ROOT.parent / '작업자료'
-    for f in sorted(w.glob('교과서_*단원_쪽별.txt')) if w.is_dir() else []:
+    for f in (sorted(list(w.glob('교과서_*단원_쪽별.txt')) + list(w.glob('교과서_*단원_쪽별.md'))) if w.is_dir() else []):
         pages = re.split(r'=+ 교과서 \d+쪽', rd(f))
         for pg in pages:
             parts = []

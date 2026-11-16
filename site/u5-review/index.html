@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>협력적 창의·융합 프로젝트 · Ⅴ단원 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  .r5-ready{margin:0 0 16px;font-size:.95rem}
+  .r5-tw{overflow-x:auto}
+  /* 01 사례 속 개인 정보 찾기 */
+  .r5-story{background:#fbfaf7;border-radius:12px;padding:14px 18px;font-size:1rem;line-height:2.1}
+  .r5-tok{font:inherit;font-size:.97rem;border:2px dashed #b9c2cf;background:#fff;border-radius:8px;padding:1px 8px;margin:0 2px;cursor:pointer;line-height:1.5;color:var(--ink,#16202c)}
+  .r5-tok:hover{border-color:var(--acc)}
+  .r5-tok.on{border-style:solid;border-color:var(--acc);background:#fff1ee;font-weight:700}
+  .r5-story.done .r5-tok{cursor:default}
+  .r5-tok.ok{border-style:solid;border-color:#1f9d74;background:#e6f5ee;font-weight:700}
+  .r5-tok.ok::after{content:" ✓";color:#1f9d74}
+  .r5-tok.miss{border-style:solid;border-color:#e0702b;background:#fdf0e5}
+  .r5-tok.miss::after{content:" !";color:#e0702b;font-weight:900}
+  .r5-tok.ng{border-style:solid;border-color:#aab2bd;background:#f1f3f6;text-decoration:line-through}
+  .r5-findres{font-size:.93rem}
+  .r5-findres p{margin:10px 0 4px}
+  .r5-findres ul{margin:4px 0;padding-left:20px}
+  .r5-findres li{margin:3px 0}
+  .r5-after{margin-top:10px;background:#0f2742;color:#fff;border-radius:12px;padding:10px 14px;font-weight:700}
+  .r5-hint{margin-bottom:10px}
+  /* 02 카드 뉴스 */
+  .r5-tips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .r5-tips>div{background:#fbfaf7;border-left:6px solid var(--k);border-radius:10px;padding:8px 12px;font-size:.88rem}
+  .r5-tips b{display:block;color:var(--k);font-size:.98rem;margin-bottom:2px}
+  .r5-board{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+  .r5-row{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start}
+  .r5-row .memo{margin:0}
+  .r5-cv{position:relative;width:200px;aspect-ratio:1/1;border-radius:14px;background:var(--c2,#e8f1fc);border:3px solid var(--c1,#1d4f91);overflow:hidden;box-shadow:0 6px 16px rgba(15,39,66,.12)}
+  .r5-cv .r5-cover{height:100%;background:var(--c1,#1d4f91);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:14px;text-align:center}
+  .r5-cv .r5-cover i{font-style:normal;font-size:1.8rem}
+  .r5-cv .r5-cover b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.15rem;line-height:1.3;margin-top:6px;word-break:keep-all}
+  .r5-cv .r5-cover p{margin:8px 0 0;font-size:.8rem;opacity:.92;white-space:pre-wrap}
+  .r5-cv .r5-cover .e{color:rgba(255,255,255,.6)}
+  .r5-cv .r5-in{padding:12px 12px 22px;height:100%;display:flex;flex-direction:column}
+  .r5-cv h5{margin:0 0 6px;color:var(--c1,#1d4f91);font-size:.9rem}
+  .r5-cv .r5-in p{margin:0;font-size:.8rem;line-height:1.45;white-space:pre-wrap;overflow:hidden;flex:1}
+  .r5-cv .e{color:#aab2bd}
+  .r5-cv .src{display:block;font-size:.66rem;color:#5b6776;border-top:1px solid rgba(0,0,0,.1);padding-top:3px;margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .r5-cv .pg{position:absolute;right:8px;bottom:5px;font-size:.68rem;font-weight:700;color:var(--c1,#1d4f91);background:rgba(255,255,255,.85);border-radius:6px;padding:0 5px}
+  .r5-cv .long{position:absolute;left:6px;top:6px;font-size:.68rem;font-weight:700;background:#e0702b;color:#fff;border-radius:6px;padding:1px 6px}
+  /* 03 배포 계획 */
+  .r5-plan{min-width:640px;margin:0;width:100%}
+  .r5-plan th{background:#fbfaf7;text-align:left;white-space:nowrap;width:190px;vertical-align:middle}
+  .r5-plan td{border-top:1px solid #eef0f3}
+  .r5-plan input,.r5-plan textarea{width:100%;box-sizing:border-box}
+  .r5-crit{min-width:560px;margin:0}
+  .r5-crit td{text-align:left;vertical-align:top;font-size:.92rem}
+  /* 프로젝트 카드 */
+  .r5-pc{border:2px solid var(--navy);border-radius:16px;overflow:hidden;background:#fff}
+  .r5-pc .r5-hd{background:var(--navy);color:#fff;padding:10px 16px}
+  .r5-pc .r5-hd b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem}
+  .r5-pc .r5-hd small{display:block;color:#c8d6e8;font-size:.86rem;margin-top:2px}
+  .r5-pc .pb{padding:10px 16px;background:#fff8e6;border-bottom:1px solid var(--line);font-size:.93rem;white-space:pre-wrap}
+  .r5-steps{display:grid;grid-template-columns:repeat(4,1fr)}
+  .r5-steps>div{padding:10px 12px;border-right:1px solid var(--line);border-top:5px solid var(--k);font-size:.9rem;min-height:100px;white-space:pre-wrap}
+  .r5-steps>div:last-child{border-right:0}
+  .r5-steps h5{margin:0 0 4px;color:var(--k);font-size:.95rem}
+  .r5-pc .e{color:#aab2bd}
+  /* 접는 칸 */
+  .r5-opt>summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+  .r5-opt>summary small{font-weight:400;color:var(--muted);font-size:.85rem}
+  .r5-opt[open]>summary{margin-bottom:8px}
+  .r5-opt ol{padding-left:20px;font-size:.93rem}
+  .r5-opt li{margin:5px 0}
+  .r5-cv .r5-cover b.sm{font-size:.95rem}
+  .r5-row label em{font-style:normal;font-size:.75rem;font-weight:700;border-radius:6px;padding:1px 6px;margin-left:2px;background:#eef0f3;color:#5b6776}
+  .r5-row label em.must{background:#e0702b;color:#fff}
+  .r5-later .r5-cv{opacity:.8}
+  .r5-more{margin:6px 0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#d64535">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅴ. 디지털 문화 · 협력적 창의·융합 프로젝트</span>
+      <h1>내 개인 정보는<br>어떻게 지킬까?</h1>
+      <div class="story"><b>개인 정보 보호 전문가가 되어 보자</b><br>내 이름, 얼굴, 연락처가 내가 모르는 사이에 낯선 사람에게 알려진다면 어떨까요? 내 정보가 <b>언제, 누구에게, 어느 범위까지</b> 알려지고 쓰일지는 내가 스스로 정할 수 있어요. 이 권리를 <b>개인 정보 자기 결정권</b>이라고 해요. 청소년이 이 권리를 지킬 수 있도록 돕는 <b>카드 뉴스</b>를 모둠이 함께 만들어 봐요.</div>
+      <p>개인 정보 침해 사례를 찾고 → 해결 방안을 세우고 → 카드 뉴스 초안을 만든 뒤 → 친구들에게 알릴 배포 계획을 세워요. 그다음 화이트 해커의 이야기를 읽고 Ⅴ단원 전체를 정리해요.</p>
+      <ol>
+        <li>문제 발견 · 해결 방안 계획</li><li>카드 뉴스 초안 만들기</li><li>배포 계획 · 평가하기</li>
+        <li>진로: 화이트 해커</li><li>Ⅴ단원 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔎 🧩</i><div><b>문제 발견 · 계획</b><small>침해 사례 · 해결 방안</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🗂️ ✏️</i><div><b>카드 뉴스 초안</b><small>장면 순서 · 짧은 글 · 출처</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>📣</i><div><b>배포 계획 · 평가</b><small>게시할 곳 · 친구들의 반응</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🛡️ 📚</i><div><b>진로 · 단원 정리</b><small>화이트 해커 · 개념 확인</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="callout r5-ready">🗂️ 카드 뉴스는 <b>오늘 이 화면에서 초안(장면 순서와 글)</b>까지 만들어요. 그림과 폰트를 넣어 완성하는 것은 <b>선생님이 알려 주는 도구</b>로 다음 시간이나 집에서 해요.<br>🔒 메모에는 <b>실제 이름, 연락처, 주소, 비밀번호</b>를 적지 마세요. 모둠원은 이름 대신 <b>번호나 별명</b>으로, 사례 속 인물은 「ㄴ 학생」처럼 바꿔 써요.</div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>청소년의 <b>개인 정보 침해</b> 사례를 찾아 무엇이 문제인지 <b>개인 정보 자기 결정권</b>과 연결해 보고, 친구들과 함께 지킬 수 있는 <b>해결 방안</b>을 세웁니다. 그 방안을 청소년에게 효과적으로 알릴 <b>카드 뉴스</b> 초안과 <b>배포 계획</b>을 만들고, 화이트 해커의 이야기로 진로를 탐색한 뒤 Ⅴ단원을 정리합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">모둠 정하기</span>
+        <div class="memo">
+          <label>모둠명</label><input type="text" data-memo="team" placeholder="예: 잠금 해제 금지단">
+          <label>역할 나누기 <small>이름 대신 번호나 별명으로</small></label><textarea data-memo="roles" rows="2" placeholder="예: 1번 사례 찾기, 2번 글 쓰기, 3번 디자인, 4번 배포 계획"></textarea><div class="saved"></div>
+        </div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>디지털 기술과 사회 변화</b> · 디지털 기술의 발전으로 사회는 어떻게 변화할까?</li>
+          <li><b>정보 보호와 보안</b> · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">마무리에서 오늘 만든 카드 뉴스를 예로 들어 정보 보호 질문에 답해요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>모둠 정하기 <b>2분</b> → 문제 발견 · 계획 <b>8분</b></li>
+          <li>카드 뉴스 초안 <b>12분</b></li>
+          <li>배포 계획 · 평가 <b>4분</b> → 진로 <b>4분</b></li>
+          <li>단원 정리 <b>7분</b> → 마무리 <b>13분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">모둠이 함께 이야기하되, 메모는 각자 내 화면에 적어요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제 발견부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 문제 발견 · 해결 방안 계획 -->
+<section class="page" data-name="문제 발견 · 계획" data-acc="#d64535">
+  <div class="head"><div class="num">01</div><div><h2>문제 발견하기 · 해결 방안 계획 세우기</h2><p>교과서 234쪽 · 프로젝트 1~2단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>내 정보를 누구에게 얼마나 보여 줄지는 <b>내가 정하는 것</b>이에요. 그런데 무심코 올린 글이나 영상 때문에 이 결정권을 잃는 일이 생겨요. 먼저 사례 속에서 <b>어떤 개인 정보가 드러났는지</b> 찾아보고, 그런 일을 막을 <b>구체적인 해결 방안</b>을 세워요.</span></div>
+  <div class="card">
+    <h3>🔐 개인 정보 자기 결정권</h3>
+    <p style="margin-top:0">자신에 관한 정보가 <b>언제</b> <b>누구에게</b> <b>어느 범위까지</b> 알려지고 이용되도록 할 것인지를 <b>스스로 결정</b>할 수 있는 권리예요.</p>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🕒</div><h4>언제</h4><p>지금 올릴까, 나중에 올릴까? 지난 게시물은 그대로 둘까, 내릴까?</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">👥</div><h4>누구에게</h4><p>모두에게 보일까, 아는 친구에게만 보일까?</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">📏</div><h4>어느 범위까지</h4><p>얼굴만? 이름까지? 학교와 연락처까지? 어디까지 알려도 괜찮을까?</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔎 1. 문제 발견하기 · 사례 속 개인 정보 찾기 <span class="muted" style="font-weight:400;font-size:.88rem">(가상의 사례예요)</span></h3>
+    <p class="muted" style="margin-top:0">글을 읽고 <b>ㄱ 학생을 알아보거나, 연락하거나, 있는 곳을 알 수 있게 하는 정보</b>라고 생각되는 부분을 모두 눌러요. 다 고른 뒤 <b>확인하기</b>를 눌러요.</p>
+    <div class="r5-story" id="findStory"></div>
+    <div class="row" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="findCheck">확인하기</button><button class="btn ghost sm" id="findReset">다시 고르기</button></div>
+    <div class="r5-findres" id="findRes"></div>
+    <div class="memo" style="margin-top:12px">
+      <label>ㄱ 학생이 스스로 정하지 못한 것은 무엇일까요? <small>여럿 골라도 돼요</small></label><div id="rightPick"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 우리 모둠의 사례와 해결 방안</h3>
+    <p class="note">ㄱ 학생 사례를 그대로 써도 좋아요. 실제 인물의 이름은 적지 말고 「ㄴ 학생」처럼 바꿔 써요.</p>
+    <details class="r5-opt r5-more">
+      <summary>🔍 다른 사례 찾아보기 <small>(선택 · 시간이 남는 모둠)</small></summary>
+      <p style="margin:0;font-size:.93rem">친구들이 경각심을 가질 만한 다른 사례를 <b>선생님이 알려 주는 사이트</b>에서 5분 안에 찾아요. 찾은 사례는 위 메모 칸에 바꿔 적어요.</p>
+    </details>
+    <div class="grid2 even">
+      <div class="memo"><label>청소년의 개인 정보 침해 사례 <small>무슨 일이 있었나요?</small></label><textarea data-memo="caseNote" rows="3"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>이 사례에서 지켜지지 못한 것 <small>언제, 누구에게, 어느 범위까지 중 무엇이? 어떤 피해가?</small></label><textarea data-memo="caseRight" rows="3"></textarea><div class="saved"></div></div>
+    </div>
+    <h4 style="margin:14px 0 6px">2. 해결 방안 계획 세우기 <span class="muted" style="font-weight:400;font-size:.88rem">친구들과 함께 지킬 수 있는 방안을 2~3개</span></h4>
+    <div class="cards3 r5-hint">
+      <div class="kc" style="--k:#2f6fd0"><h4>올리기 전에</h4><p>이 게시물에 나를 알아볼 수 있는 정보가 들어 있지는 않을까?</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>설정에서</h4><p>내 게시물을 볼 수 있는 사람을 내가 정해 두었을까?</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>문제가 생기면</h4><p>낯선 연락이나 요구를 받으면 누구에게 먼저 알릴까?</p></div>
+    </div>
+    <div class="memo"><label>우리 모둠의 구체적인 해결 방안</label><textarea data-memo="solution" rows="3" placeholder="누가, 언제, 무엇을 하면 되는지 보이게 써요."></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 카드 뉴스 초안 -->
+<section class="page" data-name="카드 뉴스 초안" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>자료 수집 및 탐색하기 · 카드 뉴스 초안 만들기</h2><p>교과서 235쪽 · 프로젝트 3단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>카드 뉴스</b>는 여러 장의 카드에 짧은 글과 그림을 담아 한 가지 이야기를 전하는 방식이에요. 01에서 세운 해결 방안을 청소년에게 <b>이해하기 쉽고 재미있게</b> 알릴 수 있도록, 오늘은 <b>장면 순서와 글</b>을 정해 초안을 만들어요. <b>2~4장은 꼭</b>, 1장 표지와 5장은 시간이 되면 채워요.</span></div>
+  <div class="card">
+    <h3>💡 눈에 쏙 들어오는 카드 뉴스</h3>
+    <div class="r5-tips">
+      <div style="--k:#2f6fd0"><b>한 장에 한 가지</b>카드 한 장에는 말하고 싶은 것 하나만</div>
+      <div style="--k:#1f9d74"><b>짧고 크게</b>문장은 짧게, 제목 글자는 크게</div>
+      <div style="--k:#e0702b"><b>질문으로 시작</b>표지에서 「나도 그럴까?」 하고 궁금하게</div>
+      <div style="--k:#9b4fc4"><b>그림으로 돕기</b>글을 대신할 아이콘, 그림, 색</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ 장면 설계하기 <span class="muted" style="font-weight:400;font-size:.88rem">(적는 대로 왼쪽 카드에 바로 나타나요)</span></h3>
+    <div class="grid2 even">
+      <div class="memo"><label>카드 뉴스 제목</label><input type="text" data-memo="cnTitle" maxlength="24" placeholder="예: 내 정보, 어디까지 보여 줄까? (24자 안)"><div class="saved"></div></div>
+      <div class="memo"><label>색 묶음</label><div id="cnTheme"></div></div>
+    </div>
+    <div class="r5-board" id="cnBoard">
+      <div class="r5-row r5-later"><div class="r5-cv" id="cv1"></div><div class="memo"><label>1장 · 표지 <em>시간이 되면</em> <small>제목 아래에 들어갈 한 줄 질문이나 문구</small></label><textarea data-memo="cn1" rows="2"></textarea><div class="saved"></div></div></div>
+      <div class="r5-row"><div class="r5-cv" id="cv2"></div><div class="memo"><label>2장 · 이런 일이 있었어요 <em class="must">꼭</em> <small>01의 사례를 짧게</small></label><textarea data-memo="cn2" rows="3"></textarea><div class="saved"></div></div></div>
+      <div class="r5-row"><div class="r5-cv" id="cv3"></div><div class="memo"><label>3장 · 왜 문제일까요? <em class="must">꼭</em> <small>어떤 개인 정보가, 누구에게까지 알려졌나</small></label><textarea data-memo="cn3" rows="3"></textarea><div class="saved"></div></div></div>
+      <div class="r5-row"><div class="r5-cv" id="cv4"></div><div class="memo"><label>4장 · 이렇게 지켜요 <em class="must">꼭</em> <small>01의 해결 방안 2~3개</small></label><textarea data-memo="cn4" rows="3"></textarea><div class="saved"></div></div></div>
+      <div class="r5-row r5-later"><div class="r5-cv" id="cv5"></div><div class="memo"><label>5장 · 함께 지켜요 <em>시간이 되면</em> <small>친구들에게 건네는 한마디나 실천 다짐</small></label><textarea data-memo="cn5" rows="2"></textarea><div class="saved"></div></div></div>
+    </div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>©️ 저작권과 출처</h3>
+      <p style="margin-top:0;font-size:.93rem">카드 뉴스에 쓰는 <b>폰트</b>, <b>이미지</b>도 누군가의 저작물이에요. 쓰기 전에 이용 조건을 확인하고, 마지막 장에 <b>출처</b>를 표시해요.</p>
+      <div class="memo"><label>쓸 폰트, 이미지와 그 출처 <small>마지막 장 아래에 작게 나타나요</small></label><textarea data-memo="cnSource" rows="2" placeholder="예: 아이콘 - ○○ 무료 아이콘 모음"></textarea><div class="saved"></div></div>
+    </div>
+    <div class="card">
+      <h3>✅ 초안 점검 <span class="muted" style="font-weight:400;font-size:.88rem">(된 것을 골라요)</span></h3>
+      <div id="cnCheck"></div>
+      <p class="note" style="margin-top:10px">개인 정보를 지키자는 카드 뉴스이니, 카드 속에도 <b>실제 친구의 얼굴, 이름, 연락처</b>를 넣지 않아요.</p>
+    </div>
+  </div>
+
+  <details class="card r5-opt">
+    <summary>🛠️ 도구로 완성하기 <small>(다음 시간 · 집에서)</small></summary>
+    <ol>
+      <li><b>선생님이 알려 주는 도구</b>를 열고 정사각형 카드 5장을 만들어요.</li>
+      <li>오늘 만든 초안의 글을 장마다 옮기고, 이용 조건을 확인한 폰트와 그림을 넣어요.</li>
+      <li>마지막 장에 출처를 적고, 모둠원끼리 돌려 보며 글자 크기와 맞춤법을 확인해요.</li>
+      <li>완성한 파일은 선생님이 안내하는 곳에 제출해요.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- 3 배포 계획 · 평가하기 -->
+<section class="page" data-name="배포 계획 · 평가" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>결과 예측 및 성찰하기 · 평가하기</h2><p>교과서 235쪽 · 프로젝트 4단계와 평가하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>카드 뉴스는 만드는 것으로 끝이 아니에요. 실제 친구들에게 보여 주고 <b>반응을 확인</b>해야 해요. 친구들의 반응을 통해 <b>개인 정보 자기 결정권에 대한 인식</b>이 높아졌는지 알아볼 배포 계획을 세워요.</span></div>
+  <div class="card">
+    <h3>📣 카드 뉴스 배포 계획</h3>
+    <div class="r5-tw"><table class="tbl r5-plan">
+      <tr><th>구분</th><td><div id="distKind"></div></td></tr>
+      <tr><th>게시할 곳</th><td><input type="text" data-memo="distWhere" placeholder="예: 학급 게시판, 학교 누리집 게시판"><div class="saved"></div></td></tr>
+      <tr><th>게시 기간</th><td><input type="text" data-memo="distWhen" placeholder="예: 다음 주 월요일부터 2주"><div class="saved"></div></td></tr>
+      <tr><th>친구들의 반응 정리 방법</th><td><textarea data-memo="distReact" rows="2" placeholder="예: 카드 뉴스를 보기 전과 본 뒤에 같은 질문 하나로 짧은 설문"></textarea><div class="saved"></div></td></tr>
+      <tr><th>배포 시 유의할 점</th><td><textarea data-memo="distCare" rows="2" placeholder="카드 속에 누군가를 알아볼 수 있는 정보는 없을까? 그곳에 게시해도 되는지 누구에게 확인할까?"></textarea><div class="saved"></div></td></tr>
+    </table></div>
+    <div class="memo" style="margin-top:12px"><label>🔮 친구들은 어떤 반응을 보일까요? <small>결과 예측</small></label><textarea data-memo="distGuess" rows="2"></textarea><div class="saved"></div></div>
+    <p class="note">게시하기 전에 선생님께 게시할 곳과 내용을 확인받아요. 실제 배포와 반응 정리는 카드 뉴스를 완성한 뒤에 해요.</p>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ 우리 모둠 프로젝트 카드 <span class="muted" style="font-weight:400;font-size:.88rem">(적은 내용이 바로 나타나요)</span></h3>
+    <div id="projCard"></div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✅ 자기 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(잘한 것을 모두 골라요)</span></h3>
+      <div id="selfEval"></div>
+      <details class="r5-opt" style="margin-top:12px">
+        <summary>이 프로젝트로 길러진 역량 <small>(선택)</small></summary>
+        <div id="compPick"></div>
+      </details>
+    </div>
+    <details class="card r5-opt">
+      <summary>👂 동료 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다른 모둠 카드 뉴스를 본 뒤)</span></summary>
+      <div class="memo">
+        <label>가장 좋았던 모둠과 그 까닭 <small>평가 기준의 말로</small></label><textarea data-memo="peer" rows="3"></textarea>
+        <label>그 모둠에 건넬 의견 하나 <small>받은 의견은 카드 뉴스를 완성할 때 반영해요</small></label><textarea data-memo="peerAsk" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <details class="card r5-opt">
+    <summary>📋 평가 기준 보기 (눌러서 펼치기)</summary>
+    <div class="r5-tw"><table class="tbl r5-crit">
+      <tr><th>항목</th><th>평가 기준</th></tr>
+      <tr><td><b>주제 선정</b></td><td>주제에 맞는 문제 사례를 선정하였는가?</td></tr>
+      <tr><td rowspan="2"><b>해결 과정</b></td><td>구체적 해결 방안을 세웠는가?</td></tr>
+      <tr><td>내용을 잘 전달할 수 있도록 카드 뉴스를 만들었는가?</td></tr>
+      <tr><td><b>평가 및 성찰</b></td><td>우리 모둠의 카드 뉴스에 대한 다른 모둠의 의견을 받아들이고 반영하였는가?</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<!-- 4 진로 -->
+<section class="page" data-name="진로" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>다양한 위협으로부터 정보 보안을 책임지는 화이트 해커</h2><p>교과서 236쪽 · 상상을 현실로 도전하는 사람들</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>스마트폰에는 사진, 주고받은 메시지, 이동 경로처럼 나와 관련된 흔적이 데이터로 남아요. 사회가 디지털화될수록 이런 정보를 외부의 위협으로부터 지키는 일이 더 중요해져요. 그 일을 맡는 사람이 <b>화이트 해커</b>예요. 카드를 눌러 인터뷰 내용을 확인해 봐요.</span></div>
+  <div class="tcards" id="careerCards"></div>
+  <details class="card r5-opt" style="margin-top:18px">
+    <summary>🪪 나의 진로 카드 <small>(선택 · 시간이 남으면)</small></summary>
+    <div class="memo">
+      <label>내 관심 분야에서 지키고 싶은 정보 한 가지와, 그 정보를 지키기 위해 할 수 있는 일</label><textarea data-memo="career" rows="2" placeholder="예: 병원 진료 기록 — 기록을 볼 수 있는 사람을 정하고 접속 기록을 살피는 일"></textarea>
+      <label>화이트 해커처럼 정보 보안 분야에서 일하려면 내가 기르고 싶은 역량 <small>여럿 골라도 돼요</small></label><div id="careerSkill"></div>
+      <div class="saved"></div>
+    </div>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 Ⅴ단원 정리 -->
+<section class="page" data-name="Ⅴ단원 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>Ⅴ단원 정리: 디지털 문화</h2><p>교과서 237쪽 · 주요 개념 정리</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>디지털 기술과 사회 변화</b>, <b>정보 보호와 보안</b>을 한 번에 돌아봐요. 먼저 용어를 훑고, 상황을 읽고 어떤 용어인지 고르는 게임을 한 뒤 퀴즈로 확인해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">📡</div><h4>디지털 기술과 사회 변화</h4><p>디지털 기술 · 사물 인터넷, 인공지능, 웨어러블, 메타버스 등 새로운 기술이 <b>우리 생활과 사회 모습</b>을 바꿈 · 디지털 기술 발전에 따른 <b>직업과 진로의 변화</b>(데이터 엔지니어 등) · 컴퓨팅 사고력</p></div>
+    <div class="kc" style="--k:#d64535"><div class="ic">🛡️</div><h4>정보 보호와 보안</h4><p>보호할 정보와 공유할 정보 · 개인 정보와 <b>개인 정보 자기 결정권</b> · 개인 정보 보호법 등 법적 장치 · 악성 코드 · 해킹 · <b>정보 공급자와 정보 사용자</b>의 정보 보안 실천</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 어떤 용어일까?</h3>
+    <div id="unitSort"></div>
+  </div>
+  <details class="card r5-opt">
+    <summary>✅ 역량 Check! <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 이 단원에서 길러진 역량을 모두 골라요)</span></summary>
+    <div id="unitComp" style="margin-top:8px"></div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#d64535">내 정보가 언제, 누구에게, 어느 범위까지 알려질지는 내가 정할 수 있다. 사례 속에서 <b>무엇이 알려졌는지</b> 찾아보면 지켜야 할 것이 보인다.</div>
+    <div style="--k:#e0702b">프로젝트는 <b>문제 발견 → 해결 방안 계획 → 카드 뉴스 만들기 → 배포 계획과 성찰</b> 순서로 진행하고, 다른 모둠의 의견을 받아 결과물을 고쳐 나간다.</div>
+    <div style="--k:#9b4fc4">정보 보안은 사회를 안전하게 만드는 일이다. 전문가가 시스템을 지키는 것과 함께, <b>개인도 보안을 지키는 방법</b>을 꾸준히 실천해야 한다.</div>
+  </div>
+  <div class="card">
+    <h3>Ⅴ단원 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 만든 카드 뉴스의 해결 방안을 예로 들어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>우리 모둠이 고른 <b>청소년 개인 정보 침해 사례</b>를 쓰고, 이 사례에서 개인 정보 자기 결정권(언제, 누구에게, 어느 범위까지)이 어떻게 지켜지지 못했는지 설명하세요.</li>
+      <li>사례 속 개인 정보 침해를 막기 위해 세운 <b>구체적인 해결 방안</b>을 쓰고, 이를 청소년에게 효과적으로 알리기 위해 카드 뉴스의 장면을 어떤 순서와 내용으로 구성했는지 설명하세요.</li>
+      <li>우리 모둠의 <b>카드 뉴스 배포 계획</b>(게시할 곳, 반응 정리 방법, 배포 시 유의할 점)을 쓰고, 친구들의 반응으로 개인 정보 자기 결정권에 대한 인식이 높아졌는지 어떻게 확인할지 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요. 실제 이름이나 연락처는 쓰지 마세요.</p>
+    <a class="go" href="../forms/info-u5-review.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u5-review', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 234~237쪽) — 단원 정리 문항은 새로 만든 상황 문장, 보기는 짧은 것부터 */
+const QUIZ={
+ 1:[{q:'앱에 가입하는 ㄴ 학생의 행동 가운데 개인 정보 자기 결정권을 행사한 것은?',o:['위치 정보 제공을 거절했다','약관을 읽지 않고 동의했다','가입 축하 쿠폰을 바로 받았다'],a:0,w:'내 위치가 앱 회사에 알려질지 말지를 직접 고른 행동이에요. 약관을 읽지 않고 동의하면 내 정보가 어디까지 쓰이는지 모른 채 넘기게 돼요(234쪽).'},
+    {q:'SNS에 사진을 올릴 때, 내 정보가 낯선 사람에게까지 퍼지는 것을 막는 데 가장 도움이 되는 행동은?',o:['조회 수를 확인한다','볼 사람을 친구로 정한다','사진 크기를 줄여서 올린다'],a:1,w:'게시물을 볼 수 있는 사람을 정하면 내 정보가 누구에게, 어디까지 알려질지를 내가 결정하게 돼요(234쪽).'}],
+ 4:[{q:'인터뷰에서 앞으로 정보 보안이 더욱 중요해진다고 본 까닭으로 알맞은 것은?',o:['연결된 기기가 늘어서','종이 문서 사용이 늘어서','컴퓨터 쓰는 사람이 줄어서'],a:0,w:'사물 인터넷, 클라우드 컴퓨팅, 모바일 기기 사용이 늘어나 많은 것이 이어지는 초연결 사회일수록 지켜야 할 정보가 많아져요(236쪽).'},
+    {q:'인터뷰에서 화이트 해커와 블랙 해커를 가르는 가장 중요한 기준으로 꼽은 것은?',o:['코딩 실력','높은 윤리 의식','다룰 줄 아는 도구의 수'],a:1,w:'기술은 같아도 불법적인 유혹에 흔들리지 않고 도덕적 가치를 지키는지가 둘을 가른다고 했어요(236쪽).'}],
+ 5:[{q:'동아리 부장인 ㄷ 학생은 부원들의 연락처를 모아 동아리 게시판에 정리해 두고 관리한다. 이때 ㄷ 학생이 맡은 역할은?',o:['정보 사용자','정보 공급자','개인 정보 보호 전문가'],a:1,w:'학생도 다른 사람의 정보를 모아 저장하고 관리하면 정보 공급자가 돼요. 정보를 이용하기만 하는 것이 아니라 역할이 겹칠 수 있어요.'},
+    {q:'공공의 이익을 위해 많은 사람과 나누는 것이 알맞은 정보는?',o:['친구의 집 주소','은행 계좌 비밀번호','지진 대피소 위치 안내'],a:2,w:'재난에 대비하는 정보는 널리 알려야 모두가 안전해져요. 집 주소나 비밀번호는 보호해야 할 정보예요.'},
+    {q:'한 학원이 수강생들의 전화번호를 본인에게 묻지 않고 광고 업체에 넘겼다. 이런 일을 막으려고 우리 사회가 마련해 둔 것은?',o:['방화벽','학교 생활 규정','개인 정보 보호법'],a:2,w:'남의 정보를 동의 없이 넘기는 일은 법으로 막아요. 방화벽은 기술로 시스템을 지키는 방법이고, 학교 생활 규정은 학원에 적용되지 않아요.'}],
+ 6:[{q:'카드 뉴스에 다른 사람이 만든 폰트와 이미지를 쓸 때 해야 할 일은?',o:['배경색과 맞추기','장마다 한 번씩 넣기','이용 조건 확인과 출처 표시'],a:2,w:'폰트와 이미지에도 저작권이 있으니 이용 조건을 확인하고 출처를 밝혀야 해요(235쪽).'},
+    {q:'카드 뉴스를 배포한 뒤 친구들의 반응을 모으는 까닭은?',o:['조회 수를 늘리려고','인식 변화를 확인하려고','다른 모둠과 순위를 매기려고'],a:1,w:'친구들의 반응을 보고 개인 정보 자기 결정권에 대한 인식이 높아졌는지 확인해요(235쪽).'},
+    {q:'다음 가운데 그 사람을 알아보거나 연락하는 데 쓰일 수 있는 개인 정보는?',o:['휴대 전화 번호','오늘의 급식 메뉴','좋아하는 노래 장르'],a:0,w:'전화번호가 알려지면 모르는 사람이 바로 연락할 수 있어서, 함부로 공개하지 않아야 해요.'}]
+};
+
+const QK='ds-u5-review-quiz'+WHO.sfx;
+const MK='ds-u5-review-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 01 사례 속 개인 정보 찾기 (새로 지은 가상의 사례) */
+const R5_STORY=[
+  '고등학생 ㄱ 학생은 체육 대회 날 반 친구들과 찍은 사진을 SNS에 <b>전체 공개</b>로 올렸다. 사진에는 ㄱ 학생의 ',
+  {t:'얼굴',p:1,w:'얼굴을 보면 ㄱ 학생을 바로 알아볼 수 있어요.'},
+  '이 또렷하게 나오고, 체육복에 붙인 ',
+  {t:'이름표',p:1,w:'이름은 ㄱ 학생을 가리키는 대표적인 개인 정보예요.'},
+  '도 읽을 수 있었다. 반 티셔츠 등에는 ',
+  {t:'학교 이름',p:1,w:'얼굴, 이름과 합쳐지면 ㄱ 학생이 어디에 다니는지 알 수 있어요.'},
+  '이 크게 적혀 있었다. 설명란에는 우리 반 ',
+  {t:'응원 구호',p:0,w:'반 응원 구호만으로는 ㄱ 학생을 알아볼 수 없어요.'},
+  '와 함께 「사진 원본이 필요하면 문자 주세요」라는 말과 ',
+  {t:'휴대 전화 번호',p:1,w:'모르는 사람이 ㄱ 학생에게 바로 연락할 수 있게 돼요.'},
+  '를 남겼다. 「다음엔 언제 만나?」라는 댓글에는 「매주 화요일 ',
+  {t:'저녁 7시 ○○학원 앞',p:1,w:'그 시간에 그곳에 가면 ㄱ 학생을 만날 수 있게 돼요.'},
+  '에 있어」라고 답했다. 게시물은 하루 만에 ',
+  {t:'좋아요 3천 개',p:0,w:'좋아요 수는 ㄱ 학생에 관한 정보가 아니에요.'},
+  '를 넘었고, ',
+  {t:'응원 댓글 수십 개',p:0,w:'댓글 개수만으로는 ㄱ 학생을 알아볼 수 없어요.'},
+  '가 달렸다.'
+];
+function r5Story(){
+  const B=$('findStory');
+  B.innerHTML=R5_STORY.map((s,i)=>typeof s==='string'?s:`<button type="button" class="r5-tok" data-i="${i}">${esc(s.t)}</button>`).join('');
+  B.querySelectorAll('.r5-tok').forEach(b=>b.onclick=()=>{ if(B.classList.contains('done')) return; b.classList.toggle('on'); });
+  B.classList.remove('done'); $('findRes').innerHTML='';
+}
+$('findCheck').onclick=()=>{
+  const B=$('findStory'); if(B.classList.contains('done')) return;
+  const toks=[...B.querySelectorAll('.r5-tok')]; let hit=0, total=0, wrong=0;
+  const notes=[];
+  toks.forEach(b=>{
+    const s=R5_STORY[+b.dataset.i], on=b.classList.contains('on');
+    if(s.p) total++;
+    if(s.p&&on){hit++; b.classList.add('ok');}
+    else if(s.p&&!on){b.classList.add('miss'); notes.push(`<li><b>${esc(s.t)}</b> · ${s.w}</li>`);}
+    else if(!s.p&&on){wrong++; b.classList.add('ng'); notes.push(`<li><b>${esc(s.t)}</b> · ${s.w}</li>`);}
+  });
+  B.classList.add('done');
+  $('findRes').innerHTML=`<p><b>ㄱ 학생을 알아보거나, 연락하거나, 있는 곳을 알 수 있게 하는 정보 ${total}개 가운데 ${hit}개</b>를 찾았어요.${wrong?` 개인 정보가 아닌 것을 ${wrong}개 골랐어요.`:''}</p>`+
+    (notes.length?`<ul>${notes.join('')}</ul>`:'')+
+    `<div class="r5-after">📱 며칠 뒤, ㄱ 학생에게 모르는 번호로 「화요일 저녁에 학원 앞에서 기다릴게」라는 문자가 왔다.</div>`+
+    `<p class="muted" style="margin:6px 0 0">하나하나는 사소해 보여도, 여러 정보가 합쳐지면 낯선 사람도 ㄱ 학생이 <b>언제, 어디에</b> 있는지 알 수 있어요.</p>`;
+};
+$('findReset').onclick=r5Story;
+r5Story();
+chips('rightPick','rightPickName',['언제','누구에게','어느 범위까지'],true);
+
+/* 02 카드 뉴스 초안: 적는 대로 카드에 나타내기 */
+const R5_THEME={'바다 파랑':['#1d4f91','#e8f1fc'],'숲 초록':['#17694f','#e6f5ee'],'노을 주황':['#b8551b','#fdf0e5'],'밤하늘 보라':['#5b2f86','#f2eafa']};
+if(!MEMO.cnThemePick) MEMO.cnThemePick='바다 파랑';
+chips('cnTheme','cnThemePick',Object.keys(R5_THEME),false);
+const R5_CV=[
+  {k:'cn1',ic:'📣',h:''},
+  {k:'cn2',ic:'📰',h:'이런 일이 있었어요'},
+  {k:'cn3',ic:'⚠️',h:'왜 문제일까요?'},
+  {k:'cn4',ic:'🛡️',h:'이렇게 지켜요'},
+  {k:'cn5',ic:'🤝',h:'함께 지켜요'}
+];
+function r5CN(){
+  const v=k=>(MEMO[k]||'').trim();
+  const th=R5_THEME[v('cnThemePick')]||R5_THEME['바다 파랑'];
+  R5_CV.forEach((c,i)=>{
+    const box=$('cv'+(i+1)); if(!box) return;
+    const txt=v(c.k), n=txt.length;
+    box.style.setProperty('--c1',th[0]); box.style.setProperty('--c2',th[1]);
+    let body;
+    if(i===0){
+      body=`<div class="r5-cover"><i>${c.ic}</i><b${v('cnTitle').length>16?' class="sm"':''}>${v('cnTitle')?esc(v('cnTitle')):'<span class="e">제목을 적어요</span>'}</b><p>${txt?esc(txt):'<span class="e">한 줄 질문이나 문구</span>'}</p></div>`;
+    }else{
+      body=`<div class="r5-in"><h5>${c.ic} ${c.h}</h5><p>${txt?esc(txt):'<span class="e">아직 비어 있어요</span>'}</p>${i===4&&v('cnSource')?`<small class="src">출처 ${esc(v('cnSource'))}</small>`:''}</div>`;
+    }
+    box.innerHTML=body+`<span class="pg">${i+1} / 5</span>`+(n>(i===0?30:70)?`<span class="long">글이 길어요 (${n}자)</span>`:'');
+  });
+}
+chips('cnCheck','cnCheckPick',['장면이 이야기처럼 이어진다','한 장에 한 가지만 담았다','폰트와 이미지의 이용 조건을 확인했다','마지막 장에 출처를 적었다','실제 개인 정보가 들어가지 않았다'],true);
+
+/* 03 배포 계획 · 프로젝트 카드 */
+chips('distKind','distKindPick',['온라인','오프라인'],true);
+function r5Card(){
+  const v=k=>(MEMO[k]||'').trim();
+  const t=(k,ph)=>v(k)?esc(v(k)):`<span class="e">${ph}</span>`;
+  const filled=R5_CV.filter(c=>v(c.k)).length;
+  $('projCard').innerHTML=`<div class="r5-pc">
+    <div class="r5-hd"><b>${esc(v('team')||'우리 모둠')}</b><small>내 개인 정보는 어떻게 지킬까?</small></div>
+    <div class="pb"><b>사례</b> ${t('caseNote','01에서 적기')}<br><b>지켜지지 못한 것</b> ${t('caseRight','01에서 적기')}</div>
+    <div class="r5-steps">
+      <div style="--k:#d64535"><h5>해결 방안</h5>${t('solution','01에서 적기')}</div>
+      <div style="--k:#e0702b"><h5>카드 뉴스</h5>${t('cnTitle','02에서 제목 적기')}<br><small class="muted">초안 ${filled} / 5장</small></div>
+      <div style="--k:#1f9d74"><h5>배포 계획</h5>${t('distKindPick','구분 고르기')}<br>${t('distWhere','게시할 곳')}<br>${t('distWhen','게시 기간')}</div>
+      <div style="--k:#2f6fd0"><h5>반응 확인</h5>${t('distReact','반응 정리 방법')}</div>
+    </div>
+  </div>`;
+}
+let r5T;
+document.addEventListener('input',e=>{ if(e.target.matches&&e.target.matches('[data-memo]')){ clearTimeout(r5T); r5T=setTimeout(()=>{r5CN(); r5Card();},350); } });
+['cnTheme','distKind'].forEach(id=>$(id).addEventListener('memo',()=>{r5CN(); r5Card();}));
+r5CN();
+onShow[2]=r5CN;
+onShow[3]=r5Card;
+
+/* 03 평가하기 (235쪽 평가 기준을 줄여서) */
+chips('selfEval','selfEvalPick',['주제에 맞는 사례를 골랐다','구체적인 해결 방안을 세웠다','내용이 잘 전달되게 카드 뉴스를 구성했다','다른 모둠의 의견을 받아 반영했다'],true);
+chips('compPick','compPickName',['지식 정보 처리','창의적 사고','협력적 소통','공동체 역량'],true);
+
+/* 04 진로: 인터뷰 카드 (교과서 236쪽 내용을 줄여서) */
+flipCards('careerCards',[
+  {ic:'🛡️',f:'어떤 일을 하나요?',s:'눌러서 답 보기',b:'불법적인 의도로 정보를 빼앗으려는 <b>블랙 해커</b>의 위협으로부터 시스템을 보호하고 안전을 유지해요. <b>모의 해킹</b>을 하거나 <b>사전 방어 시스템</b>을 구축해요.'},
+  {ic:'📚',f:'무엇을 준비해야 하나요?',s:'눌러서 답 보기',b:'개발 언어, 클라우드 같은 새로운 환경과 해킹 기술에 관심을 갖고 <b>꾸준히 공부</b>해요. 두려움 대신 <b>호기심</b>으로 끈질기게 탐구하고, 같은 관심사를 가진 사람들과 의견을 나누며 스스로 배울 것을 찾아요.'},
+  {ic:'🔭',f:'전망은 어떤가요?',s:'눌러서 답 보기',b:'국가와 기업에서는 정보가 곧 <b>경제적 가치</b>예요. 사물 인터넷, 클라우드 컴퓨팅, 모바일 기기 사용이 크게 늘어나는 <b>초연결 사회</b>일수록 정보 보안이 더 중요해져서, 화이트 해커의 수요가 늘어날 것으로 봐요.'},
+  {ic:'🧭',f:'청소년에게 건네는 조언',s:'눌러서 답 보기',b:'화이트 해커와 블랙 해커를 가르는 가장 중요한 기준은 <b>높은 윤리 의식</b>이에요. 불법적인 유혹에 흔들리지 않아야 해요. 작은 목표와 작은 성공을 쌓아 가고, <b>개인으로서도</b> 보안을 지키는 방법을 꾸준히 실천해요.'}
+]);
+chips('careerSkill','careerSkillPick',['새로운 기술에 대한 호기심','끈기 있게 탐구하는 자세','함께 배우고 의견 나누기','프로그래밍','도덕적 가치를 지키는 태도'],true);
+
+/* 05 단원 정리: 어떤 용어일까? (새로 만든 상황) */
+sorter('unitSort',{
+  cats:[{n:'웨어러블',k:'#2f6fd0'},{n:'메타버스',k:'#1f9d74'},{n:'데이터 엔지니어',k:'#e0702b'},{n:'악성 코드',k:'#d64535'},{n:'해킹',k:'#9b4fc4'}],
+  items:[
+    {t:'안경처럼 쓰는 기기가 길을 걸을 때 눈앞에 화살표를 띄워 갈 길을 알려 준다',ic:'👓',c:0,short:'길을 알려 주는 안경',w:'눈앞에 화면이 떠도 가상 세계에 들어간 것은 아니에요. 안경처럼 쓰고 다니는 기기라는 점이 핵심이에요.'},
+    {t:'할머니가 손가락에 낀 반지가 밤사이 맥박이 갑자기 빨라진 것을 알아채 가족 휴대폰에 알림을 보냈다',ic:'💍',c:0,short:'맥박을 재는 반지',w:'반지처럼 늘 끼고 다니는 기기가 몸 상태를 재고 있었기 때문이에요.'},
+    {t:'졸업한 선배들과 각자 고른 캐릭터로 온라인 속 학교 운동장에 모여 함께 축제 부스를 열었다',ic:'🎪',c:1,short:'온라인 속 학교 축제',w:'실제로 만나지 않고 캐릭터로 온라인 속 공간에 모여 축제라는 활동을 함께 했기 때문이에요.'},
+    {t:'하루 수백만 건씩 들어오는 주문 기록이 끊기지 않고 서버에 쌓이도록 통로를 짓고, 분석하는 사람이 바로 꺼내 쓸 수 있게 기록 창고를 정리한다',ic:'🧰',c:2,short:'주문 기록이 다니는 통로 짓기',w:'주문 기록이 흘러 들어갈 길과 쌓아 둘 곳을 마련하는 것이 이 사람의 일이기 때문이에요.'},
+    {t:'메일에 붙은 파일을 연 뒤부터 컴퓨터가 눈에 띄게 느려지고, 같은 메일이 주소록의 친구들에게 저절로 퍼져 나간다',ic:'🧨',c:3,short:'저절로 퍼지는 메일 파일',w:'누가 직접 들어온 것이 아니라 파일 속 프로그램이 스스로 퍼지며 피해를 주고 있기 때문이에요.'},
+    {t:'출처를 모르는 게임 설치 파일을 열자 휴대폰 속 사진이 모두 잠기고, 풀어 주는 대가로 돈을 요구하는 창이 떴다',ic:'🔒',c:3,short:'사진을 잠그는 설치 파일',w:'설치 파일 속 프로그램이 사진을 잠가 돈을 요구하는 피해를 주었기 때문이에요.'},
+    {t:'누군가 학교 누리집 관리자의 비밀번호를 여러 번 추측해 알아낸 뒤, 그 계정으로 서버에 몰래 들어가 학생 명단을 내려받는다',ic:'🕵️',c:4,short:'관리자 비밀번호를 알아내 접속',w:'프로그램이 아니라 사람이 비밀번호를 알아내 허락 없이 들어가는 행동이 문제이기 때문이에요.'}
+  ],
+  end:'헷갈릴 때는 <b>무엇이</b> 일을 하는지 보세요. 몸에 지닌 기기인지, 여럿이 모이는 온라인 속 공간인지, 기록이 다닐 길을 짓는 사람인지, 스스로 움직이는 프로그램인지, 몰래 들어오는 사람인지에 따라 갈려요.'
+});
+chips('unitComp','unitCompPick',['컴퓨팅 사고력','추상화 능력','자동화 능력','창의·융합 능력','디지털 문화 소양','디지털 의사소통·협업 능력','디지털 윤리 의식','디지털 기술 활용 능력','인공지능 소양','인공지능 문제 해결력','데이터 문해력','인공지능 윤리 의식'],true);
+
+const MEMOLIST=[['team','모둠명'],['roles','역할 나누기'],['rightPickName','ㄱ 학생이 스스로 정하지 못한 것'],['caseNote','청소년의 개인 정보 침해 사례'],['caseRight','사례에서 지켜지지 못한 것'],['solution','구체적인 해결 방안'],['cnTitle','카드 뉴스 제목'],['cnThemePick','색 묶음'],['cn1','1장 표지'],['cn2','2장 이런 일이 있었어요'],['cn3','3장 왜 문제일까요?'],['cn4','4장 이렇게 지켜요'],['cn5','5장 함께 지켜요'],['cnSource','폰트, 이미지와 출처'],['cnCheckPick','초안 점검'],['distKindPick','배포 구분'],['distWhere','게시할 곳'],['distWhen','게시 기간'],['distReact','친구들의 반응 정리 방법'],['distCare','배포 시 유의할 점'],['distGuess','예상되는 친구들의 반응'],['selfEvalPick','자기 평가'],['compPickName','길러진 역량'],['peer','동료 평가: 좋았던 모둠과 까닭'],['peerAsk','동료 평가: 건넬 의견'],['career','진로 카드: 지키고 싶은 정보와 할 수 있는 일'],['careerSkillPick','진로 카드: 기르고 싶은 역량'],['unitCompPick','역량 Check'],['keyQ','단원 핵심 질문(정보 보호와 보안)에 대한 내 답']];
+onShow[6]=()=>memoSummary('msum',MEMOLIST);
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

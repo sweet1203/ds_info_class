@@ -1,0 +1,323 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#d64535">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅴ. 디지털 문화 · 2. 정보 보호와 보안</span>
+      <h1>내 스마트폰이<br>이상해졌다면?</h1>
+      <div class="story"><b>스마트폰에 내가 찍지 않은 사진과 설치한 적이 없는 앱이 보여요.</b><br>배터리도 너무 빨리 닳아요. 도대체 무슨 문제가 생긴 것일까요?</div>
+      <p>오늘은 <b>정보 보안</b>이 왜 필요한지, 정보를 위협하는 것에는 무엇이 있는지 알아보고, <b>정보 보안 기술</b>과 <b>실천 방법</b>을 찾아요. 마지막으로 「정보 보호와 보안」을 정리하며 나만의 실천 규칙을 만들어요.</p>
+      <ol>
+        <li>정보 보안과 세 원칙</li><li>위협 요소와 악성 코드</li><li>정보 보안 위협 사례</li>
+        <li>정보 보안 기술</li><li>스스로 해결하기 · 실천 점수</li><li>정보 보호와 보안 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔐</i><div><b>정보 보안의 원칙</b><small>가용성 · 무결성 · 기밀성</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>⚠️</i><div><b>위협 요소</b><small>해킹 · 악성 코드 · 위조 · 변조 …</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧱</i><div><b>정보 보안 기술</b><small>암호화 · 방화벽 · 전자 서명</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🤝</i><div><b>함께 실천하기</b><small>정보 공급자 · 정보 사용자</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>정보 보안의 뜻과 <b>가용성 · 무결성 · 기밀성</b>의 원칙을 알아보고, <b>해킹</b>과 <b>악성 코드</b> 같은 위협 요소가 실제로 어떤 피해를 주었는지 살펴봐요. 그다음 <b>암호화, 방화벽, 전자 서명</b>을 알아보고, 정보 사용자로서 나의 실천 점수를 매겨 봐요. 끝으로 정보 보호와 보안 실천 규칙을 만들어요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">지난 시간 떠올리기 · 처음 생각</span>
+        <p style="margin:0 0 6px;font-size:.9rem">지난 시간에는 <b>정보 보호</b>와 <b>정보 공유</b>를 배웠어요. 위의 스마트폰에는 무슨 문제가 생긴 것 같나요?</p>
+        <div class="memo"><label>내 짐작</label><input type="text" data-memo="firstGuess"><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>정보 보호와 보안</b> · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">오늘 마지막에 「정보 보호와 보안」 단원의 핵심 질문에 내 말로 답해요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>정보 보안의 필요성을 설명할 수 있다.</li>
+          <li>정보 보안 기술을 활용하여 디지털 윤리를 실천할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 정보 보안 · 해킹 · 악성 코드 · 디지털 윤리</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 정보 보안과 세 원칙부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 정보 보안과 원칙 -->
+<section class="page" data-name="정보 보안과 세 원칙" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>디지털 사회에서 정보 보안은 왜 필요할까?</h2><p>교과서 228쪽 · 정보 보안, 가용성 · 무결성 · 기밀성</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보 보안은 정보가 만들어지고, 처리되고, 저장되고, 전송되는 <b>모든 과정</b>에서 허락받지 않은 사람이 정보를 보거나 쓰거나 바꾸거나 망가뜨리지 못하게 지키는 <b>방법과 절차</b>예요. 세 가지 원칙이 함께 지켜져야 해요.</span></div>
+  <div class="card">
+    <h3>🔐 정보 보안이란?</h3>
+    <p style="margin-top:0">가정, 사회, 산업 등 모든 부문에서 디지털 기술을 많이 쓰면서 <b>허락받지 않은 사용자가 시스템의 취약점을 공격</b>하여 정보를 악용하거나 훼손하는 사례가 늘고 있어요.</p>
+    <div class="callout"><b>정보 보안</b>은 정보의 생성, 처리, 저장, 전송 등의 전 과정에서 허가되지 않은 접근, 사용, 공개, 중단, 수정, 파괴로부터 정보를 안전하게 유지하는 방법과 절차를 의미해요.</div>
+    <div class="grid2">
+      <div class="is-tri">
+        <svg viewBox="0 0 300 240" role="img" aria-label="정보 보안의 원칙: 가용성, 무결성, 기밀성">
+          <path d="M150 52 L58 190 L242 190 Z" fill="none" stroke="#c9d3e3" stroke-width="3" stroke-dasharray="6 6"/>
+          <circle cx="150" cy="52" r="40" fill="#2f6fd0"/><text x="150" y="58" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">가용성</text>
+          <circle cx="58" cy="190" r="40" fill="#1f9d74"/><text x="58" y="196" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">무결성</text>
+          <circle cx="242" cy="190" r="40" fill="#d64535"/><text x="242" y="196" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">기밀성</text>
+          <text x="150" y="146" text-anchor="middle" fill="#0f2742" font-size="15" font-weight="700">정보 보안의</text>
+          <text x="150" y="166" text-anchor="middle" fill="#0f2742" font-size="15" font-weight="700">원칙</text>
+        </svg>
+      </div>
+      <div>
+        <div class="kc" style="--k:#2f6fd0;margin-bottom:8px"><h4>가용성</h4><p>사용자가 <b>필요한 시점</b>에 정보에 접근할 수 있어야 한다.</p></div>
+        <div class="kc" style="--k:#1f9d74;margin-bottom:8px"><h4>무결성</h4><p>허가되지 않거나 우연한 <b>변경</b>으로부터 정보가 보호되어야 한다.</p></div>
+        <div class="kc" style="--k:#d64535"><h4>기밀성</h4><p><b>허가된 사용자만</b> 정보에 접근할 수 있어야 한다.</p></div>
+      </div>
+    </div>
+    <p class="note">네트워크에서나 디지털 기술에 쓰이는 모든 장치에서 가용성, 무결성, 기밀성의 원칙이 지켜질 때 정보 보안이 유지될 수 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어떤 원칙이 깨졌을까?</h3>
+    <p class="muted" style="margin-top:0">상황을 읽고, 세 원칙 가운데 어느 것이 지켜지지 않았는지 골라요.</p>
+    <div id="ruleGame"></div>
+    <div class="memo" style="margin-top:12px"><label>원칙 하나를 골라, 그 원칙이 깨지는 <b>우리 생활 속 상황</b>과 그때 생길 피해를 적어요.</label><input type="text" data-memo="ruleBreak"><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 위협 요소 · 악성 코드 -->
+<section class="page" data-name="위협 요소와 악성 코드" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>정보 보안을 위협하는 것은 무엇일까?</h2><p>교과서 228쪽 · 해킹, 악성 코드, 위조, 변조, 접근과 유출, 훼손과 파괴</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>시스템 관리자가 아무리 애써도 정보를 노리는 위협은 곳곳에 있어요. 남의 시스템에 몰래 들어가는 <b>해킹</b>, 해를 끼치려고 만든 <b>악성 코드</b>, 정보를 거짓으로 만들거나 바꾸거나 빼내거나 망가뜨리는 행위가 모두 위협이에요.</span></div>
+  <div class="card">
+    <h3>⚠️ 정보 보안 위협 요소</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#d64535"><h4>🕵️ 해킹</h4><ul class="is-ul"><li>악의적인 목적으로 타인의 컴퓨터나 정보 시스템에 무단으로 침입하여 정보를 빼내는 행위이다.</li><li>웹 사이트의 취약점을 공격하는 <b>웹 해킹</b>, 운영체제 또는 프로그램을 분석하여 권한을 얻는 <b>시스템 해킹</b>, 네트워크에 있는 취약점을 찾아 공격하는 <b>네트워크 해킹</b> 등이 있다.</li></ul></div>
+      <div class="kc" style="--k:#e0702b"><h4>🦠 악성 코드</h4><ul class="is-ul"><li>사용자에게 해를 끼치기 위해 만들어진 코드이다.</li><li>웹이나 앱을 통해 감염되기 때문에 빠르게 퍼지고, 감염된 시스템은 해킹 같은 피해로 이어진다.</li><li>여러 속성이 결합되고 있어 한 가지 유형으로 정의하기 어렵기도 하다.</li></ul></div>
+    </div>
+    <div class="cards4" style="margin-top:12px">
+      <div class="kc" style="--k:#9b4fc4"><h4>🎭 위조</h4><p>거짓 정보를 정확한 정보처럼 보이게 하는 행위</p></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>✏️ 변조</h4><p>원래의 정보를 다른 내용으로 바꾸는 행위</p></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>📤 접근과 유출</h4><p>허락받지 않은 사람이 정보를 확인하거나 외부로 내보내는 행위</p></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>💥 훼손과 파괴</h4><p>정보를 변경하거나 파괴하여 정상적인 작동을 못 하게 하는 행위</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🦠 대표적인 악성 코드 <span class="muted" style="font-weight:400;font-size:.88rem">(카드를 눌러 뒤집어 봐요)</span></h3>
+    <div class="tcards" id="malCards"></div>
+  </div>
+  <div class="card">
+    <h3>📱 처음의 스마트폰 다시 보기</h3>
+    <p style="margin-top:0">내가 찍지 않은 사진, 설치한 적이 없는 앱, 너무 빨리 닳는 배터리. 이제 어떤 위협 요소 때문일 수 있을지 다시 생각해 봐요.</p>
+    <div class="callout">💡 대부분의 악성 코드는 사용자의 정보 기기에 침투해 <b>다른 기기를 공격하는 도구</b>로 활용돼요. 내가 모르는 사이에 내 기기가 공격에 쓰이고 있을 수도 있어요.</div>
+    <div class="memo"><label>어떤 위협 요소(또는 악성 코드) 때문일 수 있을까요? 까닭도 함께 적어요. <small>한 가지로 딱 정하기 어려울 수 있어요. 여러 속성이 결합되기도 하니까요.</small></label><input type="text" data-memo="symptomWhy"><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 위협 사례 -->
+<section class="page" data-name="정보 보안 위협 사례" data-acc="#c0392b">
+  <div class="head"><div class="num">03</div><div><h2>정보 보안 위협 사례</h2><p>교과서 229쪽 · 해킹, 악성 코드, 디도스 공격, 파밍</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 지키지 못하면 개인 정보가 새고, 기업의 기밀 정보와 핵심 기술이 새어 나가 <b>경제적 손실</b>이 생겨요. 대책이 부족하면 문제를 해결하고 복구하는 데 많은 자원을 낭비하게 되어 <b>기업의 성장</b>도 방해받아요.</span></div>
+  <div class="card">
+    <h3>📰 사례 살펴보기 <span class="muted" style="font-weight:400;font-size:.88rem">(사례를 눌러 봐요)</span></h3>
+    <p style="margin-top:0">각 사례에서 정보 보안 위협 요소로 어떤 피해를 입었는지 살펴봐요.</p>
+    <div class="apps is-4" id="caseBtns"></div>
+    <div class="cview" id="caseView"></div>
+  </div>
+  <div class="card">
+    <h3>✍️ 사례 하나 골라 정리하기</h3>
+    <div id="casePick"></div>
+    <div class="memo" style="margin-top:10px"><label>고른 사례에서 <b>어떤 위협 요소</b>로 <b>어떤 피해</b>를 입었는지 내 말로 적어요.</label><textarea data-memo="caseWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 정보 보안 기술 -->
+<section class="page" data-name="정보 보안 기술" data-acc="#1f9d74">
+  <div class="head"><div class="num">04</div><div><h2>정보 보안 기술과 실천 방법은 무엇이 있을까?</h2><p>교과서 230쪽 · 암호화, 방화벽, 전자 서명, 정보 공급자와 정보 사용자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 지키는 대표 기술은 <b>암호화</b>(알아볼 수 없게 바꾸기), <b>방화벽</b>(밖에서 들어오는 수상한 접근 막기), <b>전자 서명</b>(인터넷에서 신원 확인하기)이에요. 기술을 알았다면 이제 03의 사례에 연결해 봐요.</span></div>
+  <div class="card">
+    <h3>🧰 대표적인 정보 보안 기술</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🔏</div><h4>암호화</h4><p>데이터를 보낼 때 불법적인 방법으로 탈취되거나 변경되는 상황에 대비해 데이터를 변환하여 보내는 방법이에요. 남이 알아볼 수 없는 암호문 형태로 저장하거나 전송하므로 잃어버려도 비밀을 지킬 수 있어요.</p><small>Ⅱ단원에서 배운 암호화(교과서 62쪽)를 떠올려요.</small></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🧱</div><h4>방화벽</h4><p>네트워크에서 외부의 불법적 침입을 막고 정상 접근만을 허용해 내부의 정보를 보호하는 시스템이에요. 바이러스 같은 위험한 정보는 차단하고, 외부의 접근 시도를 허용할지 판단해 네트워크를 보호해요.</p></div>
+      <div class="kc" style="--k:#9b4fc4"><div class="ic">✍️</div><h4>전자 서명</h4><p>일상에서 학생증이나 주민 등록증으로 신원을 확인하듯, 인터넷에서도 신원을 확인하거나 안전하게 거래하기 위해 <b>증명서 역할</b>을 하는 것이 필요한데, 이것이 전자 서명이에요.</p></div>
+    </div>
+    <div class="is-fw" aria-label="방화벽 그림">
+      <div class="z"><b>🌐 인터넷</b><span class="bad">✖ 수상한 접근</span><span class="bad">✖ 바이러스</span><span class="good">✔ 정상 접근</span></div>
+      <div class="w">🧱<b>방화벽</b></div>
+      <div class="z"><b>🏫 내부 네트워크</b><span class="good">✔ 정상 접근만 들어옴</span></div>
+    </div>
+    <div class="cards2" style="margin-top:12px">
+      <div class="kc" style="--k:#9b4fc4"><h4>📜 공동 인증서</h4><p>주민 등록증이나 서명 같은 신원 확인을 인터넷에서 처리할 수 있도록 만든 전자 서명 방법으로, 2020년 공인 인증서에서 공동 인증서로 이름이 바뀌었어요.</p></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>🖐️ 생체 신호 인증 기술</h4><p>개인의 고유한 특성인 신체적 또는 행동적 특징을 이용해 사용자를 인증하는 기술로, 쓰이는 분야가 넓어지고 있는 전자 서명 방법이에요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✍️ 03의 사례에 기술을 연결하기</h3>
+    <p class="muted" style="margin-top:0">위의 세 기술 가운데 03에서 고른 사례의 피해를 줄이는 데 도움이 될 기술을 골라요(여럿 골라도 돼요).</p>
+    <div id="techPick"></div>
+    <div class="memo" style="margin-top:10px"><label>그 기술이 사례의 어느 단계에서, 왜 도움이 될지 적어요.</label><textarea data-memo="techWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어떤 보안 기술일까?</h3>
+    <p class="muted" style="margin-top:0">시간이 되면 장면 네 개를 읽고, 어떤 정보 보안 기술이 쓰였는지 골라요.</p>
+    <div id="techGame"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 스스로 해결하기 -->
+<section class="page" data-name="스스로 해결하기 · 실천 점수" data-acc="#9b4fc4">
+  <div class="head"><div class="num">05</div><div><h2>스스로 해결하기 · 정보 보호와 보안 실천 방법</h2><p>교과서 231쪽 · 분석 · 표현</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 쓰고, 주고, 관리하는 모든 사람이 실천해야 사회가 안전해요. <b>정보 공급자는 정보 보안 실천</b>에, <b>정보 사용자는 정보 보호 실천</b>에 집중해요. 개인 정보의 주체인 우리는 정보의 사용자이면서 공급자이기도 해요.</span></div>
+  <div class="card">
+    <h3>🤝 정보 공급자와 정보 사용자, 모두 함께</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#1f9d74"><h4>📦 정보 공급자</h4><p>개인 정보를 포함한 여러 가지 정보를 수집, 저장하여 정보를 가치 있게 활용할 수 있도록 하는 역할을 하는 기관이나 개인</p></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>🙋 정보 사용자</h4><p>정보 공급자가 쌓은 정보를 이용하는 기관이나 개인</p></div>
+    </div>
+    <p>누구나 쉽게 접속해 정보를 만들고 나눌 수 있는 인터넷의 특성 때문에, 정보를 악용하려는 사람까지 시스템에 쉽게 접속할 수 있어요. 또 인터넷 서버 운영체제와 인터넷 표준 규약은 <b>소스 코드가 공개</b>되어 있어 해커들이 시스템의 취약점을 찾아 공격하기 쉽고, 해킹 정보도 공유할 수 있어요.</p>
+    <div class="callout" style="margin-bottom:0">정보를 공급하거나 사용하는 개인과 기관이 정보 보안에 대한 인식이 부족해 대책을 소홀히 세우면, <b>단 한 명의 부주의</b>로 같은 시스템을 쓰는 사용자 <b>전체</b>가 피해를 입을 수 있어요.</div>
+  </div>
+  <div class="card">
+    <h3>🙋 정보 사용자로서 나의 정보 보호 실천 점수</h3>
+    <p class="muted" style="margin-top:0">수칙을 읽고 나의 실천 정도에 별을 눌러요. (아주 잘함 5 · 잘함 4 · 보통 3 · 미흡 2 · 매우 미흡 1)</p>
+    <div class="is-score" id="userScore"></div>
+    <div class="is-scmsg" id="scoreMsg"></div>
+    <div class="memo" style="margin-top:10px"><label>점수가 가장 낮은 항목을 지키지 않으면 어떤 일이 생길 수 있는지, 앞으로 어떻게 실천할지 적어요. <small>실제 비밀번호나 계정 정보는 적지 마세요.</small></label><textarea data-memo="weakPlan" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>📦 정보 공급자의 정보 보안 수칙</h3>
+    <div class="cards3 is-sup">
+      <div class="kc" style="--k:#e0a52b"><h4>암호화</h4><p>전송 중이거나 정지 상태인 데이터를 보호하기 위해 암호화를 사용한다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>사고 대응 계획</h4><p>정보 보안 침해 사고가 생겼을 때 취해야 할 단계에 대한 계획을 미리 세워 놓는다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>위험 평가</h4><p>정보 시스템을 이루는 인프라의 잠재적 위험을 평가하여, 이에 대비하는 정보 보안 전략을 세운다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>보안 모니터링</h4><p>사용자의 의심스러운 활동, 시스템과 네트워크를 항상 모니터링하여 위험이 생겼을 때 빠르게 감지하고 대응하도록 준비한다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>직원 교육</h4><p>직원들에게 정보 보안과 보안 정책을 교육하여 업무를 할 때 정보 보호를 실천하도록 돕는다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>액세스 제어</h4><p>개인별로 권한을 주어 정보와 시스템에 대한 접근을 제어하고, 정보를 무분별하게 쓰지 않도록 한다.</p></div>
+    </div>
+  </div>
+  <details class="card is-more">
+    <summary>🔑 시간 되면 · 강력한 비밀번호 규칙 점검기 <span class="muted" style="font-weight:400;font-size:.88rem">(예시 문자열로만)</span></summary>
+    <p style="margin-top:0">교과서의 수칙: 계정을 다른 사람이 쉽게 알 수 없도록 <b>세 가지 종류 이상의 문자를 섞은</b>, 강력하고 고유한 <b>여덟 자리 이상</b>의 비밀번호를 만든다.</p>
+    <p class="is-warn">⚠️ <b>실제로 쓰는 비밀번호는 절대 넣지 마세요.</b> 입력한 글자는 이 화면에서만 판정하고, 저장하거나 어디로 보내지 않아요. 영문, 숫자, 특수 문자로 넣어 보세요. 이름, 생일, 학번처럼 나와 관련된 정보는 점검기가 알아채지 못하니, 그런 것은 스스로 피해요.</p>
+    <div class="row is-ex" id="pwEx"></div>
+    <input type="text" id="pwIn" class="is-pw" autocomplete="off" spellcheck="false" placeholder="예시를 고르거나 영문, 숫자, 특수 문자로 지어 넣어 보세요">
+    <ul class="is-chk" id="pwChk"></ul>
+    <div class="is-meter"><i id="pwBar"></i></div>
+    <p class="is-scmsg" id="pwMsg"></p>
+    <p class="note">「고유한」은 다른 사이트에 쓰는 비밀번호와 같지 않다는 뜻이라 점검기가 확인할 수 없어요. 이것은 스스로 지켜야 해요.</p>
+  </details>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">정보 보안 기술을 활용하여 정보 보호를 실천할 수 있나요?</p>
+    <div class="vote" id="ck3Vote"></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말(정보 보안, 해킹, 악성 코드, 디지털 윤리)을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="is-blanks">
+      <li>모르는 번호로 온 「택배 조회」 링크를 눌렀더니 휴대폰에 몰래 깔려 연락처를 빼 가는 프로그램이 생겼다. 이 프로그램은 <button class="is-blank" data-a="악성 코드">?</button>이다.</li>
+      <li>지수는 친구들 연락처가 담긴 파일에 암호를 걸고, 꼭 필요한 모둠원에게만 열어 주었다. 지수는 보안 기술로 <button class="is-blank" data-a="디지털 윤리">?</button>를 지켰다.</li>
+      <li>누군가 학원 누리집의 약점을 파고들어 무단으로 들어가 회원 명단을 빼냈다. 이런 행위가 <button class="is-blank" data-a="해킹">?</button>이다.</li>
+      <li>도서관은 회원 정보를 입력받아 보관하고 다른 도서관에 보낼 때마다 허락받지 않은 사람이 손대지 못하게 지킨다. 도서관이 신경 쓰는 이 일이 <button class="is-blank" data-a="정보 보안">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 정보 보호와 보안 정리 -->
+<section class="page" data-name="정보 보호와 보안 정리" data-acc="#5a5fc8">
+  <div class="head"><div class="num">06</div><div><h2>정보 보호와 보안 정리 · 실천 규칙 만들기</h2><p>교과서 232~233쪽 · 맞춤 활동, 학업 성취도 점검, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>이 화면의 활동은 <b>시간이 되면 수업 중에, 아니면 과제로</b> 해요. 03에서 고른 사례로 <b>사용자와 공급자</b> 쪽 원인을 찾고, 피해를 막을 <b>가장 중요한 시점</b>을 찾고, 모둠이 함께 <b>실천 규칙</b>을 정해요. 시간이 없으면 바로 마무리로 넘어가요.</span></div>
+  <div class="card">
+    <h3>📌 03에서 고른 사례 이어 쓰기</h3>
+    <p style="margin-top:0">맞춤 활동은 03에서 고른 사례와 메모를 그대로 이어서 써요. 다른 사례로 하고 싶으면 03에서 사례를 바꾸고 메모를 고쳐요.</p>
+    <p class="is-recall" id="caseRecall"></p>
+  </div>
+  <details class="card is-more">
+    <summary>📝 시간 되면·과제 · 맞춤 활동 「정보 보호와 보안 실천 규칙 만들기」</summary>
+    <h4><span class="is-tag" style="--k:#2f6fd0">지식·이해</span> 1. 사례의 원인을 사용자와 공급자 측면에서 찾기</h4>
+    <div class="cards2">
+      <div class="memo"><label>🙋 사용자 측면의 원인</label><textarea data-memo="fitUser" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>📦 공급자 측면의 원인</label><textarea data-memo="fitSupp" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <h4><span class="is-tag" style="--k:#1f9d74">과정·기능</span> 2. 사례가 일어난 과정과 가장 중요한 시점</h4>
+    <p class="muted" style="margin-top:0">사례가 어떤 순서로 일어났는지 설명하고, 정보 보호와 보안 방법이 꼭 필요했던 <b>시점</b>과 그때 필요한 방법을 제시해요. <small>피해가 일어나기 전, 일어나는 순간, 퍼진 뒤 가운데 언제 막는 것이 가장 효과적일지 견주어 봐요.</small></p>
+    <div class="memo"><textarea data-memo="fitWhen" rows="3"></textarea><div class="saved"></div></div>
+    <h4><span class="is-tag" style="--k:#d64535">가치·태도</span> 3. 사례가 다시 일어나지 않도록 실천 규칙 정하기</h4>
+    <p class="muted" style="margin-top:0">모둠원이 각자 규칙을 하나씩 내고, 까닭을 듣고 함께 정해요.</p>
+    <div class="cards2">
+      <div class="memo"><label>🙋 사용자가 지킬 규칙</label><textarea data-memo="ruleUser" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>📦 공급자가 지킬 규칙</label><textarea data-memo="ruleSupp" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </details>
+  <details class="card is-more">
+    <summary>✅ 시간 되면·과제 · 학업 성취도 점검과 선택 활동</summary>
+    <p style="margin-top:0">평가 기준을 읽고, 할 수 있게 된 것을 골라요.</p>
+    <div id="selfCheck"></div>
+    <p class="muted" style="font-size:.9rem">모두 고를 수 있으면 <b>심화</b>, 고르지 못한 것이 있으면 <b>보충</b> 활동을 해 봐요.</p>
+    <div class="vote" id="extraVote"></div>
+    <div class="is-extra" id="extraBasic">
+      <p><b>보충 · 보호할 정보와 공유할 정보 구분하기</b> 생활 속 정보를 읽고 어느 쪽인지 골라요.</p>
+      <div id="extraSort"></div>
+    </div>
+    <div class="is-extra" id="extraDeep">
+      <p><b>심화 · 앱 사용 권한 점검하기</b> 가상의 앱 세 개가 요청한 권한이에요. 앱이 하는 일에 <b>필요 없는 권한</b>을 눌러 「끄기」로 표시한 뒤 확인해요.</p>
+      <div id="permSim"></div>
+      <div class="row"><button class="btn sm" id="permCheck">확인하기</button><button class="btn ghost sm" id="permReset">다시 하기</button></div>
+      <p class="is-scmsg" id="permMsg"></p>
+      <div class="is-path"><b>내 스마트폰에서 앱 권한을 확인하는 곳</b><span>안드로이드폰 · 설정 → 애플리케이션</span><span>아이폰 · 설정 → 개인 정보 보호 및 보안</span><small>수업 중에는 실제 설정을 바꾸지 않아요. 확인하는 곳만 알아 두어요.</small></div>
+      <div class="memo" style="margin-top:10px"><label>필요 없다고 본 권한 하나와, 그 권한을 허용하면 생길 수 있는 일</label><textarea data-memo="permWhy" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 7 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">07</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">정보를 만들고 보관하고 주고받는 내내, 허락받지 않은 사람이 정보를 보거나 바꾸거나 망가뜨리지 못하게 지키는 것이 정보 보안이다. 필요할 때 쓸 수 있고(<b>가용성</b>), 함부로 바뀌지 않고(<b>무결성</b>), 허가된 사람만 볼 수 있어야(<b>기밀성</b>) 한다.</div>
+    <div style="--k:#e0702b"><b>해킹</b>, <b>악성 코드</b>(바이러스, 웜, 트로이 목마, 스파이웨어, 랜섬웨어), 위조, 변조, 접근과 유출, 훼손과 파괴는 사생활 침해, 금전적 피해, 기업 성장 방해, 인터넷망 마비로 이어질 수 있다.</div>
+    <div style="--k:#1f9d74"><b>암호화 · 방화벽 · 전자 서명</b> 같은 기술을 쓰고, 정보 공급자는 보안 수칙을, 정보 사용자는 보호 수칙을 함께 지킬 때 <b>디지털 윤리</b>를 실천하는 안전한 사회가 된다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">「정보 보호와 보안」을 배운 뒤, 핵심 질문의 답과 새롭게 알게 된 점을 적어요. 지난 시간의 정보 보호 실천 점검과 오늘의 사례 정리, 실천 점수를 근거로 써 보세요.</p>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="7"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>정보 보안의 세 원칙(가용성, 무결성, 기밀성) 가운데 하나를 골라, 그 원칙이 깨지는 상황을 예로 들어 어떤 피해가 생기는지 설명하세요.</li>
+      <li>정보 보안 위협 사례 하나를 골라 어떤 위협 요소로 어떤 피해가 생겼는지 쓰고, 암호화, 방화벽, 전자 서명 가운데 피해를 줄이는 데 도움이 될 기술과 그 까닭을 설명하세요.</li>
+      <li>정보 사용자로서 내 실천 점수가 가장 낮았던 항목을 들고, 그 항목을 지키지 않으면 생길 수 있는 일과 앞으로 어떻게 실천할지 쓰세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요. 실제 비밀번호나 계정 정보는 쓰지 마세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

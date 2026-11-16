@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정보 보안 · 정보 보호와 보안 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+/* u5-info-security 전용 */
+  .is-ul{margin:4px 0 0;padding-left:18px;font-size:.9rem}
+  .is-ul li{margin:3px 0}
+
+  /* 01 세 원칙 그림 */
+  .is-tri{display:grid;place-items:center}
+  .is-tri svg{width:100%;max-width:320px;height:auto}
+
+  /* 02 악성 코드 카드 다섯 장 */
+  #malCards{grid-template-columns:repeat(5,1fr)}
+  @media (max-width:1100px){#malCards{grid-template-columns:repeat(3,1fr)}}
+  #malCards .tcard{height:190px}
+
+  /* 03 사례 */
+  #caseBtns.is-4{grid-template-columns:repeat(4,1fr);margin-bottom:12px}
+  .is-case{display:grid;grid-template-columns:1fr 240px;gap:14px;background:color-mix(in srgb,var(--k) 7%,#fff);border-left:5px solid var(--k);border-radius:12px;padding:12px 16px}
+  @media (max-width:860px){.is-case{grid-template-columns:1fr}}
+  .is-case .tt{color:var(--k);font-size:1.05rem}
+  .is-case p{margin:6px 0 0}
+  .is-case .dmg{background:#fff;border-radius:10px;padding:10px 12px;font-size:.93rem;align-self:start;border:2px solid var(--k)}
+  .is-case .dmg span{display:block;font-weight:900;color:var(--k);font-size:.82rem;margin-bottom:2px}
+
+  /* 04 방화벽 그림 */
+  .is-fw{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-top:14px}
+  .is-fw .z{background:#f3f6fb;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:.88rem}
+  .is-fw .z b{font-size:.95rem}
+  .is-fw .w{display:grid;place-items:center;align-content:center;background:#fdeee4;border:3px solid #e0702b;border-radius:12px;padding:8px 18px;font-size:1.8rem;text-align:center}
+  .is-fw .w b{font-size:.92rem;color:#b2541c}
+  .is-fw .bad{color:var(--red)}
+  .is-fw .good{color:#1f9d74}
+
+  /* 05 공급자 수칙 · 실천 점수 */
+  .is-sup .kc h4{font-size:1rem}
+  .is-score{display:grid;gap:8px}
+  .is-score .it{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#f4fbf9;border-radius:12px;padding:8px 12px;border-left:5px solid #1f9d74}
+  .is-score .tx b{display:block}
+  .is-score .tx span{font-size:.86rem;color:var(--muted)}
+  .is-score .st{display:flex;align-items:center;gap:2px;white-space:nowrap}
+  .is-score .st button{all:unset;cursor:pointer;font-size:1.5rem;line-height:1;color:#d5dbe4;padding:0 1px}
+  .is-score .st button.on{color:#f0b429}
+  .is-score .st button:focus-visible{outline:2px solid var(--acc);border-radius:4px}
+  .is-score .st small{min-width:84px;margin-left:6px;font-size:.8rem;color:var(--muted)}
+  .is-scmsg{font-size:.92rem;margin:8px 0 0;min-height:1.3em}
+
+  /* 05 비밀번호 점검기 */
+  .is-warn{background:#fdecea;border-radius:10px;padding:8px 12px;font-size:.92rem}
+  .is-ex{gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .is-ex button{font-family:ui-monospace,Menlo,Consolas,monospace}
+  .is-pw{width:100%;max-width:460px;box-sizing:border-box;font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.05rem;padding:8px 12px;border:2px solid var(--line);border-radius:10px}
+  .is-chk{list-style:none;padding:0;margin:10px 0 6px;font-size:.92rem}
+  .is-chk li{margin:3px 0}
+  .is-chk li.ok{color:#1f9d74}
+  .is-chk li.ng{color:var(--red)}
+  .is-meter{height:10px;max-width:460px;background:#eef1f5;border-radius:999px;overflow:hidden}
+  .is-meter i{display:block;height:100%;width:0;transition:.3s;background:#d5dbe4}
+  .is-meter i.w1{background:var(--red)}
+  .is-meter i.w2{background:#f0b429}
+  .is-meter i.w3{background:#1f9d74}
+
+  /* 개념 정리하기 빈칸 */
+  .is-blanks li{margin:8px 0;line-height:1.9}
+  .is-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .is-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+
+  /* 06 정리 */
+  .is-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;vertical-align:middle;margin-right:4px}
+  details.is-more>summary{cursor:pointer;font-weight:700;font-size:1.05rem}
+  details.is-more[open]>summary{margin-bottom:10px}
+  .is-extra{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .is-extra.on{display:block}
+  .is-extra>p:first-child{margin-top:0}
+  #extraVote{margin-top:6px}
+
+  /* 06 심화 · 앱 권한 */
+  #permSim{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+  @media (max-width:860px){#permSim{grid-template-columns:1fr}}
+  .is-app{background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 4px 12px rgba(15,39,66,.07)}
+  .is-app .hd{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  .is-app .hd>span{font-size:1.8rem}
+  .is-app .hd small{display:block;color:var(--muted);font-size:.82rem}
+  .is-app .ps{display:flex;flex-wrap:wrap;gap:6px}
+  .is-app .ps button{font:inherit;font-size:.86rem;border:2px solid #1f9d74;background:#e9f7f1;color:#155f47;border-radius:999px;padding:3px 11px;cursor:pointer}
+  .is-app .ps button::before{content:'켜짐 · '}
+  .is-app .ps button.off{border-color:#9aa5b4;background:#f1f3f6;color:#5b6676}
+  .is-app .ps button.off::before{content:'끄기 · '}
+  .is-app .ps button.ok{border-color:#1f9d74;background:#fff;color:#1f9d74;font-weight:700}
+  .is-app .ps button.ng{border-color:var(--red);background:#fdecea;color:var(--red);font-weight:700}
+  .is-app .ps button.miss{border-style:dashed;border-color:var(--red)}
+  .is-path{margin-top:6px;background:#f3f6fb;border-radius:10px;padding:8px 12px;font-size:.88rem}
+  .is-path b{display:block;margin-bottom:2px}
+  .is-path span{display:block}
+  .is-path small{display:block;color:var(--muted);margin-top:4px}
+  .is-recall{margin:0;background:#f3f6fb;border-radius:10px;padding:8px 12px;font-size:.93rem}
+  details.is-more h4{margin:14px 0 6px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#d64535">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅴ. 디지털 문화 · 2. 정보 보호와 보안</span>
+      <h1>내 스마트폰이<br>이상해졌다면?</h1>
+      <div class="story"><b>스마트폰에 내가 찍지 않은 사진과 설치한 적이 없는 앱이 보여요.</b><br>배터리도 너무 빨리 닳아요. 도대체 무슨 문제가 생긴 것일까요?</div>
+      <p>오늘은 <b>정보 보안</b>이 왜 필요한지, 정보를 위협하는 것에는 무엇이 있는지 알아보고, <b>정보 보안 기술</b>과 <b>실천 방법</b>을 찾아요. 마지막으로 「정보 보호와 보안」을 정리하며 나만의 실천 규칙을 만들어요.</p>
+      <ol>
+        <li>정보 보안과 세 원칙</li><li>위협 요소와 악성 코드</li><li>정보 보안 위협 사례</li>
+        <li>정보 보안 기술</li><li>스스로 해결하기 · 실천 점수</li><li>정보 보호와 보안 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔐</i><div><b>정보 보안의 원칙</b><small>가용성 · 무결성 · 기밀성</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>⚠️</i><div><b>위협 요소</b><small>해킹 · 악성 코드 · 위조 · 변조 …</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧱</i><div><b>정보 보안 기술</b><small>암호화 · 방화벽 · 전자 서명</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🤝</i><div><b>함께 실천하기</b><small>정보 공급자 · 정보 사용자</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>정보 보안의 뜻과 <b>가용성 · 무결성 · 기밀성</b>의 원칙을 알아보고, <b>해킹</b>과 <b>악성 코드</b> 같은 위협 요소가 실제로 어떤 피해를 주었는지 살펴봐요. 그다음 <b>암호화, 방화벽, 전자 서명</b>을 알아보고, 정보 사용자로서 나의 실천 점수를 매겨 봐요. 끝으로 정보 보호와 보안 실천 규칙을 만들어요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">지난 시간 떠올리기 · 처음 생각</span>
+        <p style="margin:0 0 6px;font-size:.9rem">지난 시간에는 <b>정보 보호</b>와 <b>정보 공유</b>를 배웠어요. 위의 스마트폰에는 무슨 문제가 생긴 것 같나요?</p>
+        <div class="memo"><label>내 짐작</label><input type="text" data-memo="firstGuess"><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>정보 보호와 보안</b> · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">오늘 마지막에 「정보 보호와 보안」 단원의 핵심 질문에 내 말로 답해요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>정보 보안의 필요성을 설명할 수 있다.</li>
+          <li>정보 보안 기술을 활용하여 디지털 윤리를 실천할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 정보 보안 · 해킹 · 악성 코드 · 디지털 윤리</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 정보 보안과 세 원칙부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 정보 보안과 원칙 -->
+<section class="page" data-name="정보 보안과 세 원칙" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>디지털 사회에서 정보 보안은 왜 필요할까?</h2><p>교과서 228쪽 · 정보 보안, 가용성 · 무결성 · 기밀성</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보 보안은 정보가 만들어지고, 처리되고, 저장되고, 전송되는 <b>모든 과정</b>에서 허락받지 않은 사람이 정보를 보거나 쓰거나 바꾸거나 망가뜨리지 못하게 지키는 <b>방법과 절차</b>예요. 세 가지 원칙이 함께 지켜져야 해요.</span></div>
+  <div class="card">
+    <h3>🔐 정보 보안이란?</h3>
+    <p style="margin-top:0">가정, 사회, 산업 등 모든 부문에서 디지털 기술을 많이 쓰면서 <b>허락받지 않은 사용자가 시스템의 취약점을 공격</b>하여 정보를 악용하거나 훼손하는 사례가 늘고 있어요.</p>
+    <div class="callout"><b>정보 보안</b>은 정보의 생성, 처리, 저장, 전송 등의 전 과정에서 허가되지 않은 접근, 사용, 공개, 중단, 수정, 파괴로부터 정보를 안전하게 유지하는 방법과 절차를 의미해요.</div>
+    <div class="grid2">
+      <div class="is-tri">
+        <svg viewBox="0 0 300 240" role="img" aria-label="정보 보안의 원칙: 가용성, 무결성, 기밀성">
+          <path d="M150 52 L58 190 L242 190 Z" fill="none" stroke="#c9d3e3" stroke-width="3" stroke-dasharray="6 6"/>
+          <circle cx="150" cy="52" r="40" fill="#2f6fd0"/><text x="150" y="58" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">가용성</text>
+          <circle cx="58" cy="190" r="40" fill="#1f9d74"/><text x="58" y="196" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">무결성</text>
+          <circle cx="242" cy="190" r="40" fill="#d64535"/><text x="242" y="196" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">기밀성</text>
+          <text x="150" y="146" text-anchor="middle" fill="#0f2742" font-size="15" font-weight="700">정보 보안의</text>
+          <text x="150" y="166" text-anchor="middle" fill="#0f2742" font-size="15" font-weight="700">원칙</text>
+        </svg>
+      </div>
+      <div>
+        <div class="kc" style="--k:#2f6fd0;margin-bottom:8px"><h4>가용성</h4><p>사용자가 <b>필요한 시점</b>에 정보에 접근할 수 있어야 한다.</p></div>
+        <div class="kc" style="--k:#1f9d74;margin-bottom:8px"><h4>무결성</h4><p>허가되지 않거나 우연한 <b>변경</b>으로부터 정보가 보호되어야 한다.</p></div>
+        <div class="kc" style="--k:#d64535"><h4>기밀성</h4><p><b>허가된 사용자만</b> 정보에 접근할 수 있어야 한다.</p></div>
+      </div>
+    </div>
+    <p class="note">네트워크에서나 디지털 기술에 쓰이는 모든 장치에서 가용성, 무결성, 기밀성의 원칙이 지켜질 때 정보 보안이 유지될 수 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어떤 원칙이 깨졌을까?</h3>
+    <p class="muted" style="margin-top:0">상황을 읽고, 세 원칙 가운데 어느 것이 지켜지지 않았는지 골라요.</p>
+    <div id="ruleGame"></div>
+    <div class="memo" style="margin-top:12px"><label>원칙 하나를 골라, 그 원칙이 깨지는 <b>우리 생활 속 상황</b>과 그때 생길 피해를 적어요.</label><input type="text" data-memo="ruleBreak"><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 위협 요소 · 악성 코드 -->
+<section class="page" data-name="위협 요소와 악성 코드" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>정보 보안을 위협하는 것은 무엇일까?</h2><p>교과서 228쪽 · 해킹, 악성 코드, 위조, 변조, 접근과 유출, 훼손과 파괴</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>시스템 관리자가 아무리 애써도 정보를 노리는 위협은 곳곳에 있어요. 남의 시스템에 몰래 들어가는 <b>해킹</b>, 해를 끼치려고 만든 <b>악성 코드</b>, 정보를 거짓으로 만들거나 바꾸거나 빼내거나 망가뜨리는 행위가 모두 위협이에요.</span></div>
+  <div class="card">
+    <h3>⚠️ 정보 보안 위협 요소</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#d64535"><h4>🕵️ 해킹</h4><ul class="is-ul"><li>악의적인 목적으로 타인의 컴퓨터나 정보 시스템에 무단으로 침입하여 정보를 빼내는 행위이다.</li><li>웹 사이트의 취약점을 공격하는 <b>웹 해킹</b>, 운영체제 또는 프로그램을 분석하여 권한을 얻는 <b>시스템 해킹</b>, 네트워크에 있는 취약점을 찾아 공격하는 <b>네트워크 해킹</b> 등이 있다.</li></ul></div>
+      <div class="kc" style="--k:#e0702b"><h4>🦠 악성 코드</h4><ul class="is-ul"><li>사용자에게 해를 끼치기 위해 만들어진 코드이다.</li><li>웹이나 앱을 통해 감염되기 때문에 빠르게 퍼지고, 감염된 시스템은 해킹 같은 피해로 이어진다.</li><li>여러 속성이 결합되고 있어 한 가지 유형으로 정의하기 어렵기도 하다.</li></ul></div>
+    </div>
+    <div class="cards4" style="margin-top:12px">
+      <div class="kc" style="--k:#9b4fc4"><h4>🎭 위조</h4><p>거짓 정보를 정확한 정보처럼 보이게 하는 행위</p></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>✏️ 변조</h4><p>원래의 정보를 다른 내용으로 바꾸는 행위</p></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>📤 접근과 유출</h4><p>허락받지 않은 사람이 정보를 확인하거나 외부로 내보내는 행위</p></div>
+      <div class="kc" style="--k:#2f8fb0"><h4>💥 훼손과 파괴</h4><p>정보를 변경하거나 파괴하여 정상적인 작동을 못 하게 하는 행위</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🦠 대표적인 악성 코드 <span class="muted" style="font-weight:400;font-size:.88rem">(카드를 눌러 뒤집어 봐요)</span></h3>
+    <div class="tcards" id="malCards"></div>
+  </div>
+  <div class="card">
+    <h3>📱 처음의 스마트폰 다시 보기</h3>
+    <p style="margin-top:0">내가 찍지 않은 사진, 설치한 적이 없는 앱, 너무 빨리 닳는 배터리. 이제 어떤 위협 요소 때문일 수 있을지 다시 생각해 봐요.</p>
+    <div class="callout">💡 대부분의 악성 코드는 사용자의 정보 기기에 침투해 <b>다른 기기를 공격하는 도구</b>로 활용돼요. 내가 모르는 사이에 내 기기가 공격에 쓰이고 있을 수도 있어요.</div>
+    <div class="memo"><label>어떤 위협 요소(또는 악성 코드) 때문일 수 있을까요? 까닭도 함께 적어요. <small>한 가지로 딱 정하기 어려울 수 있어요. 여러 속성이 결합되기도 하니까요.</small></label><input type="text" data-memo="symptomWhy"><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 위협 사례 -->
+<section class="page" data-name="정보 보안 위협 사례" data-acc="#c0392b">
+  <div class="head"><div class="num">03</div><div><h2>정보 보안 위협 사례</h2><p>교과서 229쪽 · 해킹, 악성 코드, 디도스 공격, 파밍</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 지키지 못하면 개인 정보가 새고, 기업의 기밀 정보와 핵심 기술이 새어 나가 <b>경제적 손실</b>이 생겨요. 대책이 부족하면 문제를 해결하고 복구하는 데 많은 자원을 낭비하게 되어 <b>기업의 성장</b>도 방해받아요.</span></div>
+  <div class="card">
+    <h3>📰 사례 살펴보기 <span class="muted" style="font-weight:400;font-size:.88rem">(사례를 눌러 봐요)</span></h3>
+    <p style="margin-top:0">각 사례에서 정보 보안 위협 요소로 어떤 피해를 입었는지 살펴봐요.</p>
+    <div class="apps is-4" id="caseBtns"></div>
+    <div class="cview" id="caseView"></div>
+  </div>
+  <div class="card">
+    <h3>✍️ 사례 하나 골라 정리하기</h3>
+    <div id="casePick"></div>
+    <div class="memo" style="margin-top:10px"><label>고른 사례에서 <b>어떤 위협 요소</b>로 <b>어떤 피해</b>를 입었는지 내 말로 적어요.</label><textarea data-memo="caseWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 정보 보안 기술 -->
+<section class="page" data-name="정보 보안 기술" data-acc="#1f9d74">
+  <div class="head"><div class="num">04</div><div><h2>정보 보안 기술과 실천 방법은 무엇이 있을까?</h2><p>교과서 230쪽 · 암호화, 방화벽, 전자 서명, 정보 공급자와 정보 사용자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 지키는 대표 기술은 <b>암호화</b>(알아볼 수 없게 바꾸기), <b>방화벽</b>(밖에서 들어오는 수상한 접근 막기), <b>전자 서명</b>(인터넷에서 신원 확인하기)이에요. 기술을 알았다면 이제 03의 사례에 연결해 봐요.</span></div>
+  <div class="card">
+    <h3>🧰 대표적인 정보 보안 기술</h3>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🔏</div><h4>암호화</h4><p>데이터를 보낼 때 불법적인 방법으로 탈취되거나 변경되는 상황에 대비해 데이터를 변환하여 보내는 방법이에요. 남이 알아볼 수 없는 암호문 형태로 저장하거나 전송하므로 잃어버려도 비밀을 지킬 수 있어요.</p><small>Ⅱ단원에서 배운 암호화(교과서 62쪽)를 떠올려요.</small></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🧱</div><h4>방화벽</h4><p>네트워크에서 외부의 불법적 침입을 막고 정상 접근만을 허용해 내부의 정보를 보호하는 시스템이에요. 바이러스 같은 위험한 정보는 차단하고, 외부의 접근 시도를 허용할지 판단해 네트워크를 보호해요.</p></div>
+      <div class="kc" style="--k:#9b4fc4"><div class="ic">✍️</div><h4>전자 서명</h4><p>일상에서 학생증이나 주민 등록증으로 신원을 확인하듯, 인터넷에서도 신원을 확인하거나 안전하게 거래하기 위해 <b>증명서 역할</b>을 하는 것이 필요한데, 이것이 전자 서명이에요.</p></div>
+    </div>
+    <div class="is-fw" aria-label="방화벽 그림">
+      <div class="z"><b>🌐 인터넷</b><span class="bad">✖ 수상한 접근</span><span class="bad">✖ 바이러스</span><span class="good">✔ 정상 접근</span></div>
+      <div class="w">🧱<b>방화벽</b></div>
+      <div class="z"><b>🏫 내부 네트워크</b><span class="good">✔ 정상 접근만 들어옴</span></div>
+    </div>
+    <div class="cards2" style="margin-top:12px">
+      <div class="kc" style="--k:#9b4fc4"><h4>📜 공동 인증서</h4><p>주민 등록증이나 서명 같은 신원 확인을 인터넷에서 처리할 수 있도록 만든 전자 서명 방법으로, 2020년 공인 인증서에서 공동 인증서로 이름이 바뀌었어요.</p></div>
+      <div class="kc" style="--k:#9b4fc4"><h4>🖐️ 생체 신호 인증 기술</h4><p>개인의 고유한 특성인 신체적 또는 행동적 특징을 이용해 사용자를 인증하는 기술로, 쓰이는 분야가 넓어지고 있는 전자 서명 방법이에요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✍️ 03의 사례에 기술을 연결하기</h3>
+    <p class="muted" style="margin-top:0">위의 세 기술 가운데 03에서 고른 사례의 피해를 줄이는 데 도움이 될 기술을 골라요(여럿 골라도 돼요).</p>
+    <div id="techPick"></div>
+    <div class="memo" style="margin-top:10px"><label>그 기술이 사례의 어느 단계에서, 왜 도움이 될지 적어요.</label><textarea data-memo="techWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어떤 보안 기술일까?</h3>
+    <p class="muted" style="margin-top:0">시간이 되면 장면 네 개를 읽고, 어떤 정보 보안 기술이 쓰였는지 골라요.</p>
+    <div id="techGame"></div>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 스스로 해결하기 -->
+<section class="page" data-name="스스로 해결하기 · 실천 점수" data-acc="#9b4fc4">
+  <div class="head"><div class="num">05</div><div><h2>스스로 해결하기 · 정보 보호와 보안 실천 방법</h2><p>교과서 231쪽 · 분석 · 표현</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>정보를 쓰고, 주고, 관리하는 모든 사람이 실천해야 사회가 안전해요. <b>정보 공급자는 정보 보안 실천</b>에, <b>정보 사용자는 정보 보호 실천</b>에 집중해요. 개인 정보의 주체인 우리는 정보의 사용자이면서 공급자이기도 해요.</span></div>
+  <div class="card">
+    <h3>🤝 정보 공급자와 정보 사용자, 모두 함께</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#1f9d74"><h4>📦 정보 공급자</h4><p>개인 정보를 포함한 여러 가지 정보를 수집, 저장하여 정보를 가치 있게 활용할 수 있도록 하는 역할을 하는 기관이나 개인</p></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>🙋 정보 사용자</h4><p>정보 공급자가 쌓은 정보를 이용하는 기관이나 개인</p></div>
+    </div>
+    <p>누구나 쉽게 접속해 정보를 만들고 나눌 수 있는 인터넷의 특성 때문에, 정보를 악용하려는 사람까지 시스템에 쉽게 접속할 수 있어요. 또 인터넷 서버 운영체제와 인터넷 표준 규약은 <b>소스 코드가 공개</b>되어 있어 해커들이 시스템의 취약점을 찾아 공격하기 쉽고, 해킹 정보도 공유할 수 있어요.</p>
+    <div class="callout" style="margin-bottom:0">정보를 공급하거나 사용하는 개인과 기관이 정보 보안에 대한 인식이 부족해 대책을 소홀히 세우면, <b>단 한 명의 부주의</b>로 같은 시스템을 쓰는 사용자 <b>전체</b>가 피해를 입을 수 있어요.</div>
+  </div>
+  <div class="card">
+    <h3>🙋 정보 사용자로서 나의 정보 보호 실천 점수</h3>
+    <p class="muted" style="margin-top:0">수칙을 읽고 나의 실천 정도에 별을 눌러요. (아주 잘함 5 · 잘함 4 · 보통 3 · 미흡 2 · 매우 미흡 1)</p>
+    <div class="is-score" id="userScore"></div>
+    <div class="is-scmsg" id="scoreMsg"></div>
+    <div class="memo" style="margin-top:10px"><label>점수가 가장 낮은 항목을 지키지 않으면 어떤 일이 생길 수 있는지, 앞으로 어떻게 실천할지 적어요. <small>실제 비밀번호나 계정 정보는 적지 마세요.</small></label><textarea data-memo="weakPlan" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>📦 정보 공급자의 정보 보안 수칙</h3>
+    <div class="cards3 is-sup">
+      <div class="kc" style="--k:#e0a52b"><h4>암호화</h4><p>전송 중이거나 정지 상태인 데이터를 보호하기 위해 암호화를 사용한다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>사고 대응 계획</h4><p>정보 보안 침해 사고가 생겼을 때 취해야 할 단계에 대한 계획을 미리 세워 놓는다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>위험 평가</h4><p>정보 시스템을 이루는 인프라의 잠재적 위험을 평가하여, 이에 대비하는 정보 보안 전략을 세운다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>보안 모니터링</h4><p>사용자의 의심스러운 활동, 시스템과 네트워크를 항상 모니터링하여 위험이 생겼을 때 빠르게 감지하고 대응하도록 준비한다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>직원 교육</h4><p>직원들에게 정보 보안과 보안 정책을 교육하여 업무를 할 때 정보 보호를 실천하도록 돕는다.</p></div>
+      <div class="kc" style="--k:#e0a52b"><h4>액세스 제어</h4><p>개인별로 권한을 주어 정보와 시스템에 대한 접근을 제어하고, 정보를 무분별하게 쓰지 않도록 한다.</p></div>
+    </div>
+  </div>
+  <details class="card is-more">
+    <summary>🔑 시간 되면 · 강력한 비밀번호 규칙 점검기 <span class="muted" style="font-weight:400;font-size:.88rem">(예시 문자열로만)</span></summary>
+    <p style="margin-top:0">교과서의 수칙: 계정을 다른 사람이 쉽게 알 수 없도록 <b>세 가지 종류 이상의 문자를 섞은</b>, 강력하고 고유한 <b>여덟 자리 이상</b>의 비밀번호를 만든다.</p>
+    <p class="is-warn">⚠️ <b>실제로 쓰는 비밀번호는 절대 넣지 마세요.</b> 입력한 글자는 이 화면에서만 판정하고, 저장하거나 어디로 보내지 않아요. 영문, 숫자, 특수 문자로 넣어 보세요. 이름, 생일, 학번처럼 나와 관련된 정보는 점검기가 알아채지 못하니, 그런 것은 스스로 피해요.</p>
+    <div class="row is-ex" id="pwEx"></div>
+    <input type="text" id="pwIn" class="is-pw" autocomplete="off" spellcheck="false" placeholder="예시를 고르거나 영문, 숫자, 특수 문자로 지어 넣어 보세요">
+    <ul class="is-chk" id="pwChk"></ul>
+    <div class="is-meter"><i id="pwBar"></i></div>
+    <p class="is-scmsg" id="pwMsg"></p>
+    <p class="note">「고유한」은 다른 사이트에 쓰는 비밀번호와 같지 않다는 뜻이라 점검기가 확인할 수 없어요. 이것은 스스로 지켜야 해요.</p>
+  </details>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">정보 보안 기술을 활용하여 정보 보호를 실천할 수 있나요?</p>
+    <div class="vote" id="ck3Vote"></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말(정보 보안, 해킹, 악성 코드, 디지털 윤리)을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="is-blanks">
+      <li>모르는 번호로 온 「택배 조회」 링크를 눌렀더니 휴대폰에 몰래 깔려 연락처를 빼 가는 프로그램이 생겼다. 이 프로그램은 <button class="is-blank" data-a="악성 코드">?</button>이다.</li>
+      <li>지수는 친구들 연락처가 담긴 파일에 암호를 걸고, 꼭 필요한 모둠원에게만 열어 주었다. 지수는 보안 기술로 <button class="is-blank" data-a="디지털 윤리">?</button>를 지켰다.</li>
+      <li>누군가 학원 누리집의 약점을 파고들어 무단으로 들어가 회원 명단을 빼냈다. 이런 행위가 <button class="is-blank" data-a="해킹">?</button>이다.</li>
+      <li>도서관은 회원 정보를 입력받아 보관하고 다른 도서관에 보낼 때마다 허락받지 않은 사람이 손대지 못하게 지킨다. 도서관이 신경 쓰는 이 일이 <button class="is-blank" data-a="정보 보안">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 정보 보호와 보안 정리 -->
+<section class="page" data-name="정보 보호와 보안 정리" data-acc="#5a5fc8">
+  <div class="head"><div class="num">06</div><div><h2>정보 보호와 보안 정리 · 실천 규칙 만들기</h2><p>교과서 232~233쪽 · 맞춤 활동, 학업 성취도 점검, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>이 화면의 활동은 <b>시간이 되면 수업 중에, 아니면 과제로</b> 해요. 03에서 고른 사례로 <b>사용자와 공급자</b> 쪽 원인을 찾고, 피해를 막을 <b>가장 중요한 시점</b>을 찾고, 모둠이 함께 <b>실천 규칙</b>을 정해요. 시간이 없으면 바로 마무리로 넘어가요.</span></div>
+  <div class="card">
+    <h3>📌 03에서 고른 사례 이어 쓰기</h3>
+    <p style="margin-top:0">맞춤 활동은 03에서 고른 사례와 메모를 그대로 이어서 써요. 다른 사례로 하고 싶으면 03에서 사례를 바꾸고 메모를 고쳐요.</p>
+    <p class="is-recall" id="caseRecall"></p>
+  </div>
+  <details class="card is-more">
+    <summary>📝 시간 되면·과제 · 맞춤 활동 「정보 보호와 보안 실천 규칙 만들기」</summary>
+    <h4><span class="is-tag" style="--k:#2f6fd0">지식·이해</span> 1. 사례의 원인을 사용자와 공급자 측면에서 찾기</h4>
+    <div class="cards2">
+      <div class="memo"><label>🙋 사용자 측면의 원인</label><textarea data-memo="fitUser" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>📦 공급자 측면의 원인</label><textarea data-memo="fitSupp" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <h4><span class="is-tag" style="--k:#1f9d74">과정·기능</span> 2. 사례가 일어난 과정과 가장 중요한 시점</h4>
+    <p class="muted" style="margin-top:0">사례가 어떤 순서로 일어났는지 설명하고, 정보 보호와 보안 방법이 꼭 필요했던 <b>시점</b>과 그때 필요한 방법을 제시해요. <small>피해가 일어나기 전, 일어나는 순간, 퍼진 뒤 가운데 언제 막는 것이 가장 효과적일지 견주어 봐요.</small></p>
+    <div class="memo"><textarea data-memo="fitWhen" rows="3"></textarea><div class="saved"></div></div>
+    <h4><span class="is-tag" style="--k:#d64535">가치·태도</span> 3. 사례가 다시 일어나지 않도록 실천 규칙 정하기</h4>
+    <p class="muted" style="margin-top:0">모둠원이 각자 규칙을 하나씩 내고, 까닭을 듣고 함께 정해요.</p>
+    <div class="cards2">
+      <div class="memo"><label>🙋 사용자가 지킬 규칙</label><textarea data-memo="ruleUser" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>📦 공급자가 지킬 규칙</label><textarea data-memo="ruleSupp" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </details>
+  <details class="card is-more">
+    <summary>✅ 시간 되면·과제 · 학업 성취도 점검과 선택 활동</summary>
+    <p style="margin-top:0">평가 기준을 읽고, 할 수 있게 된 것을 골라요.</p>
+    <div id="selfCheck"></div>
+    <p class="muted" style="font-size:.9rem">모두 고를 수 있으면 <b>심화</b>, 고르지 못한 것이 있으면 <b>보충</b> 활동을 해 봐요.</p>
+    <div class="vote" id="extraVote"></div>
+    <div class="is-extra" id="extraBasic">
+      <p><b>보충 · 보호할 정보와 공유할 정보 구분하기</b> 생활 속 정보를 읽고 어느 쪽인지 골라요.</p>
+      <div id="extraSort"></div>
+    </div>
+    <div class="is-extra" id="extraDeep">
+      <p><b>심화 · 앱 사용 권한 점검하기</b> 가상의 앱 세 개가 요청한 권한이에요. 앱이 하는 일에 <b>필요 없는 권한</b>을 눌러 「끄기」로 표시한 뒤 확인해요.</p>
+      <div id="permSim"></div>
+      <div class="row"><button class="btn sm" id="permCheck">확인하기</button><button class="btn ghost sm" id="permReset">다시 하기</button></div>
+      <p class="is-scmsg" id="permMsg"></p>
+      <div class="is-path"><b>내 스마트폰에서 앱 권한을 확인하는 곳</b><span>안드로이드폰 · 설정 → 애플리케이션</span><span>아이폰 · 설정 → 개인 정보 보호 및 보안</span><small>수업 중에는 실제 설정을 바꾸지 않아요. 확인하는 곳만 알아 두어요.</small></div>
+      <div class="memo" style="margin-top:10px"><label>필요 없다고 본 권한 하나와, 그 권한을 허용하면 생길 수 있는 일</label><textarea data-memo="permWhy" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </details>
+</section>
+
+<!-- 7 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">07</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">정보를 만들고 보관하고 주고받는 내내, 허락받지 않은 사람이 정보를 보거나 바꾸거나 망가뜨리지 못하게 지키는 것이 정보 보안이다. 필요할 때 쓸 수 있고(<b>가용성</b>), 함부로 바뀌지 않고(<b>무결성</b>), 허가된 사람만 볼 수 있어야(<b>기밀성</b>) 한다.</div>
+    <div style="--k:#e0702b"><b>해킹</b>, <b>악성 코드</b>(바이러스, 웜, 트로이 목마, 스파이웨어, 랜섬웨어), 위조, 변조, 접근과 유출, 훼손과 파괴는 사생활 침해, 금전적 피해, 기업 성장 방해, 인터넷망 마비로 이어질 수 있다.</div>
+    <div style="--k:#1f9d74"><b>암호화 · 방화벽 · 전자 서명</b> 같은 기술을 쓰고, 정보 공급자는 보안 수칙을, 정보 사용자는 보호 수칙을 함께 지킬 때 <b>디지털 윤리</b>를 실천하는 안전한 사회가 된다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">「정보 보호와 보안」을 배운 뒤, 핵심 질문의 답과 새롭게 알게 된 점을 적어요. 지난 시간의 정보 보호 실천 점검과 오늘의 사례 정리, 실천 점수를 근거로 써 보세요.</p>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 정보를 보호하고 정보 보안을 유지하기 위한 실천 방안은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="7"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>정보 보안의 세 원칙(가용성, 무결성, 기밀성) 가운데 하나를 골라, 그 원칙이 깨지는 상황을 예로 들어 어떤 피해가 생기는지 설명하세요.</li>
+      <li>정보 보안 위협 사례 하나를 골라 어떤 위협 요소로 어떤 피해가 생겼는지 쓰고, 암호화, 방화벽, 전자 서명 가운데 피해를 줄이는 데 도움이 될 기술과 그 까닭을 설명하세요.</li>
+      <li>정보 사용자로서 내 실천 점수가 가장 낮았던 항목을 들고, 그 항목을 지키지 않으면 생길 수 있는 일과 앞으로 어떻게 실천할지 쓰세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요. 실제 비밀번호나 계정 정보는 쓰지 마세요.</p>
+    <a class="go" href="../forms/info-u5-info-security.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u5-info-security', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 */
+const QUIZ={
+ 1:[{q:'택배 조회 화면의 받는 주소가 누군가에 의해 몰래 다른 주소로 바뀌었다. 지켜지지 않은 원칙은?',o:['가용성','무결성','기밀성'],a:1,w:'허가되지 않은 변경으로부터 정보가 원래대로 보호되어야 한다는 원칙이 깨졌어요.'},
+    {q:'사용자가 필요한 시점에 정보에 접근할 수 있어야 한다는 원칙이 깨진 상황은?',o:['누리집이 열리지 않는다','주문서 수량이 몰래 바뀌었다','남의 진료 기록을 볼 수 있다'],a:0,w:'필요할 때 정보를 쓸 수 없게 된 상황이 이 원칙이 깨진 경우예요.'}],
+ 2:[{q:'정상적인 프로그램으로 위장하여 숨겨진 악성 코드를 실행하는 것은?',o:['웜','트로이 목마','스파이웨어'],a:1,w:'겉모습은 쓸모 있는 프로그램처럼 꾸미고 안에 나쁜 코드를 숨겨 두는 방식이에요.'},
+    {q:'랜섬웨어에 대한 설명으로 알맞은 것은?',o:['스스로 복제해 통신망을 느리게 한다','사용자 몰래 개인 정보를 모아 보낸다','파일을 암호화하고 금전적 보상을 요구한다'],a:2,w:'몸값(ransom)이라는 이름처럼, 사용자의 파일을 인질로 삼아 돈을 요구해요.'}],
+ 3:[{q:'서버, 서비스, 네트워크에 일시적으로 인터넷 트래픽을 폭주시켜 정상적 작동을 방해하는 공격은?',o:['디도스 공격','트로이 목마','네트워크 해킹'],a:0,w:'한꺼번에 엄청난 양의 데이터를 보내 서비스가 제대로 움직이지 못하게 하는 공격이에요.'},
+    {q:'주소창에 방문하려는 사이트 주소를 바르게 넣어도 가짜 사이트로 이동시켜 금융 정보를 빼내는 공격 기법은?',o:['웜','파밍','랜섬웨어'],a:1,w:'가짜 사이트(fake site)로 이동시켜 비밀번호, 공동 인증서 번호 같은 금융 정보를 가로채는 기법이에요.'}],
+ 4:[{q:'네트워크에서 외부의 불법적 침입을 막고 정상 접근만 허용해 내부의 정보를 보호하는 시스템은?',o:['방화벽','전자 서명','공동 인증서'],a:0,w:'밖에서 들어오려는 접근을 허용할지 판단해 위험한 것은 막고 정상 접근만 들여보내요.'},
+    {q:'노트북을 잃어버렸지만, 저장된 파일이 남은 알아볼 수 없는 형태로 바뀌어 있어 비밀이 지켜졌다. 어떤 보안 기술 덕분일까?',o:['방화벽','암호화','전자 서명'],a:1,w:'정보를 알아볼 수 없는 암호문 형태로 저장하면 잃어버려도 사용자의 비밀을 지킬 수 있어요.'}],
+ 5:[{q:'정보 사용자가 온라인 계정에 이중 인증(2단계 인증)을 쓰는 까닭으로 알맞은 것은?',o:['접속 속도를 높이려고','비밀번호를 외우지 않으려고','비밀번호가 새어도 지키려고'],a:2,w:'비밀번호가 노출되더라도 한 단계 더 확인하므로 내 정보를 더 안전하게 보호할 수 있어요.'},
+    {q:'학교 시스템에서 학생은 자기 성적을, 담임 교사는 자기 반 성적을 볼 수 있도록 계정마다 볼 수 있는 범위를 다르게 정했다. 어떤 정보 공급자 수칙일까?',o:['위험 평가','액세스 제어','보안 모니터링'],a:1,w:'사람마다 권한을 따로 주어 볼 수 있는 범위를 정해 두면 정보를 무분별하게 쓰지 않도록 할 수 있어요.'},
+    {q:'인터넷 서버 운영체제와 인터넷 표준 규약의 소스 코드가 공개되어 있어 생길 수 있는 문제는?',o:['해커가 약점을 찾기 쉽다','인터넷 요금이 비싸진다','정보 공유가 어려워진다'],a:0,w:'소스 코드를 누구나 볼 수 있으니 해커가 시스템의 취약점을 찾아 공격하기 쉽고 해킹 정보도 나눌 수 있어요.'}],
+ 7:[{q:'정보 보안에서 단 한 명의 부주의도 위험한 까닭으로 알맞은 것은?',o:['그 사람이 쓰는 기기가 느려져서','그 사람의 개인 정보가 사라져서','같은 시스템을 쓰는 모두가 피해를 입어서'],a:2,w:'정보 보안에 대한 인식이 부족한 한 사람 때문에 같은 시스템의 사용자 전체가 피해를 입을 수 있어서, 모두가 함께 실천해야 해요.'},
+    {q:'모둠 과제 파일에 친구들의 연락처가 들어 있다. 보안 기술을 활용해 디지털 윤리를 실천한 행동으로 알맞은 것은?',o:['파일 이름을 바꿔 단체방에 올린다','누구나 볼 수 있는 링크로 공유한다','파일에 암호를 걸어 모둠원끼리 연다'],a:2,w:'암호화 같은 보안 기술을 바르게 써서 나와 다른 사람의 정보를 지키는 것이 디지털 윤리의 실천이에요.'}],
+};
+
+const QK='ds-u5-info-security-quiz'+WHO.sfx;
+const MK='ds-u5-info-security-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 01 어떤 원칙이 깨졌을까? */
+sorter('ruleGame',{
+  cats:[{n:'🕒 가용성',k:'#2f6fd0'},{n:'🧩 무결성',k:'#1f9d74'},{n:'🤫 기밀성',k:'#d64535'}],
+  items:[
+    {t:'수강 신청 날, 학교 누리집 서버가 멈춰 신청 시간 내내 아무도 접속하지 못했다.',c:0,ic:'🖥️',short:'서버가 멈춰 접속 불가',w:'필요한 때에 정보에 접근할 수 없게 되었어요.'},
+    {t:'동아리 사진 폴더가 갑자기 열리지 않아 발표 시간에 사진을 하나도 쓰지 못했다.',c:0,ic:'🗂️',short:'필요할 때 폴더가 안 열림',w:'정보가 있어도 쓰려는 순간 쓸 수 없으면 이 원칙이 깨진 거예요.'},
+    {t:'누군가 몰래 들어와 온라인 성적표의 점수를 바꾸어 놓았다.',c:1,ic:'📝',short:'성적표 점수가 바뀜',w:'허가되지 않은 사람이 정보를 바꾸었어요.'},
+    {t:'전송 도중 송금 금액의 숫자가 바뀌어 원래와 다른 금액이 보내졌다.',c:1,ic:'💸',short:'전송 중 금액이 바뀜',w:'정보가 원래 내용 그대로 지켜지지 못했어요.'},
+    {t:'잠금이 안 된 휴대폰을 주운 사람이 주인의 대화 내용을 훑어보았다.',c:2,ic:'📱',short:'남이 대화 내용을 봄',w:'허가되지 않은 사람이 정보를 보았어요.'},
+    {t:'고객 명단 파일이 볼 필요가 없는 아르바이트생에게까지 열려 있었다.',c:2,ic:'📇',short:'명단이 아무에게나 열림',w:'정보를 볼 수 있는 사람이 허가된 사람으로 한정되지 않았어요.'},
+  ],
+  end:'<b>필요할 때 쓸 수 있고(가용성)</b>, <b>함부로 바뀌지 않고(무결성)</b>, <b>허가된 사람만 볼 수 있어야(기밀성)</b> 정보 보안이 유지돼요.'
+});
+
+/* 02 악성 코드 카드 */
+flipCards('malCards',[
+  {ic:'🦠',f:'바이러스',b:'정상적인 프로그램에 특정 코드를 삽입하여 감염시키는 프로그램이에요.'},
+  {ic:'🐛',f:'웜',b:'단말기를 감염시킨 뒤, 단말기가 연결된 네트워크에서 자가 복제하여 통신망 속도를 느리게 만드는 악성 코드예요.'},
+  {ic:'🐴',f:'트로이 목마',b:'정상적인 프로그램으로 위장하여 숨겨진 악성 코드를 실행하는 악성 코드예요.'},
+  {ic:'🕶️',f:'스파이웨어',b:'사용자 몰래 설치되어 개인 정보를 수집하고 공격자의 서버로 전송하는 악성 코드예요.'},
+  {ic:'💰',f:'랜섬웨어',b:'몸값(ransom)과 소프트웨어(software)의 합성어로, 사용자의 파일을 무단으로 모두 암호화하여 인질로 삼고 금전적 보상을 요구하는 악성 코드예요.'},
+]);
+
+/* 03 정보 보안 위협 사례 */
+const CASES=[
+  {n:'해킹',ic:'🏢',k:'#d64535',t:'사례 1. 해킹 · 아파트 월 패드',
+   txt:'개인용 컴퓨터나 서버를 노리던 해킹이 스마트폰과 스마트 기기로 퍼지고 있어요. 2021년 12월, 전국 638개 아파트 단지의 월 패드를 관리하는 중앙 관리 서버와 아파트 총 40만 4,847 세대에 설치된 월 패드가 해킹되는 사건이 일어났어요.',
+   dmg:'유출된 개인 정보로 사생활 침해, 경제적 피해 등 2차 피해를 입어요.'},
+  {n:'악성 코드',ic:'📧',k:'#e0702b',t:'사례 2. 악성 코드 · 가짜 챗GPT 앱',
+   txt:'2023년 챗GPT를 만든 오픈AI(OpenAI)가 유료 서비스를 발표하자, 「무료로 챗GPT의 유료 버전을 쓸 수 있다」는 유혹적인 메시지를 보내 가짜 앱이나 피싱 메일을 누르게 했어요. 그렇게 악성 코드를 설치하게 하거나 피싱 웹 페이지로 접속하게 만들었어요.',
+   dmg:'개인 정보 수집 및 유출로 사생활 침해, 기업 성장 방해 등이 생겨요.'},
+  {n:'디도스 공격',ic:'🌊',k:'#2f6fd0',t:'사례 3. 디도스 공격 · 통신망 장애',
+   txt:'국내 인터넷 통신 업체의 통신망에 대용량 데이터로 인터넷 장애를 일으킨 뒤 시스템에 침입해 고객 정보를 빼냈어요. 18만 명이 넘는 사람의 성명, 생년월일, 전화번호가 유출되어, 회사는 2차 피해를 막으려고 고객에게 이 사실을 안내했어요.',
+   term:'디도스(DDoS) 공격: 서버, 서비스, 네트워크에 일시적으로 인터넷 트래픽을 폭주시켜서 정상적 작동을 방해하는 사이버 공격 기법',
+   dmg:'항상 켜져 있는 스마트폰이 디도스에 이용되면 인터넷망과 국가의 주요 기관망이 마비될 수 있어요.'},
+  {n:'파밍',ic:'🎣',k:'#9b4fc4',t:'사례 4. 파밍 · 가짜 사이트',
+   txt:'사이버 수사팀 수사관을 사칭한 사람이 A 씨에게 접근해, A 씨 이름의 계좌가 대포 통장으로 쓰였는지 확인하겠다며 가짜 사이트에 접속하게 했어요. A 씨가 가짜 사이트에 입력한 비밀번호, 공동 인증서 번호 같은 금융 정보를 빼낸 뒤, A 씨 계좌에서 4,000여만 원을 대포 통장으로 보내고 사라졌어요.',
+   term:'파밍: 인터넷 주소창에 방문하려는 사이트의 주소를 입력했을 때 가짜 사이트(fake site)로 이동시키는 공격 기법',
+   dmg:'금융 거래 내역이 노출되어 금전적 피해를 입어요.'},
+];
+tabs('caseBtns','caseView',CASES,c=>`<div class="is-case" style="--k:${c.k}"><div><b class="tt">${c.t}</b><p>${c.txt}</p>${c.term?`<p class="note">* ${c.term}</p>`:''}</div><div class="dmg"><span>피해</span>${c.dmg}</div></div>`);
+chips('casePick','casePick',['월 패드 해킹','가짜 챗GPT 앱','통신망 디도스 공격','파밍'],false);
+
+/* 04 어떤 보안 기술일까? */
+sorter('techGame',{
+  cats:[{n:'🔏 암호화',k:'#2f6fd0'},{n:'🧱 방화벽',k:'#e0702b'},{n:'✍️ 전자 서명',k:'#9b4fc4'}],
+  items:[
+    {t:'메신저로 보낸 내용이 중간에 가로채여도, 엉뚱한 기호와 숫자의 줄로만 보이게 바뀌어 전송된다.',c:0,ic:'💬',short:'내용을 바꿔서 전송',w:'데이터를 남이 알아볼 수 없는 암호문 형태로 변환해 보내는 방법이에요.'},
+    {t:'외부에서 학교 내부 네트워크로 들어오려는 수상한 접속 시도를 막고, 허락된 접속만 들여보낸다.',c:1,ic:'🚧',short:'수상한 접속 차단',w:'외부의 불법적 침입을 막고 정상 접근만 허용해요.'},
+    {t:'온라인으로 서류를 낼 때, 인증서를 써서 내가 보낸 것임을 증명했다.',c:2,ic:'📜',short:'인증서로 신원 증명',w:'인터넷에서 신원을 확인하는 증명서 역할을 해요.'},
+    {t:'휴대폰에 지문을 대어 본인임을 밝힌 뒤 결제를 마쳤다.',c:2,ic:'🖐️',short:'지문으로 본인 인증',w:'교과서는 생체 신호 인증 기술을 쓰임이 넓어지는 전자 서명 방법으로 소개해요.'},
+  ],
+  end:'<b>암호화</b>는 내용을 숨기고, <b>방화벽</b>은 들어오는 길을 지키고, <b>전자 서명</b>은 누구인지 확인해 줘요.'
+});
+chips('techPick','techPick',['암호화','방화벽','전자 서명'],true);
+
+/* 05 정보 사용자 실천 점수 */
+(function(){
+  const IT=[
+    ['강력한 비밀번호 설정','정보 시스템에 접속하는 계정을 다른 사람이 쉽게 알 수 없도록 세 가지 종류 이상의 문자를 섞은, 강력하고 고유한 여덟 자리 이상의 비밀번호를 만든다.'],
+    ['바이러스 백신 설치 및 최신 업데이트 유지','사용하는 컴퓨터나 스마트폰에 바이러스 백신이나 악성 프로그램 방지 소프트웨어를 설치하고 정기적으로 업데이트한다.'],
+    ['보안 무선망 사용 주의','비밀번호가 없는 공공 무선망에서는 민감한 정보 전송을 자제하고 신뢰할 수 있는 무선망을 사용한다.'],
+    ['이중 인증','온라인 계정에 2단계 인증을 사용한다. 비밀번호가 노출되더라도 나의 정보를 더 안전하게 보호할 수 있다.'],
+    ['의심스러운 링크 클릭 금지','인터넷 검색 결과나 문자를 받았을 때 의심스러운 링크를 누르거나 알 수 없는 파일을 내려받지 않는다.'],
+    ['정기적인 데이터 백업','하드웨어 장애, 악성 코드 등 여러 위험으로부터 중요한 정보를 잃지 않도록 정기적으로 데이터를 백업한다.'],
+  ];
+  const LB=['','매우 미흡','미흡','보통','잘함','아주 잘함'];
+  const B=$('userScore'), msg=$('scoreMsg');
+  const sc=IT.map(([n])=>{const m=String(MEMO.userScore||'').match(new RegExp(n+' (\\d)점')); return m?+m[1]:0;});
+  B.innerHTML=IT.map(([n,d],i)=>`<div class="it"><div class="tx"><b>${n}</b><span>${d}</span></div><div class="st" data-i="${i}">${[1,2,3,4,5].map(v=>`<button data-v="${v}" title="${LB[v]}" aria-label="${n} ${v}점">★</button>`).join('')}<small></small></div></div>`).join('');
+  function draw(){
+    B.querySelectorAll('.st').forEach(s=>{const i=+s.dataset.i; s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v<=sc[i])); s.querySelector('small').textContent=sc[i]?`${sc[i]}점 · ${LB[sc[i]]}`:'';});
+    const done=sc.filter(Boolean).length;
+    if(!done){msg.textContent='';return;}
+    if(done<IT.length){msg.textContent=`${done} / ${IT.length}개 항목에 점수를 매겼어요. 모두 매기면 가장 낮은 항목을 알려 줘요. (같은 별을 다시 누르면 지워져요.)`;return;}
+    const low=Math.min(...sc), lows=IT.filter((_,i)=>sc[i]===low).map(x=>x[0]);
+    msg.innerHTML=`평균 <b>${(sc.reduce((a,b)=>a+b,0)/IT.length).toFixed(1)}점</b>. 가장 낮은 항목: <b>${lows.join(', ')}</b> (${low}점) → 아래 메모에 실천 방법을 적어요.`;
+  }
+  B.querySelectorAll('.st button').forEach(b=>b.onclick=()=>{const i=+b.parentElement.dataset.i, v=+b.dataset.v; sc[i]=sc[i]===v?0:v; MEMO.userScore=IT.map(([n],j)=>sc[j]?`${n} ${sc[j]}점`:'').filter(Boolean).join(', '); store.set(MK,MEMO); draw();});
+  draw();
+})();
+
+/* 05 비밀번호 규칙 점검기 (입력값은 저장하거나 보내지 않음) */
+(function(){
+  const EX=['qwer1234','sky2009','dalgona!!','Banana!!!!1','Rain#Bus7Tree'];
+  const inp=$('pwIn'), chk=$('pwChk'), bar=$('pwBar'), msg=$('pwMsg');
+  $('pwEx').innerHTML='<span class="muted" style="font-size:.88rem">예시:</span>'+EX.map(e=>`<button class="btn ghost sm" data-e="${esc(e)}">${esc(e)}</button>`).join('');
+  $('pwEx').querySelectorAll('button').forEach(b=>b.onclick=()=>{inp.value=b.dataset.e; judge();});
+  const ROWS=['qwertyuiop','asdfghjkl','zxcvbnm','1234567890'], WORDS=['password','passwd','admin','qwerty','iloveyou','letmein','welcome','1q2w3e'];
+  function seq(s){ const t=s.toLowerCase();
+    for(let i=0;i+4<=t.length;i++){ const u=t.slice(i,i+4); let up=true, dn=true;
+      for(let j=1;j<4;j++){ const d=u.charCodeAt(j)-u.charCodeAt(j-1); if(d!==1) up=false; if(d!==-1) dn=false; }
+      if((up||dn)&&/^[a-z0-9]+$/.test(u)) return u;
+      if(ROWS.some(r=>r.includes(u)||[...r].reverse().join('').includes(u))) return u; }
+    return null; }
+  function judge(){
+    const s=inp.value;
+    if(!s){chk.innerHTML=''; bar.style.width='0'; msg.textContent=''; return;}
+    const kinds=[/[A-Z]/,/[a-z]/,/[0-9]/,/[!-\/:-@\[-\x60{-~]/].filter(r=>r.test(s)).length;
+    let easy=null; const sq=seq(s), w=WORDS.find(x=>s.toLowerCase().includes(x));
+    if(w) easy=`누구나 떠올리는 낱말(${esc(w)})이 들어 있어요`;
+    else if(sq) easy=`자판이나 순서대로 이어지는 글자(${esc(sq)})가 있어요`;
+    else if(/(.)\1\1/.test(s)) easy='같은 글자를 세 번 이상 이어 썼어요';
+    else if(/\d{6,}/.test(s)) easy='숫자가 여섯 개 이상 이어져 생일이나 전화번호처럼 보여요';
+    else if(/(19|20)\d\d/.test(s)) easy=`연도처럼 보이는 숫자(${s.match(/(19|20)\d\d/)[0]})가 있어요`;
+    const R=[[s.length>=8,`여덟 자리 이상 (지금 ${s.length}자리)`],[kinds>=3,`세 가지 종류 이상의 문자 섞기 (지금 ${kinds}종류 · 영문 대문자, 영문 소문자, 숫자, 특수 문자 중)`],[!easy,easy?`쉽게 알 수 없는가 → ${easy}`:'쉽게 알 수 없는가 → 흔한 낱말이나 이어지는 패턴이 보이지 않아요']];
+    chk.innerHTML=R.map(([ok,t])=>`<li class="${ok?'ok':'ng'}">${ok?'✔':'✖'} ${t}</li>`).join('');
+    const n=R.filter(r=>r[0]).length; bar.style.width=(n/3*100)+'%'; bar.className=['w0','w1','w2','w3'][n];
+    msg.innerHTML=n===3?'<b>세 조건을 모두 만족해요.</b> 그래도 다른 사이트와 같은 비밀번호를 쓰면 한 곳이 뚫릴 때 모두 위험해져요.':`${3-n}개 조건이 부족해요. 예시를 고쳐 세 조건을 모두 만족하게 만들어 봐요.`;
+    if(n===3&&!MEMO.pwTry){MEMO.pwTry='세 조건을 모두 만족하는 예시 비밀번호를 만들어 봄(입력값은 저장하지 않음)'; store.set(MK,MEMO);}
+  }
+  inp.addEventListener('input',judge);
+})();
+vote('ck3Vote','ck3',[['예','실천할 수 있어요'],['아니요','04·05를 다시 봐요']]);
+
+/* 05 개념 정리하기 빈칸 */
+document.querySelectorAll('.is-blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+
+/* 06 정리 · 맞춤 활동 */
+chips('selfCheck','selfCheckPick',['사용자와 공급자 입장에서 정보 보호와 보안이 왜 중요한지 말할 수 있다','사례에 알맞은 정보 보호와 보안 방법을 제시할 수 있다','정보 보호 방법을 알고 생활에서 실천하려고 한다'],true);
+vote('extraVote','extraPick',[['보충','보호할 정보와 공유할 정보 구분'],['심화','앱 사용 권한 점검']],i=>{$('extraBasic').classList.toggle('on',i===0); $('extraDeep').classList.toggle('on',i===1);});
+
+/* 06 보충 · 보호할 정보와 공유할 정보 */
+sorter('extraSort',{
+  cats:[{n:'🔒 보호할 정보',k:'#d64535'},{n:'🤝 공유할 정보',k:'#1f9d74'}],
+  items:[
+    {t:'훈련 중인 부대가 이동할 경로',c:0,ic:'🪖',short:'부대 이동 경로',w:'군사 정보는 국가 안보와 연결되어 지켜야 해요.'},
+    {t:'내 휴대폰에 남은 하루 동안의 이동 기록',c:0,ic:'📍',short:'하루 이동 기록',w:'위치 정보는 사생활을 드러내므로 지켜야 해요.'},
+    {t:'학원 CCTV에 찍힌 내 모습이 담긴 영상',c:0,ic:'🎥',short:'CCTV 속 내 모습',w:'얼굴이 담긴 영상은 개인을 알아볼 수 있게 해 줘서 지켜야 해요.'},
+    {t:'독감으로 병원에서 받은 진료 기록',c:0,ic:'🩺',short:'진료 기록',w:'의료 정보는 보호해야 할 정보예요.'},
+    {t:'시청 앞에 새로 생긴 식당들의 목록과 후기',c:1,ic:'🍜',short:'새 식당 목록',w:'맛집 정보는 나누면 여러 사람에게 도움이 돼요.'},
+    {t:'손 씻기 같은 감기 예방 수칙',c:1,ic:'🧼',short:'감기 예방 수칙',w:'건강 상식은 공공의 이익을 위해 나누는 정보예요.'},
+    {t:'연휴에 고속도로가 막히는 구간 안내',c:1,ic:'🛣️',short:'정체 구간 안내',w:'교통 정보는 많은 사람이 알수록 좋아요.'},
+    {t:'해외 여행지의 치안과 안전 수칙 안내',c:1,ic:'🧳',short:'여행지 안전 안내',w:'여행 정보는 공유하면 다른 사람의 안전에도 도움이 돼요.'},
+  ],
+  end:'<b>개인 정보와 저작권이 있는 저작물</b>, 그리고 안보와 관련된 정보는 보호하고, <b>개인과 공공의 이익</b>이 되는 정보는 공유해요.'
+});
+
+/* 06 심화 · 앱 사용 권한 점검(가상의 앱) */
+(function(){
+  const APPS=[
+    {n:'손전등 앱',ic:'🔦',job:'카메라 플래시를 켜서 불을 밝혀요.',p:[['카메라(플래시)',1],['연락처',0],['위치',0],['마이크',0]]},
+    {n:'길 찾기 앱',ic:'🗺️',job:'지금 있는 곳에서 목적지까지 길을 알려 줘요.',p:[['위치',1],['연락처',0],['통화 기록',0]]},
+    {n:'사진 꾸미기 앱',ic:'🎨',job:'갤러리에서 사진을 골라 스티커를 붙여 꾸며요.',p:[['사진',1],['연락처',0],['위치',0],['통화 기록',0]]},
+  ];
+  const B=$('permSim'), msg=$('permMsg'); let done=false;
+  B.innerHTML=APPS.map(a=>`<div class="is-app"><div class="hd"><span>${a.ic}</span><div><b>${a.n}</b><small>${a.job}</small></div></div><div class="ps">${a.p.map(([p,need])=>`<button data-need="${need}">${p}</button>`).join('')}</div></div>`).join('');
+  const bs=[...B.querySelectorAll('.ps button')];
+  bs.forEach(b=>b.onclick=()=>{ if(done) return; b.classList.toggle('off'); });
+  $('permCheck').onclick=()=>{
+    done=true; let hit=0, miss=0, bad=0;
+    bs.forEach(b=>{const need=b.dataset.need==='1', off=b.classList.contains('off'); b.classList.remove('ok','ng','miss');
+      if(!need&&off){hit++; b.classList.add('ok');} else if(!need){miss++; b.classList.add('miss');} else if(off){bad++; b.classList.add('ng');}});
+    const all=bs.filter(b=>b.dataset.need==='0').length;
+    msg.innerHTML=`필요 없는 권한 ${all}개 가운데 <b>${hit}개</b>를 찾았어요.`+(miss?' 점선은 놓친 권한이에요.':'')+(bad?' 빨간색은 앱이 제 일을 하는 데 필요한 권한이에요.':'')+' 앱이 <b>하는 일</b>과 관계없는 권한을 요청하면 의심해 봐요.';
+    MEMO.permRes=`가상 앱 권한 점검: 필요 없는 권한 ${all}개 중 ${hit}개 찾음`; store.set(MK,MEMO);
+  };
+  $('permReset').onclick=()=>{ done=false; bs.forEach(b=>b.classList.remove('off','ok','ng','miss')); msg.textContent=''; };
+})();
+
+/* 06 03에서 고른 사례 보여 주기 */
+onShow[6]=()=>{const c=String(MEMO.casePick||'').trim(), w=String(MEMO.caseWhy||'').trim(); $('caseRecall').innerHTML=c?`고른 사례: <b>${esc(c)}</b>`+(w?`<br><span class="muted">${esc(w)}</span>`:''):'아직 03에서 사례를 고르지 않았어요. 03으로 돌아가 하나 골라요.';};
+
+/* 07 마무리 */
+const MEMOLIST=[['firstGuess','처음 짐작(스마트폰에 생긴 문제)'],['ruleBreak','원칙이 깨지는 생활 속 상황'],['symptomWhy','처음의 스마트폰 다시 보기'],['casePick','고른 위협 사례'],['caseWhy','사례의 위협 요소와 피해'],['techPick','사례에 도움이 될 보안 기술'],['techWhy','그 기술이 도움이 되는 까닭'],['userScore','정보 사용자 실천 점수'],['weakPlan','가장 낮은 항목의 실천 계획'],['pwTry','비밀번호 점검기'],['ck3','성취도 평가(정보 보안 기술 활용)'],['fitUser','원인 · 사용자 측면'],['fitSupp','원인 · 공급자 측면'],['fitWhen','가장 중요한 시점과 방법'],['ruleUser','실천 규칙 · 사용자'],['ruleSupp','실천 규칙 · 공급자'],['selfCheckPick','학업 성취도 점검'],['extraPick','고른 선택 활동'],['permRes','심화 · 앱 권한 점검 결과'],['permWhy','심화 · 필요 없는 권한'],['keyQ','핵심 질문에 대한 내 답'],['newLearn','새롭게 알게 된 점']];
+/* 접어 둔 활동과 선택 활동 메모는 쓴 것만 모아 보기에 보여 줌 */
+const OPT=[['pwTry'],['fitUser','fitSupp','fitWhen','ruleUser','ruleSupp'],['selfCheckPick','extraPick'],['permRes','permWhy']];
+onShow[7]=()=>{const hide=OPT.filter(g=>!g.some(k=>String(MEMO[k]||'').trim())).flat(); memoSummary('msum',MEMOLIST.filter(([k])=>!hide.includes(k)));};
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

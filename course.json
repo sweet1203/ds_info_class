@@ -314,7 +314,7 @@
      "title": "디지털 기술의 영향",
      "pages": "206~215",
      "form": "info-u5-digital-impact",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "35",
@@ -322,7 +322,7 @@
      "title": "디지털 사회의 진로 · 디지털 기술과 사회 변화 정리",
      "pages": "216~221",
      "form": "info-u5-digital-career",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "36",
@@ -330,7 +330,7 @@
      "title": "정보 보호와 정보 공유",
      "pages": "222~227",
      "form": "info-u5-info-protection",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "37",
@@ -338,7 +338,7 @@
      "title": "정보 보안 · 정보 보호와 보안 정리",
      "pages": "228~233",
      "form": "info-u5-info-security",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "38",
@@ -346,7 +346,7 @@
      "title": "협력적 창의·융합 프로젝트 · Ⅴ단원 정리",
      "pages": "234~237",
      "form": "info-u5-review",
-     "status": "todo"
+     "status": "ready"
     }
    ]
   }
