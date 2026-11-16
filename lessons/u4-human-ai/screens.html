@@ -1,0 +1,281 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#5a5fc8">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅳ. 인공지능 · 1. 지능 에이전트</span>
+      <h1>인간과 인공지능은<br>경쟁할까, 협력할까?</h1>
+      <div class="story"><b>인공지능은 시간이 흐를수록 계속 발전하고 있어요.</b><br>규칙을 하나하나 입력받던 인공지능은 이제 데이터에서 스스로 배우고, 글과 그림까지 만들어요. 그렇다면 인간과 인공지능은 서로 경쟁하는 관계일까요, 아니면 서로 협력하는 관계일까요?</div>
+      <p>오늘은 인공지능이 발전하면서 <b>인간과 인공지능의 역할</b>이 어떻게 바뀌어 왔는지 살펴보고, <b>창의성과 혁신 · 의사 결정 지원 · 노동력 분배</b>의 세 측면에서 둘이 어떻게 <b>협력</b>하는지 알아봐요. 마지막으로 지능 에이전트 단원을 정리해요.</p>
+      <ol>
+        <li>인간과 인공지능의 역할 변화</li><li>인간과 인공지능은 어떻게 협력할까?</li><li>함께 해결하기 · 협력 토의</li>
+        <li>지능 에이전트 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📏</i><div><b>규칙 기반 인공지능</b><small>1950년대~1970년대</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>📊</i><div><b>기계학습의 활용</b><small>1980년대~1990년대</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>✨</i><div><b>딥러닝 · 생성형 인공지능</b><small>2000년대 이후</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🤝</i><div><b>인간과 인공지능의 협력</b><small>창의성과 혁신 · 의사 결정 지원 · 노동력 분배</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>인공지능의 발전 과정(규칙 기반 → 데이터 기반)에 따라 <b>인간의 역할</b>과 <b>인공지능의 역할</b>이 어떻게 달라졌는지 비교해요. 그다음 인간과 인공지능이 <b>협력</b>하는 방법을 사례로 정리하고, 기사를 읽고 협력의 좋은 점과 걱정되는 점을 토의해요. 끝으로 <b>지능 에이전트</b> 단원 전체를 정리해요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">지난 시간 떠올리기 · 처음 생각</span>
+        <p style="margin:0 0 6px;font-size:.9rem">지능 에이전트는 <b>인식 → 학습 → 추론 → 행동</b>으로 움직이고, <b>자율성 · 협력성 · 목표 지향성</b>이 있었어요. 지금 내 생각은 어느 쪽인가요?</p>
+        <div class="vote" id="firstVote"></div>
+        <div class="memo"><label>그렇게 생각한 까닭</label><input type="text" data-memo="firstWhy"><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>지능 에이전트</b> · 지능 에이전트의 역할은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 인간과 인공지능은 서로 경쟁하는 관계일까, 협력하는 관계일까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">오늘 마지막에 지능 에이전트 단원의 핵심 질문에 내 말로 답해요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>인공지능 발전 현황에 비추어 인간과 인공지능의 역할을 탐색할 수 있다.</li>
+          <li>인간과 인공지능은 어떻게 협력할 수 있을지 설명할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 인간과의 협력 · 인공지능의 역할</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 인간과 인공지능의 역할 변화부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 역할 변화 -->
+<section class="page" data-name="역할의 변화" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>인간과 인공지능의 역할은 어떻게 변화하고 있을까?</h2><p>교과서 170~171쪽 · 규칙 기반 인공지능, 데이터 기반 인공지능</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>처음에는 사람이 <b>규칙을 직접 만들어</b> 넣어야 인공지능이 움직였어요. 기계학습과 딥러닝이 나오면서 인공지능이 <b>데이터에서 스스로 배우게</b> 되었고, 사람의 역할은 <b>데이터 준비 · 모델 성능 관리</b>를 거쳐 <b>협력 · 윤리 · 인간 가치를 지키는 일</b>로 바뀌고 있어요.</span></div>
+  <div class="card">
+    <h3>🕰️ 시기별 인간과 인공지능의 역할 <span class="muted" style="font-weight:400;font-size:.88rem">(시기를 눌러 봐요)</span></h3>
+    <div class="tl" id="eraBtns"></div>
+    <div id="eraView"></div>
+    <div class="ha-share" id="eraShare"></div>
+  </div>
+  <div class="card">
+    <h3>🔭 앞으로 인간과 인공지능의 역할은?</h3>
+    <p style="margin-top:0">초기의 규칙 기반 인공지능에서는 시스템을 설계, 유지, 관리하기 위해 인간이 해야 할 역할의 비중이 매우 컸어요. 데이터 기반 인공지능에서는 인간의 역할이 <b>데이터 준비, 모델 성능 관리</b> 등으로 바뀌었고, 최근 딥러닝과 생성형 인공지능의 등장으로 <b>인간과 인공지능의 협력, 윤리적 문제, 인간 가치의 중요성</b>이 새롭게 논의되고 있어요.</p>
+    <div class="callout" style="margin-bottom:0">미래의 인공지능은 지금보다 <b>자율성</b>이 커지면서 <b>인간과의 협력</b>과 <b>윤리적 가치</b>가 더욱 강조될 거예요. 인공지능 구현에서 인간의 개입은 점점 줄어들겠지만, 인간은 모든 것의 <b>주체</b>로서 앞으로도 그 역할이 매우 중요해요.</div>
+  </div>
+  <div class="card">
+    <h3>🗂️ 어느 시기의 모습일까?</h3>
+    <p class="muted" style="margin-top:0">장면을 읽고 어느 시기의 인간 또는 인공지능의 역할인지 골라요.</p>
+    <div id="eraGame"></div>
+    <div class="memo" style="margin-top:12px"><label>시기가 바뀌면서 <b>인간의 역할</b>은 어떻게 달라졌나요? 앞으로 더 강조될 인간의 역할은 무엇이라고 생각하나요?</label><textarea data-memo="roleChange" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 협력 -->
+<section class="page" data-name="인간과 인공지능의 협력" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>인간과 인공지능은 어떻게 협력할까?</h2><p>교과서 172쪽 · 창의성과 혁신, 의사 결정 지원, 노동력 분배</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>인간은 <b>새로운 아이디어, 최종 결정, 사람 사이의 조율</b>을 잘하고, 인공지능은 <b>많은 데이터의 빠른 분석, 예측, 반복 작업</b>을 잘해요. 서로의 강점을 살려 나누면 더 좋은 결과를 얻을 수 있어요.</span></div>
+  <div class="card">
+    <h3>🤝 협력의 세 측면</h3>
+    <p style="margin-top:0">인간과 인공지능의 협력은 공존을 위해 필요하며 다양한 분야에서 인간에게 도움을 줄 수 있어요.</p>
+    <div class="ha-scroll">
+      <table class="tbl ha-3">
+        <tr><th></th><th>🙋 인간</th><th>🤖 인공지능</th></tr>
+        <tr><th>💡 창의성과 혁신</th><td>인공지능에 비해 창의적인 아이디어를 가지고 있으므로, 인공지능의 도움을 받아 더욱 혁신적인 문제 해결 방안을 도출할 수 있다.</td><td>인간의 창의력을 보완하고 확장시키는 역할을 해 인간의 창의적인 아이디어 도출과 새로운 기술 개발에 기여한다.</td></tr>
+        <tr><th>🧭 의사 결정 지원</th><td>더욱 효과적으로 의사 결정을 할 수 있게 되며, 인간의 주관적 판단과 인공지능의 객관적 분석이 서로 보완하여 작용할 수 있다.</td><td>대량의 데이터를 빠르게 분석하고 패턴을 찾아내 인간에게 중요한 정보를 제공하고 문제 해결에 활용할 수 있다.</td></tr>
+        <tr><th>🛠️ 노동력 분배</th><td>일부 노동 관련 직업이 자동화되어 더 높은 수준의 전문성을 띤 업무에 집중할 수 있게 된다.</td><td>작업의 자동화와 함께 업무 생산성을 높이고, 반복적이고 단순한 작업을 맡아 인간의 노동 부담과 비용을 줄여 준다.</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3>☀️ 예시 · 태양열 기반의 에너지 시스템 개발 <span class="muted" style="font-weight:400;font-size:.88rem">(표 Ⅳ-5)</span></h3>
+    <p style="margin-top:0">인공지능이 추천해 준 ‘태양열 기반의 에너지 시스템’을 인간과 인공지능이 함께 연구한다고 해 봐요. 측면을 눌러 각자의 역할을 확인해요.</p>
+    <div class="apps" id="solarBtns"></div>
+    <div class="cview" id="solarView"></div>
+  </div>
+  <div class="card">
+    <h3>🚲 누가 맡으면 좋을까? · 우리 동네 공공 자전거 대여소 늘리기</h3>
+    <p class="muted" style="margin-top:0">구청이 인공지능과 함께 공공 자전거 대여소를 새로 늘리려고 해요. 각 일을 인간과 인공지능 가운데 누가 맡는 것이 알맞을지 골라요.</p>
+    <div id="bikeGame"></div>
+    <div class="memo" style="margin-top:12px"><label>자전거 대여소 일 가운데 하나를 골라, 인간 또는 인공지능이 맡는 것이 알맞은 까닭을 <b>각자의 강점</b>과 연결해 써요.</label><textarea data-memo="bikeWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 함께 해결하기 -->
+<section class="page" data-name="함께 해결하기 · 협력 토의" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>함께 해결하기 · 인간과 인공지능의 협력</h2><p>교과서 172~173쪽 · 분석 · 토의</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>기사를 읽고 인간과 인공지능이 <b>일을 어떻게 나누었는지</b> 찾아요. 협력해서 <b>좋았던 점</b>과 <b>걱정되는 점</b>을 모둠에서 토의하고, 다른 협력 사례를 세 측면으로 정리해요.</span></div>
+  <div class="card">
+    <h3>📰 기사 읽기 · 반도체 공정 개발 개선을 위한 인간과 인공지능의 협력 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 173쪽 기사 요약)</span></h3>
+    <div class="ha-news">
+      <p>인간과 인공지능이 역할을 나눠 협력한 결과, <b>반도체 설계를 최적화하면서 비용을 50%나 줄였다</b>는 연구 결과가 과학 저널 『네이처』에 실렸어요.</p>
+      <div class="cards2">
+        <div class="kc" style="--k:#2f6fd0"><h4>🙋 인간 엔지니어 · 전반부</h4><p>뛰어난 <b>직관</b>을 살릴 수 있는 <b>초기 설계 단계</b>를 맡았어요.</p></div>
+        <div class="kc" style="--k:#e0702b"><h4>🤖 컴퓨터 알고리즘(AI) · 후반부</h4><p>복잡한 <b>계산력</b>이 필요한 <b>후반 미세 조정 단계</b>를 맡았어요.</p></div>
+      </div>
+      <p style="margin-bottom:0">이 연구는 인간 엔지니어의 고유한 가치와 독창성은 살리고, 복잡한 공학적 부분은 그 과제에 알맞은 기계(AI)에 맡기면 <b>인간의 가치와 독창성을 최대로</b> 끌어낼 수 있음을 보여 줘요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💬 모둠 토의</h3>
+    <p class="note" style="margin-top:0">자기 의견을 말할 때는 뒷받침하는 근거나 이유를 들어 설득력 있게 말해요.</p>
+    <div class="memo"><label>1. 인간과 인공지능이 협력해서 어떤 <b>이로운 점</b>이 있었나요? 주요 요점을 적어요. <small>기사 속 결과와, 인간이 무엇에 더 집중할 수 있게 되었는지 떠올려요.</small></label><textarea data-memo="goodPts" rows="2"></textarea><div class="saved"></div></div>
+    <div class="memo"><label>2. 인간과 인공지능의 협력에 어떤 <b>부정적인 점</b>이 있을까요? 하나를 골라 그 문제를 줄이려면 인간이 무엇을 해야 할지도 적어요. <small>인공지능에 맡기는 일이 많아질 때 사람과 사회에 생길 수 있는 일을 떠올려요.</small></label><textarea data-memo="badPts" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <details class="card ha-more">
+    <summary>🔎 시간 되면 · 3. 인간과 인공지능의 협력 사례 정리하기</summary>
+    <p class="muted" style="margin-top:0">교과서, 뉴스, 선생님이 알려 주는 사이트에서 협력 사례를 하나 찾아 세 측면으로 정리해요. 찾기 어려우면 02의 자전거 대여소 사례나 내 관심 분야(의료, 음악, 스포츠 등)로 해도 좋아요.</p>
+    <div class="memo"><label>내가 찾은 협력 사례</label><input type="text" data-memo="caseName"><div class="saved"></div></div>
+    <div class="ha-scroll">
+      <table class="tbl ha-case">
+        <tr><th></th><th>🙋 인간의 역할</th><th>🤖 인공지능의 역할</th></tr>
+        <tr><th>창의성과 혁신</th><td><textarea data-memo="caseCH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="caseCA" rows="2"></textarea><div class="saved"></div></td></tr>
+        <tr><th>의사 결정 지원</th><td><textarea data-memo="caseDH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="caseDA" rows="2"></textarea><div class="saved"></div></td></tr>
+        <tr><th>노동력 분배</th><td><textarea data-memo="caseLH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="caseLA" rows="2"></textarea><div class="saved"></div></td></tr>
+      </table>
+    </div>
+  </details>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="ha-blanks">
+      <li>1970년대의 한 진단 프로그램은 의사들이 적어 준 「만약 ~이면 ~이다」 문장들을 차례로 적용해 결론을 냈다. 이런 인공지능을 <button class="ha-blank" data-a="규칙 기반">?</button> 인공지능이라고 한다.</li>
+      <li>스스로 판단하고 행동하는 인공지능이 늘어날수록 사람과 함께 일하는 <button class="ha-blank" data-a="인간과의 협력">?</button>과, 옳고 그름을 따지는 <button class="ha-blank" data-a="윤리적 가치">?</button>가 더 중요해진다.</li>
+      <li>작곡가가 떠올린 짧은 멜로디를 인공지능이 여러 가지 편곡으로 넓혀 보여 주는 것은 <button class="ha-blank" data-a="창의성과 혁신">?</button> 측면의 협력이다.</li>
+      <li>날씨와 교통 데이터를 분석한 인공지능의 예측을 참고해 축제 날짜를 사람이 정하는 것은 <button class="ha-blank" data-a="의사 결정 지원">?</button> 측면의 협력이다.</li>
+      <li>물류 센터에서 로봇이 상자 분류를 맡고 사람은 배송 계획을 세우는 데 집중하는 것은 <button class="ha-blank" data-a="노동력 분배">?</button> 측면의 협력이다.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>✅ 성취도 평가</h3>
+    <p style="margin-top:0">인간과 인공지능의 역할과 협력에 대해 설명할 수 있나요?</p>
+    <div class="vote" id="selfVote"></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 지능 에이전트 정리 -->
+<section class="page" data-name="지능 에이전트 정리" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>지능 에이전트 정리 · 지능 에이전트의 활용</h2><p>교과서 174~175쪽 · 맞춤 활동, 학업 성취도 점검, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>생활 속 지능 에이전트 하나를 골라 <b>인식 · 학습 · 추론 · 행동</b>으로 분석하고(지식·이해), 그것을 인간과 인공지능이 함께 만든다면 누가 무엇을 맡을지 나눠 보고(과정·기능), 그 가치를 적어요(가치·태도).</span></div>
+  <div class="card">
+    <h3><span class="ha-tag" style="--k:#2f6fd0">지식·이해</span> 1. 일상생활 속 지능 에이전트를 인식 · 학습 · 추론 · 행동으로 분석하기</h3>
+    <p class="muted" style="margin-top:0">분석할 지능 에이전트를 하나 골라요. 목록에 없으면 「직접 정하기」를 고르고 이름을 적어요.</p>
+    <div id="fitPick"></div>
+    <div class="memo"><label>지능 에이전트의 종류 <small>직접 정했다면 이름을 적어요</small></label><input type="text" data-memo="fitName"><div class="saved"></div></div>
+    <div class="ha-irla">
+      <div class="memo" style="--k:#2f6fd0"><label>인식</label><textarea data-memo="fitP" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo" style="--k:#1f9d74"><label>학습</label><textarea data-memo="fitL" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo" style="--k:#e0702b"><label>추론</label><textarea data-memo="fitR" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo" style="--k:#d64535"><label>행동</label><textarea data-memo="fitA" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <details class="card ha-more">
+    <summary><span class="ha-tag" style="--k:#1f9d74">과정·기능</span> 시간 되면 · 2. 1번의 지능 에이전트를 인간과 인공지능이 함께 개발한다면?</summary>
+    <div class="ha-scroll">
+      <table class="tbl ha-case">
+        <tr><th>영역</th><th>🙋 인간의 역할</th><th>🤖 인공지능의 역할</th></tr>
+        <tr><th>창의성과 혁신</th><td><textarea data-memo="devCH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="devCA" rows="2"></textarea><div class="saved"></div></td></tr>
+        <tr><th>의사 결정 지원</th><td><textarea data-memo="devDH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="devDA" rows="2"></textarea><div class="saved"></div></td></tr>
+        <tr><th>노동력 분배</th><td><textarea data-memo="devLH" rows="2"></textarea><div class="saved"></div></td><td><textarea data-memo="devLA" rows="2"></textarea><div class="saved"></div></td></tr>
+      </table>
+    </div>
+  </details>
+  <div class="card">
+    <h3><span class="ha-tag" style="--k:#d64535">가치·태도</span> 3. 이 지능 에이전트가 일상생활에서 필요한 이유와 가치</h3>
+    <div class="memo"><label>1번(시간이 되었다면 2번도)에서 작성한 내용을 바탕으로, 이 지능 에이전트가 왜 필요하고 우리 삶에 어떤 가치가 있는지 설명해요.</label><textarea data-memo="fitValue" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>✅ 학업 성취도 점검</h3>
+    <p style="margin-top:0">평가 기준을 읽고, 할 수 있게 된 것을 골라요.</p>
+    <div id="selfCheck"></div>
+    <p class="muted" style="font-size:.9rem">모두 고를 수 있으면 <b>심화</b>, 고르지 못한 것이 있으면 <b>보충</b> 활동을 해 봐요.</p>
+    <div class="vote" id="extraVote"></div>
+    <div class="ha-extra" id="extraBasic">
+      <p><b>보충 · Frozen Lake(얼어붙은 호수)</b> 지능 에이전트가 미끄러운 얼음 위를 건너 목적지에 무사히 도착하는 최적의 경로를 찾는 문제예요. 에이전트가 왼쪽 위(출발)에서 오른쪽 아래(도착)까지 구멍에 빠지지 않고 가는 과정을 관찰해요.</p>
+      <div class="grid2">
+        <div>
+          <p style="margin:0 0 6px"><b>① 직접 건너 보기</b> <small class="muted">화살표를 누르면 한 칸씩 움직여요. 얼음이 미끄러워 생각한 방향으로 가지 않을 때가 있어요.</small></p>
+          <div id="lakeGame"></div>
+        </div>
+        <div>
+          <p style="margin:0 0 6px"><b>② 코랩에서 애니메이션 실행하기</b> <small class="muted">교과서 소스 코드를 바탕으로 만든 노트북이에요.</small></p>
+          <ol class="ha-ol">
+            <li>아래 버튼으로 노트북을 열고, 선생님이 알려 주는 계정으로 로그인해요.</li>
+            <li>셀을 위에서부터 차례로 실행해 무작위로 움직이는 에이전트의 애니메이션을 봐요.</li>
+            <li>시간이 있으면 「더 해 보기」에서 경험으로 배우는 에이전트와 견주어 봐요.</li>
+          </ol>
+          <div class="row"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u4-human-ai/assets/frozenlake_agent.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="frozenlake_agent.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+        </div>
+      </div>
+      <p style="margin:12px 0 6px">무작위로 움직이는 에이전트에게는 학습과 추론이 없어요. <b>직접 건너 본 나(또는 잘 건너는 지능 에이전트)라면</b> 단계마다 무엇을 할지 적고, 무작위 에이전트에게 <b>없는 단계</b>도 「없음 — 그래서 ○○」처럼 적어요.</p>
+      <div class="ha-irla">
+        <div class="memo" style="--k:#2f6fd0"><label>인식</label><textarea data-memo="flP" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#1f9d74"><label>학습</label><textarea data-memo="flL" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#e0702b"><label>추론</label><textarea data-memo="flR" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#d64535"><label>행동</label><textarea data-memo="flA" rows="2"></textarea><div class="saved"></div></div>
+      </div>
+    </div>
+    <div class="ha-extra" id="extraDeep">
+      <p><b>심화 · 로봇 고양이 설계하기</b> 집에서 로봇 고양이를 키운다고 해 봐요. 실제 고양이와 비슷하게 행동하려면 지능 에이전트를 어떻게 설계해야 할까요? 지능 에이전트의 특성(자율성·협력성·목표 지향성)과 효율적인 구현 과정을 바탕으로 설명해요.</p>
+      <div class="ha-irla">
+        <div class="memo" style="--k:#2f6fd0"><label>인식</label><textarea data-memo="catP" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#1f9d74"><label>학습</label><textarea data-memo="catL" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#e0702b"><label>추론</label><textarea data-memo="catR" rows="2"></textarea><div class="saved"></div></div>
+        <div class="memo" style="--k:#d64535"><label>행동</label><textarea data-memo="catA" rows="2"></textarea><div class="saved"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 학업 계획 점검 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">규칙 기반 인공지능 시기에는 인간이 <b>규칙을 만들고 관리</b>하는 역할이 컸고, 데이터 기반 인공지능 시기에는 <b>데이터 준비와 모델 성능 관리</b>로, 지금은 <b>협력 · 윤리적 고려 · 인간 중심의 가치 유지</b>로 인간의 역할이 옮겨 가고 있다.</div>
+    <div style="--k:#1f9d74">인간과 인공지능은 <b>창의성과 혁신, 의사 결정 지원, 노동력 분배</b>의 측면에서 서로의 강점을 살려 협력할 수 있다. 최종 결정과 윤리적 검토는 인간이, 대량 데이터 분석과 반복 작업은 인공지능이 잘한다.</div>
+    <div style="--k:#9b4fc4">인공지능의 자율성이 커져 인간의 개입이 줄어들더라도, <b>인간은 모든 것의 주체</b>로서 협력하고 윤리적 가치를 지키는 역할이 더욱 중요해진다.</div>
+  </div>
+  <div class="card">
+    <h3>학업 계획 점검</h3>
+    <p class="muted" style="margin-top:0">「지능 에이전트」 단원을 배운 뒤, 핵심 질문의 답과 새롭게 알게 된 점을 적어요. 지난 시간의 화분 시뮬레이션과 오늘의 협력 토의를 근거로 써 보세요.</p>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 지능 에이전트의 역할은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>규칙 기반 인공지능 시기부터 지금까지 <b>인간의 역할</b>이 어떻게 바뀌어 왔는지 설명하고, 앞으로 더 강조될 인간의 역할을 까닭과 함께 쓰세요.</li>
+      <li>공공 자전거 대여소 사례나 반도체 기사에서 인간과 인공지능이 <b>일을 나눈 방식</b>을 하나 골라, 왜 그렇게 나누는 것이 알맞은지 각자의 강점과 연결해 설명하세요.</li>
+      <li>인간과 인공지능의 협력에서 생길 수 있는 <b>부정적인 점</b> 하나를 들고, 그 문제를 줄이기 위해 인간이 해야 할 일을 쓰세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

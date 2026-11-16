@@ -1,0 +1,195 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#e0702b">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅳ. 인공지능 · 2. 기계학습</span>
+      <h1>내 취향,<br>인공지능은 어떻게 알까?</h1>
+      <div class="story"><b>「어? 내가 좋아할 만한 영상만 골라서 보여 주네.」</b><br>온라인 동영상 플랫폼에서는 사용자별로 관심사와 취향에 맞게 콘텐츠를 추천해 줘요. 아무도 내 취향에 이름표를 붙여 준 적이 없는데, 인공지능은 내 취향을 어떻게 알까요? 비슷한 사람과 비슷한 영상을 <b>스스로 묶어 보는</b> 방법이 있어요.</div>
+      <p>오늘은 정답이 붙지 않은 데이터로 배우는 <b>비지도학습</b>과, 비슷한 데이터끼리 묶는 <b>군집 분석</b>을 배워요. 시청 기록 데이터를 <b>k-평균 알고리즘</b>으로 한 단계씩 직접 묶어 봐요.</p>
+      <ol>
+        <li>비지도학습과 군집 분석</li><li>k-평균 알고리즘</li><li>지도학습과 비교하기 · 개념 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">학습 목표 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>❔</i><div><b>레이블 없는 데이터</b><small>정답이 붙어 있지 않아요</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🧺</i><div><b>군집 분석</b><small>비슷한 특성끼리 묶기</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>✖️</i><div><b>k-평균</b><small>중심점을 옮기며 k개 군집 만들기</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>💡</i><div><b>새로운 정보</b><small>추천 · 뉴스 묶기 · 마케팅</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">2. 기계학습 · 비지도학습</span>
+      <p>지난 시간에는 입력과 <b>레이블</b>을 함께 학습하는 지도학습을 배웠어요. 오늘은 레이블이 <b>없는</b> 데이터에서 숨은 패턴을 찾는 <b>비지도학습</b>을 배워요. 레이블이 없으면 무엇을 알아낼 수 있을까요?</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>기계학습</b> · 기계학습을 활용하여 어떤 문제를 해결할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 동영상 플랫폼의 인공지능은 내 취향을 어떻게 알까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>비지도학습의 특징을 설명할 수 있다.</li>
+          <li>군집 알고리즘의 원리를 설명할 수 있다.</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">주요 용어</span>
+        <p style="margin:4px 0 0;font-size:.92rem">비지도학습 · k-평균</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>동영상 앱은 내가 좋아할 만한 영상을 어떻게 고를까요? 내 시청 기록으로 무엇을 할 수 있을지 지금 생각을 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planUS" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 비지도학습과 군집 분석부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 비지도학습과 군집 분석 -->
+<section class="page" data-name="비지도학습과 군집 분석" data-acc="#1f9d74">
+  <div class="head"><div class="num">01</div><div><h2>비지도학습은 무엇일까?</h2><p>교과서 186쪽 · 군집 분석, 지도학습과 비지도학습의 예, 군집 분석 활용 사례</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>비지도학습</b>은 정답(레이블)이 없는 데이터에서 <b>비슷한 것끼리 묶어</b> 숨은 패턴을 찾는 방법이에요. 이렇게 묶는 것을 <b>군집 분석</b>이라 하고, 묶인 그룹 하나하나를 <b>군집</b>(cluster)이라고 해요.</span></div>
+  <div class="card">
+    <h3>🧺 군집 분석</h3>
+    <p style="margin-top:0">비지도학습의 가장 대표적인 유형인 <b>군집 분석</b>은 데이터를 서로 비슷한 특성을 가진 그룹으로 묶는 거예요. 이 그룹을 <b>군집</b>이라 하고, 군집을 이용하면 <b>새로운 정보</b>를 찾을 수 있어요. 레이블이 없는 데이터로 군집 분석을 하면 서로 다른 특징을 가진 군집들로 나눌 수 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>🏷️ 레이블이 있을 때와 없을 때 <span class="muted" style="font-weight:400;font-size:.88rem">(표 Ⅳ-8·9를 새 데이터로 다시 만듦)</span></h3>
+    <p class="muted" style="margin-top:0">학생들의 발 길이와 발볼 너비를 잰 데이터예요. 버튼을 눌러 <b>레이블 열을 지웠다 다시 붙여</b> 보세요.</p>
+    <div class="row" id="labBtns"></div>
+    <div style="overflow-x:auto;margin-top:10px"><table class="us-tbl" id="labTbl"></table></div>
+    <div class="callout" id="labTxt" style="margin-bottom:0"></div>
+  </div>
+  <div class="card">
+    <h3>🎬 기준을 바꿔 묶어 보기</h3>
+    <p class="muted" style="margin-top:0">레이블이 없는 영화 8편이에요. 버튼을 눌러 <b>어떤 특성을 기준으로</b> 묶느냐에 따라 군집이 어떻게 달라지는지 보세요. 분석하려는 목표에 따라 군집이 달라질 수 있어요. <small>(여기서는 한 가지 특성만으로 묶었지만, 실제 군집 분석은 여러 특성이 얼마나 비슷한지를 함께 따져 묶어요.)</small></p>
+    <div class="row" id="grpBtns"></div>
+    <div id="grpView" class="us-grp"></div>
+    <div class="memo"><label>내가 영화 추천 서비스를 만든다면 어떤 특성을 기준으로 영화를 묶을까요? 그 까닭도 적어요.</label><textarea data-memo="grpWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>💡 군집 분석을 활용한 문제 해결 사례</h3>
+    <p class="muted" style="margin-top:0">카드를 눌러 무엇을 기준으로 묶는지 확인해요.</p>
+    <div class="tcards" id="useCards"></div>
+    <div class="memo"><label>레이블이 없는 데이터를 군집 분석하면 어떤 <b>새로운 정보</b>를 얻을 수 있을까요? 우리 학교나 생활에서 예를 하나 들어 적어요.</label><textarea data-memo="usIdea" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 k-평균 알고리즘 -->
+<section class="page" data-name="k-평균 알고리즘" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>k-평균 알고리즘은 무엇일까?</h2><p>교과서 187쪽 · 군집 알고리즘, 초기화 → 배정 → 재설정 → 종료</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>k-평균</b>(k-means) 알고리즘은 비지도학습 방식의 군집 알고리즘으로, 주어진 데이터를 <b>k개의 군집</b>으로 묶어요. 중심점을 찍고 → 가까운 데이터끼리 묶고 → 중심점을 묶음의 <b>평균 위치</b>로 옮기는 일을, 중심점이 더 이상 움직이지 않을 때까지 되풀이해요.</span></div>
+  <div class="card">
+    <h3>🪜 k-평균 알고리즘의 4단계</h3>
+    <div class="cards4 us-four">
+      <div class="kc" style="--k:#e0a100"><h4>1단계 초기화</h4><p>데이터를 준비하고, 입력받은 <b>k</b>의 값에 따라 군집의 개수를 정해요. 중심점 k개를 <b>아무 곳에나</b> 찍어요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>2단계 배정</h4><p>각 데이터를 <b>더 가까운 중심점</b> 쪽으로 묶어 군집을 만들고, 군집의 중심점을 각 군집의 <b>평균 위치</b>로 옮겨요.</p></div>
+      <div class="kc" style="--k:#8a5a44"><h4>3단계 재설정</h4><p><b>업데이트된 중심점</b>과 각 데이터의 거리를 구해서 다시 군집을 만들어요.</p></div>
+      <div class="kc" style="--k:#d64535"><h4>4단계 종료</h4><p><b>중심점이 바뀌지 않을 때까지</b> 2, 3단계를 반복해 데이터들이 속한 군집을 만들어요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✖️ k-평균 한 단계씩 해 보기 · 시청 기록 묶기</h3>
+    <p class="muted" style="margin-top:0">사용자 12명이 하루에 <b>게임 영상</b>과 <b>요리 영상</b>을 본 시간(분)이에요. 레이블은 없어요. k를 고르고 <b>그래프를 눌러 중심점을 찍은 뒤</b>(또는 버튼으로), 「다음 단계 ▶」를 눌러 한 단계씩 진행해요.</p>
+    <div id="kmLab"></div>
+    <div class="memo"><label>시작 중심점이나 k를 바꿔 한 번 더 해 보세요. 처음과 비교해 무엇이 달라졌나요? <small>반복 횟수, 군집이 묶인 모습, 마지막 중심점 위치를 비교해요.</small></label><textarea data-memo="kmWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🔁 k-최근접 이웃의 k와 무엇이 다를까?</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#2f6fd0"><h4>k-평균의 k (비지도학습)</h4><p>데이터를 묶을 <b>군집의 개수</b>예요. 레이블 없이 k개의 무리를 만들어요. 데이터의 구조와 분석 목표에 따라 알맞게 골라요.</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>k-최근접 이웃의 k (지도학습)</h4><p>새로운 데이터를 분류할 때 살펴보는 <b>가까운 이웃의 수</b>예요. 레이블이 있는 이웃들의 투표로 클래스를 정해요.</p></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 지도학습과 비교 · 정리 -->
+<section class="page" data-name="지도학습과 비교 · 정리" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>지도학습과 비지도학습 비교하기</h2><p>교과서 179·186~187쪽 · 레이블과 목적, 대표 알고리즘, 개념 정리하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>둘을 가르는 열쇠는 <b>레이블</b>이에요. 레이블이 있으면 예측하고 싶은 기준이 분명한 <b>지도학습</b>, 레이블이 없으면 비슷한 것끼리 묶어 구조를 찾는 <b>비지도학습</b>이에요.</span></div>
+  <div class="card">
+    <h3>⚖️ 한눈에 비교하기</h3>
+    <div style="overflow-x:auto">
+      <table class="us-tbl cmp">
+        <tr><th>구분</th><th>지도학습</th><th>비지도학습</th></tr>
+        <tr><th>레이블</th><td>있음 · 입력과 레이블을 함께 학습</td><td>없음 · 데이터만으로 학습</td></tr>
+        <tr><th>예측 기준</th><td>예측하고 싶은 속성이 무엇인지 명확한 기준이 있음</td><td>예측하고 싶은 명확한 기준이 없음 · 숨은 패턴과 구조를 찾음</td></tr>
+        <tr><th>대표 유형</th><td>분류, 회귀</td><td>군집 분석</td></tr>
+        <tr><th>알고리즘 예</th><td>k-최근접 이웃, 의사결정트리, 로지스틱 회귀, 선형 회귀</td><td>k-평균</td></tr>
+        <tr><th>k의 뜻</th><td>k-최근접 이웃: 살펴볼 가까운 이웃의 수</td><td>k-평균: 만들 군집의 개수</td></tr>
+        <tr><th>활용 예</th><td>질병 유무 판단, 스팸 메일 분류, 날씨 예측</td><td>영화 추천, 주제별 뉴스 그룹, 마케팅 전략</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🎯 어떤 알고리즘이 알맞을까?</h3>
+    <p class="muted" style="margin-top:0">상황 6개를 읽고 더 알맞은 알고리즘을 골라요. 「레이블이 있는가?」「무엇을 얻고 싶은가?」를 먼저 살펴봐요.</p>
+    <div id="algGame"></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="us-blanks">
+      <li>어떤 이름표도 없는 별 사진 수천 장을 밝기와 색깔이 비슷한 것끼리 스스로 묶게 하는 학습 방식은 <button class="us-blank" data-a="비지도학습">?</button>이다.</li>
+      <li>배달 지점 3곳을 정하려고 주문한 집들을 3개 무리로 나누고, 무리마다 평균 위치를 찾아 옮기기를 되풀이하는 알고리즘은 <button class="us-blank" data-a="k-평균">?</button>이다.</li>
+      <li>비슷한 특성을 가진 데이터끼리 묶인 그룹 하나하나를 <button class="us-blank" data-a="군집">?</button>이라고 한다.</li>
+    </ol>
+  </div>
+  <div class="us-ck"><b>✅ 학습 목표 점검</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">04</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#1f9d74">정답이 붙지 않은 데이터에서 숨은 패턴과 구조를 찾는 것이 <b>비지도학습</b>이다. 그 대표 유형인 <b>군집 분석</b>은 특성이 비슷한 데이터끼리 그룹(<b>군집</b>)으로 묶어 새로운 정보를 찾는다.</div>
+    <div style="--k:#2f6fd0"><b>k-평균</b> 알고리즘은 정해 둔 k만큼 중심점을 찍고 시작한다. 초기화 → 배정(더 가까운 중심점 쪽으로 묶고 평균 위치로 이동) → 재설정을 <b>중심점이 바뀌지 않을 때까지</b> 되풀이해 k개의 군집을 만든다.</div>
+    <div style="--k:#9b4fc4">지도학습은 레이블이 있어 예측 기준이 분명하고, 비지도학습은 레이블이 없어 숨은 구조를 찾는다. 군집 분석은 영화 추천, 주제별 뉴스 그룹, 마케팅 전략 등에 쓰인다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 내용으로 다시 답해 보세요.</p>
+    <div class="us-prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">오늘의 질문에 답하기 · 동영상 플랫폼의 인공지능은 내 취향을 어떻게 알까? (군집 분석을 넣어서)</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="4"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>01에서 데이터의 레이블을 지워 보고, 같은 영화를 기준을 바꿔 묶어 보았습니다. 레이블이 있을 때와 없을 때 무엇이 달라지는지 쓰고, 군집 분석으로 <b>새로운 정보</b>를 찾을 수 있는 예를 하나 들어 설명하세요.</li>
+      <li>02에서 k-평균 알고리즘으로 시청 기록 데이터를 묶었습니다. 내가 정한 k와 중심점이 움직인 과정을 쓰고, k-평균 알고리즘이 <b>언제 끝나는지</b> 그 까닭과 함께 설명하세요.</li>
+      <li>02에서 시작 중심점이나 k를 바꾸어 다시 묶어 보았습니다. 결과가 어떻게 달라졌는지 쓰고, k-평균의 k와 <b>k-최근접 이웃의 k</b>가 각각 무엇을 뜻하는지 비교해 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

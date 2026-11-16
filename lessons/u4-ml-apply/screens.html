@@ -1,0 +1,343 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅳ. 인공지능 · 2. 기계학습</span>
+      <h1>기계학습으로<br>사회 문제를<br>해결해 볼까?</h1>
+      <div class="story"><b>스마트 워치에 쌓인 운동 기록</b><br>많은 사람이 건강을 위해 운동을 하고, 스마트폰과 스마트 워치로 운동 시간 · 심장 박동 수 · 체온 같은 신체 활동 정보를 기록해요. 이 기록이 1만 5천 명분 모여 있다면, 다음 사람이 운동했을 때 <b>칼로리를 얼마나 소모했을지</b> 미리 알 수 있을까요? 그리고 기계학습으로 풀 수 <b>없는</b> 문제도 있을까요?</div>
+      <p>오늘은 기계학습으로 해결할 수 있는 문제와 어려운 문제를 가려 보고, 지속가능발전목표(SDGs)와 관련된 문제를 기계학습 프로젝트 과정에 따라 풀어 봐요. 중심 실습은 오렌지3로 만드는 <b>칼로리 소모량 예측 모델</b>이에요.</p>
+      <ol>
+        <li>기계학습으로 풀 수 있는 문제</li><li>SDGs와 기계학습 프로젝트</li><li>오렌지3 실습: 칼로리 소모량 예측</li>
+        <li>기계학습 정리 · 더 해 보기</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🎲 🌦️</i><div><b>풀 수 있을까?</b><small>패턴과 데이터가 있는 문제 고르기</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🌍</i><div><b>SDGs와 프로젝트 과정</b><small>문제 → 데이터 → 학습 → 평가</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🍊 🏃</i><div><b>칼로리 소모량 예측</b><small>선형 회귀 · R2 · MAE</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧭</i><div><b>분류 · 회귀 · 군집 정리</b><small>은하 분류 · 선박 군집화는 선택</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="callout ma-ready">🍊 <b>지금 바로 오렌지3를 실행해 두세요.</b> 처음 열리는 데 1~2분 걸려요. 열리는 동안 01 · 02 화면을 먼저 봐요.<br>📁 Ⅱ단원에서 저장한 <b>「칼로리 전처리」 워크플로(.ows)</b>가 있는지 찾아 두세요. 없으면 <b>선생님이 알려 주는 폴더</b>에서 <span class="mono">calories.csv</span> · <span class="mono">exercise.csv</span>와 「전처리한 칼로리 소모량 데이터」 워크플로 파일을 같은 폴더에 내려받아요.</div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>기계학습으로 <b>해결할 수 있는 문제와 그렇지 않은 문제</b>를 구분하고, SDGs와 관련된 사회 문제를 <b>기계학습 프로젝트 수행 과정</b>(문제 상황 이해 → 데이터 수집 및 전처리 → 모델 학습 → 모델 평가)에 따라 해결합니다. 오렌지3로 <b>선형 회귀</b> 모델을 학습시켜 칼로리 소모량을 예측하고, <b>평가 지표</b>로 모델이 얼마나 잘 예측하는지 확인합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <p style="margin:0 0 6px;font-size:.9rem">배우기 전의 내 생각을 적어 두고, 마무리에서 다시 비교해 봐요.</p>
+        <div class="memo"><label>기계학습으로 해결하면 좋을 우리 사회의 문제는 무엇이 있을까요?</label><textarea data-memo="planQ" rows="2" placeholder="지금 떠오르는 대로 적어요"></textarea><div class="saved"></div></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li>기계학습으로 사회적 관심이 필요한 문제들을 효과적으로 해결할 수 있는 방법은 무엇일까?</li>
+        </ul>
+        <span class="kicker" style="margin-top:12px;display:block">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>기계학습으로 해결할 수 있는 문제와 그렇지 않은 문제를 구분할 수 있다.</li>
+          <li>사회 문제 해결에 기계학습을 적용할 수 있다.</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>시작 <b>2분</b> → 풀 수 있는 문제 <b>6분</b></li>
+          <li>SDGs와 프로젝트 과정 <b>7분</b></li>
+          <li>오렌지3 칼로리 예측 <b>15분</b></li>
+          <li>기계학습 정리 <b>10분</b> → 마무리 <b>10분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: SDGs · 기계학습으로 해결할 수 있는 문제</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 기계학습으로 풀 수 있는 문제부터 →</button></div>
+  </div>
+</section>
+
+<!-- 1 기계학습으로 어떤 문제를 해결할 수 있을까? -->
+<section class="page" data-name="풀 수 있는 문제" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>기계학습으로 어떤 문제를 해결할 수 있을까?</h2><p>교과서 188쪽 · 해결할 수 없는 문제와 해결할 수 있는 문제</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>기계학습은 <b>데이터에서 패턴을 학습</b>해 예측해요. 그래서 데이터에 <b>패턴이 없거나</b>, 학습할 <b>데이터가 충분하지 않으면</b> 풀기 어려워요. 반대로 프로그래밍으로 규칙을 일일이 적기 어려웠던 문제도, 패턴이 담긴 데이터가 넉넉하면 풀 수 있어요.</span></div>
+  <div class="kc" style="--k:#d64535">
+    <div class="ic">🎲</div><h4>기계학습으로 해결할 수 없는 문제</h4>
+    <p>복권 당첨 번호처럼 <b>완전히 무작위</b>로 정해지는 숫자는 패턴이 존재하지 않아 예측할 수 없어요. 또 기계학습 모델은 <b>데이터가 많이 필요</b>해서, 특정한 상황에서 충분한 양의 데이터가 없으면 해결하기 어려워요. 데이터의 특성과 문제의 복잡성에 따라 알맞은 방법과 기술을 골라야 해요.</p>
+  </div>
+  <h3 style="margin:18px 0 8px">✅ 기계학습으로 해결할 수 있는 문제</h3>
+  <div class="ma-cases3">
+    <div style="--k:#2f6fd0"><h4>🌦️ 기후 예측</h4><p>기후 과학자들은 기온, 습도, 바람 속도 등의 데이터로 미래의 기후 패턴을 예측할 수 있어요.</p><span><b>회귀</b> 주식 시장 동향, 질병 진행 속도 예측 등</span></div>
+    <div style="--k:#e0702b"><h4>🩺 의료 진단</h4><p>의사들은 환자의 증상과 진단 검사 결과를 바탕으로 특정 질병을 분류하고 예측할 수 있어요.</p><span><b>분류</b> 스팸 메일 탐지, 신용 카드 사기 탐지 등</span></div>
+    <div style="--k:#9b4fc4"><h4>🛍️ 고객 세분화</h4><p>마케팅 전문가들은 구매 패턴이 비슷한 고객 그룹을 찾아 그에 맞는 마케팅 전략을 세울 수 있어요.</p><span><b>군집</b> 사회 경제적 그룹 식별, 유전자 분석 등</span></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 기계학습으로 풀 수 있을까?</h3>
+    <p class="muted" style="margin-top:0">카드의 상황을 읽고, <b>패턴이 있는지</b>와 <b>학습할 데이터가 충분한지</b>를 따져 골라요.</p>
+    <div id="solveSort"></div>
+    <div class="memo">
+      <label>✍️ 풀기 어렵다고 고른 상황 하나를 골라, 왜 어려운지 <b>데이터와 패턴</b>의 말로 적어요 <small>어떻게 바꾸면 풀 수 있을지도 한마디</small></label>
+      <textarea data-memo="solveWhy" rows="3"></textarea><div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 SDGs와 기계학습 프로젝트 -->
+<section class="page" data-name="SDGs와 프로젝트 과정" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>SDGs 관련 문제를 기계학습으로 어떻게 해결할까?</h2><p>교과서 189~191쪽 · 지속가능발전목표 · 기계학습 프로젝트 수행 과정</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>SDGs</b>(지속가능발전목표)는 유엔(UN)이 2015년에 세계적으로 약속한 <b>17개 목표</b>예요. 2030년까지 빈곤, 교육, 보건, 환경 같은 문제를 해결해 지구와 인류에게 더 나은 미래를 만들려는 것이지요. 이 가운데에는 인공지능 기술로 해결할 수 있는 문제도 있어요.</span></div>
+  <div class="grid2 even">
+    <div class="kc" style="--k:#e0a10f">
+      <div class="ic">🌾</div><h4>목표 2 · 식량 안보와 지속 가능한 농업</h4>
+      <p>흉년이 잦아 곡식 수확량이 줄고 있는 개발 도상국의 식량 문제를 돕는 카네기 멜론 대학교의 프로젝트예요. 데이터를 수집하고 기계학습으로 분석해 <b>수확량을 늘리는 특성</b>이 무엇인지 찾아요. 가뭄과 열에 강한 곡식인 <b>수수</b>의 수확량을 늘리는 것이 목표예요.</p>
+    </div>
+    <div class="kc" style="--k:#2f8fd0">
+      <div class="ic">🌊</div><h4>목표 14 · 해양 생태계 보전</h4>
+      <p>멸종 위기 동물인 <b>듀공</b>은 움직임이 빨라 추적하기 어려웠어요. 호주 머독 대학교 연구팀은 퀸즐랜드 대학교 인공지능 연구팀과 함께, 드론으로 찍은 바다 항공 사진을 인공지능 프로그램에 입력하고 기계학습으로 <b>듀공의 위치</b>를 찾아냈어요.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>🔁 기계학습 프로젝트 수행 과정</h3>
+    <p class="muted" style="margin-top:0">이 과정을 따르면 <b>문제 정의</b>로 목표와 방향이 분명해지고, 불필요한 작업을 막고, 모델 평가와 성능 개선에도 쓸모 있는 결과를 얻을 수 있어요. ①·②는 Ⅱ단원 빅데이터에서 해 봤으니, 오늘은 ③ 모델 학습부터 해요.</p>
+    <div class="ma-proc">
+      <div style="--k:#5b6776"><i>1</i><b>문제 상황 이해하기</b><span>문제의 범위를 정하고 목표와 요구 사항을 세워 문제를 정의해요.</span></div>
+      <div style="--k:#1f9d74"><i>2</i><b>데이터 수집 및 전처리하기</b><span>데이터를 모으고 불필요한 데이터 제거, 결측치 · 이상치 처리를 해요.</span></div>
+      <div style="--k:#e0702b"><i>3</i><b>모델 학습하기</b><span>선정한 알고리즘으로 모델을 학습시켜요. 하이퍼 파라미터를 조정하며 학습과 검증을 되풀이해요.</span></div>
+      <div style="--k:#9b4fc4"><i>4</i><b>모델 평가하기</b><span>성능을 평가하고, 특성을 더 뽑거나 다른 모델을 써서 개선해요.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 세 문제의 기계학습 유형 선정</h3>
+    <div class="ma-tw"><table class="tbl ma-tbl">
+      <tr><th>문제</th><th>관련 SDGs</th><th>기계학습의 목적</th><th>예측하고자 하는 값</th><th>기계학습의 유형</th><th>오늘</th></tr>
+      <tr><td><b>문제 1</b> 운동 시간 · 체온 · 키 · 몸무게 등 신체 정보로 칼로리 소모량 예측</td><td>3 건강하고 행복한 삶</td><td>칼로리 소모량 예측</td><td>연속형 실수</td><td><b>회귀</b> (지도학습)</td><td><b>03 중심 실습</b></td></tr>
+      <tr><td><b>문제 2</b> 우주 탐사를 위해 은하 이미지로 은하의 종류 분류</td><td>7 · 9</td><td>은하 종류 분류</td><td>범주형</td><td><b>분류</b> (지도학습)</td><td>04 선택</td></tr>
+      <tr><td><b>문제 3</b> 세계 조업 관찰 데이터로 불법 조업 문제 해결</td><td>14 해양 생태계 보전</td><td>선박 군집화</td><td>불법 조업의 경향성</td><td><b>군집</b> (비지도학습)</td><td>04 선택</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 함께 해결하기 · SDGs 문제 해결</h3>
+    <p class="muted" style="margin-top:0">SDGs 17개 목표 가운데 하나를 고르고, 그 목표와 관련된 문제를 기계학습으로 해결할 방법을 생각해요. 모둠과 이야기해도 좋아요.</p>
+    <div class="memo">
+      <label>내가 고른 목표 <small>하나</small></label><div id="sdgPick"></div>
+      <label>해결할 문제와 기계학습으로 해결하는 방법 <small>어떤 데이터로 무엇을 예측 · 분류하거나 묶을지</small></label>
+      <textarea data-memo="sdgIdea" rows="3" placeholder="예: 목표 11 — 동네 공공 자전거 대여소마다 날씨와 요일 기록을 모아 …"></textarea>
+      <label>알맞은 기계학습 유형</label><div id="sdgType"></div>
+      <div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 오렌지3 실습: 칼로리 소모량 예측 -->
+<section class="page" data-name="칼로리 소모량 예측" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>칼로리 소모량을 예측해 볼까?</h2><p>교과서 192~193쪽 · 문제 1 · 지도학습(회귀) · 오렌지3 실습</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>운동 시간 · 심장 박동 수 · 체온 · 키 · 몸무게 같은 <b>독립 변수</b>로 칼로리 소모량이라는 <b>종속변수</b>(연속형 실수)를 예측해요. 데이터의 80%로 <b>선형 회귀</b> 모델을 학습시키고, 남겨 둔 20%로 얼마나 잘 맞히는지 <b>평가</b>해요.</span></div>
+  <div class="ma-4">
+    <div><b>1 데이터 수집 및 전처리하기</b><span>Ⅱ단원(74쪽)에서 두 파일을 합친 칼로리 데이터를 써요.</span></div>
+    <div><b>2 모델 학습하기</b><span>Select Columns로 역할을 정하고, Data Sampler로 나눠 Linear Regression으로 학습해요.</span></div>
+    <div><b>3 모델 평가하기</b><span>Predictions에 테스트 데이터를 넣어 예측값과 평가 지표를 봐요.</span></div>
+    <div><b>💡 먼저 평가 지표 미리 보기</b><span>오렌지3가 열리는 동안 바로 아래 체험으로 MAE와 R2를 익혀요(3분).</span></div>
+  </div>
+
+  <div class="card">
+    <h3>📏 먼저 해 보기 · 평가 지표 미리 보기 <span class="muted" style="font-weight:400;font-size:.88rem">(새로 만든 6명의 테스트 데이터)</span></h3>
+    <p class="muted" style="margin-top:0">두 모델이 같은 6명의 칼로리 소모량을 예측했어요. 모델을 바꿔 가며 <b>오차</b>와 <b>MAE</b>, <b>R2</b>가 어떻게 달라지는지 봐요. 점이 대각선(예측값 = 실젯값)에 가까울수록 잘 맞힌 거예요.</p>
+    <div class="row ma-mbtn" id="evalBtns"></div>
+    <div class="ma-evalg">
+      <div class="ma-tw" id="evalTbl"></div>
+      <div class="ma-plot"><svg id="evalPlot" viewBox="0 0 300 260" role="img" aria-label="실젯값과 예측값 산점도"></svg></div>
+    </div>
+    <div class="ma-msg" id="evalMsg"></div>
+    <div class="ma-keys">
+      <div><b>MAE</b> (Mean Absolute Error) · 오차의 절댓값을 평균한 값. 「평균 몇 kcal쯤 어긋나는지」를 알려 줘요. <b>작을수록</b> 좋아요.</div>
+      <div><b>R2</b> (R squared, 결정계수) · 회귀 모델의 정확도를 나타내는 지표. <b>1에 가까울수록</b> 성능이 우수해요.</div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h3>🍊 준비: 칼로리 데이터 흐름 열기</h3>
+    <div class="grid2 even">
+      <div class="ma-path">
+        <h4>가. 「칼로리 전처리」 파일을 저장해 두었다면</h4>
+        <ol>
+          <li><b>File → Open</b>으로 Ⅱ단원에서 저장한 「칼로리 전처리」 워크플로(.ows)를 열어요.</li>
+          <li>아래 흐름도의 <b>회색 위젯</b>(calories · exercise · Merge Data)이 있으면 준비 끝이에요.</li>
+        </ol>
+      </div>
+      <div class="ma-path b">
+        <h4>나. 파일이 없다면 (3분)</h4>
+        <ol>
+          <li>선생님 폴더에서 받은 「전처리한 칼로리 소모량 데이터」 워크플로를 <b>File → Open</b>으로 열어요.</li>
+          <li><b>calories</b> File 위젯을 더블 클릭해 <span class="mono">calories.csv</span>를, <b>exercise</b> File 위젯에서 <span class="mono">exercise.csv</span>를 다시 골라요(파일 위치가 컴퓨터마다 달라서예요).</li>
+          <li>Merge Data의 Data Table을 열어 Calories와 Age · Duration이 한 표에 있는지 봐요.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔀 위젯 연결 흐름도 <span class="muted" style="font-weight:400;font-size:.88rem">(번호 위젯을 누르면 아래 설정 표의 그 줄이 강조돼요)</span></h3>
+    <div class="ma-flowbox"><svg id="calFlow" role="img" aria-label="칼로리 소모량 예측 위젯 연결 흐름도"></svg></div>
+    <div class="ma-legend"><span style="--k:#f0875a">Transform</span><span style="--k:#e58fc4">Model</span><span style="--k:#6cc3cf">Evaluate</span><span style="--k:#c3c9d2">회색: 준비 단계(Ⅱ단원)에서 만든 위젯</span></div>
+  </div>
+  <div class="card">
+    <h3>⚙️ 위젯 설정 표</h3>
+    <div class="ma-tw"><table class="tbl ma-set" id="calSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>Select Columns</b> (Transform)</td><td>Merge Data →</td><td>속성을 끌어 옮겨 역할 정하기<br><b>Calories</b> → Target(종속변수)<br><b>User_ID</b> → Ignored<br>나머지 7개(Height · Body_Temp · Age · Weight · Duration · Heart_Rate · Gender) → Features(독립 변수)</td><td>Features 7개, Target 1개. Gender가 Metas에 있으면 Features로 옮겨요.</td></tr>
+      <tr data-s="2"><td>2</td><td><b>Data Sampler</b> (Transform)</td><td>Select Columns →</td><td><b>Fixed proportion of data</b>를 고르고 <b>80%</b>로 정하기</td><td>전체 15,000개 중 80%가 훈련 데이터, 나머지 20%가 테스트 데이터</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Linear Regression</b> (Model)</td><td>Data Sampler →<br><span class="mono">Data Sample → Data</span></td><td>설정은 그대로 둬요. 연결되면 80%의 훈련 데이터를 선형 회귀로 학습해요.</td><td>–</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Predictions</b> (Evaluate)</td><td>Linear Regression →<br>Data Sampler → <b>연결선을 더블 클릭</b>해 <span class="mono">Remaining Data → Data</span></td><td>Predictions를 더블 클릭하고 아래쪽 <b>Show performance scores</b>를 켜기</td><td>3,000개 테스트 데이터의 예측값, 실젯값(Calories), 오차(error), 평가 지표 MSE · RMSE · <b>MAE</b> · <b>R2</b></td></tr>
+    </table></div>
+    <div class="callout ma-warn">💡 Data Sampler를 Predictions에 그냥 이으면 <b>Data Sample(훈련 데이터)</b>이 들어가요. 연결선을 더블 클릭해 <b>Remaining Data</b> 칸과 <b>Data</b> 칸을 잇고, 원래 있던 선은 지워요. 그래야 학습에 쓰지 않은 20%로 공정하게 평가해요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="calDone"></div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ 내 모델의 평가 결과</h3>
+    <div class="memo">
+      <label>오렌지3 Predictions에 나온 내 모델의 <b>R2</b>와 <b>MAE</b> <small>예: R2 0.○○○ / MAE ○.○ (오렌지3가 안 되면 위 체험의 모델 A 값)</small></label>
+      <input type="text" data-memo="calRes"><div class="saved"></div>
+      <label>이 값으로 내 모델의 성능을 어떻게 판단할 수 있나요? <small>R2는 1과 비교해서, MAE는 칼로리 단위(kcal)로</small></label>
+      <textarea data-memo="calRead" rows="3"></textarea><div class="saved"></div>
+    </div>
+    <p class="note">Features 구성이나 Data Sampler 설정이 다르면 친구와 값이 조금 다를 수 있어요.</p>
+  </div>
+
+  <details class="card ma-opt">
+    <summary>🔬 시간이 남으면 · 독립 변수를 바꿔 보기 <small>(모델 평가 및 개선)</small></summary>
+    <p class="ma-optnote">모델 평가하기 단계에서는 특성을 더 뽑거나 빼 보며 성능을 개선해요. <b>Select Columns</b>에서 Features를 바꾸면 Predictions의 값이 바로 바뀌어요.</p>
+    <ol>
+      <li>Features에 <b>Height · Weight</b>만 남기고 나머지를 Ignored로 옮겨 R2와 MAE를 봐요.</li>
+      <li>이번에는 <b>Duration</b>만 남겨 봐요.</li>
+      <li>다시 7개를 모두 Features로 돌려 놓아요.</li>
+    </ol>
+    <div class="memo"><label>Features를 바꿨을 때 R2와 MAE는 어떻게 달라졌나요? 칼로리 소모량 예측에 중요한 속성은 무엇일까요?</label><textarea data-memo="calMore" rows="2"></textarea><div class="saved"></div></div>
+  </details>
+  <details class="card ma-opt">
+    <summary>📝 스스로 해결하기 · 실제 데이터(설문지)로 예측하기 <small>(선택 · 선생님 안내가 있을 때)</small></summary>
+    <ol>
+      <li>스마트 워치나 건강 앱으로 운동 후 신체 정보(키, 체온, 운동 시간, 몸무게, 나이, 성별, 1분 동안 심장 박동 수)를 기록하는 온라인 설문지를 만들어 공유해요. 선생님이 만든 설문지를 써도 돼요.</li>
+      <li>새 <b>File</b> 위젯의 주소 칸에 선생님이 알려 주는 설문 결과 주소를 넣고, 이 위젯을 <b>Predictions</b>의 Data로 이어 칼로리 소모량을 예측해요. 열 이름은 학습 데이터와 같아야 해요(Height, Body_Temp, Duration …).</li>
+    </ol>
+    <p class="note">개인 정보가 드러나지 않게 이름은 적지 않아요.</p>
+  </details>
+  <details class="card ma-help">
+    <summary>🆘 막혔을 때 펼쳐 보기</summary>
+    <ul>
+      <li><b>위젯을 못 찾겠어요</b> → 캔버스 빈 곳을 마우스 오른쪽 버튼으로 누르고 위젯 이름을 입력해요.</li>
+      <li><b>Select Columns에서 옮기기가 안 돼요</b> → 속성을 고른 뒤 가운데 화살표(›) 버튼을 누르거나, 끌어서 Features · Target 칸에 놓아요.</li>
+      <li><b>Predictions에 평가 지표가 안 보여요</b> → 창 아래의 <b>Show performance scores</b>를 켜요. Target이 정해지지 않았으면 Select Columns를 다시 봐요.</li>
+      <li><b>Predictions 줄 수가 12,000개예요</b> → 훈련 데이터가 들어간 거예요. 연결선을 더블 클릭해 Remaining Data로 바꿔요.</li>
+      <li><b>오렌지3가 안 열려요</b> → 위의 「평가 지표 미리 보기」로 MAE와 R2를 익히고, 모델 A의 값으로 메모를 채워요. 실습은 다음 시간 처음에 이어서 해요.</li>
+    </ul>
+  </details>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 기계학습 정리 · 더 해 보기 -->
+<section class="page" data-name="기계학습 정리" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>분류 · 회귀 · 군집, 어떤 유형으로 풀까?</h2><p>교과서 194~199쪽 · 문제 2 · 문제 3 · 기계학습 정리 · 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>문제를 기계학습으로 풀 때는 먼저 <b>예측하고자 하는 값</b>을 봐요. 연속형 실수면 <b>회귀</b>, 정해진 범주 가운데 하나면 <b>분류</b>(둘 다 지도학습), 레이블 없이 비슷한 것끼리 묶으면 <b>군집</b>(비지도학습)이에요.</span></div>
+  <div class="grid2 even">
+    <div class="kc" style="--k:#e0702b"><div class="ic">🌌</div><h4>문제 2 · 은하의 종류 분류 (지도학습 · 분류)</h4><p>나선 은하 · 불규칙 은하 · 타원 은하 가운데 하나를 고르는 문제라 <b>분류</b>예요. 은하 이미지를 숫자로 바꾼 뒤 로지스틱 회귀로 학습해요.</p></div>
+    <div class="kc" style="--k:#2f8fd0"><div class="ic">🚢</div><h4>문제 3 · 불법 조업 의심 선박 군집화 (비지도학습 · 군집)</h4><p>AIS를 껐다가 다시 켠 선박의 위치에는 레이블이 없어요. 위도와 경도로 <b>k-평균</b> 알고리즘이 가까운 위치끼리 <b>군집</b>을 만들어요.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>🧩 어떤 유형으로 풀까?</h3>
+    <p class="muted" style="margin-top:0">예측하고자 하는 값이 <b>숫자(연속형)</b>인지, <b>정해진 범주</b>인지, <b>레이블이 없는지</b> 따져 골라요.</p>
+    <div id="typeSort"></div>
+  </div>
+
+  <div class="ma-optlist">
+    <span class="kicker">시간이 남거나 다음 시간에 · 선택 활동</span>
+    <details class="card ma-opt">
+      <summary>🌌 선택 실습 ① 은하의 종류 분류하기 <small>(오렌지3 · Image Analytics 설치와 인터넷 필요 · 15분 이상)</small></summary>
+      <p class="ma-optnote">이미지 데이터를 쓰려면 먼저 <b>Options → Add-ons…</b>에서 <b>Image Analytics</b>를 설치해요. 선생님이 알려 주는 폴더에서 <b>은하 이미지</b> 폴더(종류별 폴더 3개)를 내려받아요.</p>
+      <div class="ma-chain"><span style="--k:#c9a54a">Import Images</span><i>Data → Images</i><span style="--k:#c9a54a">Image Embedding</span><i>Embeddings → Data</i><span style="--k:#f0875a">Data Sampler</span><i>Data Sample → Data</i><span style="--k:#e58fc4">Logistic Regression</span><i>Model → Predictors</i><span style="--k:#6cc3cf">Predictions</span><i>Evaluation Results</i><span style="--k:#6cc3cf">Confusion Matrix</span><i>Selected Data → Data</i><span style="--k:#c9a54a">Image Viewer</span></div>
+      <ol>
+        <li><b>Import Images</b>로 은하 이미지 폴더를 열고 <b>Image Embedding</b>에 이어요. <b>이미지 임베딩</b>은 이미지를 고정된 길이의 숫자로 바꾸는 과정으로, 이미지의 특징과 정보를 요약한 수치로 나타내요.</li>
+        <li><b>Data Sampler</b>에서 훈련 데이터와 테스트 데이터를 8:2로 정하고, <b>Logistic Regression</b>을 이어 80%의 훈련 데이터를 학습해요.</li>
+        <li>Logistic Regression과 Data Sampler를 <b>Predictions</b>에 잇고, Data Sampler 쪽 연결선은 <span class="mono">Remaining Data → Data</span>로 바꿔요.</li>
+        <li>Predictions에서 예측값과 실젯값을 비교하고 평가 지표 <b>CA</b>(Classification Accuracy, 정확도)를 봐요.</li>
+        <li><b>Confusion Matrix</b>(혼동 행렬)를 이어 어떤 종류를 잘 분류하고 어떤 종류를 헷갈리는지 보고, 잘못 분류한 칸을 골라 <b>Image Viewer</b>로 그 은하 이미지를 확인해요.</li>
+      </ol>
+      <p class="note">임베딩은 인터넷으로 이미지를 보내 계산하므로 시간이 걸려요. 상단 메뉴 Window에서 「Display Widgets on Top」을 켜면 위젯 창 여러 개를 함께 볼 수 있어요.</p>
+      <div class="memo"><label>정확도(CA)는 얼마였고, 혼동 행렬에서 어떤 은하를 어떤 은하로 잘못 분류했나요?</label><textarea data-memo="galaxyRes" rows="2"></textarea><div class="saved"></div></div>
+    </details>
+    <details class="card ma-opt">
+      <summary>🚢 선택 실습 ② 불법 조업 의심 선박 군집화하기 <small>(오렌지3 · Geo 설치 필요 · 15분 이상)</small></summary>
+      <p class="ma-optnote"><b>AIS</b>는 GPS로 선박의 위치와 상태 정보를 자동으로 모으고 주고받는 시스템이에요. 조업 전에 AIS를 끄고 조업을 마친 뒤 다시 켜는 선박은 불법 조업을 의심할 수 있어요. <b>Options → Add-ons…</b>에서 <b>Geo</b>를 설치하고, 선생님이 알려 주는 폴더에서 <span class="mono">ais_disabling_events.csv</span>를 내려받아요.</p>
+      <div class="ma-chain"><span style="--k:#f2b84b">File</span><i>Data</i><span style="--k:#f0875a">Select Rows</span><i>Matching Data → Data</i><span style="--k:#f0875a">Select Columns</span><i>Data</i><span style="--k:#8fb3e6">k-Means</span><i>Data</i><span style="--k:#7cc68a">Geo Map</span></div>
+      <ol>
+        <li><b>File</b>로 파일을 열고 나라를 뜻하는 <b>flag</b> 속성의 종류를 <b>categorical</b>로 바꿔요. (File 위의 ⚠️는 범주형 변수 vessel_class의 값이 많아 성능이 떨어질 수 있다는 경고예요.)</li>
+        <li><b>Select Rows</b>에 조건을 넣어요. 우리나라 해역 인근을 보려면 gap_end_lat(다시 켠 위도) 30~50, gap_end_lon(다시 켠 경도) 120~135, 나라를 보려면 flag를 특정 나라로 정해요. <b>Geo Map</b>으로 위치를 시각화해요.</li>
+        <li>대한민국 국적 선박을 고른 Select Rows에 <b>Select Columns</b>를 이어 <b>gap_end_lat · gap_end_lon</b>만 Features에 두고 나머지는 Ignored로 옮겨요.</li>
+        <li>Unsupervised 카테고리의 <b>k-Means</b>를 잇고, <b>Geo Map</b>에서 군집 결과를 확인해요. 군집의 개수와 학습 횟수(Re-runs)를 바꿔 보며 결과를 비교해요.</li>
+      </ol>
+      <p class="note">k-평균으로 만든 군집을 관리 지역으로 정하면 불법 조업을 막는 데 도움이 될 수 있어요.</p>
+      <div class="memo"><label>군집의 개수를 바꿨을 때 Geo Map의 군집은 어떻게 달라졌나요? 어디를 관리 지역으로 정하면 좋을까요?</label><textarea data-memo="shipRes" rows="2"></textarea><div class="saved"></div></div>
+    </details>
+    <details class="card ma-opt">
+      <summary>💻 선택 활동(심화) · k-평균 알고리즘 코드로 군집화하기 <small>(코랩 · 10분)</small></summary>
+      <p class="ma-optnote">반복 횟수를 1, 2, 3, 4로 늘려 가며 군집의 중심이 어떻게 움직이는지 그림으로 확인하는 노트북이에요. 앞부분은 따라 하고, 뒷부분 「스스로 해결하기」는 힌트를 보며 직접 완성해요.</p>
+      <div class="row"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u4-ml-apply/assets/kmeans_steps.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="kmeans_steps.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+      <div class="memo"><label>반복 횟수가 늘어날수록 중심(큰 사각형)과 군집은 어떻게 바뀌었나요?</label><textarea data-memo="kmRes" rows="2"></textarea><div class="saved"></div></div>
+    </details>
+  </div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">기계학습은 데이터의 <b>패턴</b>을 학습해 예측한다. 무작위라 패턴이 없거나 학습할 <b>데이터가 모자란</b> 문제는 풀기 어렵다.</div>
+    <div style="--k:#1f9d74">SDGs 같은 사회 문제는 <b>문제 상황 이해 → 데이터 수집 및 전처리 → 모델 학습 → 모델 평가</b> 순서로 풀며, 예측하려는 값에 따라 분류 · 회귀 · 군집을 고른다.</div>
+    <div style="--k:#e0702b">칼로리 소모량처럼 연속형 값을 예측하는 회귀 모델은 테스트 데이터로 평가하고, <b>R2</b>는 1에 가까울수록, <b>MAE</b>는 작을수록 잘 예측한 것이다.</div>
+  </div>
+  <div class="card">
+    <h3>핵심 질문에 답하기</h3>
+    <div class="ma-first" id="planShow"></div>
+    <b style="font-size:.93rem">기계학습으로 사회적 관심이 필요한 문제들을 효과적으로 해결할 수 있는 방법은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3" placeholder="오늘 만든 칼로리 예측 모델이나 내가 고른 SDGs 문제를 예로 들어요"></textarea><div class="saved"></div>
+    <label style="display:block;margin-top:10px;font-weight:700;font-size:.93rem">새롭게 알게 된 점</label>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>기계학습으로 풀 수 있는 문제와 풀기 어려운 문제를 하나씩 예로 들고, 풀기 어려운 문제는 왜 어려운지 <b>데이터와 패턴</b>의 관점에서 설명하세요.</li>
+      <li>SDGs 17개 목표 가운데 내가 고른 목표와 관련된 문제를 쓰고, 그 문제를 기계학습으로 해결하는 방법을 <b>분류 · 회귀 · 군집</b> 가운데 알맞은 유형과 함께 설명하세요.</li>
+      <li>오렌지3로 만든 칼로리 소모량 예측 모델의 <b>R2와 MAE</b> 값을 쓰고, 이 값으로 모델의 성능을 어떻게 판단할 수 있는지 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

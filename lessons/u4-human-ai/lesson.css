@@ -1,0 +1,57 @@
+/* u4-human-ai 전용 */
+  #firstVote{grid-template-columns:1fr 1fr;margin:6px 0 8px}
+  #firstVote button{padding:8px 10px;font-size:.9rem}
+  .ha-scroll{overflow-x:auto}
+  .ha-3 th,.ha-case th{white-space:nowrap}
+  .ha-3 td{width:42%}
+  .ha-case td{width:40%}
+  .ha-case textarea{width:100%;box-sizing:border-box;min-width:180px}
+
+  /* 시기별 역할 */
+  .ha-era{margin:4px 0 10px;font-weight:700;color:var(--k);background:color-mix(in srgb,var(--k) 9%,#fff);border-radius:10px;padding:6px 12px}
+  .ha-share{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:.86rem}
+  .ha-share .lb{font-weight:700;color:var(--muted);margin-right:4px}
+  .ha-share span:not(.lb){border:2px solid var(--k);color:var(--k);border-radius:999px;padding:2px 10px;background:#fff}
+  .ha-share span.past{opacity:.55}
+  .ha-share span.on{background:var(--k);color:#fff;font-weight:700}
+  .ha-share i{font-style:normal;color:var(--muted)}
+
+  /* 협력 */
+  #solarBtns{grid-template-columns:repeat(3,1fr);margin-bottom:12px}
+  .ha-solar .kc h4{color:var(--k)}
+  .ha-news{background:#fbfaf7;border-radius:12px;padding:12px 16px;border-left:5px solid var(--acc)}
+  .ha-news p:first-child{margin-top:0}
+
+  /* 정리 */
+  .ha-tag{display:inline-block;background:var(--k);color:#fff;border-radius:999px;padding:1px 10px;font-size:.8rem;vertical-align:middle;margin-right:4px}
+  .ha-irla{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.ha-irla{grid-template-columns:1fr 1fr}}
+  .ha-irla .memo{border-top:5px solid var(--k);margin:0}
+  .ha-irla label{color:var(--k);font-weight:900}
+  .ha-extra{display:none;margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px}
+  .ha-extra.on{display:block}
+  .ha-extra>p:first-child{margin-top:0}
+  .ha-ol{margin:0 0 10px;padding-left:20px;font-size:.92rem}
+
+  /* Frozen Lake */
+  .ha-lake{display:grid;grid-template-columns:repeat(4,52px);grid-template-rows:repeat(4,52px);gap:4px;margin-bottom:8px}
+  .ha-lake span{display:grid;place-items:center;font-size:1.6rem;border-radius:8px;background:#dff1fb}
+  .ha-lake span.H{background:#2a4b6b}
+  .ha-lake span.G{background:#fff4d6}
+  .ha-lake span.S{background:#e6f6ef}
+  .ha-lakepad{display:grid;grid-template-columns:repeat(3,48px);gap:4px;margin-bottom:6px}
+  .ha-lakepad button{padding:4px 0;font-size:1.1rem}
+  .ha-lakepad button:nth-child(1){grid-column:2;grid-row:1}
+  .ha-lakepad button:nth-child(2){grid-column:1;grid-row:2}
+  .ha-lakepad button:nth-child(3){grid-column:2;grid-row:2}
+  .ha-lakepad button:nth-child(4){grid-column:3;grid-row:2}
+  .ha-lakemsg{font-size:.9rem;min-height:1.5em;margin:4px 0}
+
+  /* 개념 정리하기 빈칸 */
+  .ha-blanks li{margin:8px 0;line-height:1.9}
+  .ha-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .ha-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+
+  /* 시간 되면(접어 둠) */
+  details.ha-more>summary{cursor:pointer;font-weight:700;font-size:1.05rem}
+  details.ha-more[open]>summary{margin-bottom:10px}

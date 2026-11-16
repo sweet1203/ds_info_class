@@ -1,0 +1,310 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅳ. 인공지능 · 협력적 창의·융합 프로젝트</span>
+      <h1>초미세 먼지 농도는<br>얼마일까?</h1>
+      <div class="story"><b>인공지능 기후 전문가가 되어 보자</b><br>기후 변화는 이제 모든 국가에 영향을 미치고 있어요. 국가 경제를 혼란에 빠뜨리고 오늘과 미래의 사람들, 공동체, 국가에 큰 손실을 입히고 있지요. 지속가능발전목표 13번 <b>「기후 변화 대응」</b>을 살펴보고, 우리 동네의 <b>초미세 먼지 농도를 예측하는 인공지능</b>을 모둠이 함께 만들어 봐요.</div>
+      <p>문제를 발견하고 → 필요한 데이터를 계획하고 → 오렌지3로 모델을 학습시켜 평가한 뒤, 인공지능이 사회에 미칠 영향을 성찰해요. 그다음 자연어 처리 엔지니어의 이야기를 읽고 Ⅳ단원 전체를 정리해요.</p>
+      <ol>
+        <li>문제 발견 · 해결 방안 계획</li><li>모델 학습 · 평가 · 성찰</li><li>응용하기 · 평가하기</li>
+        <li>진로: 자연어 처리 엔지니어</li><li>Ⅳ단원 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🌫️ 🌍</i><div><b>문제 발견 · 계획</b><small>피해와 위험성 · 필요한 데이터 · 스토리</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🍊 📈</i><div><b>모델 학습 · 평가</b><small>선형 회귀로 PM2.5 예측</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🪞</i><div><b>성찰 · 평가</b><small>사회에 미칠 영향 · 우리가 노력할 점</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>💬 📚</i><div><b>진로 · 단원 정리</b><small>자연어 처리 엔지니어 · 개념 확인</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="callout r4-ready">🍊 <b>지금 바로 오렌지3를 실행해 두세요.</b> 열리는 동안 01 화면에서 계획을 세워요.<br>📁 <b>선생님이 알려 주는 폴더</b>에서 <span class="mono">서울시 데이터(최종).csv</span>를 내려받아요. 2016~2019년 서울의 공기질 · 기상 · 요일 데이터를 날짜별로 합쳐 둔 파일이에요.</div>
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>미세 먼지로 인한 문제를 찾고, 문제를 해결하는 데 필요한 <b>공기질 · 기상 데이터</b>를 계획합니다. 오렌지3에서 <b>선형 회귀</b>로 초미세 먼지(PM2.5) 농도를 예측하는 모델을 학습시키고 <b>평가 지표</b>로 확인한 뒤, 인공지능 기술이 사회에 미칠 영향과 우리가 노력할 점을 성찰합니다.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">모둠 정하기</span>
+        <div class="memo">
+          <label>모둠명</label><input type="text" data-memo="team" placeholder="예: 맑은 하늘 예보단">
+          <label>모둠원과 역할 <small>프로젝트 기획자, 데이터 수집가, 데이터 분석가, 모델 개발자, 프로젝트 발표자</small></label><textarea data-memo="roles" rows="2"></textarea><div class="saved"></div>
+        </div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>지능 에이전트</b> · 지능 에이전트의 역할은 무엇일까?</li>
+          <li><b>기계학습</b> · 기계학습을 활용하여 어떤 문제를 해결할 수 있을까?</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">마무리에서 오늘 만든 모델을 예로 들어 기계학습 질문에 답해요.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>모둠 정하기 <b>2분</b> → 문제 발견 · 계획 <b>6분</b></li>
+          <li>모델 학습 · 평가 · 성찰 <b>18분</b></li>
+          <li>평가하기 <b>4분</b> → 진로 <b>4분</b></li>
+          <li>단원 정리 <b>6분</b> → 마무리 <b>10분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">모둠이 함께 이야기하되, 메모는 각자 내 화면에 적어요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제 발견부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 문제 발견 · 해결 방안 계획 -->
+<section class="page" data-name="문제 발견 · 계획" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>문제 발견하기 · 해결 방안 계획 세우기</h2><p>교과서 200~201쪽 · 프로젝트 1~2단계</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>먼저 미세 먼지가 <b>왜 문제인지</b>, 미세 먼지를 예측하려면 <b>어떤 데이터가 관련 있는지</b> 생각해요. 그리고 모은 데이터로 무엇을 할지 <b>스토리</b>로 정리해요. 계획이 분명해야 다음 단계에서 알맞은 모델을 고를 수 있어요.</span></div>
+  <div class="card">
+    <h3>🔍 1. 문제 발견하기</h3>
+    <div class="cards3 r4-hint">
+      <div class="kc" style="--k:#5b6776"><h4>PM-10 · PM-2.5</h4><p><b>PM-10</b>은 미세 먼지, <b>PM-2.5</b>는 초미세 먼지 농도를 뜻해요. 오늘 예측할 값은 <b>PM-2.5</b>예요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>공기질 데이터</h4><p>오존, 이산화질소, 일산화탄소, 아황산가스처럼 공기 속 물질의 농도</p></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>기상 데이터</h4><p>기온, 풍속, 풍향, 이슬점, 습도, 기압, 가시거리처럼 그날의 날씨</p></div>
+    </div>
+    <div class="grid2 even">
+      <div class="memo"><label>미세 먼지로 인한 피해와 위험성</label><textarea data-memo="harm" rows="3"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>미세 먼지 예측과 연관된 데이터 <small>까닭도 짧게</small></label><textarea data-memo="relData" rows="3" placeholder="예: 바람이 약한 날에는 먼지가 흩어지지 않을 것 같아서 풍속 …"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📥 2. 해결 방안 계획 세우기 · 데이터 수집</h3>
+    <details class="r4-opt r4-srcbox">
+      <summary>📥 우리 동네 데이터를 모으는 방법 보기 <small>(선택 · 다음 시간이나 과제로)</small></summary>
+      <div class="grid2 even">
+      <div class="r4-src">
+        <h4>➊ 우리 동네 공기질 데이터</h4>
+        <p>에어코리아의 「통계 정보 → 최종 확정 측정 자료 조회」에서 우리 동네의 코로나 이전(2016~2019년) <b>일평균</b> 데이터를 연도별로 내려받아 한 파일로 합쳐요. <b>요일 데이터를 추가하면</b> 정확도가 올라가요.</p>
+      </div>
+      <div class="r4-src">
+        <h4>➋ 우리 동네 기상 데이터</h4>
+        <p>기상자료개방포털에서 평균 기온, 평균 풍속, 최다 풍향, 이슬점, 평균 상대 습도, 평균 현지 기압은 <b>일 자료</b>로, 가시거리는 <b>시간 자료</b>의 「시정」으로 내려받아 한 파일로 합쳐요.</p>
+      </div>
+    </div>
+    </details>
+    <p class="note">우리 동네의 공기질 데이터(2016~2019년 일평균)와 기상 데이터를 모아 한 파일로 합치는 데는 시간이 걸려요. 오늘은 수업 시간 안에 모델까지 만들기 위해, 선생님이 서울의 공기질 · 기상 · 요일 데이터를 날짜별로 합쳐 둔 <span class="mono">서울시 데이터(최종).csv</span>를 써요. 우리 동네 데이터 모으기는 선생님 안내에 따라 다음 시간이나 과제로 해요.</p>
+    <div class="r4-tw"><table class="tbl r4-attr">
+      <tr><th>묶음</th><th>파일 속 속성(열)</th></tr>
+      <tr><td><b>날짜</b></td><td>날짜 · 요일</td></tr>
+      <tr><td><b>공기질</b></td><td>PM10 · <b>PM2.5</b> · 오존 · 이산화질소 · 일산화탄소 · 아황산가스</td></tr>
+      <tr><td><b>기상</b></td><td>평균기온(°C) · 평균 풍속(m/s) · 최다풍향(16방위) · 평균 이슬점온도(°C) · 평균 상대습도(%) · 평균 현지기압(hPa) · 가시거리</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>📖 ➌ 우리 모둠의 계획 스토리</h3>
+    <div class="memo">
+      <label>지속가능발전목표(SDGs) <small>관련 있는 목표를 모두 골라요</small></label><div id="sdgPick"></div>
+      <label>발생할 문제 <small>누가, 언제, 어떤 피해를 입을까?</small></label><textarea data-memo="storyProblem" rows="2"></textarea>
+      <label>해결할 아이디어 <small>예측한 초미세 먼지 농도를 누가, 어떻게 쓰게 할까?</small></label><textarea data-memo="storyIdea" rows="2" placeholder="예: 다음 날 농도가 높게 예측되면 …"></textarea>
+      <div class="saved"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 모델 학습 · 평가 · 성찰 -->
+<section class="page" data-name="모델 학습 · 평가" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>모델 학습하기 · 모델 평가하기 · 성찰하기</h2><p>교과서 202쪽 · 프로젝트 3~4단계와 성찰 · 오렌지3 실습</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>예측하고자 하는 값(PM2.5)이 어떤 형태인지 보고 <b>기계학습 유형과 알고리즘</b>을 골라요. 오렌지3에서 결측치를 지우고, 데이터의 85%로 학습시킨 뒤 나머지 15%로 <b>평가</b>해요. 결과를 보고 인공지능 기술이 사회에 미칠 영향을 <b>성찰</b>해요.</span></div>
+  <div class="card">
+    <h3>🧭 기계학습 유형과 알고리즘 선정</h3>
+    <div class="memo">
+      <label>기계학습 유형</label><div id="typePick"></div>
+      <label>알고리즘</label><div id="algoPick"></div>
+      <label>이렇게 고른 까닭 <small>예측하고자 하는 값의 형태와 연결해서</small></label><textarea data-memo="algoWhy" rows="2"></textarea>
+      <div class="saved"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔀 3. 모델 학습하기 · 위젯 연결 흐름도 <span class="muted" style="font-weight:400;font-size:.88rem">(위젯을 누르면 아래 설정 표의 그 줄이 강조돼요)</span></h3>
+    <div class="r4-flowbox"><svg id="pmFlow" role="img" aria-label="초미세 먼지 예측 위젯 연결 흐름도"></svg></div>
+    <div class="r4-legend"><span style="--k:#f2b84b">Data</span><span style="--k:#f0875a">Transform</span><span style="--k:#e58fc4">Model</span><span style="--k:#6cc3cf">Evaluate</span></div>
+  </div>
+  <div class="card">
+    <h3>⚙️ 위젯 설정 표</h3>
+    <div class="r4-tw"><table class="tbl r4-set" id="pmSet">
+      <tr><th>번호</th><th>위젯 (카테고리)</th><th>어디에 연결</th><th>설정 · 할 일</th><th>확인할 것</th></tr>
+      <tr data-s="1"><td>1</td><td><b>File</b> (Data)</td><td>처음 위젯</td><td><span class="mono">서울시 데이터(최종).csv</span> 열기<br>Role 칸을 더블 클릭해 바꾸기: <b>PM10 → skip</b>, <b>PM2.5 → target</b>, 나머지 → feature, 그다음 <b>Apply</b></td><td>2016~2019년 하루에 한 줄, 1,461개 데이터</td></tr>
+      <tr data-s="2"><td>2</td><td><b>Impute</b> (Transform)</td><td>File →</td><td><b>Remove instances with unknown values</b> 고르기</td><td>결측치가 있는 날이 빠져 데이터 수가 조금 줄어요</td></tr>
+      <tr data-s="3"><td>3</td><td><b>Data Sampler</b> (Transform)</td><td>Impute →</td><td><b>Fixed proportion of data</b>를 <b>85%</b>로</td><td>85%는 훈련 데이터, 나머지 15%는 테스트 데이터</td></tr>
+      <tr data-s="4"><td>4</td><td><b>Linear Regression</b> (Model)</td><td>Data Sampler →<br><span class="mono">Data Sample → Data</span></td><td>설정은 그대로</td><td>–</td></tr>
+      <tr data-s="5"><td>5</td><td><b>Predictions</b> (Evaluate)</td><td>Linear Regression →<br>Data Sampler → 연결선을 더블 클릭해 <span class="mono">Remaining Data → Data</span></td><td>더블 클릭하고 <b>Show performance scores</b> 켜기</td><td>테스트 데이터의 PM2.5 예측값과 평가 지표 <b>R2</b> · <b>MAE</b></td></tr>
+    </table></div>
+    <div class="callout r4-warn">💡 PM10은 예측하려는 속성이 아니라서 <b>skip</b>해요. 날짜와 요일을 포함한 나머지 속성은 모두 훈련에 쓰는 <b>feature</b>예요. Data Sampler를 Predictions에 그냥 이으면 훈련 데이터가 들어가니, 연결선을 더블 클릭해 <b>Remaining Data</b>로 바꾸는 것도 잊지 마세요.</div>
+    <h4 style="margin:14px 0 6px">진행 체크</h4>
+    <div id="pmDone"></div>
+  </div>
+
+  <div class="card">
+    <h3>📏 4. 모델 평가하기</h3>
+    <div class="r4-keys">
+      <div><b>R2</b> (결정계수) · 1에 가까울수록 회귀 모델의 성능이 우수해요.</div>
+      <div><b>MAE</b> · 예측값과 실젯값 차이의 절댓값을 평균한 값. 초미세 먼지 단위(μg/m³)로 평균 얼마나 어긋나는지 알려 줘요.</div>
+    </div>
+    <div class="memo">
+      <label>Predictions에 나온 우리 모델의 <b>R2</b>와 <b>MAE</b> <small>예: R2 0.○○○ / MAE ○.○</small></label>
+      <input type="text" data-memo="pmRes"><div class="saved"></div>
+      <label>이 결과로 모델을 어떻게 평가할 수 있나요? 성능을 높이려면 무엇을 바꿔 볼까요? <small>데이터 추가, 속성 바꾸기 등</small></label>
+      <textarea data-memo="pmRead" rows="2"></textarea><div class="saved"></div>
+    </div>
+    <p class="note">Role 설정이나 Data Sampler 설정이 다르면 모둠마다 값이 조금 다를 수 있어요.</p>
+  </div>
+
+  <div class="card">
+    <h3>🪞 성찰하기</h3>
+    <p class="muted" style="margin-top:0">활동을 마치고 난 뒤, 인공지능 기술이 현재 또는 미래 사회에 미칠 영향과 우리가 노력해야 할 점을 써요.</p>
+    <div class="grid2 even">
+      <div class="memo"><label>현재 또는 미래 사회에 미칠 영향</label><textarea data-memo="reflectImpact" rows="3"></textarea><div class="saved"></div></div>
+      <div class="memo"><label>우리가 노력해야 할 점</label><textarea data-memo="reflectEffort" rows="3"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <details class="card r4-help">
+    <summary>🆘 막혔을 때 펼쳐 보기</summary>
+    <ul>
+      <li><b>Role을 어떻게 바꿔요?</b> → File 위젯 창의 표에서 그 속성 줄의 <b>Role</b> 칸을 더블 클릭해 목록에서 골라요. 다 바꾼 뒤 <b>Apply</b>를 눌러야 반영돼요.</li>
+      <li><b>한글 속성 이름이 깨져 보여요</b> → 선생님께 알려요. 같은 파일을 다른 인코딩으로 저장한 파일을 받을 수 있어요.</li>
+      <li><b>Predictions에 평가 지표가 없어요</b> → <b>Show performance scores</b>를 켜고, File에서 PM2.5가 target인지 확인해요.</li>
+      <li><b>Predictions의 줄 수가 너무 많아요</b> → 훈련 데이터가 들어간 거예요. Data Sampler와 이은 연결선을 더블 클릭해 <b>Remaining Data</b>로 바꿔요.</li>
+      <li><b>오렌지3가 안 열려요</b> → 모둠 친구 화면을 함께 보며 결과를 메모하고, 성찰하기를 먼저 써요.</li>
+    </ul>
+  </details>
+  <div class="card">
+    <h3>🗂️ 우리 모둠 프로젝트 카드 <span class="muted" style="font-weight:400;font-size:.88rem">(적은 내용이 바로 나타나요)</span></h3>
+    <div id="projCard"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 응용하기 · 평가하기 -->
+<section class="page" data-name="응용 · 평가하기" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>응용하기 · 평가하기</h2><p>교과서 201 · 203쪽 · 센서로 측정한 데이터 적용 · 자기 평가와 동료 평가</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>만든 모델은 <b>새로 측정한 데이터</b>에도 써 볼 수 있어요(응용하기, 선택). 그리고 프로젝트 카드를 보며 평가 기준에 따라 우리 모둠의 프로젝트를 돌아봐요.</span></div>
+  <details class="card r4-opt">
+    <summary>🔌 응용하기 · 센서로 측정한 공기질로 예측하기 <small>(선택 · 피지컬 컴퓨팅 준비물이 있을 때)</small></summary>
+    <ol>
+      <li>초미세 먼지 예측과 관련된 <b>대기 물질 센서</b>를 구하고 공기질 측정 피지컬 컴퓨팅을 구성해요. 예를 들어 일산화탄소, 이산화질소 등 여러 대기 물질을 측정하는 <b>MICS-6814</b> 센서를 <b>ESP32</b>에 연결해요. 회로 구성이 어려우면 선생님이 보여 주는 실습 영상으로 체험해요.</li>
+      <li>센서로 측정한 공기질 데이터와 오늘의 기상 데이터를 합친 파일을 새 <b>File</b> 위젯(이름: Test Data)으로 불러와요.</li>
+      <li>02의 <b>Linear Regression</b>과 Test Data를 새 <b>Predictions</b>에 이어 그날의 초미세 먼지(PM2.5) 농도를 예측해요.</li>
+    </ol>
+    <div class="r4-chain"><span style="--k:#e58fc4">Linear Regression</span><i>Model → Predictors →</i><span style="--k:#6cc3cf">Predictions (1)</span><i>← Data</i><span style="--k:#f2b84b">Test Data (File)</span></div>
+    <p class="note">테스트 데이터에 target(PM2.5) 값이 없어서 Predictions에 경고 문구가 보여요. 예측값은 그대로 확인할 수 있어요.</p>
+    <div class="memo"><label>새 데이터로 예측한 초미세 먼지 농도와 느낀 점</label><textarea data-memo="applyRes" rows="2"></textarea><div class="saved"></div></div>
+  </details>
+  <div class="card">
+    <h3>🗂️ 우리 모둠 프로젝트 카드</h3>
+    <div id="projCard2"></div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✅ 자기 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(잘한 것을 모두 골라요)</span></h3>
+      <div id="selfEval"></div>
+      <h4 style="margin-top:14px">이 프로젝트로 길러진 역량</h4>
+      <div id="compPick"></div>
+    </div>
+    <details class="card r4-opt">
+      <summary>👂 동료 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다른 모둠 결과를 본 뒤)</span></summary>
+      <div class="memo">
+        <label>가장 좋았던 모둠과 그 까닭 <small>평가 기준의 말로</small></label><textarea data-memo="peer" rows="3"></textarea>
+        <label>그 모둠에 건넬 질문이나 제안 하나</label><textarea data-memo="peerAsk" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <details class="card r4-opt">
+    <summary>📋 평가 기준 보기 (눌러서 펼치기)</summary>
+    <div class="r4-tw"><table class="tbl r4-crit">
+      <tr><th>항목</th><th>평가 기준</th></tr>
+      <tr><td><b>주제 선정</b></td><td>지속가능발전목표 달성에 적합한 주제를 선정하였는가?</td></tr>
+      <tr><td rowspan="2"><b>해결 과정</b></td><td>문제 해결에 적합한 데이터를 수집하고 적절한 전처리를 하였는가?</td></tr>
+      <tr><td>모둠원과 힘을 합쳐서 문제를 해결하였는가?</td></tr>
+      <tr><td rowspan="2"><b>평가 및 성찰</b></td><td>제작한 인공지능 모델을 통해 문제를 정확하게 해결하였는가?</td></tr>
+      <tr><td>프로젝트 전 과정을 통해 배우고 느낀 점을 잘 정리하였는가?</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<!-- 4 진로 -->
+<section class="page" data-name="진로" data-acc="#9b4fc4">
+  <div class="head"><div class="num">04</div><div><h2>디지털 세계의 언어 해석자, 자연어 처리 엔지니어</h2><p>교과서 204쪽 · 상상을 현실로 도전하는 사람들</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>챗봇에게 질문하거나 말을 걸면 챗봇이 알아듣고 대답하지요. 사람의 언어를 컴퓨터가 이해하고 처리할 수 있게 하는 인공지능 기술이 <b>자연어 처리</b>예요. 이 기술을 연구하고 개발하는 사람이 <b>자연어 처리 엔지니어</b>예요. 카드를 눌러 인터뷰 내용을 확인해 봐요.</span></div>
+  <div class="tcards" id="careerCards"></div>
+  <details class="card r4-opt" style="margin-top:18px">
+    <summary>🪪 나의 진로 카드 <small>(선택 · 시간이 남으면)</small></summary>
+    <div class="memo">
+      <label>인공지능으로 풀어 보고 싶은 내 관심 분야의 문제 한 가지와, 그때 쓸 데이터</label><textarea data-memo="career" rows="2" placeholder="예: 학교 건의함 글을 주제별로 나누어 — 학생들이 쓴 건의 글 데이터"></textarea>
+      <label>자연어 처리 엔지니어처럼 인공지능 분야에서 일하려면 내가 기르고 싶은 역량 <small>여럿 골라도 돼요</small></label><div id="careerSkill"></div>
+      <div class="saved"></div>
+    </div>
+  </details>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 Ⅳ단원 정리 -->
+<section class="page" data-name="Ⅳ단원 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>Ⅳ단원 정리: 인공지능</h2><p>교과서 205쪽 · 주요 개념 정리</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>지능 에이전트</b>와 <b>기계학습</b>을 한 번에 돌아봐요. 먼저 용어를 훑고, 상황을 읽고 어떤 방법인지 고르는 게임을 한 뒤 퀴즈로 확인해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🤖</div><h4>지능 에이전트</h4><p>배달 드론이 바람과 장애물을 살피며 목적지까지 갈 길을 <b>스스로</b> 고르는 것처럼, 주변 환경을 알아차리고 <b>목표</b>에 맞는 행동을 찾아 움직여요. 인공지능이 할 일과 <b>사람이 맡을 역할</b>을 함께 생각해야 해요.</p></div>
+    <div class="kc" style="--k:#1f9d74"><div class="ic">🧠</div><h4>기계학습</h4><p>데이터에서 패턴을 학습 · <b>지도학습</b>(분류: 종속변수가 이산적, 회귀: 연속적) · <b>비지도학습</b>(군집) · <b>강화학습</b> · k-최근접 이웃 · 의사결정트리 · 로지스틱 회귀 · 선형 회귀 · k-평균 · 앙상블 · SDGs와 기계학습 프로젝트</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 어떤 방법일까?</h3>
+    <div id="unitSort"></div>
+  </div>
+  <details class="card r4-opt">
+    <summary>✅ 역량 Check! <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 이 단원에서 길러진 역량을 모두 골라요)</span></summary>
+    <div id="unitComp" style="margin-top:8px"></div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">사회 문제를 인공지능으로 풀 때는 <b>문제 발견 → 데이터 수집 계획 → 모델 학습 → 모델 평가 → 성찰</b> 순서로 진행하고, 예측하려는 값의 형태에 맞는 유형과 알고리즘을 고른다.</div>
+    <div style="--k:#e0702b">만든 모델은 <b>평가 지표</b>(R2 · MAE)로 성능을 확인하고, 데이터나 속성을 바꿔 가며 더 나은 모델로 고쳐 나간다.</div>
+    <div style="--k:#9b4fc4"><b>자연어 처리</b>는 사람의 언어를 컴퓨터가 이해하고 처리하게 하는 기술이다. 인공지능은 여러 분야에 쓰이므로 관심사에 따라 다양한 진로로 이어진다.</div>
+  </div>
+  <div class="card">
+    <h3>Ⅳ단원 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 만든 초미세 먼지 예측 모델을 예로 들어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">기계학습을 활용하여 어떤 문제를 해결할 수 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>우리 모둠이 고른 <b>지속가능발전목표</b>와 미세 먼지로 <b>발생할 문제</b>를 쓰고, 이 문제를 해결하기 위해 어떤 데이터로 어떤 아이디어를 실현하려 했는지 설명하세요.</li>
+      <li>초미세 먼지(PM2.5) 농도를 예측하기 위해 고른 <b>기계학습 유형과 알고리즘</b>을 쓰고, 그렇게 고른 까닭을 예측하고자 하는 값의 형태와 연결하여 설명하세요.</li>
+      <li>우리 모델의 <b>평가 지표 결과</b>(R2, MAE)를 쓰고, 이 활동을 바탕으로 인공지능 기술이 현재 또는 미래 사회에 미칠 영향과 우리가 노력해야 할 점을 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

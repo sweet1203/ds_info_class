@@ -1,0 +1,78 @@
+/* u4-agent 전용 */
+  .ag-sdg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.ag-sdg{grid-template-columns:1fr 1fr}}
+  .ag-sdg>div{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k);font-size:.88rem;line-height:1.5}
+  .ag-sdg i{font-style:normal;font-size:1.5rem;display:block;margin-bottom:4px}
+  #prepCards{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:860px){#prepCards{grid-template-columns:1fr 1fr}}
+
+  .ag-fig{background:#fbfaf7;border-radius:14px;padding:10px;align-self:start}
+  .ag-fig svg{width:100%;max-width:340px;display:block;margin:0 auto}
+  .ag-scroll{overflow-x:auto}
+  .ag-cmp th,.ag-rc th{white-space:nowrap}
+  .ag-cmp td{width:45%}
+  .ag-rc th small{display:block;font-weight:400;color:var(--muted);font-size:.78rem;white-space:normal}
+  .ag-rc td{width:42%}
+  .ag-rc textarea{width:100%;box-sizing:border-box;min-width:180px}
+
+  #stepBtns{grid-template-columns:repeat(4,1fr);margin-bottom:12px}
+  .ag-stepcard h4{color:var(--k);margin:0 0 6px}
+
+  /* 스마트 화분 */
+  .ag-ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:10px}
+  .ag-ctrl label{font-size:.9rem;display:flex;align-items:center;gap:6px}
+  .ag-day{font-size:.95rem}
+  .ag-wx{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin-bottom:12px}
+  .ag-wx span{text-align:center;background:#fbfaf7;border-radius:8px;padding:4px 0;font-size:1.1rem;border:2px solid transparent}
+  .ag-wx span small{display:block;font-size:.68rem;color:var(--muted)}
+  .ag-wx span.past{opacity:.45}
+  .ag-wx span.on{border-color:var(--acc);background:var(--acc-soft)}
+  .ag-pots{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:760px){.ag-pots{grid-template-columns:1fr}}
+  .ag-pot{background:#fff;border-radius:14px;box-shadow:0 4px 14px rgba(15,39,66,.08);padding:12px 14px;border-top:6px solid var(--k)}
+  .ag-pot h4{margin:0 0 8px;color:var(--k)}
+  .ag-potv{display:flex;gap:12px;align-items:center}
+  .ag-big{font-size:2.6rem;line-height:1}
+  .ag-bar{position:relative;height:16px;background:#eceae4;border-radius:8px;overflow:hidden}
+  .ag-bar i{position:absolute;top:0;bottom:0;font-style:normal}
+  .ag-bar .band{background:rgba(31,157,116,.22);border-left:2px dashed #1f9d74;border-right:2px dashed #1f9d74;z-index:1}
+  .ag-bar .fill{left:0;background:#5aa9e6;opacity:.75}
+  .ag-bar .was{width:3px;background:#0f2742;z-index:2}
+  .ag-bart{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:2px}
+  .ag-bart b{color:var(--ink)}
+  .ag-cnt{font-size:.85rem;margin-top:4px}
+  .ag-stage{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:5px}
+  .ag-stage li{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:start;font-size:.86rem;line-height:1.5;padding:4px 6px;border-radius:8px;transition:background .3s,opacity .3s}
+  .ag-stage li b{background:var(--k);color:#fff;border-radius:999px;text-align:center;font-size:.78rem;padding:1px 0}
+  .ag-stage li.wait{opacity:.25}
+  .ag-stage li.lit{background:color-mix(in srgb,var(--k) 9%,#fff)}
+  .ag-hist{display:flex;flex-wrap:wrap;gap:2px;margin-top:8px;font-size:1.05rem;min-height:1.4em}
+  .ag-res{margin-top:12px;background:#fff4d6;border-radius:12px;padding:10px 14px;font-size:.92rem}
+  .ag-res:empty{display:none}
+
+  /* 특성 사례 · 챗봇 */
+  .ag-ex{font-size:.85rem;background:#fbfaf7;border-radius:8px;padding:6px 8px;margin-bottom:0}
+  .ag-chatq{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .ag-chatq button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .ag-chatq button.on{border-color:var(--acc);background:var(--acc-soft);font-weight:700}
+  .ag-chatst{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}
+  .ag-chatst span{border:2px solid var(--k);color:var(--k);border-radius:999px;padding:2px 12px;font-weight:700;font-size:.88rem;background:#fff}
+  .ag-chatst span.past{background:color-mix(in srgb,var(--k) 12%,#fff)}
+  .ag-chatst span.on{background:var(--k);color:#fff}
+  .ag-chatst i{font-style:normal;color:var(--muted)}
+  .ag-chatv{background:#fbfaf7;border-left:5px solid var(--k,var(--line));border-radius:10px;padding:10px 14px;min-height:64px;margin-bottom:8px;line-height:1.6}
+  .ag-chatk{color:var(--k);margin-right:4px}
+  .ag-bot{margin-top:8px;background:#fff;border-radius:12px;padding:8px 12px;box-shadow:0 2px 8px rgba(15,39,66,.08)}
+  .ag-fb{display:inline-flex;gap:6px;margin-left:6px}
+  .ag-fbm{font-size:.88rem;color:var(--muted)}
+
+  /* 개념 정리하기 빈칸 */
+  .ag-blanks li{margin:8px 0;line-height:1.9}
+  .ag-blank{font:inherit;font-weight:700;border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);border-radius:6px 6px 0 0;padding:0 10px;min-width:64px;cursor:pointer}
+  .ag-blank.on{border-bottom-style:solid;background:#fff4d6;color:var(--ink)}
+
+  /* 시간 되면(접어 둠) */
+  details.ag-more>summary{cursor:pointer;font-weight:700}
+  details.card.ag-more>summary{font-size:1.05rem}
+  details.card.ag-more[open]>summary{margin-bottom:10px}
+  .ag-chatflow>div{min-width:120px}

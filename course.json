@@ -251,7 +251,7 @@
      "title": "지능 에이전트의 개념과 특성",
      "pages": "160~169",
      "form": "info-u4-agent",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "28",
@@ -259,7 +259,7 @@
      "title": "인간과 인공지능의 역할 · 지능 에이전트 정리",
      "pages": "170~175",
      "form": "info-u4-human-ai",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "29",
@@ -267,7 +267,7 @@
      "title": "기계학습의 개념과 유형",
      "pages": "176~179",
      "form": "info-u4-ml-concept",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "30",
@@ -275,7 +275,7 @@
      "title": "지도학습",
      "pages": "180~185",
      "form": "info-u4-supervised",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "31",
@@ -283,7 +283,7 @@
      "title": "비지도학습",
      "pages": "186~187",
      "form": "info-u4-unsupervised",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "32",
@@ -291,7 +291,7 @@
      "title": "기계학습 활용 · 기계학습 정리",
      "pages": "188~199",
      "form": "info-u4-ml-apply",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "33",
@@ -299,7 +299,7 @@
      "title": "협력적 창의·융합 프로젝트 · Ⅳ단원 정리",
      "pages": "200~205",
      "form": "info-u4-review",
-     "status": "todo"
+     "status": "ready"
     }
    ]
   },
