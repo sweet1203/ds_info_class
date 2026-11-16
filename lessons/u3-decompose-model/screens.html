@@ -1,0 +1,255 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 1. 알고리즘</span>
+      <h1>복잡한 문제,<br>어떻게 나누고 표현할까?</h1>
+      <div class="story"><b>「NASA도 놓친 지구 위협 소행성, 새 알고리즘이 찾았다!」</b><br>미국 워싱턴대학교 연구진이 새로 개발한 소행성 탐지 프로그램 「헬리오링크3D」가 약 183미터 길이의 소행성 「2022 SF289」를 찾아냈어요. 기존 탐지 시스템도 미처 발견하지 못한 소행성이었지요. 연구 책임자는 지금까지 규명된 소행성 개수를 찾는 데 <b>200년이 넘게</b> 걸렸지만, 이를 두 배로 늘리는 데에는 <b>3개월~6개월</b>이면 될 것이라고 말했어요.</div>
+      <p>오늘은 복잡한 문제를 컴퓨팅 시스템으로 해결하기 위해 <b>문제의 상태</b>를 정하고, <b>추상화</b>로 핵심 요소를 뽑고, <b>문제 분해</b>로 작은 문제로 나누고, <b>모델링</b>으로 구조화하는 과정을 직접 해 봐요.</p>
+      <ol>
+        <li>컴퓨팅 시스템으로 해결할 수 있는 문제</li><li>문제 해결 과정과 추상화</li><li>문제 분해</li>
+        <li>모델링</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">단원 도입 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔍</i><div><b>문제 이해</b><small>초기 상태 · 목표 상태 · 수행 과정</small></div></div>
+      <div class="ar" style="animation-delay:.5s">↓</div>
+      <div class="st" style="animation-delay:.7s"><i>✂️</i><div><b>핵심 요소 추출</b><small>불필요한 요소 제거 = 추상화</small></div></div>
+      <div class="ar" style="animation-delay:1s">↓</div>
+      <div class="st" style="animation-delay:1.2s"><i>🧩</i><div><b>문제 분해 및 모델링</b><small>작은 문제로 나누고 구조화하기</small></div></div>
+      <div class="ar" style="animation-delay:1.5s">↓</div>
+      <div class="st" style="animation-delay:1.7s"><i>💻</i><div><b>알고리즘 설계 → 프로그래밍</b><small>단계적 절차를 프로그래밍 언어로</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">단원 도입 · Ⅲ. 알고리즘과 프로그래밍</span>
+      <p><b>효율적인 알고리즘 설계와 프로그래밍을 통한 자동화</b>는 다양한 분야의 문제를 해결하는 데 도움을 줘요. 이 단원에서는 문제를 효율적으로 해결하기 위해 먼저 문제를 <b>추상화</b>해 <b>알고리즘을 설계</b>하고, 프로그램을 구현하기 위해 거치는 프로그램 작성, 실행 결과 평가, 오류 수정 같은 <b>자동화</b> 과정을 배워요. 이를 바탕으로 컴퓨팅 사고력(추상화 능력, 자동화 능력, 창의·융합 능력)을 길러요.</p>
+    </div>
+    <div class="cards2" style="margin:14px 0">
+      <div class="kc" style="--k:#9b4fc4"><div class="ic">🧭</div><h4>단원 핵심 질문 · 1. 알고리즘</h4><p>복잡한 문제를 분해하여 모델링하기 위해 필요한 과정은 무엇일까?</p></div>
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">💻</div><h4>단원 핵심 질문 · 2. 프로그래밍</h4><p>협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</p></div>
+    </div>
+    <div class="card">
+      <h3>🎒 나의 학습 준비 · 소행성과 알고리즘 <span class="muted" style="font-weight:400;font-size:.88rem">(90~91쪽)</span></h3>
+      <p style="margin-top:0">수많은 천체 가운데 소행성을 찾는 과정에서 <b>알고리즘과 프로그래밍</b>은 매우 중요한 역할을 해요. 단원 끝에서는 「화성 여행, 얼마나 걸릴까?」 프로젝트를 해요.</p>
+      <p style="margin-bottom:4px"><b>알고 있나요?</b> 중학교 『정보』에서 배운 것 가운데 기억나는 것을 모두 골라요. <span class="muted" style="font-size:.88rem">문제 상태와 핵심 요소 추출은 오늘 01~02에서 다시 만나요.</span></p>
+      <div id="readyChips"></div>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">생각해 볼까요? · 게임 만들기 (92쪽)</span>
+        <p style="margin:0 0 6px;font-size:.92rem">게임은 하나의 문화로 자리를 잡았고, <b>규칙에 의한 지배</b>를 받는 활동이에요.</p>
+        <p style="margin:0;font-size:.92rem"><b>게임의 규칙과 다양한 요소를 컴퓨터 명령어로 구현해 재미있는 컴퓨터 게임을 만들려면 어떤 과정을 거쳐야 할까?</b></p>
+        <p style="margin:6px 0 0;font-size:.85rem" class="muted">단원 목표: 효율적인 문제 해결을 위해 문제를 추상화하여 알고리즘을 설계한다. 이때 필요한 데이터 모델링을 하기 위해 데이터 간의 관계를 분석하고 정의할 수 있다.</p>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>알고리즘</b> · 복잡한 문제를 분해하여 모델링하기 위해 필요한 과정은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 컴퓨팅 시스템을 활용하여 복잡한 문제를 해결하려면 어떤 과정으로 진행해야 효율적일까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>정보 과학적으로 해결할 수 있는 문제를 구별하고 문제 해결 과정을 설명할 수 있다.</li>
+          <li>복잡한 문제를 추상화하여 효율적인 알고리즘을 설계할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 문제 상태 · 문제 해결 과정 · 문제 분해 · 모델링 · 추상화</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>좋아하는 게임 하나를 떠올려 보세요. 그 게임을 컴퓨터로 만든다면 어떤 단계를 거쳐야 할까요? 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planGame" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 컴퓨팅 시스템으로 해결할 수 있는 문제부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 컴퓨팅 시스템으로 해결할 수 있는 문제 -->
+<section class="page" data-name="해결할 수 있는 문제" data-acc="#9b4fc4">
+  <div class="head"><div class="num">01</div><div><h2>컴퓨팅 시스템으로 해결할 수 있는 문제</h2><p>교과서 93쪽 · 문제, 문제의 상태(초기·현재·목표), 수행 과정</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>문제가 <b>어디서 시작해(초기 상태)</b> <b>어디에 도착해야 하는지(목표 상태)</b>, 그리고 <b>무엇을 하면 되는지(수행 과정)</b>를 분명하게 말할 수 있으면 컴퓨터에게 맡길 수 있어요.</span></div>
+  <div class="card">
+    <h3>💡 문제와 문제의 상태</h3>
+    <p style="margin-top:0"><b>문제</b>는 해답을 요구하는 물음 또는 해결해야 하는 일이나 상황 등을 뜻해요. 원하는 결과를 얻거나 문제 상황에서 벗어났을 때 문제가 해결되었다고 해요. 문제의 상태는 이렇게 나타내요.</p>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">🚩</div><h4>초기 상태</h4><p>문제가 발생한 최초의 상태</p></div>
+      <div class="kc" style="--k:#e0702b"><div class="ic">🔄</div><h4>현재 상태</h4><p>문제가 한 번에 해결되지 않고, 해결하면서 변화되고 있는 상태</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">🏁</div><h4>목표 상태</h4><p>문제가 해결된 상태</p></div>
+    </div>
+    <p style="margin-bottom:0">컴퓨팅 시스템을 활용해 문제를 해결하려면 문제 해결 과정을 컴퓨터가 이해할 수 있는 언어로 표현해야 해요. 그래서 문제의 <b>초기 상태, 목표 상태, 수행 과정</b>을 명확하게 설명할 수 있어야 해요.</p>
+  </div>
+  <div class="card">
+    <h3>🤖 체험 · 로봇이 파란 타일에 불을 켜는 문제 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 예제와 같은 명령 5개, 새 규칙·새 격자)</span></h3>
+    <p class="muted" style="margin-top:0">① 아래 세 장면 가운데 <b>초기 상태</b>와 <b>목표 상태</b>를 골라요. ② 명령 5개만 써서 로봇이 파란 타일로 가 불을 켜게 해요.</p>
+    <div id="dmStates"></div>
+    <div id="dmRobot"></div>
+  </div>
+  <div class="card">
+    <h3>🎯 컴퓨팅 시스템으로 해결할 수 있을까?</h3>
+    <p class="muted" style="margin-top:0">문제 6개를 읽고 골라요. 「처음과 끝, 하는 일을 분명하게 정할 수 있을까?」를 먼저 생각해요.</p>
+    <div id="solveGame"></div>
+    <p class="note">해결 과정을 프로그래밍 언어로 자동화하면 다른 문제에도 활용할 수 있어요. 예를 들어 온도에 따라 작동 여부를 자동으로 제어하는 과정을 프로그래밍해 일반화하면, 선풍기·냉장고 같은 다양한 제어 프로그램으로 확장할 수 있어요.</p>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 문제 해결 과정과 추상화 -->
+<section class="page" data-name="문제 해결 과정과 추상화" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>문제 해결 과정과 추상화</h2><p>교과서 94쪽 · 복잡한 문제, 핵심 요소, 추상화, 알고리즘 설계와 프로그래밍</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>진짜 나무를 그대로 그리라고 하면 너무 복잡해요. <b>줄기와 가지</b>처럼 꼭 필요한 것만 남기면(<b>추상화</b>) 규칙을 만들 수 있고, 규칙을 순서대로 적으면 <b>알고리즘</b>, 그것을 프로그래밍 언어로 쓰면 <b>프로그램</b>이 돼요.</span></div>
+  <div class="card">
+    <h3>🛤️ 프로그래밍으로 문제를 해결하는 과정</h3>
+    <div class="dm-chain"><span>문제 이해</span><i>→</i><span>핵심 요소 추출</span><i>→</i><span>문제 분해 및 모델링</span><i>→</i><span>알고리즘 설계</span><i>→</i><span>프로그래밍</span></div>
+    <div class="cards3" style="margin-top:12px">
+      <div class="kc" style="--k:#9b4fc4"><h4>복잡한 문제</h4><p>어려운 문제와는 다른 의미로, <b>여러 번의 절차를 거쳐서</b> 해결해야 하는 문제예요.</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>핵심 요소</h4><p>초기 상태에서 목표 상태로 나아가기 위해 <b>반드시 고려해야 하는 요소</b>예요. 고려하지 않으면 문제를 해결할 수 없거나 해결하는 데 매우 오래 걸릴 수 있어요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>알고리즘</h4><p>문제를 해결하기 위한 <b>일련의 단계적 절차나 방법</b>이에요. 페르시아 수학자 알-콰리즈미의 이름에서 유래했어요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🌳 예제 · 나무 그리기 문제의 추상화 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅲ-2를 다시 그림)</span></h3>
+    <div class="dm-abs3">
+      <div><svg viewBox="0 0 160 150" aria-label="잎이 무성한 나무 그림"><rect x="72" y="88" width="16" height="58" rx="3" fill="#8a5a2b"/><g fill="#3f9a4a"><circle cx="80" cy="54" r="34"/><circle cx="52" cy="70" r="24"/><circle cx="108" cy="70" r="24"/><circle cx="62" cy="38" r="20"/><circle cx="100" cy="36" r="22"/></g><g fill="#2e7d38"><circle cx="70" cy="60" r="6"/><circle cx="96" cy="52" r="5"/><circle cx="58" cy="80" r="5"/><circle cx="110" cy="78" r="6"/><circle cx="84" cy="30" r="5"/></g></svg><b>(가) 복잡한 문제</b><small>이미지의 각 픽셀에 색상값을 저장해 표현 → 해결 과정을 논리적으로 설명하기 어려워요.</small></div>
+      <div><svg viewBox="0 0 160 150" aria-label="줄기와 가지로만 그린 나무" id="dmAbsTree"></svg><b>(나) 핵심 요소 추출</b><small>핵심 요소만 남겨 표현 → 컴퓨팅 시스템으로 해결할 수 있는 문제로 만들어요.</small></div>
+      <div><svg viewBox="0 0 160 150" aria-label="직선 줄기 하나와 두 가지"><g stroke="#16202c" stroke-width="4" stroke-linecap="round"><line x1="80" y1="146" x2="80" y2="80"/><line x1="80" y1="80" x2="52" y2="32"/><line x1="80" y1="80" x2="108" y2="32"/></g></svg><b>(다) 문제 분해 및 모델링</b><small>작은 문제로 분해해 표현 → 직선 줄기 한 개와 왼쪽 가지, 오른쪽 가지</small></div>
+    </div>
+    <p style="margin-bottom:0">컴퓨팅 시스템을 활용한 문제 해결에서 복잡한 문제의 <b>불필요한 요소를 제거하고 핵심 요소만 남기는 것</b>을 <b>추상화</b>라고 해요. 줄기와 왼쪽 가지, 오른쪽 가지의 크기와 모양에 적용되는 규칙을 절차적으로 만들어 프로그래밍 언어로 표현하면 컴퓨팅 시스템으로 해결할 수 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>▶️ 체험 · 알고리즘 한 단계씩 실행하기 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅲ-3 (라) 알고리즘 설계 · (마) 프로그래밍)</span></h3>
+    <p class="muted" style="margin-top:0"><b>한 단계 ▶</b>를 누를 때마다 알고리즘 한 줄과 그 줄을 옮긴 코드가 함께 실행돼요. 거북이(▲)가 움직이는 모습을 보며 두 표현을 맞춰 봐요.</p>
+    <div id="dmTree"></div>
+    <p class="note">교과서 코드는 파이썬의 turtle(거북이 그래픽)로 그려요. 「프로그래밍은 파이썬 설치 후 실행해 봅시다」(119쪽)처럼 파이썬에서 직접 실행해 볼 수도 있어요.</p>
+  </div>
+  <div class="card">
+    <h3>✂️ 핵심 요소 고르기 · 학교 축제 길 안내 앱</h3>
+    <p class="muted" style="margin-top:0">축제에 온 손님이 정문에서 원하는 부스까지 찾아가도록 돕는 길 안내 앱을 만들려고 해요. 이 문제를 해결하는 데 <b>반드시 고려해야 하는 요소</b>만 골라 누르고 <b>확인</b>을 눌러요.</p>
+    <div id="dmAbs"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 문제 분해 -->
+<section class="page" data-name="문제 분해" data-acc="#e0702b">
+  <div class="head"><div class="num">03</div><div><h2>문제 분해</h2><p>교과서 95~96쪽 · 문제 분해, 분할 정복, 스스로 해결하기, 지식 키우기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>한 번에 풀기 어려운 문제는 <b>해결하기 쉬운 작은 문제로 나누면</b> 실마리가 보여요. 작은 문제를 하나씩 해결해 합치면 전체 문제가 해결돼요.</span></div>
+  <div class="card">
+    <h3>🧩 문제 분해와 분할 정복</h3>
+    <p style="margin-top:0">문제가 복잡해 해결 방법을 쉽게 찾을 수 없을 때, 작은 문제로 나누는 <b>문제 분해</b>로 실마리를 찾을 수 있어요. 문제 분해란 <b>복잡한 문제를 해결하기 쉬운 작은 문제로 나누는 것</b>이에요. 그 후 효과적인 알고리즘을 설계해 컴퓨팅 기술로 해결해요.</p>
+    <div class="callout"><b>분할 정복</b>은 복잡한 문제를 작은 문제로 나눈 뒤 각각의 작은 문제를 해결해 전체 문제를 해결하는 전략이에요. <small class="muted">1805년 아우스터리츠 전투에서 나폴레옹이 자기 군대보다 많은 연합군의 중앙으로 쳐들어가 병력을 둘로 갈라놓아 승리한 데서 유래했어요.</small></div>
+  </div>
+  <div class="card">
+    <h3>📦 체험 · 날짜 상자를 분할 정복으로 정리하기 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 95쪽과 같은 방법, 새 날짜)</span></h3>
+    <p class="muted" style="margin-top:0">「월-일」 날짜 라벨이 붙은 상자 8개를 날짜가 빠른 순서대로 정리해요. <b>분할</b>은 더 이상 나눌 수 없을 때까지 둘로 나누고, <b>정복</b>은 작은 문제 두 개의 첫 번째 데이터끼리 비교하며 합쳐요.</p>
+    <div id="dmDates"></div>
+  </div>
+  <div class="card">
+    <h3>🔬 스스로 해결하기 · 복잡한 문제 분해 (숫자 퍼즐)</h3>
+    <p class="muted" style="margin-top:0"><b>필수</b>: 맨 위의 <b>구역 1·2</b>(굵은 선 안의 왼쪽 위·오른쪽 위)만 채우고 <b>확인</b>을 눌러요. 나머지 구역은 선택(시간이 남을 때)이에요. 각 <b>행</b>, 각 <b>열</b>, 굵은 선으로 나눈 각 <b>구역</b>에 1부터 6까지 숫자가 모두 한 번씩 나타나야 해요. 퍼즐 전체를 한꺼번에 보지 말고, 아래 버튼으로 <b>구역·행·열 하나씩</b> 작은 문제로 나누어 빈칸을 채워요.</p>
+    <div id="dmPuzzle"></div>
+    <div class="memo"><label>퍼즐을 풀 때 어떤 작은 문제(구역·행·열)부터 해결했나요? 그렇게 나누면 무엇이 쉬워졌는지 적어요.</label><textarea data-memo="puzzleHow" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🙋 지식 키우기 · 내 문제를 작은 문제로 나누기 <span class="muted" style="font-weight:400;font-size:.88rem">(96쪽)</span></h3>
+    <p style="margin-top:0">「일상생활에서 해결할 수 있는 문제를 찾아 프로그램 제작하기」라는 모둠 과제는 자료 수집, 발표 자료 제작, 프로그램 작성, 발표 등으로 나누어 모둠원이 역할을 맡아 해결할 수 있어요. <b>모둠 과제에서 역할을 나누는 것도 문제 분해</b>예요.</p>
+    <p class="muted" style="margin-bottom:4px">아래에서 큰 문제 하나를 고르고, 해결하기 쉬운 작은 문제 3~4개로 나누어 적어요.</p>
+    <div id="bigPick"></div>
+    <div class="memo"><label>내가 나눈 작은 문제 <small>예처럼 한 줄에 하나씩 적어요: 「1. ○○ 정하기」</small></label><textarea data-memo="decompMine" rows="4"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="dm-ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 모델링 -->
+<section class="page" data-name="모델링" data-acc="#1f9d74">
+  <div class="head"><div class="num">04</div><div><h2>모델링</h2><p>교과서 97~98쪽 · 모델과 모델링, 그래프로 모델링하기, 문제 상태 모델링, 규칙 모델링</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>모델</b>은 복잡한 상태를 단순하게 구조적으로 표현한 결과이고, 모델을 만드는 과정이 <b>모델링</b>이에요. 지하철 노선도처럼, 문제를 푸는 데 필요한 정보만 골라 관계를 그려 놓는 거예요.</span></div>
+  <div class="card">
+    <h3>🗺️ 모델과 모델링</h3>
+    <p style="margin-top:0"><b>모델</b>이란 모형이나 축소형이라는 뜻으로, 복잡한 상태를 단순하게 구조적으로 표현한 결과예요. 이러한 모델을 만드는 과정을 <b>모델링</b>이라고 해요. 컴퓨팅 시스템을 활용한 문제 해결에서는 복잡한 문제에서 추출한 <b>핵심 요소들의 관계를 구조화</b>해 이해하기 쉬운 형태로 표현해요.</p>
+    <p style="margin-bottom:0">모델링은 글, 그림, 기호, 수식, 표 등 다양한 방식으로 할 수 있어요. 문제의 <b>초기 상태부터 목표 상태까지의 수행 과정을 절차적으로 모델링</b>하면 알고리즘 설계가 쉬워져요. 같은 지도라도 <b>문제가 바뀌면 핵심 요소가 달라져서 모델링 결과도 달라져요.</b></p>
+  </div>
+  <div class="card">
+    <h3>🚇 체험 · 그래프로 모델링하기 <span class="muted" style="font-weight:400;font-size:.88rem">(교과서 97쪽의 생각해 보기를 새 지도로)</span></h3>
+    <p class="muted" style="margin-top:0">가상의 도시에서 지하철로 <b>학교역</b>에서 <b>공항역</b>까지 가려고 해요. ① 먼저 <b>필요 없는 정보 지우기</b>를 눌러 지도를 모델로 바꿔요. ② 학교역에서 시작해 이웃한 역을 차례로 눌러 경로를 만들어요. <b>환승이 가장 적은 경로</b>와 <b>시간이 가장 짧은 경로</b>를 하나씩 찾아 기록해요.</p>
+    <div id="dmMetro"></div>
+  </div>
+  <div class="card">
+    <h3>🔷 규칙을 모델링하기 <span class="muted" style="font-weight:400;font-size:.88rem">(98쪽 예제)</span></h3>
+    <p style="margin-top:0">초기 상태부터 목표 상태까지의 변화 과정을 데이터 관계의 측면에서 절차적으로 모델링해 알고리즘을 설계할 수도 있어요. 98쪽 예제처럼 「앞 상태의 결과 + 새로 늘어나는 수」로 규칙을 모델링해 두면, 사람이 앞의 결과를 모두 손으로 구하지 않아도 <b>컴퓨팅 기술로 자동화</b>해 큰 n의 결과를 쉽게 알 수 있어요.</p>
+    <details class="dm-more">
+      <summary>🔷 선택 또는 시간이 남을 때 · 타일 무늬 규칙 찾기 (98쪽 예제와 같은 방법, 새 무늬)</summary>
+      <p class="muted" style="margin-top:0">n = 1일 때 정사각형 타일 1개에서 시작해, n이 1 커질 때마다 무늬의 <b>바깥쪽 둘레</b>에 같은 크기의 타일을 붙여 나가요. 상태가 바뀔 때 <b>새로 붙는 타일 수</b>를 세어 규칙을 찾아요.</p>
+    <div id="dmTile"></div>
+    </details>
+  </div>
+  <div class="card">
+    <details class="dm-more">
+      <summary>🌉 선택 또는 시간이 남을 때 · 스스로 해결하기 쾨니히스베르크의 다리 (98쪽)</summary>
+      <p>프로이센의 쾨니히스베르크(오늘날 러시아 칼리닌그라드)에는 프레겔강과 강으로 둘러싸인 섬 2개가 있고, 섬을 잇는 다리는 모두 7개예요. 한 곳에서 출발해 7개의 다리를 모두 한 번씩만 건너서 출발한 곳으로 다시 돌아올 수 있을까요? 교과서 98쪽 지도의 구역을 A~D로 정하고, 각 지역을 잇는 다리를 선으로 연결해 <b>그래프로 모델링</b>해 보세요.</p>
+      <div class="dm-euler"><b>오일러의 한붓그리기</b> ❶ 홀수 점이 1개도 없는 경우에는 시점과 종점이 일치한다. ❷ 홀수 점이 2개면 시점과 종점이 다르다. ❸ 홀수 점이 1개이거나 3개 이상이면 한붓 그리기가 불가능하다. <small class="muted">(홀수 점: 연결된 선의 수가 홀수인 점)</small></div>
+      <div class="memo"><label>(선택) 내 그래프 모델에서 각 점에 연결된 선의 수와, 그것으로 판단한 결과를 적어요.</label><textarea data-memo="bridgeModel" rows="2"></textarea><div class="saved"></div></div>
+    </details>
+  </div>
+  <div class="card">
+    <h3>🧠 개념 정리하기 <span class="muted" style="font-weight:400;font-size:.88rem">(새 상황 문장으로)</span></h3>
+    <p class="muted" style="margin-top:0">빈칸(?)을 먼저 머릿속으로 채운 다음, 눌러서 확인해요.</p>
+    <ol class="dm-blanks">
+      <li>「시험까지 남은 날짜는 10일, 공부할 단원은 5개」처럼 처음과 끝, 해야 할 일을 분명하게 말할 수 있었다. 이렇게 정리한 것은 <button class="dm-blank" data-a="문제 상태">?</button>와 수행 과정이다.</li>
+      <li>공부 계획 앱을 만들려고 문제를 이해하고, 핵심 요소를 뽑고, 나누고, 순서를 정한 뒤 코드를 짰다. 이 전체 흐름은 <button class="dm-blank" data-a="문제 해결 과정">?</button>이다.</li>
+      <li>반 전체 대청소를 교실 바닥, 창문, 사물함, 복도로 나누어 모둠마다 하나씩 맡았다. 이렇게 한 일은 <button class="dm-blank" data-a="문제 분해">?</button>이다.</li>
+      <li>버스 노선 안내판을 만들면서 건물 모양과 가로수는 빼고 정류장과 노선만 남겼다. 이렇게 한 일은 <button class="dm-blank" data-a="추상화">?</button>이다.</li>
+      <li>남은 정류장은 점으로, 노선은 선으로 이어 한눈에 보이는 노선도를 그렸다. 이렇게 한 일은 <button class="dm-blank" data-a="모델링">?</button>이다.</li>
+    </ol>
+  </div>
+  <div class="dm-ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#9b4fc4"><b>문제의 상태</b>는 초기 상태, 현재 상태, 목표 상태로 나타낸다. 초기 상태, 목표 상태, 수행 과정을 명확하게 설명할 수 있는 문제는 컴퓨팅 시스템으로 해결할 수 있다.</div>
+    <div style="--k:#2f6fd0">프로그래밍으로 문제를 해결할 때는 <b>문제 이해 → 핵심 요소 추출 → 문제 분해 및 모델링 → 알고리즘 설계 → 프로그래밍</b> 과정을 거친다. 불필요한 요소를 제거하고 핵심 요소만 남기는 것이 <b>추상화</b>이다.</div>
+    <div style="--k:#1f9d74"><b>문제 분해</b>는 큰 문제를 풀기 쉬운 작은 문제 여러 개로 쪼개는 일이고, <b>모델링</b>은 핵심 요소들의 관계를 구조화해 단순하게 표현하는 과정이다. 문제가 바뀌면 핵심 요소와 모델도 달라진다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 과정으로 다시 답해 보세요.</p>
+    <div class="dm-prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 복잡한 문제를 분해하여 모델링하기 위해 필요한 과정은 무엇일까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>01에서 로봇 문제의 <b>초기 상태와 목표 상태</b>를 고르고 명령을 짜 보았습니다. 내가 짠 명령을 쓰고, 컴퓨팅 시스템으로 해결할 수 있는 문제와 해결하기 어려운 문제를 하나씩 들어 그 차이를 설명하세요.</li>
+      <li>03에서 숫자 퍼즐과 내가 고른 큰 문제를 <b>작은 문제로 나누어</b> 보았습니다. 내가 나눈 작은 문제들을 쓰고, 문제를 나누면 해결이 왜 쉬워지는지 설명하세요.</li>
+      <li>04에서 <b>환승이 가장 적은 경로</b>와 <b>시간이 가장 짧은 경로</b>를 찾았습니다. 두 경로를 쓰고, 문제가 바뀌면 핵심 요소와 모델링 결과가 어떻게 달라지는지 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

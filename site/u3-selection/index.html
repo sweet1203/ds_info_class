@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제어 구조의 응용 ① 선택 구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* 코드 상자(읽기용) */
+  .cbox{overflow-x:auto;background:#0f2742;border-radius:12px;padding:10px 0;margin:8px 0}
+  .cbox pre{margin:0;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#e8eef6;min-width:max-content}
+  .cbox .ln{display:block;white-space:pre;padding-right:16px}
+  .cbox .ln i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;color:#7f93ab;font-style:normal}
+  .cbox .k,.tr-code .k{color:#ff9f6e;font-weight:700}
+  .cbox .s,.tr-code .s{color:#a8e07e}
+  .cbox .c,.tr-code .c{color:#8fa2b8;font-style:italic}
+  .cbox .n,.tr-code .n{color:#f7c96b}
+  .cbox .f,.tr-code .f{color:#7cc7ff}
+  .cbox .bl{display:inline-block;min-width:7em;border-bottom:2px dashed #f7c96b;color:#f7c96b}
+  .outbox{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;margin:6px 0 10px;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-x:auto}
+  .outbox b.u{color:var(--acc);text-decoration:underline}
+  /* 코드 추적기 */
+  .tr{display:block;margin:10px 0}
+  .tr-in{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:9px 14px;margin-bottom:10px;font-size:.92rem}
+  .tr-in label{display:flex;align-items:center;gap:6px}
+  .tr-in input{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1rem;padding:5px 8px;border:2px solid var(--line);border-radius:8px}
+  .tr-in input:focus{outline:none;border-color:var(--acc)}
+  .tr-opt{display:flex;align-items:center;gap:6px}
+  .tr-opt button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;cursor:pointer}
+  .tr-opt button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tr-pickh{margin:0 0 8px;font-size:.92rem}
+  .tr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px;align-items:start}
+  .tr-grid.wide{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr)}
+  @media (max-width:820px){.tr-grid,.tr-grid.wide{grid-template-columns:1fr}}
+  .tr-codew{overflow-x:auto;background:#0f2742;border-radius:12px;padding:10px 0}
+  .tr-code{margin:0;font:14px/1.65 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;color:#e8eef6;min-width:max-content}
+  .tr-code .ln{display:block;white-space:pre;padding-right:96px;border-left:4px solid transparent;position:relative;transition:background .15s}
+  .tr-code .ln i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;color:#7f93ab;font-style:normal}
+  .tr-code .ln.done{background:rgba(31,157,116,.18)}
+  .tr-code .ln.cur{background:rgba(242,165,22,.42);border-left-color:#f2a516}
+  .tr-code .ln.skip{opacity:.4}
+  .tr-code .ln.skip::after{content:"실행 안 됨";position:absolute;right:10px;font-size:.72rem;color:#c9d3df}
+  .tr-code.pickable .ln{cursor:pointer}
+  .tr-code.pickable .ln:hover{background:rgba(255,255,255,.08)}
+  .tr-code .ln.pk i{color:#0f2742;background:#f2a516;border-radius:6px}
+  .tr-code .ln.ok::after,.tr-code .ln.ng::after,.tr-code .ln.miss::after{position:absolute;right:10px;font-size:.72rem;font-weight:700;padding:0 6px;border-radius:6px}
+  .tr-code .ln.ok::after{content:"✔ 맞음";background:#1f9d74;color:#fff}
+  .tr-code .ln.ng::after{content:"✗ 실행 안 됨";background:#d64535;color:#fff}
+  .tr-code .ln.miss::after{content:"놓침";background:#f2a516;color:#0f2742}
+  .tr-side{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .tr-side>div>b,.tr-sc>b{display:block;font-size:.82rem;color:var(--muted);margin-bottom:3px}
+  .tr-vars table{border-collapse:collapse;width:100%;background:#fff;font-size:.92rem}
+  .tr-vars th,.tr-vars td{border:1px solid var(--line);padding:4px 10px;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+  .tr-vars th{width:34%;background:#fbfaf7}
+  .tr-vars tr.ch td{background:#fff3cf;font-weight:700}
+  .tr-sc{margin-bottom:6px}
+  .tr-sc.l table{border:2px dashed #9b4fc4}
+  .tr-fn{background:#efe2f7;color:#6b2f8f;border-radius:999px;padding:1px 9px;font-size:.82rem;font-weight:700}
+  .tr-out{margin:0;min-height:96px;max-height:260px;overflow:auto;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+  .tr-out b.u{color:var(--acc);text-decoration:underline}
+  .tr-out .er{color:var(--red);font-weight:700}
+  .tr-note{min-height:1.6em;margin:8px 0 6px;font-size:.93rem;text-align:left}
+  .tr-note code,.tr-note .mono{background:#f1ede4;border-radius:5px;padding:0 5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .tr-ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tr-cnt{font-size:.85rem;margin-left:4px}
+  .tr-tblw{overflow-x:auto;margin-top:10px}
+  .tr-tbl{border-collapse:collapse;background:#fff;font-size:.88rem;min-width:100%}
+  .tr-tbl th,.tr-tbl td{border:1px solid var(--line);padding:4px 8px;text-align:center;min-width:34px;font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap}
+  .tr-tbl th{background:#fbfaf7}
+  .tr-tbl td.cur{background:#ffe7a8}
+  .tr-tbl td.ch{font-weight:700;color:var(--acc)}
+  /* 공통 */
+  .ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .ck>b{font-size:.92rem;color:var(--mint)}
+  .ck .chk button.on::before{content:"✔ "}
+  .ul{margin:6px 0 0;padding-left:18px;font-size:.93rem}
+  .ul li{margin:4px 0}
+  .ol{font-size:.93rem;padding-left:20px}
+  .ol li{margin:4px 0}
+  .tbl2{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .tbl2 th,.tbl2 td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  .tbl2 tr:first-child th{background:var(--acc-soft)}
+  .tbl2 td.l{text-align:left}
+  .tbl2 .mono{font-size:.9rem}
+  .more{margin-top:12px;border:2px dashed var(--line);border-radius:12px;padding:8px 14px;background:#fbfaf7}
+  .more summary{cursor:pointer;font-weight:700}
+  .colab{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+  .blanks{font-size:.95rem;padding-left:20px}
+  .blanks li{margin:8px 0}
+  .blank{border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);font:inherit;font-weight:700;min-width:90px;padding:1px 10px;border-radius:6px 6px 0 0;cursor:pointer}
+  .blank.on{background:var(--acc);color:#fff;border-bottom-style:solid}
+  .prev{background:#fbfaf7;border-left:4px solid var(--acc);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:.93rem}
+  /* 순서도 */
+  .fc{display:grid;gap:12px}
+  .fc>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center}
+  .fc>div>b{display:block;margin-bottom:4px}
+  .fc svg{width:100%;max-width:260px;height:auto}
+  .fc p{font-size:.86rem;margin:6px 0 0;text-align:left}
+  .fc svg .bx{fill:#2f8fc7;stroke:none}
+  .fc svg .dm{fill:#2f8fc7}
+  .fc svg text{font-size:12px;fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:middle;font-family:inherit}
+  .fc svg text.lb{fill:#5b6776;font-weight:400;font-size:11px}
+  .fc svg .ar{stroke:#2f8fc7;stroke-width:1.6;fill:none}
+  .cbox[data-nonum] .ln{padding-left:18px}
+  .qq .qcode{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;background:#f4f1ea;border-radius:8px;padding:6px 12px;margin-top:6px;font-size:.88rem;font-weight:400;white-space:pre;overflow-x:auto}
+  /* 이 차시만 */
+  .sel-form{display:grid;grid-template-columns:210px minmax(0,1fr) minmax(0,1.25fr);gap:14px;align-items:center}
+  @media (max-width:900px){.sel-form{grid-template-columns:1fr}}
+  .sel-form .fc>div{padding:6px}
+  .sel-fl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  @media (max-width:900px){.sel-fl{grid-template-columns:1fr}}
+  .sel-fc{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 10px}
+  .sel-fc.good{border-color:var(--mint);background:#f2fbf7}
+  .sel-fc.bad{border-color:var(--red);background:#fdf3f2}
+  .sel-fh{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .sel-fw{font-size:.86rem;margin-top:4px}
+  .sel-ship input{width:110px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1rem;padding:4px 8px;border:2px solid var(--line);border-radius:8px}
+  .sel-ship td.l{min-width:260px}
+  .sel-o{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;color:var(--muted);margin-top:2px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>악보처럼 프로그램도<br>골라서 실행할 수 있을까?</h1>
+      <div class="story"><b>「도돌이표를 만나면 앞으로 돌아가고, 1번 괄호와 2번 괄호 중 하나를 골라 연주해요.」</b><br>악보에서 특정 부분을 반복하거나 구간을 선택해 연주하듯이, 프로그래밍에서도 <b>명령어의 실행 순서를 반복하거나 선택하도록</b> 결정할 수 있을까요?</div>
+      <p>오늘은 명령어의 실행 순서를 정하는 <b>제어 구조</b>를 알아보고, 조건에 따라 다른 명령을 실행하는 <b>선택 구조</b>(if문, if~else문, if~elif~else문)를 코드를 읽으며 따라가요. 마지막에는 코랩에서 <b>배송비 안내 프로그램</b>을 완성해요.</p>
+      <ol>
+        <li>세 가지 제어 구조</li><li>if문과 if~else문</li><li>if~elif~else문과 선택 구조 형식</li>
+        <li>함께 해결하기 · 배송비 안내</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘의 목표 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>⬇️</i><div><b>순차 구조</b><small>위에서 아래로 차례차례</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🔀</i><div><b>선택 구조</b><small>if · if~else · if~elif~else</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🔍</i><div><b>어느 줄이 실행될까?</b><small>입력값에 따라 달라지는 흐름</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>📦</i><div><b>배송비 안내 프로그램</b><small>코랩에서 직접 완성하기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">2-4 · 제어 구조의 응용</span>
+      <p>앞 시간까지 <b>변수와 자료형</b>, <b>input() 함수와 print() 함수</b>, <b>리스트와 딕셔너리</b>를 배웠어요. 지금까지의 프로그램은 위에서 아래로 한 줄씩 차례대로 실행됐지요. 이제 <b>조건에 따라 실행할 명령을 고르는 방법</b>을 배워요. 이번 소단원은 세 번에 나누어 선택 구조 → 반복 구조 → 함수 순서로 이어져요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>제어 구조의 응용</b> · 악보에서 특정 부분을 반복하거나 구간을 선택하여 연주하듯이 프로그래밍에서도 실행 순서를 반복하거나 선택하도록 결정할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 조건에 따라 다른 명령을 실행하고 싶다면 어떻게 해야 할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>순차, 선택, 반복 구조를 활용한 프로그램을 작성할 수 있다.</li>
+          <li>다양한 제어 구조를 복합적으로 활용한 프로그램을 작성할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</p>
+      </div>
+      <div class="why">
+        <span class="kicker">오늘 쓰는 도구</span>
+        <p style="margin:0;font-size:.92rem">화면에서는 코드를 <b>읽고 예측</b>하고, 마지막 실습은 <b>구글 코랩</b>에서 해요. 학교 구글 계정으로 로그인해 두면 04 화면에서 바로 시작할 수 있어요.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>놀이기구 앞에는 「키 120cm 이상만 탈 수 있어요」 같은 안내가 있어요. 프로그램이 이렇게 <b>상황에 따라 다른 일</b>을 하게 하려면 컴퓨터에 무엇을 알려 주어야 할까요? 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planSel" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 세 가지 제어 구조부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 세 가지 제어 구조 -->
+<section class="page" data-name="세 가지 제어 구조" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>명령어 실행 순서는 어떻게 바꿀까?</h2><p>교과서 132쪽 · 제어 구조, 순차 구조, 선택 구조, 반복 구조</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>제어 구조</b>는 컴퓨터에 <b>명령어를 어떤 순서로 실행할지</b> 알려 주는 방법이에요. 차례대로(순차), 골라서(선택), 되풀이해서(반복) — 이 세 가지를 조합하면 어떤 문제든 해결할 수 있어요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🍳 김치 부침개를 만드는 알고리즘</h3>
+      <ol class="ol">
+        <li>오목한 볼에 부침 가루 2컵, 물 1컵을 넣고, 부침 가루가 보이지 않을 때까지 반죽을 젓는다.</li>
+        <li>김치 1/4 쪽을 2cm 크기로 잘라서 반죽에 넣는다.</li>
+        <li>프라이팬에 식용유 4스푼을 넣고 불을 켜 팬을 달군다.</li>
+        <li>달궈진 팬에 반죽을 올려 반죽 앞뒤가 노릇해질 때까지 굽는다.</li>
+      </ol>
+      <p class="note" style="margin-bottom:0">순서를 지키지 않고 반죽을 프라이팬에 먼저 구운 뒤 김치를 넣는다면 어떻게 될까요?</p>
+    </div>
+    <div class="card">
+      <h3>🧭 제어 구조</h3>
+      <p style="margin-top:0">제대로 김치 부침개를 만들려면 조리 순서가 중요한 것처럼, 프로그램을 작성할 때도 <b>명령어가 실행되는 순서</b>가 중요해요. 그래서 명령어의 실행 순서를 설계하는데, 컴퓨터에 명령어 실행 순서를 알려 주는 구조를 <b>제어 구조</b>라고 해요.</p>
+      <p style="margin-bottom:0">제어 구조는 일의 순서를 정하는 방법으로, <b>순차, 선택, 반복</b>의 세 가지가 있어요. 어떤 문제이든 이 세 가지 제어 구조를 조합하여 해결할 수 있어요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔀 세 가지 제어 구조 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅲ-9를 다시 그림)</span></h3>
+    <div class="fc cards3">
+      <div>
+        <b>순차 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="명령 1, 명령 2, 명령 3을 차례로 실행하는 순서도"><defs><marker id="sm1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V22" marker-end="url(#sm1)"/><rect class="bx" x="55" y="24" width="90" height="28" rx="3"/><text x="100" y="38">명령 1</text>
+          <path class="ar" d="M100 52V72" marker-end="url(#sm1)"/><rect class="bx" x="55" y="74" width="90" height="28" rx="3"/><text x="100" y="88">명령 2</text>
+          <path class="ar" d="M100 102V122" marker-end="url(#sm1)"/><rect class="bx" x="55" y="124" width="90" height="28" rx="3"/><text x="100" y="138">명령 3</text>
+          <path class="ar" d="M100 152V182" marker-end="url(#sm1)"/></svg>
+        <p>순서대로 차례차례 위에서 아래로 실행하는 구조로, 프로그램 실행 과정의 가장 기본적인 구조예요.</p>
+      </div>
+      <div>
+        <b>선택 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="조건이 참이면 명령 1, 거짓이면 명령 2를 실행하는 순서도"><defs><marker id="sm2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V20" marker-end="url(#sm2)"/><polygon class="dm" points="100,22 150,46 100,70 50,46"/><text x="100" y="46">조건</text>
+          <text class="lb" x="38" y="36">참</text><text class="lb" x="166" y="36">거짓</text>
+          <path class="ar" d="M50 46H35V94" marker-end="url(#sm2)"/><rect class="bx" x="5" y="96" width="60" height="28" rx="3"/><text x="35" y="110">명령 1</text>
+          <path class="ar" d="M150 46H165V94" marker-end="url(#sm2)"/><rect class="bx" x="135" y="96" width="60" height="28" rx="3"/><text x="165" y="110">명령 2</text>
+          <path class="ar" d="M35 124V146H165V124M100 146V182" marker-end="url(#sm2)"/></svg>
+        <p>조건이 참(명령 1)이냐 거짓(명령 2)이냐에 따라 명령을 선택하여 실행하는 구조로, if문, if~else문, if~elif~else문 등이 있어요.</p>
+      </div>
+      <div>
+        <b>반복 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="조건이 참인 동안 명령을 되풀이하고 거짓이면 빠져나가는 순서도"><defs><marker id="sm3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V24" marker-end="url(#sm3)"/><polygon class="dm" points="100,26 145,48 100,70 55,48"/><text x="100" y="48">조건</text>
+          <text class="lb" x="112" y="84">참</text><text class="lb" x="164" y="38">거짓</text>
+          <path class="ar" d="M100 70V96" marker-end="url(#sm3)"/><rect class="bx" x="60" y="98" width="80" height="28" rx="3"/><text x="100" y="112">명령</text>
+          <path class="ar" d="M100 126V142H25V48H53" marker-end="url(#sm3)"/>
+          <path class="ar" d="M145 48H178V182" marker-end="url(#sm3)"/></svg>
+        <p>조건을 만족하는 동안 명령을 반복하여 실행하는 구조로, for문, while문 등이 있어요.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-bottom:0">생각해 보기 · 세 가지 제어 구조에서 화살표가 어디로 이어지는지 비교해 보세요. 화살표가 갈라지는 곳, 위로 되돌아가는 곳이 있나요?</p>
+  </div>
+  <div class="card"><h3>🎯 어떤 제어 구조일까?</h3><p class="muted" style="margin-top:0">일상의 상황 6개를 읽고, 일이 진행되는 흐름이 어떤 제어 구조와 닮았는지 골라요.</p><div id="ctlGame"></div></div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 if문과 if~else문 -->
+<section class="page" data-name="if문과 if~else문" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>조건에 따라 다른 명령을 실행하려면? ① if문과 if~else문</h2><p>교과서 133쪽 · 선택 구조, if문, 비교 연산자, if~else문, % 연산자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>선택 구조</b>는 「만약 ~라면」처럼 <b>조건식이 참인지 거짓인지</b>에 따라 실행할 명령을 고르는 구조예요. 파이썬에서는 <b>들여쓰기</b>로 어떤 명령이 조건에 속하는지 나타내요.</span></div>
+  <div class="card">
+    <h3>1 if문</h3>
+    <p style="margin-top:0">선택 구조는 어떤 상황 또는 조건에 따라 서로 다른 선택이나 행동을 해야 할 때 활용하는 구조로, 조건식이 참인지 거짓인지에 따라 일의 순서가 달라져요. <b>if문</b>은 조건이 참이라면 if문 뒤에 오는 명령을 실행하고, 조건이 거짓이라면 실행하지 않고 <b>들여쓰기 없는 명령부터</b> 실행해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 200 222" role="img" aria-label="if문 순서도: 조건이 참이면 명령 1, 명령 2를 실행하고 거짓이면 건너뛰어 명령 3을 실행"><defs><marker id="sm4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M90 2V18" marker-end="url(#sm4)"/><polygon class="dm" points="90,20 135,40 90,60 45,40"/><text x="90" y="40">조건</text>
+          <text class="lb" x="80" y="70">참</text><text class="lb" x="152" y="32">거짓</text>
+          <path class="ar" d="M90 60V78" marker-end="url(#sm4)"/><rect class="bx" x="50" y="80" width="80" height="26" rx="3"/><text x="90" y="93">명령 1</text>
+          <path class="ar" d="M90 106V124" marker-end="url(#sm4)"/><rect class="bx" x="50" y="126" width="80" height="26" rx="3"/><text x="90" y="139">명령 2</text>
+          <path class="ar" d="M90 152V172" marker-end="url(#sm4)"/><rect class="bx" x="50" y="174" width="80" height="26" rx="3"/><text x="90" y="187">명령 3</text>
+          <path class="ar" d="M135 40H168V163H94" marker-end="url(#sm4)"/></svg>
+      </div></div>
+      <div data-code="ifForm" data-nonum></div>
+      <ul class="ul">
+        <li>if 뒤에 흐름을 제어할 <b>조건</b>이 오고, 그 뒤에 <b>콜론(:)</b>을 붙여요.</li>
+        <li>if문 뒤의 명령들은 <b>들여쓰기</b>를 해야 하며, if문의 조건이 참일 때 실행돼요.</li>
+        <li>if문에 실행될 명령들은 <b>들여쓰기 위치가 같아야</b> 해요.</li>
+        <li>들여쓰기를 삭제하면 if문이 끝나요.</li>
+      </ul>
+    </div>
+    <div class="grid2 even" style="margin-top:10px">
+      <div style="overflow-x:auto"><table class="tbl2">
+        <tr><th>비교 연산자</th><th>설명</th></tr>
+        <tr><td class="mono">==</td><td>같음</td></tr><tr><td class="mono">!=</td><td>같지 않음</td></tr>
+        <tr><td class="mono">&gt;</td><td>큼(초과)</td></tr><tr><td class="mono">&gt;=</td><td>크거나 같음(이상)</td></tr>
+        <tr><td class="mono">&lt;</td><td>작음(미만)</td></tr><tr><td class="mono">&lt;=</td><td>작거나 같음(이하)</td></tr>
+      </table></div>
+      <div class="callout"><b class="mono">==</b>는 좌항과 우항이 <b>같은지 비교</b>하는 연산자, <b class="mono">!=</b>는 반대로 좌항과 우항이 <b>다른지</b> 비교하는 연산자예요.<br><small class="muted">앞에서 배운 <span class="mono">=</span>는 값을 저장하는 대입 연산자예요. 같은지 물어볼 때는 등호를 두 번 써요.</small></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ① 버스 하차 안내</h3>
+    <p class="muted" style="margin-top:0">「하차」일 때 문이 열리고 다음 정거장을 알리는 프로그램이에요. y와 n을 각각 골라 예측해 봐요.</p>
+    <div id="trBus"></div>
+  </div>
+  <div class="card">
+    <h3>2 if~else문</h3>
+    <p style="margin-top:0"><b>if~else문</b>은 if문의 조건이 참이라면 if문 뒤에 오는 명령(명령1)을 실행하고, 조건이 거짓이라면 <b>else문 뒤에 오는 명령(명령2)</b>을 실행해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 200 150" role="img" aria-label="if~else문 순서도: 조건이 참이면 명령 1, 거짓이면 명령 2"><defs><marker id="sm5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V16" marker-end="url(#sm5)"/><polygon class="dm" points="100,18 150,40 100,62 50,40"/><text x="100" y="40">조건</text>
+          <text class="lb" x="38" y="30">참</text><text class="lb" x="166" y="30">거짓</text>
+          <path class="ar" d="M50 40H35V78" marker-end="url(#sm5)"/><rect class="bx" x="5" y="80" width="60" height="26" rx="3"/><text x="35" y="93">명령 1</text>
+          <path class="ar" d="M150 40H165V78" marker-end="url(#sm5)"/><rect class="bx" x="135" y="80" width="60" height="26" rx="3"/><text x="165" y="93">명령 2</text>
+          <path class="ar" d="M35 106V124H165V106M100 124V148" marker-end="url(#sm5)"/></svg>
+      </div></div>
+      <div data-code="elseForm" data-nonum></div>
+      <ul class="ul">
+        <li><b>else</b>는 if문 없이 사용할 수 없고, <b>조건식이 필요하지 않아요.</b></li>
+        <li>if문의 조건식이 거짓이라면 else에 속한 명령들이 실행돼요.</li>
+        <li><b class="mono">%</b> 연산자는 나눗셈의 <b>나머지</b>를 계산해요. 어떤 숫자의 배수인지 판단할 때 많이 써요. 예) 5의 배수 판단식 <span class="mono">n % 5 == 0</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ② 짝수일까, 홀수일까?</h3>
+    <p class="muted" style="margin-top:0">짝수인지 홀수인지를 판단하는 프로그램이에요. 숫자를 바꿔 넣으며 두 번 이상 예측해 봐요.</p>
+    <div id="trEven"></div>
+    <div class="memo"><label>입력한 숫자에 따라 실행되는 줄이 어떻게 달라졌나요? 조건식 <span class="mono">number % 2 == 0</span>이 참일 때와 거짓일 때로 나누어 적어 보세요.</label><textarea data-memo="evenWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 if~elif~else문 -->
+<section class="page" data-name="if~elif~else문" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>조건에 따라 다른 명령을 실행하려면? ② if~elif~else문</h2><p>교과서 134쪽 · if~elif~else문, end 옵션, 스스로 해결하기(선택 구조 형식)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>확인할 조건이 여러 개일 때는 <b>elif</b>를 이어 붙여요. 위에서부터 조건을 하나씩 확인하다가 <b>처음으로 참이 되는 곳의 명령만</b> 실행하고 선택 구조를 끝내요. 모두 거짓이면 else의 명령을 실행해요.</span></div>
+  <div class="card">
+    <h3>3 if~elif~else문</h3>
+    <p style="margin-top:0">여러 경우의 조건을 확인하고 싶을 때 사용해요. 조건식이 더 많으면 확인하고 싶은 조건의 수만큼 if 뒤에 <b>elif</b>를 추가해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 230 250" role="img" aria-label="if~elif~else 순서도: 조건 1, 조건 2, 조건 3을 차례로 확인하고 참인 곳의 명령을 실행, 모두 거짓이면 명령 4"><defs><marker id="sm6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M70 2V16" marker-end="url(#sm6)"/>
+          <polygon class="dm" points="70,18 112,36 70,54 28,36"/><text x="70" y="36">조건 1</text><text class="lb" x="126" y="28">참</text>
+          <path class="ar" d="M112 36H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="24" width="70" height="24" rx="3"/><text x="177" y="36">명령 1</text>
+          <path class="ar" d="M70 54V72" marker-end="url(#sm6)"/><text class="lb" x="52" y="64">거짓</text>
+          <polygon class="dm" points="70,74 112,92 70,110 28,92"/><text x="70" y="92">조건 2</text><text class="lb" x="126" y="84">참</text>
+          <path class="ar" d="M112 92H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="80" width="70" height="24" rx="3"/><text x="177" y="92">명령 2</text>
+          <path class="ar" d="M70 110V128" marker-end="url(#sm6)"/><text class="lb" x="52" y="120">거짓</text>
+          <polygon class="dm" points="70,130 112,148 70,166 28,148"/><text x="70" y="148">조건 3</text><text class="lb" x="126" y="140">참</text>
+          <path class="ar" d="M112 148H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="136" width="70" height="24" rx="3"/><text x="177" y="148">명령 3</text>
+          <path class="ar" d="M70 166V184" marker-end="url(#sm6)"/><text class="lb" x="52" y="176">거짓</text>
+          <rect class="bx" x="35" y="186" width="70" height="24" rx="3"/><text x="70" y="198">명령 4</text>
+          <path class="ar" d="M212 36H222V226H70M212 92H222M212 148H222M70 210V246" marker-end="url(#sm6)"/></svg>
+      </div></div>
+      <div data-code="elifForm" data-nonum></div>
+      <ul class="ul">
+        <li><b>elif</b>는 else if의 약자로 if문 없이 사용할 수 없고, 이전 조건이 거짓일 때 뒤의 elif의 조건2를 확인해요.</li>
+        <li>이후 elif는 필요한 조건만큼 추가하여 사용할 수 있어요.</li>
+      </ul>
+    </div>
+    <div class="callout" style="margin-top:10px"><b>end 옵션</b> 출력된 문자열 끝에 무엇이 올지를 결정해요. print문의 기본값은 <span class="mono">'\n'</span>이고, 줄바꿈을 의미해요. 만약 end 옵션을 <span class="mono">''</span>로 수정하면, 다음 출력이 줄바꿈 없이 나와요.</div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ③ 양수일까, 음수일까, 0일까?</h3>
+    <p class="muted" style="margin-top:0">숫자를 입력받아 양수, 음수, 0을 판단하는 프로그램이에요. 양수·음수·0을 하나씩 넣어 세 번 예측해 봐요. 실행 결과가 왜 한 줄로 나오는지도 살펴봐요.</p>
+    <div id="trSign"></div>
+  </div>
+  <div class="card">
+    <h3>🧩 스스로 해결하기 · 선택 구조 형식</h3>
+    <p class="muted" style="margin-top:0">코드 4개 가운데 <b>문법에 맞게 작성한 것</b>을 모두 골라 ✔ 표시한 뒤 「확인」을 눌러요. (교과서 134쪽과 같은 방법으로, 기온을 다루는 새 코드로 연습해요.)</p>
+    <div id="formLab"></div>
+    <div class="memo"><label>문법에 맞지 않은 코드 하나를 골라, 무엇이 잘못되었고 어떻게 고치면 되는지 적어 보세요.</label><textarea data-memo="formFix" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 배송비 안내 -->
+<section class="page" data-name="배송비 안내" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 배송비 안내</h2><p>교과서 135쪽 · 복합 대입 연산자, 선택 구조로 프로그램 완성하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>온라인 쇼핑몰은 <b>정기 회원 여부</b>에 따라 배송비를 다르게 받아요. 먼저 입력값에 따라 결과가 어떻게 나와야 하는지 <b>예측</b>하고, 코랩에서 선택 구조로 <b>프로그램을 완성</b>해요.</span></div>
+  <div class="card">
+    <h3>📦 문제 상황 · 실행 결과 먼저 예측하기</h3>
+    <p style="margin-top:0">온라인 쇼핑몰에서는 정기 회원 여부에 따라 배송비를 부과하고 있어요.</p>
+    <ol class="ol">
+      <li>회원 여부를 입력받은 후, <b>총결제 금액</b>을 계산하여 안내하는 프로그램을 완성해요. 정기 회원이면 배송비가 면제되고, 아니면 배송비 3000원이 부과돼요.</li>
+      <li>1의 프로그램에 조건을 추가하여 <b>주문 금액에 따라서</b> 배송비를 면제하도록 수정해요. 정기 회원이 아니어도 주문 금액이 <b>50000원 이상</b>이면 배송비가 면제돼요.</li>
+    </ol>
+    <p class="muted">2번처럼 수정한 프로그램에 아래 값을 넣으면 <b>총금액</b>이 얼마로 나올까요? 숫자만 적고 「예측 확인」을 눌러요.</p>
+    <div id="shipLab"></div>
+    <div class="memo"><label>정기 회원이 아니고 주문 금액이 <b>50000원</b>일 때 총금액을 어떻게 예측했나요? 어떤 조건을 확인해서 그렇게 판단했는지 비교 연산자와 연결해 적어 보세요.</label><textarea data-memo="ship50" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+      <h3>➕ 복합 대입 연산자</h3>
+      <p style="margin-top:0;font-size:.92rem">변수의 값을 효율적으로 변경하기 위해 산술 연산자와 대입 연산자가 합쳐진 것으로 +=, -=, *=, /=, %= 등이 있어요.</p>
+      <div style="overflow-x:auto"><table class="tbl2">
+        <tr><th>연산자</th><th>동치</th><th>연산자</th><th>동치</th></tr>
+        <tr><td class="mono">a += b</td><td class="mono">a = a + b</td><td class="mono">a //= b</td><td class="mono">a = a // b</td></tr>
+        <tr><td class="mono">a -= b</td><td class="mono">a = a - b</td><td class="mono">a %= b</td><td class="mono">a = a % b</td></tr>
+        <tr><td class="mono">a *= b</td><td class="mono">a = a * b</td><td class="mono">a **= b</td><td class="mono">a = a ** b</td></tr>
+        <tr><td class="mono">a /= b</td><td class="mono">a = a / b</td><td></td><td></td></tr>
+      </table></div>
+  </div>
+  <div class="card">
+    <h3>💻 코랩에서 프로그램 완성하기</h3>
+    <ol class="ol">
+      <li>아래 버튼으로 노트북을 열어요(학교 구글 계정으로 로그인). 처음 열면 「경고: 이 노트북은 Google에서 작성하지 않았습니다」가 나올 수 있어요. 「무시하고 계속하기」를 눌러요.</li>
+      <li><b>1. 교과서 예제 실행해 보기</b>에서 오늘 화면에서 본 세 프로그램을 실행해 보고 입력값을 바꿔 봐요(코드가 들어 있어요).</li>
+      <li><b>2. 함께 해결하기</b>에서 직접 입력해 빈칸(____)을 채워 1번 프로그램을 완성하고, 이어서 2번처럼 수정해요. 위에서 예측한 값을 넣어 예측이 맞는지 확인해요.</li>
+      <li>시간이 남으면 <b>3. 더 해 보기</b>에 도전해요.</li>
+    </ol>
+    <div class="colab"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-selection/assets/selection.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="selection.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <div class="memo"><label>2번에서 <b>어떤 조건을 어느 위치에</b> 추가했는지 내 말로 적어 보세요. 짝과 수정한 내용을 비교해 봐요.</label><textarea data-memo="shipFix" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0"><b>제어 구조</b>는 컴퓨터에 명령어 실행 순서를 알려 주는 구조로, <b>순차·선택·반복</b>의 세 가지가 있다. 어떤 문제이든 이 세 가지를 조합하여 해결할 수 있다.</div>
+    <div style="--k:#1f9d74"><b>if문</b>은 조건이 참일 때만 들여쓴 명령을 실행하고, <b>if~else문</b>은 거짓일 때 else의 명령을 실행한다. 조건식에는 <b>==, !=, &gt;, &gt;=, &lt;, &lt;=</b> 같은 비교 연산자를 쓴다.</div>
+    <div style="--k:#9b4fc4"><b>if~elif~else문</b>은 여러 조건을 위에서부터 차례로 확인해 처음 참인 곳의 명령을 실행한다. 같은 제어 구조에 속한 명령은 <b>들여쓰기 위치가 같아야</b> 한다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 선택 구조로 다시 답해 보세요.</p>
+    <div class="prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 조건에 따라 다른 명령을 실행하고 싶다면 어떻게 해야 할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>02에서 짝수·홀수를 판단하는 프로그램에 숫자를 바꿔 넣으며 실행될 줄을 예측했습니다. 입력한 숫자 두 가지를 예로 들어, 조건식이 참일 때와 거짓일 때 실행되는 줄이 어떻게 달라지는지 설명하세요.</li>
+      <li>03에서 선택 구조 형식이 문법에 맞는지 판단했습니다. 문법에 맞지 않은 코드 하나를 골라 무엇이 잘못되었는지 쓰고, 어떻게 고쳐야 하는지 설명하세요.</li>
+      <li>04에서 배송비 안내 프로그램의 결과를 예측했습니다. 정기 회원이 아니고 주문 금액이 50000원일 때 총금액을 어떻게 예측했는지 쓰고, 그렇게 판단한 까닭을 조건식과 연결해 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u3-selection.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u3-selection', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+const QUIZ={
+ 1:[{q:'엘리베이터는 문 사이에 무언가 끼어 있는 동안 문을 닫지 않고 다시 여는 동작을 되풀이해요. 이런 흐름과 닮은 제어 구조는?',o:['반복 구조','선택 구조','순차 구조'],a:0,w:'조건을 만족하는 동안 같은 명령을 다시 실행하는 흐름이라 반복 구조예요. 파이썬에서는 for문, while문 등으로 나타내요.'},
+    {q:'컴퓨터에게 명령어를 어떤 순서로 실행할지 알려 주는 것을 무엇이라고 할까?',o:['변수','함수','제어 구조'],a:2,w:'제어 구조는 일의 순서를 정하는 방법으로 순차, 선택, 반복이 있고, 이 셋을 조합해 문제를 해결해요.'}],
+ 2:[{q:'<span class="mono">temp = 25</span>일 때 실행 결과는?<span class="qcode">if temp &gt;= 30:\n  print(\'덥다\')\nprint(\'끝\')</span>',o:['끝','덥다','덥다와 끝'],a:0,w:'25 >= 30은 거짓이라 들여쓴 print(\'덥다\')는 실행하지 않고, 들여쓰기 없는 print(\'끝\')부터 실행해요.'},
+    {q:'비교 연산자 <span class="mono">!=</span>의 뜻은?',o:['같음','같지 않음','크거나 같음'],a:1,w:'!=는 좌항과 우항이 다른지 비교해요. 같은지 비교하는 연산자는 ==예요.'},
+    {q:'if~else문에 대한 설명으로 알맞은 것은?',o:['else 뒤에도 조건식을 붙인다','거짓이면 else의 명령을 실행한다','else는 if문 없이 혼자 쓸 수 있다'],a:1,w:'else는 if문과 함께 쓰고 조건식이 필요 없어요. if의 조건이 거짓일 때 else에 속한 명령들이 실행돼요.'}],
+ 3:[{q:'<span class="mono">score = 75</span>일 때 출력되는 것은?<span class="qcode">if score &gt;= 90:\n  print(\'A\')\nelif score &gt;= 70:\n  print(\'B\')\nelse:\n  print(\'C\')</span>',o:['A','B','C'],a:1,w:'75 >= 90은 거짓이라 다음 조건 75 >= 70으로 넘어가요. 참이므로 B를 출력하고 나머지는 건너뛰어요.'},
+    {q:'<span class="mono">print(\'수박\', end = \'\')</span> 다음에 <span class="mono">print(\'좋아\')</span>를 실행한 결과는?',o:['수박좋아','수박 좋아','수박과 좋아가 두 줄로'],a:0,w:'end 옵션을 \'\'로 바꾸면 줄바꿈 없이 다음 출력이 바로 이어져요. 기본값은 줄바꿈을 뜻하는 \'\\n\'이에요.'},
+    {q:'if문의 조건이 참일 때 함께 실행할 명령이 여러 줄이라면, 이 명령들의 들여쓰기는?',o:['위치가 같아야 한다','위치가 달라도 된다','들여쓰기를 하지 않아도 된다'],a:0,w:'같은 제어 구조에 속한 명령은 들여쓰기 위치가 같아야 해요. 들여쓰기를 지우면 그 줄부터는 if문 밖의 명령이 돼요.'}],
+ 4:[{q:'<span class="mono">point += 50</span>과 같은 뜻의 코드는?',o:['point = 50','point = point * 50','point = point + 50'],a:2,w:'+=는 산술 연산자 +와 대입 연산자 =가 합쳐진 복합 대입 연산자로, 원래 값에 50을 더해 다시 저장해요.'},
+    {q:'<span class="mono">age = 70</span>일 때 출력되는 값은?<span class="qcode">price = 10000\nif age &lt; 8:\n  price = 0\nelif age &gt;= 65:\n  price -= 5000\nprint(price)</span>',o:['0','5000','10000'],a:1,w:'70 < 8은 거짓, 70 >= 65는 참이라 price -= 5000을 실행해 10000 - 5000 = 5000이 돼요.'}],
+ 5:[{q:'<span class="mono">n % 3 == 0</span>이 참이 되는 n은?',o:['10','11','12'],a:2,w:'%는 나눗셈의 나머지를 구해요. 12를 3으로 나눈 나머지는 0이라 참이에요.'},
+    {q:'선택 구조를 쓰기에 가장 알맞은 상황은?',o:['두 수를 입력받아 합 출력하기','점수에 따라 합격·불합격 출력하기','1부터 100까지 차례로 출력하기'],a:1,w:'조건(60 이상인지)이 참인지 거짓인지에 따라 실행할 명령이 달라지므로 선택 구조가 알맞아요.'},
+    {q:'if~elif~else문에서 elif를 쓰는 까닭은?',o:['명령을 되풀이하려고','입력받은 값을 정수로 바꾸려고','여러 경우의 조건을 확인하려고'],a:2,w:'elif는 이전 조건이 거짓일 때 다음 조건을 확인해요. 확인하고 싶은 조건의 수만큼 추가할 수 있어요.'}],
+};
+
+const QK='ds-u3-selection-quiz'+WHO.sfx;
+const MK='ds-u3-selection-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* ===== 코드 추적기: 한 줄씩 실행하며 실행한 줄·변수 값·실행 결과를 보여 줌 (이 차시 공통) ===== */
+const pyS=v=>v&&typeof v==='object'&&!Array.isArray(v)&&'f' in v?(Number.isInteger(v.f)?v.f.toFixed(1):String(v.f)):Array.isArray(v)?'['+v.map(pyR).join(', ')+']':v===true?'True':v===false?'False':v==null?'None':String(v);
+const pyR=v=>typeof v==='string'?`'${v}'`:pyS(v);
+function PyErr(m){this.m=m;}
+const pyInt=s=>{if(/^\s*[-+]?\d+\s*$/.test(String(s))) return parseInt(s,10); throw new PyErr(`ValueError: invalid literal for int() with base 10: '${s}'`);};
+const KW=o=>Object.assign({__kw:1},o);
+function Rec(){this.st=[];this.v={};this.L=null;this.fn='';this.out='';}
+Rec.prototype={
+  fin(){const s=this.st[this.st.length-1]; if(s){s.v=Object.assign({},this.v); s.L=this.L?Object.assign({},this.L):null; s.fn=this.fn; s.out=this.out;}},
+  at(n,note){this.fin(); this.st.push({n,note:note||''}); if(this.st.length>600) throw new PyErr('(단계가 너무 많아 여기서 멈췄어요)');},
+  set(k,v){if(this.L) this.L[k]=v; else this.v[k]=v;},
+  g(k,v){this.v[k]=v;},
+  get(k){return this.L&&k in this.L?this.L[k]:this.v[k];},
+  p(...a){let o={}; if(a.length&&a[a.length-1]&&a[a.length-1].__kw) o=a.pop(); const sep=o.sep!=null?o.sep:' ', end=o.end!=null?o.end:'\n'; this.out+=esc(a.map(pyS).join(sep)+end);},
+  inp(prompt,val){this.out+=esc(prompt)+`<b class="u">${esc(val)}</b>\n`; return String(val);},
+  call(fn){this.fn=fn; this.L={};},
+  ret(){this.fn=''; this.L=null;}
+};
+const TRKW=new Set('if elif else for in while break continue def return True False import and or not global'.split(' '));
+function trHl(c){
+  return c.replace(/(#.*$)|([fF]?'[^']*'|"[^"]*")|([A-Za-z_\uAC00-\uD7A3][\w\uAC00-\uD7A3]*)|(\d+)|([^#'"A-Za-z_\d\uAC00-\uD7A3]+)/g,(m,cm,st,id,nu,ot)=>{
+    if(cm) return `<span class="c">${esc(cm)}</span>`;
+    if(st) return `<span class="s">${esc(st)}</span>`;
+    if(id) return TRKW.has(id)?`<span class="k">${id}</span>`:/^(print|input|int|len|range|map|str|random|randint|split|append|items)$/.test(id)?`<span class="f">${id}</span>`:esc(id);
+    if(nu) return `<span class="n">${nu}</span>`;
+    return esc(ot);
+  });
+}
+function tracer(id,cfg){
+  const B=$(id); B.classList.add('tr');
+  const val={}; (cfg.inputs||[]).forEach(x=>val[x.k]=x.v);
+  let code=[], lines=[]; const neu=n=>/^\s*else\s*:/.test(code[n-1]||''); const blank=n=>!code[n-1]||!code[n-1].trim()||/^\s*#/.test(code[n-1]);
+  B.innerHTML=`${cfg.inputs?'<div class="tr-in"></div>':''}${cfg.pick?`<p class="tr-pickh">${cfg.pickMsg||'<b>먼저 예측해요.</b> 입력값을 정한 뒤 <b>실행될 줄</b>을 모두 눌러 표시하고 「예측 확인」을 눌러요.'}</p>`:''}
+    <div class="tr-grid${cfg.wide?' wide':''}"><div class="tr-codew"><pre class="tr-code${cfg.pick?' pickable':''}"></pre></div>
+    <div class="tr-side">${cfg.vars||cfg.scopes?'<div class="tr-vars"></div>':''}<div class="tr-outw"><b>실행 결과</b><pre class="tr-out"></pre></div></div></div>
+    <div class="tr-note"></div>
+    <div class="tr-ctl">${cfg.pick?'<button class="btn sm tr-chk">✔ 예측 확인</button>':''}<button class="btn sm tr-step">▶ 한 줄 실행</button><button class="btn sm ghost tr-auto">⏯ 자동 실행</button>${cfg.skip?`<button class="btn sm ghost tr-skip">${cfg.skip.label}</button>`:''}<button class="btn sm ghost tr-end">⏩ 끝까지</button><button class="btn sm ghost tr-reset">↺ 처음부터</button>${cfg.pick?'<button class="btn sm ghost tr-again">✎ 다시 예측</button>':''}<span class="tr-cnt muted"></span></div>
+    ${cfg.table?'<div class="tr-tblw"><table class="tr-tbl"></table></div>':''}`;
+  const q=s=>B.querySelector(s), preE=q('.tr-code'), outE=q('.tr-out'), noteE=q('.tr-note'), cntE=q('.tr-cnt'), varE=q('.tr-vars'), tblE=q('.tr-tbl');
+  let S=[], cur=0, timer=null, checked=!cfg.pick, picks=new Set(), msg='';
+  /* 입력 칸 */
+  if(cfg.inputs){
+    const I=q('.tr-in');
+    I.innerHTML=(cfg.inLabel?`<b>${cfg.inLabel}</b>`:'')+cfg.inputs.map(x=>x.opts?`<span class="tr-opt" data-k="${x.k}">${esc(x.label)} ${x.opts.map(o=>`<button type="button" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</span>`
+      :`<label>${esc(x.label)} <input type="text" data-k="${x.k}" value="${esc(x.v)}" style="width:${x.w||110}px" autocomplete="off" spellcheck="false"></label>`).join('');
+    I.querySelectorAll('.tr-opt').forEach(g=>{const k=g.dataset.k, bs=[...g.querySelectorAll('button')], draw=()=>bs.forEach(b=>b.classList.toggle('on',b.dataset.o===val[k]));
+      bs.forEach(b=>b.onclick=()=>{val[k]=b.dataset.o; draw(); build();}); draw();});
+    I.querySelectorAll('input').forEach(t=>{let tm; t.addEventListener('input',()=>{val[t.dataset.k]=t.value; clearTimeout(tm); tm=setTimeout(build,350);});});
+  }
+  function renderCode(){
+    const nc=typeof cfg.code==='function'?cfg.code(val):cfg.code; if(nc.join('\n')===code.join('\n')&&lines.length) return; code=nc;
+    preE.innerHTML=code.map((c,i)=>`<span class="ln" data-n="${i+1}"><i>${i+1}</i>${trHl(c)||' '}</span>`).join(''); lines=[...preE.querySelectorAll('.ln')];
+    if(cfg.pick) lines.forEach((l,i)=>l.onclick=()=>{if(checked||blank(i+1)) return; const n=i+1; picks.has(n)?picks.delete(n):picks.add(n); draw();});
+  }
+  function build(){
+    stop(); renderCode(); const R=new Rec(); msg='';
+    try{cfg.run(R,val);}catch(e){if(e instanceof PyErr){msg=e.m;} else throw e;}
+    R.fin(); S=R.st;
+    if(msg&&S.length){S[S.length-1].out+=`<span class="er">${esc(msg)}</span>\n`;}
+    cur=0; if(cfg.pick){checked=false; picks.clear();} draw();
+  }
+  function ran(k){const s=new Set(); for(let i=0;i<k;i++) s.add(S[i].n); return s;}
+  function fmtv(o,prev,keys){
+    if(!o) return '';
+    const ks=keys||Object.keys(o);
+    return ks.map(k=>{const has=k in o, v=has?pyR(o[k]):'', ch=has&&(!prev||!(k in prev)||pyR(prev[k])!==v);
+      return `<tr class="${ch?'ch':''}"><th>${esc(k)}</th><td>${has?esc(v):'<span class="muted">-</span>'}</td></tr>`;}).join('');
+  }
+  function draw(){
+    const done=cur>=S.length, R=ran(cur), all=ran(S.length), s=cur?S[cur-1]:null, p=cur>1?S[cur-2]:null;
+    lines.forEach((l,i)=>{const n=i+1; l.className='ln'+(R.has(n)?' done':'')+(s&&s.n===n?' cur':'')+(done&&checked&&!all.has(n)&&!blank(n)?' skip':'')+(picks.has(n)?' pk':'');
+      if(cfg.pick&&checked&&picks.size&&!neu(n)){if(picks.has(n)&&all.has(n)) l.classList.add('ok'); else if(picks.has(n)) l.classList.add('ng'); else if(all.has(n)) l.classList.add('miss');}});
+    outE.innerHTML=s?s.out:(msg&&!S.length?`<span class="er">${esc(msg)}</span>`:'');
+    noteE.innerHTML=!checked?'':s?`<b>${s.n}행</b> 실행${s.fn?` <span class="tr-fn">함수 ${esc(s.fn)} 안</span>`:''}${s.note?' · '+s.note:''}`:'<span class="muted">「▶ 한 줄 실행」을 누르면 1행부터 실행해요.</span>';
+    cntE.textContent=checked?`${cur} / ${S.length}단계${done&&S.length?' · 끝':''}`:'';
+    if(varE){
+      if(cfg.scopes){const gk=Object.keys(s?s.v:{}), lk=s&&s.L?Object.keys(s.L):[];
+        varE.innerHTML=`<div class="tr-sc"><b>전역 변수</b><table>${gk.length?fmtv(s.v,p&&p.v):'<tr><td class="muted">아직 없음</td></tr>'}</table></div><div class="tr-sc l"><b>지역 변수${s&&s.fn?` · ${esc(s.fn)}()`:''}</b><table>${s&&s.L?(lk.length?fmtv(s.L,p&&p.L):'<tr><td class="muted">(함수 시작)</td></tr>'):`<tr><td class="muted">${p&&p.L?'함수가 끝나 사라졌어요':'함수 밖이라 없음'}</td></tr>`}</table></div>`;}
+      else varE.innerHTML=`<b>변수</b><table>${fmtv(s?s.v:{},p&&p.v,cfg.vars)}</table>`;
+    }
+    if(tblE){const N=Math.max(S.length,cfg.tableMin||0), cols=[...Array(N).keys()];
+      tblE.innerHTML=`<tr><th>단계</th>${cols.map(i=>`<th>${i+1}</th>`).join('')}</tr><tr><th>행 번호</th>${cols.map(i=>`<td class="${i===cur-1?'cur':''}">${i<cur?S[i].n:''}</td>`).join('')}</tr>`+
+        (cfg.tvars||cfg.vars).map(k=>`<tr><th>${esc(k)}</th>${cols.map(i=>{const v=i<cur&&k in S[i].v?pyR(S[i].v[k]):''; const pv=i>0&&i<cur&&k in S[i-1].v?pyR(S[i-1].v[k]):null; return `<td class="${i===cur-1?'cur':''}${v!==''&&v!==pv?' ch':''}">${esc(v)}</td>`;}).join('')}</tr>`).join('');}
+    q('.tr-step').disabled=!checked||done; q('.tr-end').disabled=!checked||done; q('.tr-auto').disabled=!checked||done; if(q('.tr-skip')) q('.tr-skip').disabled=!checked||done;
+    if(q('.tr-chk')) q('.tr-chk').style.display=checked?'none':''; if(q('.tr-again')) q('.tr-again').style.display=checked?'':'none';
+    q('.tr-step').style.display=q('.tr-auto').style.display=q('.tr-end').style.display=checked?'':'none';
+    if(done&&cfg.onEnd&&checked) cfg.onEnd(val,S);
+  }
+  function stop(){clearInterval(timer); timer=null; const a=q('.tr-auto'); if(a) a.textContent='⏯ 자동 실행';}
+  q('.tr-step').onclick=()=>{stop(); if(cur<S.length){cur++; draw();}};
+  q('.tr-end').onclick=()=>{stop(); cur=S.length; draw();};
+  if(cfg.skip) q('.tr-skip').onclick=()=>{stop(); do{cur++;}while(cur<S.length&&!cfg.skip.stop(S,cur)); draw();};
+  q('.tr-reset').onclick=()=>{stop(); cur=0; draw();};
+  q('.tr-auto').onclick=()=>{if(timer){stop();return;} q('.tr-auto').textContent='⏸ 멈춤'; timer=setInterval(()=>{if(cur>=S.length){stop(); return;} cur++; draw(); if(cur>=S.length) stop();},cfg.speed||650);};
+  if(cfg.pick){
+    q('.tr-again').onclick=()=>{stop(); cur=0; checked=false; picks.clear(); draw();};
+    q('.tr-chk').onclick=()=>{if(!picks.size){alert('실행될 줄을 먼저 눌러 표시해요.'); return;} checked=true; cur=S.length; draw();
+      const all=new Set([...ran(S.length)].filter(n=>!neu(n))); let ok=0, ng=0, miss=0; picks.forEach(n=>{if(neu(n)) return; all.has(n)?ok++:ng++;}); all.forEach(n=>{if(!picks.has(n)) miss++;});
+      noteE.innerHTML=(ng||miss?`<span class="ng">다시 살펴봐요.</span> `:'<span class="ok">모두 맞았어요!</span> ')+`실행된 줄 ${all.size}개 중 <b>${ok}개</b>를 맞혔어요.${ng?` 실행되지 않은 줄을 ${ng}개 골랐어요(✗).`:''}${miss?` 놓친 줄이 ${miss}개 있어요(놓침).`:''} 「↺ 처음부터」로 한 줄씩 다시 따라가 보거나, 「다시 예측」으로 같은 입력값에서 다시 예측할 수 있어요.`;
+      if(cfg.onPick) cfg.onPick(val,{ok,ng,miss,all:all.size});};
+  }
+  build();
+  return {rebuild:build, val};
+}
+/* 읽기용 코드 상자: <div data-code="키"> 에 CODE[키]를 줄 번호와 함께 그림. ____ 는 빈칸 */
+function codeBoxes(map){document.querySelectorAll('[data-code]').forEach(d=>{const c=map[d.dataset.code]; if(!c) return; const nn=d.hasAttribute('data-nonum'); d.classList.add('cbox'); d.innerHTML=`<pre>${c.map((l,i)=>`<span class="ln">${nn?'':`<i>${i+1}</i>`}${trHl(l).replace(/____/g,'<span class="bl"></span>')||' '}</span>`).join('')}</pre>`;});}
+
+/* ===== 이 차시 코드 ===== */
+const pyMod=(a,b)=>((a%b)+b)%b;
+const TF=c=>c?'<b class="ok">True(참)</b>':'<b class="ng">False(거짓)</b>';
+const CODE={
+  ifForm:['if 조건:','  명령1','  명령2','명령3'],
+  elseForm:['if 조건:','  명령1','else:','  명령2'],
+  elifForm:['if 조건1:','  명령1','elif 조건2:','  명령2','elif 조건3:','  명령3','else:','  명령4'],
+};
+codeBoxes(CODE);
+function selSave(){store.set(MK,MEMO);}
+const addRec=(old,item,n)=>{const a=(old||'').split(' / ').filter(Boolean); a.push(item); return a.slice(-(n||3)).join(' / ');};
+
+/* 01 어떤 제어 구조일까? */
+sorter('ctlGame',{
+  cats:[{n:'⬇️ 순차 구조',k:'#2f6fd0'},{n:'🔀 선택 구조',k:'#1f9d74'},{n:'🔁 반복 구조',k:'#e0702b'}],
+  items:[
+    {t:'라면 봉지를 뜯고, 물을 끓이고, 면과 수프를 넣는다.',c:0,ic:'🍜',w:'정해진 일을 위에서 아래로 차례차례 해요.'},
+    {t:'비가 오면 우산을 챙기고, 비가 오지 않으면 모자를 쓴다.',c:1,ic:'☔',w:'비가 오는지(조건)에 따라 할 일이 둘로 갈라져요.'},
+    {t:'줄넘기 100개를 다 넘을 때까지 같은 동작을 계속한다.',c:2,ic:'🪢',w:'횟수를 채울 때까지 같은 동작을 되풀이해요.'},
+    {t:'아침에 일어나 세수하고, 옷을 입고, 가방을 멘다.',c:0,ic:'🌅',w:'갈라지거나 되돌아가는 곳 없이 차례대로 진행돼요.'},
+    {t:'놀이기구 앞에서 키가 120cm 이상인 사람만 줄을 서고, 나머지는 다른 기구로 간다.',c:1,ic:'🎢',w:'키가 기준 이상인지(조건)에 따라 하는 일이 달라져요.'},
+    {t:'설거지할 그릇이 남아 있는 동안 그릇을 하나씩 씻는다.',c:2,ic:'🍽️',w:'그릇이 남아 있는(조건을 만족하는) 동안 같은 일을 되풀이해요.'},
+  ],
+  end:'<b>생각해 보기</b> 무엇을 보고 골랐나요? 「갈라지는 곳이 있는가」, 「다시 돌아가는 곳이 있는가」를 떠올리면 구분하기 쉬워요.'
+});
+
+/* 02 ① 버스 하차 안내 */
+tracer('trBus',{
+  code:["print('이번 정거장은 서울역입니다.')","bus = input('하차하시겠습니까?(y/n)')","if bus == 'y':","  print('문이 열립니다. 하차하세요.')","print('다음 정거장은 시청역입니다.')"],
+  inputs:[{k:'bus',label:'입력값',v:'y',opts:['y','n']}], vars:['bus'], pick:true, pickMsg:'<b>먼저 예측해요.</b> 입력값을 정한 뒤 <b>실행될 줄</b>을 모두 눌러 표시하고 「예측 확인」을 눌러요. <span class="muted">조건을 확인하는 if 줄도 실행되는 줄로 세요.</span>',
+  run(R,v){
+    R.at(1); R.p('이번 정거장은 서울역입니다.');
+    R.at(2,'입력받은 값을 변수 bus에 저장'); R.set('bus',R.inp('하차하시겠습니까?(y/n)',v.bus));
+    const c=v.bus==='y'; R.at(3,`조건 <code>bus == 'y'</code> → ${TF(c)}`);
+    if(c){R.at(4,'조건이 참이라 들여쓴 명령을 실행'); R.p('문이 열립니다. 하차하세요.');}
+    R.at(5,c?'들여쓰기가 없어 if문 밖의 명령':'조건이 거짓이라 들여쓴 명령을 건너뛰고 들여쓰기 없는 명령부터 실행'); R.p('다음 정거장은 시청역입니다.');
+  }
+});
+
+/* 02 ② 짝수·홀수 */
+tracer('trEven',{
+  code:["number = int(input('숫자를 입력하세요.'))","if number % 2 == 0:","  print(number,'는 짝수입니다.')","else:","  print(number,'는 홀수입니다.')"],
+  inputs:[{k:'n',label:'입력할 숫자',v:'7',w:90}], vars:['number'], pick:true, pickMsg:'<b>먼저 예측해요.</b> 입력값을 정한 뒤 <b>실행될 줄</b>을 모두 눌러 표시하고 「예측 확인」을 눌러요. <span class="muted">조건을 확인하는 if·elif 줄도 실행되는 줄로 세요. else: 줄은 골라도 안 골라도 채점하지 않아요.</span>',
+  run(R,v){
+    R.at(1,'입력받은 문자열을 int()로 정수로 바꿔 저장'); const s=R.inp('숫자를 입력하세요.',v.n); const n=pyInt(s); R.set('number',n);
+    const m=pyMod(n,2), c=m===0; R.at(2,`<code>${n} % 2</code>는 ${m} → <code>${m} == 0</code> → ${TF(c)}`);
+    if(c){R.at(3); R.p(n,'는 짝수입니다.');}
+    else{R.at(4,'if의 조건이 거짓이라 else로'); R.at(5); R.p(n,'는 홀수입니다.');}
+  },
+  onPick(v,r){MEMO.evenPick=addRec(MEMO.evenPick,`입력 ${v.n}: 실행된 줄 ${r.all}개 중 ${r.ok}개 맞힘${r.ng?`, 잘못 고른 줄 ${r.ng}개`:''}`); selSave();}
+});
+
+/* 03 ③ 양수·음수·0 */
+tracer('trSign',{
+  code:["number = int(input('숫자를 입력하세요: '))","if number > 0:","  print('양수', end = '')","elif number < 0:","  print('음수', end = '')","else:","  print('0', end = '')","print('입니다.')"],
+  inputs:[{k:'n',label:'입력할 숫자',v:'55',w:90}], vars:['number'], pick:true, pickMsg:'<b>먼저 예측해요.</b> 입력값을 정한 뒤 <b>실행될 줄</b>을 모두 눌러 표시하고 「예측 확인」을 눌러요. <span class="muted">조건을 확인하는 if·elif 줄도 실행되는 줄로 세요. else: 줄은 골라도 안 골라도 채점하지 않아요.</span>',
+  run(R,v){
+    R.at(1); const n=pyInt(R.inp('숫자를 입력하세요: ',v.n)); R.set('number',n);
+    const e='<code>end = \'\'</code>이라 출력 뒤에 줄을 바꾸지 않아요';
+    R.at(2,`<code>${n} > 0</code> → ${TF(n>0)}`);
+    if(n>0){R.at(3,e); R.p('양수',KW({end:''}));}
+    else{R.at(4,`앞 조건이 거짓이라 elif 확인 · <code>${n} < 0</code> → ${TF(n<0)}`);
+      if(n<0){R.at(5,e); R.p('음수',KW({end:''}));}
+      else{R.at(6,'앞의 조건이 모두 거짓이라 else로'); R.at(7,e); R.p('0',KW({end:''}));}}
+    R.at(8,'선택 구조가 끝나고 들여쓰기 없는 명령 실행 · 앞의 출력에 바로 이어져요'); R.p('입니다.');
+  }
+});
+
+/* 03 스스로 해결하기 · 선택 구조 형식 */
+(function(){
+  const F=[
+    {c:["if temp >= 30","  print('덥다')"],ok:0,w:'if 조건 뒤에 콜론(:)이 빠졌어요. <span class="mono">if temp >= 30:</span>처럼 써야 해요.'},
+    {c:["if temp >= 30:","    print('덥다')","  print('물을 마셔요')"],ok:0,w:'if문에 실행될 명령들의 들여쓰기 위치가 서로 달라요. 두 명령을 같은 위치로 맞추거나, if문 밖의 명령이라면 들여쓰기를 지워야 해요.'},
+    {c:["if temp >= 30:","  print('덥다')","else:","  print('덥지 않다')"],ok:1,w:'else 뒤에는 조건식 없이 콜론만 붙이고, 각 명령을 들여썼어요.'},
+    {c:["if temp >= 30:","  print('덥다')","elif temp >= 20:","  print('따뜻하다')","elif temp >= 10:","  print('선선하다')","else:","  print('춥다')"],ok:1,w:'elif는 필요한 조건만큼 추가할 수 있고, 마지막에 조건 없는 else를 둘 수 있어요.'},
+  ];
+  const B=$('formLab'); let pick=new Set(), done=false;
+  B.innerHTML=`<div class="sel-fl">${F.map((f,i)=>`<div class="sel-fc" data-i="${i}"><div class="sel-fh"><b>코드 ${'ⓐⓑⓒⓓ'[i]}</b><button class="btn sm ghost" data-t="${i}">✔ 문법에 맞음</button></div><div data-code="fm${i}"></div><div class="sel-fw"></div></div>`).join('')}</div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="formChk">확인</button><button class="btn ghost" id="formAgain">다시 하기</button><span id="formMsg"></span></div>`;
+  const map={}; F.forEach((f,i)=>map['fm'+i]=f.c); codeBoxes(map);
+  const cards=[...B.querySelectorAll('.sel-fc')];
+  function draw(){cards.forEach((c,i)=>{const b=c.querySelector('[data-t]'); b.classList.toggle('ghost',!pick.has(i)); b.disabled=done;
+    c.classList.remove('good','bad'); const w=c.querySelector('.sel-fw');
+    if(done){const right=pick.has(i)===!!F[i].ok; c.classList.add(right?'good':'bad'); w.innerHTML=`${right?'<span class="ok">판단 맞음</span>':'<span class="ng">판단 다름</span>'} · <b>${F[i].ok?'문법에 맞아요.':'문법에 맞지 않아요.'}</b> ${F[i].w}`;} else w.innerHTML='';});
+    $('formChk').disabled=done;}
+  B.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const i=+b.dataset.t; pick.has(i)?pick.delete(i):pick.add(i); draw();});
+  $('formChk').onclick=()=>{done=true; draw(); const n=F.filter((f,i)=>pick.has(i)===!!f.ok).length;
+    $('formMsg').innerHTML=n===F.length?`<span class="ok">${F.length}개 모두 바르게 판단했어요!</span>`:`${F.length}개 중 <b>${n}개</b>를 바르게 판단했어요. 판단이 다른 카드의 설명을 읽어 보세요.`;
+    MEMO.formRes=`${F.length}개 중 ${n}개 바르게 판단 (문법에 맞다고 고른 것: ${[...pick].sort().map(i=>'ⓐⓑⓒⓓ'[i]).join(', ')||'없음'})`; selSave();};
+  $('formAgain').onclick=()=>{done=false; pick.clear(); $('formMsg').innerHTML=''; draw();};
+  draw();
+})();
+
+/* 04 실행 결과 예측하기 · 배송비 */
+(function(){
+  const C=[['y',30000],['n',55000],['n',40000],['n',50000]];
+  const run=(m,t)=>{const o=[]; if(m==='y') o.push('정기 회원으로 배송비가 면제됩니다.'); else if(t>=50000) o.push('50000원 이상 주문으로 배송비가 면제됩니다.'); else {o.push('배송비 3000원이 부과됩니다.'); t+=3000;} o.push(`총금액은 ${t} 원입니다.`); return {o,t};};
+  const B=$('shipLab');
+  B.innerHTML=`<div style="overflow-x:auto"><table class="tbl2 sel-ship"><tr><th>정기 회원 입력</th><th>주문 금액 입력</th><th>예측한 총금액</th><th>확인</th></tr>${C.map(([m,t],i)=>`<tr><td class="mono">${m}</td><td class="mono">${t}</td><td><input type="text" inputmode="numeric" data-i="${i}" placeholder="숫자" autocomplete="off"> 원</td><td class="l sel-res" data-r="${i}"></td></tr>`).join('')}</table></div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="shipChk">예측 확인</button><button class="btn ghost" id="shipAgain">다시 하기</button><span id="shipMsg"></span></div>`;
+  const ins=[...B.querySelectorAll('input')];
+  $('shipChk').onclick=()=>{let ok=0, empty=0;
+    C.forEach(([m,t],i)=>{const v=ins[i].value.replace(/[^\d]/g,''), r=run(m,t), cell=B.querySelector(`[data-r="${i}"]`);
+      if(!v){empty++; cell.innerHTML='<span class="muted">먼저 예측해요</span>'; return;}
+      const right=+v===r.t; if(right) ok++;
+      cell.innerHTML=`${right?'<span class="ok">✔ 맞음</span>':'<span class="ng">✗ 다름</span>'}<div class="sel-o">${r.o.map(esc).join('<br>')}</div>`;});
+    if(empty){$('shipMsg').innerHTML=`<span class="ng">빈 칸 ${empty}개를 먼저 채워요.</span>`; return;}
+    $('shipMsg').innerHTML=ok===C.length?'<span class="ok">모두 맞았어요! 코랩에서 직접 확인해 봐요.</span>':`4개 중 <b>${ok}개</b>를 맞혔어요. 어떤 조건을 먼저 확인하는지 다시 생각해 봐요.`;
+    MEMO.shipPred=`4개 중 ${ok}개 맞힘 · 내 예측: ${C.map(([m,t],i)=>`${m}/${t}→${ins[i].value.trim()}`).join(', ')}`; selSave();};
+  $('shipAgain').onclick=()=>{ins.forEach(x=>x.value=''); B.querySelectorAll('.sel-res').forEach(c=>c.innerHTML=''); $('shipMsg').innerHTML='';};
+})();
+
+/* 성취도 평가 */
+chips('ck1','ck1',['선택 구조 형식을 이해하고 표현할 수 있다'],true);
+chips('ck2','ck2',['선택 구조 형식에 맞게 프로그램을 작성할 수 있다'],true);
+
+/* 05 마무리 */
+const MEMOLIST=[['planSel','처음 생각 · 상황에 따라 다른 일을 하게 하려면'],['evenPick','짝수·홀수 프로그램 예측 기록'],['evenWhy','입력값에 따라 실행되는 줄'],['formRes','선택 구조 형식 판단 결과'],['formFix','문법에 맞지 않은 코드와 고칠 점'],['ck1','성취도 · 선택 구조 형식'],['shipPred','배송비 총금액 예측 결과'],['ship50','50000원일 때의 예측과 까닭'],['shipFix','2번에서 추가한 조건과 위치'],['ck2','성취도 · 선택 구조 프로그램 작성'],['keyQ','핵심 질문에 대한 내 답'],['newLearn','새롭게 알게 된 점']];
+onShow[5]=()=>{const p=(MEMO.planSel||'').trim(); $('prevPlan').innerHTML=`<b>처음 생각</b> ${p?esc(p):'<span class="muted">(시작 화면에 아직 안 씀)</span>'}`; memoSummary('msum',MEMOLIST);};
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

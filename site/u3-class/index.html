@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>객체와 클래스 · 프로그래밍 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  /* 공통: 코드 상자(줄 번호) */
+  .cl-code{margin:0;background:#14202e;color:#e8eef6;border-radius:12px;padding:10px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;line-height:1.55;overflow-x:auto;white-space:pre;counter-reset:ln}
+  .cl-code .ln{display:block;padding:0 14px 0 0;border-left:4px solid transparent}
+  .cl-code .ln::before{counter-increment:ln;content:counter(ln);display:inline-block;width:2.4em;margin-right:12px;text-align:right;color:#6f8297;user-select:none}
+  .cl-code .ln i{font-style:normal;color:#8fd3a8}
+  .cl-code .ln.hl{background:rgba(242,165,22,.22);border-left-color:var(--amber)}
+  .cl-code.cl-plain{padding:10px 14px}
+  .cl-tw{overflow-x:auto}
+  .cl-tw td,.cl-tw th{vertical-align:top}
+  .cl-chd{display:inline-block;font-size:.76rem;font-weight:900;color:var(--muted);letter-spacing:.02em;margin-bottom:4px}
+  .cl-console{background:#0f1a26;color:#d9f2e2;border-radius:10px;padding:8px 12px;font-family:ui-monospace,Menlo,monospace;font-size:.86rem;min-height:44px}
+  .cl-console .cl-chd{color:#8aa0b6}
+  .cl-console .muted{color:#7d8fa3}
+  .cl-empty{color:var(--muted);font-size:.92rem;padding:16px;text-align:center;background:#fbfaf7;border-radius:10px}
+  .cl-run2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+  @media (max-width:900px){.cl-run2{grid-template-columns:1fr}}
+  .cl-res{font-size:.92rem}
+
+  /* 시작 · 01 person 그림 */
+  .cl-person{display:grid;gap:6px;background:#fbfaf7;border-radius:12px;padding:10px 14px;font-size:.93rem}
+  .cl-pc{font-size:1.05rem}.cl-pc small{color:var(--muted);margin-left:6px}
+  .cl-tagA,.cl-tagM{display:inline-block;font-size:.78rem;font-weight:900;color:#fff;border-radius:999px;padding:1px 9px;margin-right:6px}
+  .cl-tagA{background:#e46a7e}.cl-tagM{background:#2f8f7d}
+
+  /* 01 자동차 공장 */
+  .cl-factory{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
+  @media (max-width:900px){.cl-factory{grid-template-columns:1fr}}
+  .cl-mold{border:2px dashed #9b4fc4;border-radius:14px;padding:10px 12px;background:#faf6fd}
+  .cl-moldhd{font-weight:900;color:#7a3aa0}
+  .cl-moldcar{width:100%;max-width:200px;display:block;margin:4px auto}
+  .cl-moldcar path,.cl-moldcar circle{fill:none;stroke:#9b4fc4;stroke-width:2.5;stroke-dasharray:6 4}
+  .cl-moldrow{display:grid;grid-template-columns:1fr 1fr;font-size:.88rem;background:#fff;border-radius:10px;padding:6px 10px;margin-bottom:8px}
+  .cl-form{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.92rem}
+  .cl-mold .cl-form{flex-direction:column;align-items:stretch}
+  .cl-form label{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .cl-form select,.cl-form input[type=text],.cl-form input[type=number]{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .cl-form input[type=range]{flex:1;min-width:100px}
+  .cl-objshd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:900;margin-bottom:8px}
+  .cl-objshd .muted{font-weight:400;font-size:.88rem;flex:1}
+  .cl-carobj{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:8px;background:#fff;animation:clPop .35s ease}
+  @keyframes clPop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+  .cl-carobj .hd{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:.86rem}
+  .cl-carobj .hd .st{margin-left:auto;font-size:.8rem;color:var(--muted)}
+  .cl-carobj .road{position:relative;height:56px;margin:4px 0;background:linear-gradient(#fff 0 78%,#d9d4ca 78% 84%,#fff 84%);border-radius:8px;overflow:hidden}
+  .cl-carobj .pos{position:absolute;top:2px;width:20%;min-width:90px;max-width:120px}
+  .cl-car{width:100%;height:auto;display:block}
+  .cl-car .w{fill:#2b2f36}.cl-car .h{fill:#c9ced6}
+  .cl-log{margin:8px 0 0;background:#14202e;color:#bfe8cf;border-radius:10px;padding:8px 12px;font-size:.82rem;min-height:2.4em;white-space:pre-wrap;overflow-x:auto}
+  .cl-log:empty{display:none}
+
+  /* 02 한 줄씩 실행 */
+  .cl-tabs{grid-template-columns:repeat(2,1fr);margin-bottom:10px}
+  .cl-run{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+  @media (max-width:900px){.cl-run{grid-template-columns:1fr}}
+  .cl-state{display:grid;gap:10px}
+  .cl-sec{background:#fbfaf7;border-radius:10px;padding:8px 12px}
+  .cl-objrow{display:flex;flex-wrap:wrap;gap:8px}
+  .cl-obj{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;font-size:.88rem;min-width:150px}
+  .cl-obj.self{border-color:var(--amber);box-shadow:0 0 0 3px rgba(242,165,22,.18)}
+  .cl-obj .slf{margin-left:6px;font-size:.78rem;font-weight:900;color:#b77800}
+  .cl-obj .chg{background:#fff1c7;border-radius:4px;animation:clFlash 1.2s ease}
+  @keyframes clFlash{from{background:#ffd666}to{background:#fff1c7}}
+  .cl-note{font-size:.92rem;min-height:1.5em}
+  .cl-pred{background:#fbfaf7;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+  .cl-pred .cl-code{margin-bottom:8px}
+  .cl-pred .q{font-weight:700;margin-bottom:6px;font-size:.95rem}
+  .cl-pred .row{gap:6px;flex-wrap:wrap}
+  .cl-pred button.ok{background:#e3f6ec;border-color:var(--mint);color:#11714f}
+  .cl-pred button.ng{background:#fde8e6;border-color:var(--red);color:#a82f22}
+  .cl-pred .fb{font-size:.9rem;margin-top:6px}
+  .cl-pred .fb .ok{color:var(--mint);font-weight:900}.cl-pred .fb .ng{color:var(--red);font-weight:900}
+
+  /* 03 대여 프로그램 */
+  .cl-rent{display:grid;gap:10px;margin-top:12px}
+  .cl-calls{display:flex;flex-wrap:wrap;gap:6px}
+  .cl-calls .mono{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;font-size:.82rem}
+
+  /* 04 숫자 야구 */
+  .cl-ball{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start}
+  @media (max-width:900px){.cl-ball{grid-template-columns:1fr}}
+  .cl-log.cl-big{min-height:180px;max-height:300px;overflow-y:auto;font-size:.86rem}
+  .cl-log.cl-big:empty{display:block}
+  .cl-objcol{display:grid;gap:8px}
+  .cl-objs2{display:flex;flex-wrap:wrap;gap:8px}
+  .cl-local{background:#fbfaf7;border-style:dashed}
+  .cl-order .pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .cl-card{font:inherit;font-size:.9rem;text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;max-width:340px}
+  .cl-card:hover:not(:disabled){border-color:var(--acc)}
+  .cl-card:disabled{opacity:.35;cursor:default}
+  .cl-order .seq{margin:0 0 10px;padding:10px 12px 10px 34px;background:#fbfaf7;border-radius:12px;min-height:44px}
+  .cl-order .seq li{margin:3px 0;font-size:.93rem}
+  .cl-order .seq li.in{margin-left:22px}
+  .cl-order .seq li.e{list-style:none;color:var(--muted);margin-left:-20px}
+  .cl-order .fb{font-size:.92rem;margin-top:6px}
+  .cl-order .fb .ok{color:var(--mint);font-weight:900}.cl-order .fb .ng{color:var(--red);font-weight:900}
+  .cl-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .cl-ck>b{font-size:.92rem;color:var(--mint)}
+  .cl-ck .chk button.on::before{content:"✔ "}
+
+  /* 05 정리 */
+  .cl-blanks{padding-left:22px}
+  .cl-blanks li{margin:8px 0}
+  .cl-blank{min-width:96px;border:2px dashed var(--acc);background:var(--acc-soft);border-radius:8px;font:inherit;font-weight:700;color:var(--acc);cursor:pointer;padding:0 8px}
+  .cl-blank.on{border-style:solid;background:#fff}
+  .cl-act{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px dashed var(--line)}
+  .cl-act:first-of-type{border-top:0;padding-top:0}
+  @media (max-width:700px){.cl-act{grid-template-columns:1fr}}
+  .cl-lv{align-self:start;display:inline-block;text-align:center;background:var(--k);color:#fff;font-weight:900;font-size:.85rem;border-radius:999px;padding:3px 10px}
+  .cl-trace{margin-top:8px}
+  .cl-trace th,.cl-trace td{text-align:center;font-size:.86rem;padding:5px 8px}
+  .cl-trace td.l,.cl-trace th.l{text-align:left}
+  .cl-trace tr.now td{background:#fff6dc}
+  .cl-trace tr.end td{background:#e3f6ec;text-align:left}
+  .cl-more summary{cursor:pointer;font-weight:900;font-size:1.02rem}
+
+  /* 06 마무리 */
+  .cl-then{background:#fbfaf7;border-radius:10px;padding:8px 12px;margin-bottom:10px;white-space:pre-wrap;font-size:.93rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>틀 하나로<br>객체를 여러 개 찍어 낸다면?</h1>
+      <div class="story"><b>「클래스를 이용하여 필요한 만큼 객체를 생성할 수 있어요.」</b><br>공장의 기계에 설계도를 넣으면 똑같은 모양의 장난감 병정이 줄지어 나와요. 붕어빵 틀 하나로 붕어빵을 여러 개 구워 내는 것과 같아요. 프로그래밍 언어도 기계어, 어셈블리어, 절차지향 언어를 거쳐 이렇게 <b>객체를 찍어 내는 객체지향 언어</b>로 발전해 왔어요.</div>
+      <p>오늘은 <b>객체 · 클래스 · 인스턴스 · 메소드</b>를 배우고, 파이썬으로 클래스를 정의해 객체를 만들어요. 코드를 한 줄씩 읽으며 결과를 예측하고, <b>숫자 야구 게임</b>으로 클래스를 활용한 뒤 프로그래밍 단원 전체를 정리해요.</p>
+      <ol>
+        <li>객체와 클래스</li><li>클래스 정의와 객체 생성 · 생성자</li><li>클래스 안의 메소드</li>
+        <li>함께 해결하기 · 숫자 야구 게임</li><li>프로그래밍 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 배울 것 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📐</i><div><b>클래스</b><small>객체를 만드는 설계도 · 붕어빵 틀</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🚗 🚙 🛻</i><div><b>객체(인스턴스) 여러 개</b><small>속성 값은 저마다, 메소드는 함께</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>⚾</i><div><b>숫자 야구 게임</b><small>Player 객체 · Game 객체</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧩</i><div><b>프로그래밍 정리</b><small>생활 속 프로그래밍 · 함수 · 협력</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>프로그램에 필요한 <b>객체</b>를 만들고, 이 객체들이 서로 주고받으며 프로그램을 작성하는 <b>객체지향 프로그래밍</b>을 배워요. <b>클래스</b>를 쓰면 비슷한 기능을 가진 다른 객체를 쉽게 만들 수 있어요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>프로그래밍</b> · 협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</li>
+          <li><b>오늘의 질문</b> · 클래스와 객체를 생성하고 어떻게 이용해야 문제 해결을 위한 프로그램 구현에 활용할 수 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>객체지향의 기본 개념을 이해하고 필요성을 설명할 수 있다.</li>
+          <li>객체와 클래스를 생성하고 문제 해결을 위한 프로그램을 구현할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 객체 · 클래스 · 객체지향 프로그래밍 · 인스턴스 · 메소드</p>
+      </div>
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo" style="margin-top:0">
+          <label>게임에 같은 종류의 캐릭터가 100명 나와요. 이름과 체력만 다르고 걷기, 공격하기는 똑같아요. 코드를 어떻게 짜면 편할까요? <small>마지막 화면에서 다시 비교해요.</small></label>
+          <textarea data-memo="planClass" rows="3"></textarea><div class="saved"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 객체와 클래스부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 객체와 클래스 -->
+<section class="page" data-name="객체와 클래스" data-acc="#9b4fc4">
+  <div class="head"><div class="num">01</div><div><h2>객체와 클래스는 무엇일까?</h2><p>교과서 146~147쪽 · 객체지향 프로그래밍, 객체, 인스턴스, 클래스</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>객체</b>는 <b>속성</b>(상태를 나타내는 데이터)과 <b>메소드</b>(행동을 나타내는 함수)를 한 단위로 묶은 것이에요. <b>클래스</b>는 객체를 만드는 <b>설계도</b>예요. 붕어빵 틀(클래스) 하나로 붕어빵(객체)을 여러 개 만들 수 있어요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🧱 객체</h3>
+      <p style="margin-top:0">객체(object)는 <b>속성</b>과 <b>메소드</b>를 한 개의 단위로 묶어 표현한 것이에요. 속성은 객체의 <b>상태</b>를 나타내는 데이터이고, 메소드는 객체의 <b>행동</b>을 나타내는 함수예요. 객체가 메모리에 할당되어 실체화된 것을 <b>인스턴스</b>라고 해요.</p>
+      <div class="cl-person">
+        <div class="cl-pc">🧑 <b>person</b><small>객체</small></div>
+        <div><span class="cl-tagA">속성</span> 이름 · 나이 · 성별 · 직업</div>
+        <div><span class="cl-tagM">메소드</span> 걷기 · 먹기 · 자기 · 일하기</div>
+      </div>
+      <p class="note">함수는 특정한 기능을 하는 코드 덩어리를 하나로 묶은 것이고, 클래스 안에서 구현한 함수는 <b>메소드</b>라고 따로 불러요.</p>
+    </div>
+    <div class="card">
+      <h3>📐 클래스</h3>
+      <p style="margin-top:0">객체를 생성하기 위한 <b>설계도</b>를 클래스(class)라고 해요. 객체를 만들려면 먼저 클래스를 정의해야 해요. 예를 들어 「사람」 클래스를 정의하면 「윤기」, 「별이」 같은 구체적인 사람 객체를 만들 수 있어요.</p>
+      <div class="callout" style="margin-bottom:0">클래스는 같은 종류의 객체(인스턴스)를 <b>여러 개</b> 만들 수 있어요. 자동차 설계도 하나로 컨버터블, 세단, SUV, 픽업트럭을 만드는 것처럼요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏭 체험 · 자동차 클래스로 객체 찍어 내기</h3>
+    <p style="margin-top:0">왼쪽 <b>Car 클래스</b>(설계도)에 속성 값을 넣고 <b>객체 만들기</b>를 눌러요. 객체를 <b>3개 이상</b> 만든 뒤, 객체마다 전진 · 후진 · 정지를 눌러 보세요.</p>
+    <div class="cl-factory">
+      <div class="cl-mold">
+        <div class="cl-moldhd">📐 클래스(class) <b>Car</b></div>
+        <svg viewBox="0 0 160 70" class="cl-moldcar" aria-hidden="true"><path d="M12 50 L12 36 L40 34 L56 18 L108 18 L126 34 L150 38 L150 50 Z"/><circle cx="42" cy="52" r="9"/><circle cx="122" cy="52" r="9"/></svg>
+        <div class="cl-moldrow"><div><b>속성</b><br>• 종류<br>• 색상<br>• 속도</div><div><b>메소드</b><br>• 전진<br>• 후진<br>• 정지</div></div>
+        <div class="cl-form">
+          <label>종류 <select id="carKind"><option>컨버터블</option><option>세단</option><option>SUV</option><option>픽업트럭</option></select></label>
+          <label>색상 <select id="carColor"><option>검은색</option><option>파란색</option><option>주황색</option><option>갈색</option><option>빨간색</option><option>초록색</option></select></label>
+          <label>속도 <input id="carSpeed" type="range" min="100" max="300" step="10" value="240"><b id="carSpeedV">240km</b></label>
+          <button class="btn" id="carMake">객체 만들기 →</button>
+        </div>
+      </div>
+      <div class="cl-objs">
+        <div class="cl-objshd"><span>🚗 객체(object) · 인스턴스</span><span id="carCount" class="muted"></span><button class="btn ghost sm" id="carClear">모두 지우기</button></div>
+        <div id="carList"></div>
+        <pre class="cl-log" id="carLog" aria-live="polite"></pre>
+      </div>
+    </div>
+    <div class="callout" id="carTip" style="display:none"></div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>⚖️ 객체지향 프로그래밍과 절차지향 프로그래밍</h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l"></th><th class="l">객체지향 프로그래밍</th><th class="l">절차지향 프로그래밍</th></tr>
+        <tr><td><b>기준</b></td><td>데이터와 처리 방법을 하나로 묶은 <b>객체</b></td><td>순차적인 절차와 <b>함수</b></td></tr>
+        <tr><td><b>장점</b></td><td>코드의 재사용성, 유지 보수성, 확장성이 좋아요</td><td>구조가 단순하고 이해하기 쉬워요</td></tr>
+        <tr><td><b>어려움</b></td><td>–</td><td>규모가 커지면 유지 보수와 확장이 어려워요</td></tr>
+        <tr><td><b>대표 언어</b></td><td>파이썬</td><td>C 언어</td></tr>
+      </table></div>
+      <p class="note">규모가 크고 복잡한 소프트웨어 프로젝트에서는 객체지향 프로그래밍의 장점이 크게 작용해 소프트웨어의 품질과 생산성을 높여요.</p>
+    </div>
+    <details class="card cl-more">
+      <summary>📚 예제 · 책을 빌리고 돌려주는 과정의 클래스 <span class="muted" style="font-weight:400;font-size:.88rem">(눌러서 펼치기)</span></summary>
+      <p><b>1단계</b> 필요한 클래스 생각하기 → <b>2단계</b> 속성과 메소드 정하기</p>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">클래스</th><th class="l">속성</th><th class="l">메소드</th></tr>
+        <tr><td>학생(Student)</td><td>학번, 이름, 대여한 책 리스트</td><td>책 대여하기, 책 반납하기</td></tr>
+        <tr><td>책(Book)</td><td>제목, 저자</td><td>대여 상태(대여 가능, 대여 중)</td></tr>
+      </table></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h3>🎮 게임 캐릭터(Hero) 클래스를 설계한다면?</h3>
+    <div id="heroSort"></div>
+  </div>
+  <div class="card">
+    <div class="memo" style="margin-top:0"><label>클래스와 객체는 어떤 관계일까요? 내가 만든 자동차 객체를 예로 들어 한두 문장으로 <small>틀은 몇 개, 객체는 몇 개? 무엇이 같고 무엇이 달랐나요?</small></label><textarea data-memo="classWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 클래스 정의와 객체 생성 · 생성자 -->
+<section class="page" data-name="클래스 정의와 객체 생성" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>클래스 정의 및 객체 생성은 어떻게 할까?</h2><p>교과서 148쪽 · class 키워드, 객체 생성, 생성자 __init__()</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><span class="mono">class</span> 키워드로 클래스를 정의하고, <span class="mono">객체 변수 = 클래스 이름()</span>으로 객체를 만들어요(<b>인스턴스화</b>). 만든 객체에 <b>.</b> 연산자를 붙이면 속성값에 접근할 수 있어요. <b>생성자</b> <span class="mono">__init__()</span>을 쓰면 객체를 만들면서 속성도 함께 저장해요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✍️ 클래스와 객체 생성 형식</h3>
+<pre class="cl-code cl-plain">class 클래스 이름:
+    속성 내용
+    def 메소드명():
+        메소드 내용
+
+객체 변수 = 클래스 이름()</pre>
+      <p class="note">클래스 이름은 일반적으로 <b>대문자로 시작</b>해요(예: Book). 클래스로부터 객체를 생성하면, 클래스에 정의된 속성과 메소드를 가진 인스턴스가 생겨요.</p>
+    </div>
+    <div class="card">
+      <h3>🏷️ 식별자의 명명 규칙 · self</h3>
+      <ul style="margin:0;padding-left:20px">
+        <li><b>카멜 표기법</b>: 여러 단어로 된 이름에서 각 단어의 첫 글자를 대문자로 (예: userName)</li>
+        <li><b>스네이크 표기법</b>: 모두 소문자로 쓰고 단어 사이를 밑줄(_)로 연결 (예: user_name)</li>
+      </ul>
+      <p style="margin-bottom:0">클래스 안에서 정의하는 메소드의 <b>첫 번째 매개 변수는 self</b>예요. self는 그 메소드가 호출된 <b>객체 자체</b>를 가리키고, self로 객체의 속성과 다른 메소드에 접근해요. self를 빠뜨리면 오류가 나요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>▶️ 체험 · 한 줄씩 실행해 보기</h3>
+    <p style="margin-top:0"><b>예제 ② 생성자</b>부터 해요(예제 ①은 시간이 되면). <b>다음 줄</b>을 누를 때마다 한 줄씩 실행돼요. 오른쪽 <b>객체 상자</b>가 어떻게 바뀌는지 보고, <b>print</b> 줄에서는 출력을 먼저 예측해요.</p>
+    <div class="apps cl-tabs" id="runTabs"></div><div id="runTabsView" hidden></div>
+    <div id="runBox"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔮 코드 읽고 예측하기</h3>
+    <p class="muted" style="margin-top:0">실행하기 전에 결과를 골라 보세요.</p>
+    <div id="pred2"></div>
+  </div>
+  <div class="card">
+    <div class="memo" style="margin-top:0"><label>생성자를 쓰면 객체를 만들 때 무엇이 달라지나요? 예제 ②의 코드 한 줄을 함께 적어요. <small>예제 ①은 객체를 만든 뒤 속성을 한 줄씩 바꿨어요.</small></label><textarea data-memo="initWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 클래스 안의 메소드 -->
+<section class="page" data-name="클래스 안의 메소드" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>클래스 안에 메소드 정의는 어떻게 할까?</h2><p>교과서 149쪽 · 메소드, 객체지향 프로그래밍 예제, 스페셜 메소드</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>클래스 안에 정의한 함수를 <b>메소드</b>라고 해요. 메소드는 주로 <b>클래스의 속성값을 활용</b>해 특정 기능을 하거나 값을 반환해요. 첫 번째 매개 변수 <span class="mono">self</span>로 그 객체의 속성을 꺼내 써요.</span></div>
+  <div class="card">
+    <h3>📅 책이 출판된 지 몇 년이 지났을까?</h3>
+    <div class="cl-run2">
+<pre class="cl-code" id="yearCode"></pre>
+      <div>
+        <p style="margin-top:0"><span class="mono">from datetime import date</span>는 날짜를 처리하는 표준 라이브러리 객체를 불러와요. <span class="mono">get_years_since_publication()</span> 메소드는 올해 연도에서 <span class="mono">self.publish_year</span>(그 책 객체의 출판 연도)를 빼서 반환해요.</p>
+        <div class="cl-console"><span class="cl-chd">출력</span><div id="yearOut"></div></div>
+        <div class="cl-form" style="margin-top:10px">
+          <label>다른 책으로 바꿔 보기 · 출판 연도 <input id="yearIn" type="number" min="1400" max="2100" value="1943" style="width:90px"></label>
+          <span id="yearRes" class="cl-res"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 체험 · 학급 문고 대여 프로그램</h3>
+    <p style="margin-top:0">교과서 객체지향 프로그래밍 예제의 Book 클래스와 Student 클래스예요. 아래 예측을 먼저 하고, 버튼을 눌러 <b>객체의 속성이 어떻게 바뀌는지</b> 확인해요.</p>
+    <div class="cl-run2">
+<pre class="cl-code" id="rentCode"></pre>
+      <div>
+        <div id="pred3"></div>
+      </div>
+    </div>
+    <div class="cl-rent">
+      <div class="cl-calls" id="rentCalls"></div>
+      <div class="cl-objrow" id="rentObjs"></div>
+      <p class="note" style="margin:0">rented_books 안의 책은 객체 이름(b1)으로 보여 줘요. 코랩에서 <span class="mono">print(s1.rented_books)</span>를 출력하면 <span class="mono">[&lt;__main__.Book object at …&gt;]</span>처럼 보여요.</p>
+      <div class="cl-console"><span class="cl-chd">출력</span><div id="rentOut"></div></div>
+    </div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✨ 스페셜 메소드 <span class="muted" style="font-weight:400;font-size:.88rem">(표 Ⅲ-2)</span></h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">스페셜 메소드</th><th class="l">기능</th></tr>
+        <tr><td class="mono">__init__</td><td>객체가 생성될 때 호출, 객체의 상태를 초기화하는 데 사용</td></tr>
+        <tr><td class="mono">__str__</td><td>객체를 문자열로 인쇄하는 방법을 정의, <span class="mono">print(객체)</span>를 쓰면 호출</td></tr>
+        <tr><td class="mono">__len__</td><td>객체의 요소 수를 반환, <span class="mono">len(객체)</span>를 쓰면 호출</td></tr>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="memo" style="margin-top:0"><label>s2가 b1을 빌리지 못한 까닭을 메소드와 속성으로 설명해 보세요. 그 까닭이 드러나는 코드 한 줄을 함께 적어요. <small>rent_book()이 어떤 속성을 확인하고 바꾸나요?</small></label><textarea data-memo="methodWhy" rows="3"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 숫자 야구 게임 -->
+<section class="page" data-name="함께 해결하기 · 숫자 야구" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 숫자 야구 게임</h2><p>교과서 150~151쪽 · 클래스와 객체를 활용한 프로그램</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>숫자와 자리가 모두 맞으면 <b>스트라이크</b>, 숫자만 맞으면 <b>볼</b>이에요. 참가자마다 <b>Player 객체</b>가 하나씩 생기고, 저마다 비밀 숫자 3개를 가져요. <b>Game 객체</b>는 참가자 목록을 가지고 라운드를 진행해요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🔍 문제 이해와 분석 · 알고리즘 설계</h3>
+      <p style="margin-top:0">숫자 야구 게임은 두 명 이상이 함께 즐기는 숫자 추측 게임이에요. 되도록 적은 시도로 정확한 숫자를 맞히는 것이 목표예요.</p>
+      <ul style="margin:0;padding-left:20px">
+        <li>게임을 시작하면 참여할 플레이어 인원수를 입력받는다.</li>
+        <li>플레이어마다 0~9 사이의 랜덤한 숫자 3개가 중복 없이 배정된다.</li>
+        <li>각 플레이어는 자기 순서에 숫자를 추측하고 피드백을 받는다.</li>
+        <li>숫자를 모두 맞힌 플레이어가 있으면 이름을 출력하고 게임을 끝낸다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧩 클래스 · 속성 · 메소드</h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">클래스</th><th class="l">속성</th><th class="l">메소드</th></tr>
+        <tr><td><b>Player</b></td><td class="mono">name, numbers</td><td class="mono">check_strike()</td></tr>
+        <tr><td><b>Game</b></td><td class="mono">players</td><td class="mono">play(), check_gameover()</td></tr>
+      </table></div>
+      <p class="note">교과서 소스 코드에 맞춰 속성은 numbers, 메소드 이름은 밑줄(_)로 적었어요. play()는 게임을 진행하는 메소드로, (가)가 바로 이 안에 들어가요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 (가) play() 메소드 설계하기 · 순서 맞추기</h3>
+    <p style="margin-top:0">(가)에는 게임을 진행하는 코드가 들어가요. 위의 알고리즘 설계를 보고, 할 일 카드를 <b>실행할 순서대로</b> 눌러 늘어놓아 보세요. 카드는 코드가 아니라 알고리즘이에요. 다음 체험에서 게임을 해 보며 이 순서대로 진행되는지 확인해요.</p>
+    <div id="playOrder"></div>
+    <div class="memo"><label>play()에서 <b>되풀이해야 할 일</b>과 <b>반복을 멈추는 조건</b>을 내 말로 적어 보세요.</label><textarea data-memo="playPlan" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>⚾ 체험 · 숫자 야구 한 판</h3>
+    <p style="margin-top:0">참가자 수와 이름을 정하고 <b>게임 시작</b>을 누르면 참가자마다 Player 객체가 만들어져요. 라운드마다 차례대로 숫자 3개를 추측해요. 위에서 늘어놓은 순서대로 진행되는지 보세요. 오른쪽에서 <b>Game 객체의 값</b>이 어떻게 바뀌는지도 보세요.</p>
+    <div class="cl-ball">
+      <div>
+        <div class="cl-form" id="ballSetup">
+          <label>참가자 수 <select id="ballN"><option>1</option><option selected>2</option><option>3</option></select></label>
+          <span id="ballNames"></span>
+          <button class="btn" id="ballStart">게임 시작</button>
+        </div>
+        <div class="cl-form" id="ballTurn" style="display:none">
+          <label><b id="ballWho"></b>의 추측 <input id="ballIn" type="text" maxlength="5" placeholder="예: 3 4 5" style="width:110px"></label>
+          <button class="btn" id="ballGo">추측하기</button>
+          <button class="btn ghost sm" id="ballGive">정답 보기</button>
+        </div>
+        <pre class="cl-log cl-big" id="ballLog"></pre>
+      </div>
+      <div class="cl-objcol" id="ballObjs"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔮 check_strike() 읽고 예측하기</h3>
+    <div class="cl-run2">
+<pre class="cl-code" id="strikeCode"></pre>
+      <div id="pred4"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💻 코랩에서 (가) 채워 프로그램 완성하기</h3>
+    <p style="margin-top:0">노트북의 <b>2. 함께 해결하기</b>에 Player · Game 클래스와 (가)의 빈칸, 단계별 힌트가 있어요. 위에서 늘어놓은 순서를 주석 삼아 코드로 옮겨 보세요. 수업 시간에 다 못 하면 다음 시간이나 집에서 이어서 해요.</p>
+    <div class="row"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-class/assets/object_class.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="object_class.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <div class="memo"><label>코랩 실행 결과 <small>(가)를 채워 게임이 끝까지 실행됐나요? 막힌 곳이 있으면 적어요.</small></label><input type="text" data-memo="colabRes"><div class="saved"></div></div>
+  </div>
+  <div class="cl-ck"><b>✅ 성취도 평가</b><div id="ckClass"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 프로그래밍 정리 -->
+<section class="page" data-name="프로그래밍 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>객체와 클래스 개념 정리 · 프로그래밍 정리</h2><p>교과서 151~153쪽 · 개념 정리하기, 맞춤 활동, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>오늘 배운 용어를 새 상황에 맞춰 보고, 프로그래밍 단원을 <b>지식 · 이해</b>, <b>과정 · 기능</b>, <b>가치 · 태도</b> 세 가지 활동으로 정리해요.</span></div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="cl-blanks">
+      <li>몬스터의 이름, 체력 같은 데이터와 공격하기, 도망가기 같은 행동을 한 단위로 묶은 것은 <button class="cl-blank" data-a="객체">?</button>이다.</li>
+      <li>몬스터 수십 마리를 같은 모양으로 찍어 내려면 먼저 설계도인 <button class="cl-blank" data-a="클래스">?</button>를 정의해야 한다.</li>
+      <li>Monster 설계도로 만들어져 실제로 쓸 수 있게 된 몬스터 하나하나(m1, m2, …)를 <button class="cl-blank" data-a="인스턴스">?</button>라고 한다.</li>
+      <li>게임 속 몬스터 m1에게 <span class="mono">m1.attack()</span>이라고 써서 공격을 시켰다. 이렇게 객체 이름 뒤에 점을 찍고 불러 쓰는 attack()은 몬스터의 <button class="cl-blank" data-a="메소드">?</button>이다.</li>
+      <li>게임 회사가 몬스터, 아이템, 지도를 각각 Monster, Item, Map 설계도로 만들고, 이 설계도로 만든 것들이 서로 주고받으며 게임이 돌아가게 짰다. 이렇게 짠 방식이 <button class="cl-blank" data-a="객체지향 프로그래밍">?</button>이다.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>🧩 맞춤 활동 · 프로그래밍 활용</h3>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#2f6fd0">지식 · 이해</span>
+      <div class="memo" style="margin-top:0"><label>일상생활 속에서 프로그래밍으로 해결하고 있는 문제를 찾아 세 가지 이상 나열해 보세요.</label><textarea data-memo="dailyProg" rows="2" placeholder="예: 버스가 몇 분 뒤에 오는지 알려 주기, …"></textarea><div class="saved"></div></div>
+    </div>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#1f9d74">과정 · 기능</span>
+      <div>
+        <p style="margin-top:0">런 길이 부호화 방식(53쪽)으로 압축한 결과를 출력하는 함수예요. 결과를 예측한 뒤 <b>한 번 반복</b>을 눌러 변수 a와 cnt가 어떻게 바뀌는지 따라가 보세요.</p>
+        <div class="cl-run2">
+<pre class="cl-code" id="rleCode"></pre>
+          <div id="pred5"></div>
+        </div>
+        <div class="cl-form" style="margin-top:10px">
+          <label>함수에 넣을 문자열 <input id="rleIn" type="text" maxlength="14" value="BBBWWB" style="width:150px"></label>
+          <button class="btn sm" id="rleStep">한 번 반복</button>
+          <button class="btn ghost sm" id="rleAll">끝까지</button>
+          <button class="btn ghost sm" id="rleReset">처음부터</button>
+        </div>
+        <div class="cl-tw"><table class="tbl cl-trace" id="rleTbl"></table></div>
+      </div>
+    </div>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#e0702b">가치 · 태도</span>
+      <div class="memo" style="margin-top:0"><label>프로그래밍 프로젝트를 할 때 협력적으로 문제를 해결하려는 태도를 평가할 항목을 두 가지 추가하고, 나의 점수(5~1)를 매겨 보세요. <small>회의, 역할 나누기, 코드 함께 보기, 오류 해결, 시간 지키기 가운데에서 떠올려 봐요. 친구가 추가한 항목과 비교해 봐요.</small></label><textarea data-memo="evalAdd" rows="2" placeholder="항목 1: … (○점)&#10;항목 2: … (○점)"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+
+  <div class="cl-ck"><b>✅ 학업 성취도 점검</b><div id="ckProg"></div></div>
+  <details class="card cl-more">
+    <summary>🔀 선택 활동 · 보충과 심화 <span class="muted" style="font-weight:400;font-size:.88rem">(시간이 남을 때)</span></summary>
+    <div class="grid2 even" style="margin-top:10px">
+      <div>
+        <h4 style="margin:0 0 6px">보충 · 터틀 그래픽스</h4>
+        <p style="margin:0 0 6px;font-size:.93rem">파이썬의 터틀(turtle) 그래픽스 모듈로 간단한 그림을 그려요. 아래 코드는 사각형을 그려요. 코드를 바꿔 원하는 모양을 그려 보세요. 터틀은 웹 환경인 코랩보다 설치형 환경인 <b>파이썬 IDLE</b>에서 하기를 권해요.</p>
+<pre class="cl-code cl-plain">import turtle          # turtle 모듈 불러오기
+t = turtle.Turtle()    # turtle 객체 생성
+for i in range(4):
+    t.forward(100)     # 앞으로 100픽셀 이동
+    t.right(90)        # 오른쪽으로 90도 회전
+turtle.done()          # 그림판 유지</pre>
+        <p class="note">기본 명령어: forward() 전진 · backward() 후진 · right() 우회전 · left() 좌회전 · circle() 원 그리기</p>
+      </div>
+      <div>
+        <h4 style="margin:0 0 6px">심화 · 영화(Movie) 클래스</h4>
+        <p style="margin:0;font-size:.93rem">영화(Movie) 클래스를 정의하고, 최근 영화 정보로 객체를 만들어 영화 정보를 저장하는 프로그램을 작성해 보세요. 노트북의 <b>3. 더 해 보기</b>에 빈 셀과 힌트가 있어요.</p>
+      </div>
+    </div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#9b4fc4"><b>객체</b>는 속성(데이터)과 메소드(행동)를 한 단위로 묶은 것이고, <b>클래스</b>는 객체를 만드는 설계도다. 클래스로 만들어 메모리에 실체화된 객체를 <b>인스턴스</b>라고 한다.</div>
+    <div style="--k:#2f6fd0"><span class="mono">class</span>로 클래스를 정의하고 <span class="mono">객체 변수 = 클래스 이름()</span>으로 객체를 만든다. <b>생성자 __init__()</b>은 객체가 생성될 때 자동으로 호출되어 속성을 저장하고, <b>메소드</b>는 self로 그 객체의 속성을 활용한다.</div>
+    <div style="--k:#e0702b"><b>객체지향 프로그래밍</b>은 코드의 재사용성, 유지 보수성, 확장성을 높여 규모가 크고 복잡한 소프트웨어 프로젝트에서 장점이 크다. 숫자 야구 게임은 Player 객체와 Game 객체가 서로 주고받으며 동작한다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <div class="cl-then"><span class="kicker">처음에 쓴 생각</span><div id="planShow"></div></div>
+    <b style="font-size:.93rem">협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</b>
+    <textarea data-memo="keyQ" rows="3" placeholder="오늘 배운 클래스와 객체를 넣어 내 말로 답해요"></textarea><div class="saved"></div>
+    <div class="memo"><label>프로그래밍 단원에서 새롭게 알게 된 점</label><textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>내가 만든 자동차 객체로 설명하는 <b>클래스와 객체(인스턴스)의 관계</b>를 쓰고, 객체지향 프로그래밍이 좋은 점을 한 가지 설명하세요.</li>
+      <li>예제 코드의 한 줄을 들어 <b>생성자(__init__)</b>와 <b>메소드</b>가 각각 하는 일을 설명하세요.</li>
+      <li>숫자 야구 게임에서 <b>Player 객체와 Game 객체</b>가 맡은 일을 쓰고, <b>play()</b>에서 되풀이할 일과 멈추는 조건을 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u3-class.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u3-class', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+/* 퀴즈 (교과서 146~153쪽) — 개념 정리하기와 다른 새 상황 문장, 보기는 짧은 것부터 */
+const QUIZ={
+ 1:[{q:'학교 앱에서 「학생」 설계도를 하나 정의하고, 이것으로 김하늘, 박바다 같은 학생을 여럿 만들었다. 「학생」 설계도는 무엇일까?',o:['객체','클래스','메소드'],a:1,w:'객체를 만들기 위한 설계도가 클래스예요. 김하늘, 박바다처럼 그 설계도로 만든 하나하나가 객체(인스턴스)예요(147쪽).'},
+    {q:'스마트폰 객체를 설계할 때 「배터리 잔량」은 무엇에 해당할까?',o:['속성','메소드','클래스'],a:0,w:'배터리 잔량은 스마트폰의 지금 상태를 나타내는 데이터예요. 충전하기, 전화 걸기 같은 행동은 메소드가 돼요(146쪽).'},
+    {q:'객체지향 프로그래밍이 절차지향 프로그래밍보다 더 알맞은 경우는?',o:['두 수를 한 번 더하는 계산','인사말 한 줄을 출력하는 일','여럿이 오래 고쳐 나갈 쇼핑몰'],a:2,w:'객체지향은 코드의 재사용성, 유지 보수성, 확장성이 좋아 규모가 크고 복잡한 소프트웨어에서 장점이 커요. 작고 단순한 일은 절차지향으로도 충분해요(147쪽).'}],
+ 2:[{q:'여러 단어로 된 이름 「user name」을 스네이크 표기법으로 쓴 것은?',o:['userName','UserName','user_name'],a:2,w:'스네이크 표기법은 모두 소문자로 쓰고 단어 사이를 밑줄(_)로 이어요. 각 단어의 첫 글자를 대문자로 쓰는 것은 카멜 표기법이에요(148쪽).'},
+    {q:'생성자 <span class="mono">__init__()</span>이 자동으로 실행되는 때는?',o:['클래스를 정의할 때','객체를 새로 만들 때','print()를 쓸 때'],a:1,w:'Book(...)처럼 클래스를 호출해 객체를 만드는 순간 자동으로 호출되어 속성을 저장해요. 클래스를 정의하기만 해서는 실행되지 않아요(148쪽).'},
+    {q:"<span class=\"mono\">__init__(self, name, age)</span> 안의 self가 가리키는 것은? (<span class=\"mono\">p = Pet('콩이', 3)</span>으로 만들 때)",o:['만드는 객체 p','Pet 클래스 전체','첫 번째 값인 콩이'],a:0,w:'self는 메소드가 호출된 객체 자체를 가리켜요. 그래서 self.name = name은 p의 name 속성에 값을 저장해요(148쪽).'}],
+ 3:[{q:'메소드 안에서 <span class="mono">self.publish_year</span>처럼 self를 붙여 쓰는 까닭은?',o:['오류를 일부러 내려고','클래스 이름을 바꾸려고','객체의 속성값을 꺼내려고'],a:2,w:'메소드는 주로 클래스의 속성값을 활용해 기능을 해요. self로 지금 그 메소드를 부른 객체의 속성을 꺼내 써요(149쪽).'},
+    {q:'Book 객체 b를 <span class="mono">print(b)</span>로 출력할 때, 알아보기 어려운 글자 대신 책 제목이 나오게 하려면 어떤 스페셜 메소드를 정의해야 할까?',o:['__init__','__str__','__len__'],a:1,w:'print(객체)를 쓰면 객체에 정의된 __str__ 메소드가 호출되어, 그 메소드가 돌려준 문자열이 출력돼요(149쪽 표 Ⅲ-2).'}],
+ 4:[{q:'숫자 야구 게임에 참가자가 3명이면 Player 객체는 몇 개 만들어질까?',o:['1개','3개','6개'],a:1,w:'참가자 수 n만큼 Player 객체를 만들어 players 리스트에 저장해요. 객체마다 자기만의 비밀 숫자를 가져요(151쪽).'},
+    {q:'check_strike()가 돌려주는 True/False는 Game에서 주로 무엇에 쓰일까?',o:['이름 입력받기','숫자 새로 뽑기','종료 여부 판정'],a:2,w:'play()가 라운드마다 결과를 game_result 리스트에 모으면, check_gameover()가 그 안에 True가 있는지 보고 게임을 끝낼지 정해요(151쪽).'}],
+ 5:[{q:"<span class=\"mono\">run_length_encoding('KKKKP')</span>의 결과는?",o:['K4P1','K5P1','KP41'],a:0,w:'K가 4번 이어진 뒤 P가 1번 나와요. 문자 뒤에 그 문자가 이어진 횟수를 붙여요(152쪽).'},
+    {q:'프로젝트에서 협력적으로 문제를 해결하려는 태도로 알맞은 것은?',o:['막힌 부분을 함께 고쳤다','주석 없이 혼자 코드를 짰다','친구의 오류를 못 본 척했다'],a:0,w:'모둠원이 서로 도와 문제를 함께 해결하는 것이 협력적인 태도예요. 남이 읽기 어려운 코드나 오류를 감추는 것은 협력을 어렵게 해요(152쪽).'}],
+ 6:[{q:'<span class="mono">class Dog:</span>로 클래스를 정의한 뒤 <span class="mono">d1 = Dog()</span>와 <span class="mono">d2 = Dog()</span>를 실행했다. 만들어진 인스턴스는 몇 개일까?',o:['1개','2개','3개'],a:1,w:'Dog 클래스(설계도)는 하나지만, Dog()를 두 번 호출해 실체화된 객체 d1, d2 두 개가 생겼어요(146·148쪽).'},
+    {q:'자동차 객체 car1의 speed 속성을 300으로 바꾸는 코드는?',o:['Car.car1 = 300','speed.car1 = 300','car1.speed = 300'],a:2,w:'객체 이름 뒤에 . 연산자와 속성 이름을 붙여 값에 접근하거나 바꿔요(148쪽).'},
+    {q:'게임에 몬스터 20마리를 더 넣어야 한다. 이미 Monster 클래스가 있다면 가장 알맞은 방법은?',o:['Monster()로 객체를 20개 만든다','몬스터 코드를 20번 복사해 붙인다','몬스터마다 클래스를 새로 정의한다'],a:0,w:'클래스를 쓰면 같은 종류의 객체를 필요한 만큼 쉽게 만들 수 있어요. 코드를 다시 쓰지 않아도 되는 재사용성이 객체지향 프로그래밍의 장점이에요(146~147쪽).'}]
+};
+
+const QK='ds-u3-class-quiz'+WHO.sfx;
+const MK='ds-u3-class-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* 공통: 코드 상자(줄 번호) · 예측하기 */
+function clCode(id,lines){
+  $(id).innerHTML=lines.map((l,i)=>{
+    let h=esc(l); const c=h.indexOf('#'); if(c>=0) h=h.slice(0,c)+'<i>'+h.slice(c)+'</i>';
+    return `<span class="ln" data-n="${i+1}">${h||' '}</span>`;
+  }).join('');
+}
+function clHl(id,nums){ $(id).querySelectorAll('.ln').forEach(s=>s.classList.toggle('hl',nums.includes(+s.dataset.n))); }
+function clPred(box,items){
+  $(box).innerHTML=items.map((it,i)=>`<div class="cl-pred" data-i="${i}">${it.code?`<pre class="cl-code cl-plain">${esc(it.code.join('\n'))}</pre>`:''}<div class="q">${it.q}</div><div class="row">${it.o.map((o,j)=>`<button class="btn ghost sm" data-j="${j}">${esc(o)}</button>`).join('')}</div><div class="fb"></div></div>`).join('');
+  $(box).querySelectorAll('.cl-pred').forEach(d=>{
+    const it=items[+d.dataset.i];
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const j=+b.dataset.j, ok=j===it.a;
+      d.querySelectorAll('button').forEach(x=>{x.classList.remove('ok','ng'); if(+x.dataset.j===it.a) x.classList.add('ok');});
+      if(!ok) b.classList.add('ng');
+      d.querySelector('.fb').innerHTML=(ok?'<span class="ok">예측 성공!</span> ':'<span class="ng">다시 보기:</span> ')+it.w;
+    });
+  });
+}
+
+/* 01 자동차 클래스로 객체 찍어 내기 */
+const CAR_COL={'검은색':'#2b2f36','파란색':'#2f6fd0','주황색':'#e0702b','갈색':'#8a5a2b','빨간색':'#d64535','초록색':'#1f9d74'};
+const CAR_SHAPE={
+  '컨버터블':'M6 44 L6 32 L40 30 L54 22 L60 22 L58 30 L154 32 L154 44 Z',
+  '세단':'M6 44 L6 32 L38 30 L56 16 L104 16 L122 30 L154 34 L154 44 Z',
+  'SUV':'M6 44 L6 22 L28 20 L42 8 L130 8 L138 20 L154 24 L154 44 Z',
+  '픽업트럭':'M6 44 L6 28 L64 28 L66 10 L98 10 L110 26 L154 28 L154 44 Z'
+};
+let cars=[], carN=0, carRaf=null, carT=0;
+const carSvg=c=>`<svg viewBox="0 0 160 60" class="cl-car" aria-label="${esc(c.color)} ${esc(c.kind)}"><path d="${CAR_SHAPE[c.kind]}" style="fill:${CAR_COL[c.color]}"/><circle cx="40" cy="46" r="9" class="w"/><circle cx="122" cy="46" r="9" class="w"/><circle cx="40" cy="46" r="3.5" class="h"/><circle cx="122" cy="46" r="3.5" class="h"/></svg>`;
+function carLog(s){ const L=$('carLog'); const a=(L.textContent?L.textContent.split('\n'):[]).concat(s).slice(-6); L.textContent=a.join('\n'); }
+function carSave(){ if(!cars.length) return; MEMO.carMade=cars.map(c=>`${c.name}(${c.kind}, ${c.color}, ${c.speed}km)`).join(', '); store.set(MK,MEMO); }
+function carDraw(){
+  $('carCount').textContent=cars.length?`클래스 1개 → 객체 ${cars.length}개`:'아직 객체가 없어요';
+  $('carList').innerHTML=cars.length?cars.map((c,i)=>`<div class="cl-carobj" data-i="${i}">
+    <div class="hd"><b class="mono">${c.name}</b><span class="mono">kind='${esc(c.kind)}' · color='${esc(c.color)}' · speed=${c.speed}</span><span class="st">${c.dir>0?'전진 중':c.dir<0?'후진 중':'정지'}</span></div>
+    <div class="road"><div class="pos" style="left:${c.x}%">${carSvg(c)}</div></div>
+    <div class="row"><button class="btn sm" data-m="1">전진</button><button class="btn sm" data-m="-1">후진</button><button class="btn ghost sm" data-m="0">정지</button></div>
+  </div>`).join(''):'<div class="cl-empty">왼쪽에서 속성 값을 고르고 「객체 만들기」를 눌러요.</div>';
+  $('carList').querySelectorAll('.cl-carobj').forEach(d=>d.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const c=cars[+d.dataset.i], m=+b.dataset.m; c.dir=m;
+    carLog(`${c.name}.${m>0?'forward()':m<0?'backward()':'stop()'}   # ${m>0?'전진':m<0?'후진':'정지'}`);
+    d.querySelector('.st').textContent=m>0?'전진 중':m<0?'후진 중':'정지'; carGo();
+  }));
+  const tip=$('carTip');
+  if(cars.length>=3){ tip.style.display=''; tip.innerHTML=`틀(Car 클래스)은 <b>1개</b>, 객체는 <b>${cars.length}개</b>예요. 모든 객체가 <b>같은 메소드</b>(전진 · 후진 · 정지)를 쓰지만, 종류 · 색상 · 속도 같은 <b>속성 값은 저마다</b> 달라요. 속도 속성이 큰 객체일수록 전진할 때 더 빨리 움직여요.`; }
+  else tip.style.display='none';
+}
+function carGo(){
+  if(carRaf) return;
+  carT=performance.now();
+  const step=t=>{
+    const dt=Math.min(60,t-carT); carT=t; let moving=false;
+    cars.forEach((c,i)=>{ if(!c.dir) return; moving=true;
+      c.x+=c.dir*c.speed/30*dt/1000;
+      if(c.x>80||c.x<0){ c.x=Math.max(0,Math.min(80,c.x)); c.dir=0; const st=document.querySelector(`.cl-carobj[data-i="${i}"] .st`); if(st) st.textContent='정지(길 끝)'; }
+      const p=document.querySelector(`.cl-carobj[data-i="${i}"] .pos`); if(p) p.style.left=c.x+'%';
+    });
+    carRaf=moving?requestAnimationFrame(step):null;
+  };
+  carRaf=requestAnimationFrame(step);
+}
+$('carSpeed').oninput=()=>$('carSpeedV').textContent=$('carSpeed').value+'km';
+$('carMake').onclick=()=>{
+  if(cars.length>=5){ carLog('# 객체는 5개까지 만들 수 있어요. 「모두 지우기」 뒤 다시 만들어 보세요.'); return; }
+  carN++; const c={name:'car'+carN, kind:$('carKind').value, color:$('carColor').value, speed:+$('carSpeed').value, x:2, dir:0};
+  cars.push(c); carLog(`${c.name} = Car('${c.kind}', '${c.color}', ${c.speed})   # 02에서 배우는 모양`); carDraw(); carSave();
+};
+$('carClear').onclick=()=>{ cars=[]; carN=0; $('carLog').textContent=''; carDraw(); };
+carDraw();
+
+/* 01 Hero 클래스: 속성일까, 메소드일까? */
+sorter('heroSort',{
+  cats:[{n:'속성',k:'#9b4fc4'},{n:'메소드',k:'#e0702b'}],
+  items:[
+    {t:'남은 체력 점수',ic:'❤️',c:0,w:'캐릭터의 지금 상태를 나타내는 데이터예요.'},
+    {t:'이동 속도',ic:'🏃',c:0,w:'캐릭터마다 다를 수 있는 값으로, 상태를 나타내요.'},
+    {t:'가방에 든 아이템 목록',ic:'🎒',c:0,w:'지금 무엇을 가지고 있는지 나타내는 데이터예요(리스트로 저장할 수 있어요).'},
+    {t:'체력 회복',ic:'🧪',c:1,w:'체력 점수를 바꾸는 행동이라 함수로 만들어요.'},
+    {t:'점프',ic:'⤴️',c:1,w:'캐릭터가 하는 행동이에요.'},
+    {t:'다른 캐릭터에게 말 걸기',ic:'💬',c:1,w:'다른 객체와 주고받는 행동이에요. 객체들이 서로 상호 작용하며 프로그램이 돌아가요.'}
+  ],
+  end:'속성은 <b>상태(데이터)</b>, 메소드는 <b>행동(함수)</b>이에요. Hero 클래스 하나로 이름과 체력이 다른 캐릭터를 100명 만들 수 있어요.'
+});
+
+/* 02 한 줄씩 실행해 보기 */
+const RUN=[
+  {n:'예제 ② 생성자를 이용한 초기화',
+   code:["class Book:","    def __init__(self, title, author, year):","        self.title = title","        self.author = author","        self.year = year","","book1 = Book('톰 소여의 모험', '마크 트웨인', 1876)","book2 = Book('데미안', '헤르만 헤세', 1919)","","print(book1.title, book1.author, book1.year)","print(book2.title, book2.author, book2.year)"],
+   steps:[
+    {hl:[1,2,3,4,5],cls:'Book · 생성자 __init__(self, title, author, year)',note:'Book 클래스와 생성자 __init__()을 정의해요. 정의만 했을 뿐, 아직 실행되지는 않아요.'},
+    {hl:[7,2],self:'book1',set:{book1:{}},note:'Book(...)을 호출하면 새 객체가 만들어지면서 생성자 __init__()이 <b>자동으로</b> 호출돼요. self는 지금 만들어지는 book1을 가리켜요.'},
+    {hl:[3],self:'book1',set:{book1:{title:"'톰 소여의 모험'"}},note:'self.title = title → book1의 title 속성에 받은 값을 저장해요.'},
+    {hl:[4],self:'book1',set:{book1:{author:"'마크 트웨인'"}},note:'self.author = author'},
+    {hl:[5],self:'book1',set:{book1:{year:'1876'}},note:'생성자가 끝나면 속성이 모두 채워진 book1이 완성돼요.'},
+    {hl:[8,2,3,4,5],self:'book2',set:{book2:{title:"'데미안'",author:"'헤르만 헤세'",year:'1919'}},note:'book2를 만들 때도 같은 생성자가 자동으로 호출돼요. 이번에는 self가 book2를 가리켜요. 한 줄로 속성이 모두 저장됐어요.'},
+    {hl:[10],ask:{q:'10번 줄은 무엇을 출력할까?',o:['도서명 저자 0','데미안 헤르만 헤세 1919','톰 소여의 모험 마크 트웨인 1876'],a:2},out:'톰 소여의 모험 마크 트웨인 1876',note:'book1의 속성을 출력해요.'},
+    {hl:[11],out:'데미안 헤르만 헤세 1919',note:'클래스 하나로 속성이 다른 책 객체 두 개가 만들어졌어요. 객체를 생성하면서 속성도 함께 저장했어요.'}
+   ]},
+  {n:'예제 ① 클래스 정의 및 객체 생성 (선택)',
+   code:["class Book:","    title = '도서명'","    author = '저자'","    year = 0","","book1 = Book()","print(book1.title, book1.author, book1.year)","","book1.title = '톰 소여의 모험'","book1.author = '마크 트웨인'","book1.year = 1876","print(book1.title, book1.author, book1.year)"],
+   steps:[
+    {hl:[1,2,3,4],cls:"Book · title='도서명', author='저자', year=0",note:'Book 클래스(설계도)를 정의해요. 아직 객체는 하나도 없어요.'},
+    {hl:[6],set:{book1:{title:"'도서명'",author:"'저자'",year:'0'}},note:'Book()으로 객체 book1을 만들어요(인스턴스화). 클래스에 적힌 속성값을 그대로 가지고 만들어져요.'},
+    {hl:[7],ask:{q:'7번 줄은 무엇을 출력할까?',o:['도서명 저자 0','오류가 난다','톰 소여의 모험 마크 트웨인 1876'],a:0},out:'도서명 저자 0',note:'book1.title처럼 . 연산자로 속성값에 접근해요.'},
+    {hl:[9],set:{book1:{title:"'톰 소여의 모험'"}},note:'book1의 title 속성만 바뀌어요.'},
+    {hl:[10],set:{book1:{author:"'마크 트웨인'"}},note:'author 속성도 바꿔요.'},
+    {hl:[11],set:{book1:{year:'1876'}},note:'year 속성까지 바꿨어요.'},
+    {hl:[12],ask:{q:'12번 줄은 무엇을 출력할까?',o:['도서명 저자 0','도서명 마크 트웨인 1876','톰 소여의 모험 마크 트웨인 1876'],a:2},out:'톰 소여의 모험 마크 트웨인 1876',note:'객체를 만든 뒤 속성을 한 줄씩 바꿔 저장했어요. 책이 많아지면 이런 줄도 그만큼 늘어나요.'}
+   ]}
+];
+let runI=0, runPos=-1, runAsk=false;
+function runState(){
+  const R=RUN[runI], objs={}, out=[]; let cls='', self='', note='', hl=[];
+  for(let k=0;k<=runPos;k++){ const s=R.steps[k];
+    if(s.cls) cls=s.cls; if(s.set) for(const o in s.set){ objs[o]=Object.assign(objs[o]||{}, s.set[o]); }
+    if(s.out) out.push(s.out); self=s.self||''; note=s.note||''; hl=s.hl; }
+  return {cls,objs,out,self,note,hl};
+}
+function runDraw(chg){
+  const R=RUN[runI], S=runState(), nx=R.steps[runPos+1];
+  const objs=Object.keys(S.objs).map(o=>`<div class="cl-obj ${S.self===o?'self':''}"><b class="mono">${o}</b>${S.self===o?'<span class="slf">← self</span>':''}${Object.keys(S.objs[o]).length?Object.entries(S.objs[o]).map(([k,v])=>`<div class="mono ${chg&&chg[o]&&k in chg[o]?'chg':''}">.${k} = ${esc(v)}</div>`).join(''):'<div class="muted" style="font-size:.85rem">(속성이 아직 없음)</div>'}</div>`).join('');
+  $('runBox').innerHTML=`<div class="cl-run">
+    <pre class="cl-code" id="runCode"></pre>
+    <div class="cl-state">
+      <div class="cl-sec"><span class="cl-chd">클래스</span><div class="mono" style="font-size:.88rem">${S.cls?esc(S.cls):'<span class="muted">(아직 없음)</span>'}</div></div>
+      <div class="cl-sec"><span class="cl-chd">객체 상자</span><div class="cl-objrow">${objs||'<span class="muted" style="font-size:.88rem">(아직 없음)</span>'}</div></div>
+      <div class="cl-console"><span class="cl-chd">출력</span><div>${S.out.map(esc).join('<br>')||'<span class="muted">(아직 없음)</span>'}</div></div>
+      <div class="cl-note">${runPos<0?'「다음 줄」을 눌러 시작해요.':S.note}</div>
+      <div id="runAskBox"></div>
+      <div class="row"><button class="btn sm" id="runNext" ${nx?'':'disabled'}>${nx?'다음 줄 ▶':'끝까지 실행했어요'}</button><button class="btn ghost sm" id="runReset">처음부터</button></div>
+    </div></div>`;
+  clCode('runCode',R.code); clHl('runCode',S.hl);
+  $('runReset').onclick=()=>{runPos=-1;runAsk=false;runDraw();};
+  $('runNext').onclick=()=>{
+    if(!nx) return;
+    if(nx.ask&&!runAsk){
+      runAsk=true; clHl('runCode',nx.hl); $('runNext').disabled=true;
+      $('runAskBox').innerHTML=`<div class="cl-pred"><div class="q">🔮 ${nx.ask.q}</div><div class="row">${nx.ask.o.map((o,j)=>`<button class="btn ghost sm" data-j="${j}">${esc(o)}</button>`).join('')}</div><div class="fb"></div></div>`;
+      $('runAskBox').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+        const ok=+b.dataset.j===nx.ask.a;
+        $('runAskBox').querySelectorAll('button').forEach(x=>{x.disabled=true; if(+x.dataset.j===nx.ask.a) x.classList.add('ok');}); if(!ok) b.classList.add('ng');
+        $('runAskBox').querySelector('.fb').innerHTML=(ok?'<span class="ok">예측 성공!</span>':'<span class="ng">아쉬워요.</span>')+' 「다음 줄」을 눌러 실행해 확인해요.';
+        $('runNext').disabled=false;
+      });
+      return;
+    }
+    runAsk=false; runPos++; runDraw(nx.set);
+  };
+}
+tabs('runTabs','runTabsView',RUN.map(r=>({n:r.n,ic:'▶'})),(it,i)=>{ runI=i; runPos=-1; runAsk=false; setTimeout(runDraw,0); return ''; });
+
+clPred('pred2',[
+  {code:["class Pet:","    def __init__(self, name, age):","        self.name = name","        self.age = age","","p1 = Pet('콩이', 3)","p2 = Pet('보리', 5)","p1.age = p1.age + 1","print(p1.name, p1.age, p2.age)"],
+   q:'① 이 코드의 출력은?',o:['콩이 3 5','콩이 4 5','콩이 4 6'],a:1,w:'p1.age만 1 늘었어요. p2는 같은 클래스로 만들었어도 따로 있는 객체라서 그대로 5예요.'},
+  {code:["class Pet:","    def __init__(name, age):","        self.name = name","        self.age = age","","p1 = Pet('콩이', 3)"],
+   q:'② 이 코드를 실행하면?',o:['오류가 난다','아무것도 출력되지 않는다','콩이 3이 출력된다'],a:0,w:'생성자의 첫 번째 매개 변수 self를 빠뜨렸어요. 파이썬은 만들어지는 객체를 첫 번째 자리에 넘겨주므로, 받을 자리가 모자라 오류(TypeError)가 나요.'}
+]);
+
+/* 03 메소드: 출판된 지 몇 년? */
+clCode('yearCode',["from datetime import date","","class Book:","    def __init__(self, title, author, publish_year):","        self.title = title","        self.author = author","        self.publish_year = publish_year","","    def get_years_since_publication(self):","        current_year = date.today().year","        return current_year - self.publish_year","","book = Book('데미안', '헤르만 헤세', 1919)","print(book.get_years_since_publication())"]);
+const THIS_YEAR=new Date().getFullYear();
+$('yearOut').innerHTML=`<b>${THIS_YEAR-1919}</b> <span class="muted" style="font-size:.85rem">← 올해(${THIS_YEAR}년)에 실행한 결과예요. 교과서는 2024년 기준이라 105가 나와요.</span>`;
+function yearCalc(){ const y=Math.round(+$('yearIn').value);
+  $('yearRes').innerHTML=!isFinite(y)||!$('yearIn').value?'':(y>THIS_YEAR?`출판 연도가 올해보다 뒤라 결과가 ${THIS_YEAR-y}(음수)가 돼요.`:`<span class="mono">Book(…, ${y}).get_years_since_publication()</span> → <b>${THIS_YEAR-y}</b>`); }
+$('yearIn').oninput=yearCalc; yearCalc();
+
+/* 03 학급 문고 대여 프로그램 */
+clCode('rentCode',["class Book:","    def __init__(self, title, author):","        self.title = title","        self.author = author","        self.is_rented = False","    def __str__(self):","        return f'{self.title}'","","class Student:","    def __init__(self, id, name):","        self.id = id","        self.name = name","        self.rented_books = []","    def rent_book(self, book):","        if not book.is_rented:","            book.is_rented = True","            self.rented_books.append(book)","            return f'{self.name}에게 {book.title} 대여함.'","        else:","            return f'{book.title} 대여 중.'","","b1 = Book('어린 왕자', '생텍쥐페리')","b2 = Book('홍길동전', '허균')","s1 = Student(1, '김하늘')","s2 = Student(2, '박바다')"]);
+clPred('pred3',[
+  {q:'🔮 <span class="mono">s1.rent_book(b1)</span>을 실행한 뒤 <span class="mono">print(s2.rent_book(b1))</span>을 실행하면?',o:['어린 왕자 대여 중.','박바다에게 어린 왕자 대여함.','김하늘에게 어린 왕자 대여함.'],a:0,w:'b1의 is_rented가 이미 True라서 if not book.is_rented가 거짓이 되고, else 쪽이 실행돼요.'},
+  {q:'🔮 <span class="mono">print(b1)</span>을 실행하면?',o:['b1','어린 왕자','생텍쥐페리'],a:1,w:'Book 클래스에 __str__ 메소드가 title을 돌려주도록 정의되어 있어서, print(객체)를 쓰면 책 제목이 출력돼요.'}
+]);
+const RENT0=()=>({b1:{title:'어린 왕자',author:'생텍쥐페리',is_rented:false},b2:{title:'홍길동전',author:'허균',is_rented:false},s1:{id:1,name:'김하늘',rented_books:[]},s2:{id:2,name:'박바다',rented_books:[]}});
+let RS=RENT0(), rentOut=[];
+const rentPy=v=>Array.isArray(v)?'['+v.join(', ')+']':typeof v==='boolean'?(v?'True':'False'):typeof v==='number'?String(v):`'${v}'`;
+function rentDraw(chg){
+  $('rentObjs').innerHTML=Object.keys(RS).map(o=>`<div class="cl-obj"><b class="mono">${o}</b> <small class="muted">${o[0]==='b'?'Book':'Student'} 객체</small>${Object.entries(RS[o]).map(([k,v])=>`<div class="mono ${chg&&chg.includes(o+'.'+k)?'chg':''}">.${k} = ${esc(rentPy(v))}</div>`).join('')}</div>`).join('');
+  $('rentOut').innerHTML=rentOut.length?rentOut.map(esc).join('<br>'):'<span class="muted">(버튼을 눌러 실행해요)</span>';
+}
+function rentBook(s,b){ const S=RS[s], B=RS[b];
+  if(!B.is_rented){ B.is_rented=true; S.rented_books.push(b); return [`${S.name}에게 ${B.title} 대여함.`,[b+'.is_rented',s+'.rented_books']]; }
+  return [`${B.title} 대여 중.`,[]]; }
+const RCALLS=[
+  ['print(s1.rent_book(b1))',()=>rentBook('s1','b1')],
+  ['print(s2.rent_book(b1))',()=>rentBook('s2','b1')],
+  ['print(s2.rent_book(b2))',()=>rentBook('s2','b2')],
+  ['print(b1)',()=>[RS.b1.title,[]]],
+  ['print(len(s2.rented_books))',()=>[String(RS.s2.rented_books.length),[]]]
+];
+$('rentCalls').innerHTML=RCALLS.map((c,i)=>`<button class="btn sm mono" data-i="${i}">${esc(c[0])}</button>`).join('')+'<button class="btn ghost sm" id="rentReset">처음부터</button>';
+$('rentCalls').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{ const [o,ch]=RCALLS[+b.dataset.i][1](); rentOut.push('>>> '+RCALLS[+b.dataset.i][0]); rentOut.push(o); rentOut=rentOut.slice(-10); rentDraw(ch); });
+$('rentReset').onclick=()=>{ RS=RENT0(); rentOut=[]; rentDraw(); };
+rentDraw();
+
+/* 04 숫자 야구 한 판 */
+const BN=['하늘','바다','구름'];
+let BG=null;
+function ballNames(){ const n=+$('ballN').value; $('ballNames').innerHTML=Array.from({length:n},(_,i)=>`<label>${i+1}번째 이름 <input type="text" class="bnm" maxlength="6" value="${BN[i]}" style="width:80px"></label>`).join(''); }
+$('ballN').onchange=ballNames; ballNames();
+function ballSample(){ const a=[0,1,2,3,4,5,6,7,8,9]; for(let i=9;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,3); }
+function ballLog(s){ $('ballLog').textContent+=s+'\n'; $('ballLog').scrollTop=1e6; }
+function ballDraw(){
+  if(!BG){ $('ballObjs').innerHTML='<div class="cl-empty">게임을 시작하면 객체가 여기에 나타나요.</div>'; return; }
+  const pl=BG.players.map((p,i)=>`<div class="cl-obj ${!BG.over&&i===BG.turn?'self':''}"><b class="mono">players[${i}]</b> <small class="muted">Player 객체</small><div class="mono">.name = '${esc(p.name)}'</div><div class="mono">.numbers = ${BG.over||p.show?'['+p.numbers.join(', ')+']':'[?, ?, ?]'}</div></div>`).join('');
+  const gr=x=>'['+x.map(v=>v?'True':'False').join(', ')+']';
+  $('ballObjs').innerHTML=`<div class="cl-obj"><b class="mono">game</b> <small class="muted">Game 객체</small><div class="mono">.players = [${BG.players.map((_,i)=>'players['+i+']').join(', ')}]</div></div>
+    <div class="cl-objs2">${pl}</div>
+    <div class="cl-obj cl-local"><b>play() 안에서 쓰는 변수</b><div class="mono">game_round = ${BG.round}</div><div class="mono">game_result = ${gr(BG.result)}</div>${BG.last?`<div class="mono muted">지난 라운드 결과 = ${gr(BG.last)}</div>`:''}</div>`;
+}
+$('ballStart').onclick=()=>{
+  const names=[...document.querySelectorAll('.bnm')].map((x,i)=>x.value.trim()||BN[i]);
+  BG={players:names.map(n=>({name:n,numbers:ballSample()})),round:1,turn:0,result:[],last:null,over:false};
+  $('ballLog').textContent=''; ballLog('       <NUMERIC BASEBALL GAME>'); ballLog(`게임 참가자 숫자는?${names.length}`); names.forEach((n,i)=>ballLog(`${i+1}번째 참가자 이름 입력: ${n}`));
+  ballLog(`\n${'*'.repeat(15)} Round 1 ${'*'.repeat(15)}`);
+  $('ballTurn').style.display=''; $('ballWho').textContent=BG.players[0].name; $('ballIn').value=''; $('ballIn').focus(); ballDraw();
+};
+function ballGuess(){
+  if(!BG||BG.over) return;
+  const d=$('ballIn').value.replace(/[^0-9]/g,'');
+  if(d.length!==3){ $('ballIn').value=''; $('ballIn').placeholder='숫자 3개!'; return; }
+  const g=[...d].map(Number), P=BG.players[BG.turn]; let s=0,b=0;
+  for(let i=0;i<3;i++){ if(g[i]===P.numbers[i]) s++; else if(P.numbers.includes(g[i])) b++; }
+  ballLog(`${P.name}'s turn :  ${g.join(' ')}`); ballLog(`${s} Strike, ${b} Ball\n`); BG.lastJ=`${P.name} ${s} Strike, ${b} Ball`;
+  BG.result.push(s===3); BG.turn++;
+  if(BG.turn===BG.players.length){
+    if(BG.result.some(Boolean)){
+      BG.over=true; const w=BG.players.filter((_,i)=>BG.result[i]).map(p=>p.name);
+      ballLog('\n              <GAME OVER>'); ballLog('='.repeat(40)); w.forEach(n=>ballLog(`${n} Win!`)); ballLog('='.repeat(40));
+      MEMO.ballLog=`참가자 ${BG.players.length}명 · ${BG.round}라운드에 ${w.join(', ')} 승리`; store.set(MK,MEMO);
+      $('ballTurn').style.display='none';
+    } else { BG.last=BG.result; BG.result=[]; BG.turn=0; BG.round++; ballLog(`${'*'.repeat(15)} Round ${BG.round} ${'*'.repeat(15)}`); }
+  }
+  if(!BG.over) $('ballWho').textContent=BG.players[BG.turn].name;
+  $('ballIn').value=''; $('ballIn').focus(); ballDraw();
+}
+$('ballGo').onclick=ballGuess;
+$('ballIn').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); ballGuess(); } });
+$('ballGive').onclick=()=>{ if(!BG||BG.over) return; BG.over=true; MEMO.ballLog=`참가자 ${BG.players.length}명 · ${BG.round}라운드까지 · 정답 보기로 끝냄 · 마지막 판정 ${BG.lastJ||'없음'}`; store.set(MK,MEMO); ballLog('정답 공개: '+BG.players.map(p=>`${p.name} [${p.numbers.join(', ')}]`).join(' / ')); $('ballTurn').style.display='none'; ballDraw(); };
+ballDraw();
+
+clCode('strikeCode',["def check_strike(self, guessed_nums):  # strike와 ball 결과","    strike_count = ball_count = 0","    for i in range(3):","        if guessed_nums[i] == self.numbers[i]:  # 같은 위치끼리 비교","            strike_count += 1","        elif guessed_nums[i] in self.numbers:   # 정답에 있는지 검사","            ball_count += 1","    print(f'{strike_count} Strike, {ball_count} Ball')","    return strike_count == 3"]);
+clPred('pred4',[
+  {q:'① <span class="mono">self.numbers</span>가 <span class="mono">[4, 8, 6]</span>일 때 <span class="mono">check_strike([6, 8, 1])</span>이 출력하는 것은?',o:['1 Strike, 1 Ball','2 Strike, 0 Ball','0 Strike, 2 Ball'],a:0,w:'i=1에서 8과 8이 같은 자리라 스트라이크예요. i=0의 6은 자리는 다르지만 정답에 있어서 볼, 1은 정답에 없어요.'},
+  {q:'② <span class="mono">self.numbers</span>가 <span class="mono">[2, 7, 0]</span>일 때 <span class="mono">check_strike([0, 2, 7])</span>이 반환하는 값은?',o:['3','True','False'],a:2,w:'같은 자리의 숫자가 하나도 없어서 strike_count는 0이에요(0 Strike, 3 Ball). strike_count == 3이 아니므로 False를 반환해요.'}
+]);
+
+/* 04 (가) play() 순서 맞추기 */
+const PSTEP=['라운드 번호를 1로 정한다','게임이 끝날 때까지 아래 일을 되풀이한다','이번 라운드의 결과를 담을 빈 리스트를 만든다','「Round 1」처럼 라운드 번호를 출력한다','참가자마다 숫자 3개를 입력받아 check_strike()로 판정하고, 그 결과를 리스트에 넣는다','라운드 번호를 1 늘린다','check_gameover()로 끝났는지 확인하고, 끝났으면 반복을 멈춘다'];
+const PMIX=[4,1,6,0,3,5,2];
+let pSeq=[], pTry=0;
+function pOk(seq){ /* 1·2 처음, 3·4는 서로 바꿔도 됨, 5, 6·7은 서로 바꿔도 됨 */
+  const want=[[0],[1],[2,3],[2,3],[4],[5,6],[5,6]];
+  for(let i=0;i<seq.length;i++) if(!want[i].includes(seq[i])) return i;
+  return -1;
+}
+function pDraw(msg){
+  const box=$('playOrder');
+  box.innerHTML=`<div class="cl-order">
+    <div class="pool">${PMIX.map(k=>`<button class="cl-card" data-k="${k}" ${pSeq.includes(k)?'disabled':''}>${esc(PSTEP[k])}</button>`).join('')}</div>
+    <ol class="seq">${pSeq.map((k,i)=>`<li class="${i>=2?'in':''}">${esc(PSTEP[k])}</li>`).join('')||'<li class="e">카드를 눌러 순서대로 놓아요</li>'}</ol>
+    <div class="row"><button class="btn sm" id="pCheck" ${pSeq.length<7?'disabled':''}>순서 확인</button><button class="btn ghost sm" id="pUndo">하나 빼기</button><button class="btn ghost sm" id="pReset">다시</button></div>
+    <div class="fb">${msg||''}</div></div>`;
+  box.querySelectorAll('.cl-card').forEach(b=>b.onclick=()=>{ pSeq.push(+b.dataset.k); pDraw(); });
+  $('pUndo').onclick=()=>{ pSeq.pop(); pDraw(); };
+  $('pReset').onclick=()=>{ pSeq=[]; pDraw(); };
+  $('pCheck').onclick=()=>{
+    pTry++; const bad=pOk(pSeq);
+    if(bad<0){ MEMO.playOrderRes=`순서 맞추기 성공(${pTry}번째 시도)`; store.set(MK,MEMO);
+      pDraw('<span class="ok">맞아요!</span> 두 번째 카드(되풀이) 뒤의 일은 모두 <b>while 반복 안쪽</b>에 들여 써요. 빈 리스트 만들기와 라운드 출력, 라운드 번호 늘리기와 끝났는지 확인하기는 서로 순서를 바꿔도 결과가 같아요(교과서 코드에서는 라운드 번호 늘리기 → 끝났는지 확인하기 순서예요). 이제 이 순서를 주석 삼아 코랩에서 (가)를 채워 보세요.'); }
+    else pDraw(`<span class="ng">${bad+1}번째 카드부터 다시 생각해 봐요.</span> ${bad<2?'게임을 되풀이하기 전에 무엇을 준비해야 할까요?':bad<5?'라운드가 시작될 때 할 일과, 참가자들이 추측하는 일 가운데 무엇이 먼저일까요?':'한 라운드가 끝난 뒤에 할 일을 생각해 봐요.'}`);
+  };
+}
+pDraw();
+chips('ckClass','ckClass',['클래스와 객체를 생성하여 프로그램을 작성할 수 있다'],true);
+
+/* 05 개념 정리 빈칸 */
+document.querySelectorAll('.cl-blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+
+/* 05 런 길이 부호화 함수 따라가기 */
+clCode('rleCode',["def run_length_encoding(text):","    a = text[0]","    cnt = 0","    for i in text:","        if i == a[-1]:","            cnt += 1","        else:","            a = a + str(cnt) + i","            cnt = 1","    a = a + str(cnt)","    print(a)","    return a","","run_length_encoding('BBBWWB')"]);
+clPred('pred5',[
+  {q:"🔮 <span class=\"mono\">run_length_encoding('BBBWWB')</span>가 출력하는 값은?",o:['B3W3','B3W2B1','BWB321'],a:1,w:'같은 문자가 이어지는 동안 cnt를 세고, 다른 문자가 나오면 그때까지의 개수와 새 문자를 a에 붙여요. 마지막 B 하나는 반복이 끝난 뒤 a = a + str(cnt)로 붙어요.'}
+]);
+let rle=null;
+function rleInit(){ const t=$('rleIn').value.replace(/\s/g,''); rle={t,k:0,a:t?t[0]:'',cnt:0,done:false,rows:[]};
+  rle.rows.push(t?['시작','–','–','–','a = text[0], cnt = 0',0,rle.a]:['–','–','–','–','문자열을 넣어 주세요','','']); rleDraw(); }
+function rleOne(){
+  if(!rle||!rle.t||rle.done) return;
+  if(rle.k<rle.t.length){ const i=rle.t[rle.k], last=rle.a[rle.a.length-1], same=i===last;
+    if(same){ rle.cnt++; rle.rows.push([rle.k+1+'번째',i,last,'같다','cnt += 1',rle.cnt,rle.a]); }
+    else { rle.a=rle.a+rle.cnt+i; rle.cnt=1; rle.rows.push([rle.k+1+'번째',i,last,'다르다','a = a + str(cnt) + i, cnt = 1',rle.cnt,rle.a]); }
+    rle.k++;
+  } else { rle.a=rle.a+rle.cnt; rle.done=true; rle.rows.push(['반복 끝','–','–','–','a = a + str(cnt)',rle.cnt,rle.a]); }
+  rleDraw();
+}
+function rleDraw(){
+  $('rleTbl').innerHTML='<tr><th>반복</th><th>i</th><th>a[-1]</th><th>i == a[-1]</th><th class="l">한 일</th><th>cnt</th><th>a</th></tr>'+rle.rows.map((r,j)=>`<tr class="${j===rle.rows.length-1?'now':''}">${r.map((c,x)=>`<td class="${x===4?'l':''} ${x>=5?'mono':''}">${esc(String(c))}</td>`).join('')}</tr>`).join('')+(rle.done?`<tr class="end"><td colspan="7">출력: <b class="mono">${esc(rle.a)}</b></td></tr>`:'');
+  $('rleStep').disabled=!rle.t||rle.done; $('rleAll').disabled=!rle.t||rle.done;
+}
+$('rleStep').onclick=rleOne;
+$('rleAll').onclick=()=>{ let g=0; while(rle&&rle.t&&!rle.done&&g++<40) rleOne(); };
+$('rleReset').onclick=rleInit;
+$('rleIn').oninput=rleInit;
+rleInit();
+chips('ckProg','ckProg',['프로그래밍으로 해결할 수 있는 문제를 설명할 수 있다','프로그래밍하기 위해 알고리즘을 설계하고 구현할 수 있다','협력적으로 문제를 해결하려는 태도를 평가하는 항목을 나열할 수 있다'],true);
+
+/* 06 마무리 */
+const MEMOLIST=[['planClass','처음 생각 · 캐릭터 100명 코드'],['carMade','내가 만든 자동차 객체'],['classWhy','클래스와 객체의 관계'],['initWhy','생성자를 쓰면 달라지는 점'],['methodWhy','s2가 b1을 빌리지 못한 까닭'],['ballLog','숫자 야구 한 판 결과'],['playOrderRes','play() 순서 맞추기'],['playPlan','play()에서 되풀이할 일과 멈추는 조건'],['colabRes','코랩 실행 결과'],['ckClass','성취도 · 클래스와 객체'],['dailyProg','생활 속 프로그래밍으로 해결하는 문제'],['evalAdd','협력 태도 평가 항목과 내 점수'],['ckProg','학업 성취도 점검'],['keyQ','핵심 질문에 대한 내 답'],['newLearn','새롭게 알게 된 점']];
+onShow[6]=()=>{ const v=(MEMO.planClass||'').trim(); $('planShow').innerHTML=v?esc(v):'<span class="muted">(시작 화면에 쓴 생각이 없어요)</span>'; memoSummary('msum',MEMOLIST); };
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

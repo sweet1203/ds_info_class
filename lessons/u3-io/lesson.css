@@ -1,0 +1,95 @@
+  /* ── 공통: 코드 상자 · 한 줄씩 실행하기 ── */
+  pre.py-code{counter-reset:ln;background:#14243a;color:#e8eef7;border-radius:12px;padding:12px 0;margin:8px 0;overflow-x:auto;font:14.5px/1.65 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;-webkit-user-select:none;user-select:none}
+  pre.py-code .l{display:block;padding:0 16px 0 0;white-space:pre;min-height:1.65em;border-left:4px solid transparent}
+  pre.py-code .l::before{counter-increment:ln;content:counter(ln);display:inline-block;width:2.2em;margin-right:14px;text-align:right;color:#6f86a3}
+  pre.py-code i{font-style:normal}
+  pre.py-code .s{color:#9fe0b8} pre.py-code .c{color:#8ea3bd} pre.py-code .k{color:#ffb86b} pre.py-code .b{color:#7cc7ff} pre.py-code .n{color:#f5d76e}
+  pre.py-out,.py-con{background:#f6f8f4;border:1px solid #d9e6d3;border-left:5px solid var(--mint);border-radius:10px;padding:10px 14px;margin:6px 0 10px;overflow-x:auto;font:14.5px/1.6 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;color:#1d2b1a}
+  pre.py-out::before{content:"실행 결과";display:block;font:700 .75rem "Noto Sans KR",sans-serif;color:var(--mint);margin-bottom:2px}
+  .py-con{white-space:pre-wrap;word-break:break-word}
+  .py-con .err{color:var(--red);font-weight:700}
+  .py-pair{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;align-items:start}
+  .py-pair>*{min-width:0}
+  @media (max-width:860px){.py-pair{grid-template-columns:1fr}}
+  .py-tr{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#fbfaf7;border:1px solid var(--line);border-radius:14px;padding:14px}
+  .py-tr>*{min-width:0}
+  @media (max-width:860px){.py-tr{grid-template-columns:1fr}}
+  .py-hd{font-size:.78rem;font-weight:900;color:var(--muted);letter-spacing:.04em;margin:2px 0}
+  .py-live .l.next{background:rgba(242,165,22,.18);border-left-color:var(--amber)}
+  .py-live .l{position:relative}
+  .py-live .l.next::after{content:"◀ 다음에 실행할 줄";position:absolute;right:6px;top:2px;background:#14243a;padding:0 4px;border-radius:4px;color:var(--amber);font:700 .72rem "Noto Sans KR",sans-serif}
+  .py-live .l.cur{background:rgba(95,211,165,.16);border-left-color:#5fd3a5}
+  .py-ctl{align-items:center;gap:8px}
+  .py-cnt{font-size:.85rem;color:var(--muted);margin-left:auto}
+  .py-q{background:#fff;border:2px solid var(--amber);border-radius:12px;padding:10px 14px;margin-top:10px}
+  .py-q .row{margin:8px 0 4px;gap:8px}
+  .py-q button.right{background:var(--mint);color:#fff;border-color:var(--mint);opacity:1}
+  .py-q button.wrong{background:#fde8e6;color:var(--red);border-color:var(--red);opacity:1}
+  .py-q .fb{font-size:.92rem}
+  .py-end{margin-top:10px;background:#eef8f3;border-radius:10px;padding:8px 12px;font-size:.92rem}
+  table.py-vars{width:100%;border-collapse:collapse;background:#fff;font-size:.92rem;margin-bottom:10px}
+  table.py-vars th,table.py-vars td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:middle}
+  table.py-vars th{background:var(--acc-soft);font-size:.8rem}
+  table.py-vars td:first-child{white-space:nowrap;font-weight:700}
+  table.py-vars td:last-child{color:var(--acc);font-weight:700;white-space:nowrap}
+  table.py-vars tr.chg td{animation:pyflash 1.2s ease}
+  @keyframes pyflash{0%{background:#fff3c9}100%{background:#fff}}
+  .py-sc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem}
+  .py-list{display:flex;flex-wrap:wrap;gap:4px}
+  .py-list span{display:flex;flex-direction:column;align-items:center;border:2px solid var(--acc);border-radius:8px;padding:2px 8px;min-width:46px;background:#fff}
+  .py-list b{font:600 .9rem ui-monospace,Menlo,Consolas,monospace}
+  .py-list small{font-size:.72rem;color:var(--acc);font-weight:700}
+  .py-dict{display:flex;flex-wrap:wrap;gap:4px}
+  .py-dict span{display:flex;flex-direction:column;align-items:center;border:2px solid #9b4fc4;border-radius:8px;overflow:hidden;background:#fff;min-width:52px}
+  .py-dict small{background:#f3e9f9;color:#6d2f91;font:700 .74rem ui-monospace,Menlo,Consolas,monospace;padding:1px 8px;width:100%;text-align:center}
+  .py-dict b{font:600 .9rem ui-monospace,Menlo,Consolas,monospace;padding:1px 8px}
+  .py-dict2{display:grid;gap:4px}
+  .py-dict2>div{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .py-dict2>div>small{font:700 .8rem ui-monospace,Menlo,Consolas,monospace;color:#6d2f91;min-width:52px}
+  .py-scroll{overflow-x:auto}
+  table.py-grid{border-collapse:collapse;font:600 .86rem ui-monospace,Menlo,Consolas,monospace;background:#fff}
+  table.py-grid th{font:700 .72rem "Noto Sans KR",sans-serif;color:var(--acc);padding:2px 6px}
+  table.py-grid td{border:2px solid var(--acc);padding:2px 8px;text-align:center;min-width:44px}
+  /* 성취도 평가 · 개념 정리 · 선택 */
+  .py-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .py-ck>b{font-size:.92rem;color:var(--mint)}
+  .py-ck .chk button.on::before{content:"✔ "}
+  .py-blanks{padding-left:22px}
+  .py-blanks li{margin:8px 0}
+  .py-blank{min-width:96px;border:2px dashed var(--acc);background:var(--acc-soft);border-radius:8px;font:inherit;font-weight:700;color:var(--acc);cursor:pointer;padding:0 8px}
+  .py-blank.on{border-style:solid;background:#fff}
+  .py-more{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:8px 14px;background:#fff}
+  .py-more>summary{cursor:pointer;font-weight:700}
+  .py-tbl{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .py-tbl th,.py-tbl td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  .py-tbl tr:first-child th{background:var(--acc-soft);text-align:center}
+  .py-tbl td.c,.py-tbl th.c{text-align:center;white-space:nowrap}
+  .py-tbl code,.py-code-in{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem}
+  .py-steps{margin:6px 0;padding-left:22px;font-size:.94rem}
+  .py-steps li{margin:4px 0}
+  .py-colab{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+  .py-nb{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
+  .py-nb>div{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k);font-size:.9rem}
+  .py-nb>div b{display:block;font-size:.95rem}
+  @media (max-width:900px){.py-nb{grid-template-columns:1fr 1fr}}
+  /* ── 이 차시 ── */
+  .io-syn{text-align:center;margin:6px 0 10px}
+  .io-syn .mono{display:inline-block;font-size:1.05rem;background:#fff;border:2px solid var(--acc);border-radius:999px;padding:6px 20px}
+  .io-syn b{color:var(--acc)}
+  .io-ver,.io-sn{margin-bottom:6px}
+  .io-con,.io-con2{min-height:120px;max-height:260px;overflow-y:auto}
+  .io-con .err,.io-con2 .err{color:var(--red);font-weight:700}
+  .io-con .muted,.io-con2 .muted{font-family:"Noto Sans KR",sans-serif;font-size:.85rem}
+  .io-inl{display:flex;align-items:center;flex-wrap:wrap}
+  .io-inl input{font:inherit;border:0;border-bottom:2px solid var(--amber);background:#fffbea;padding:0 6px;width:9em;outline:none}
+  .io-sep{color:var(--muted);font-size:.8rem;margin-top:4px}
+  .io-txt{margin:2px 0 4px;font-size:.9rem}
+  .io-txt input{font:15px ui-monospace,Menlo,Consolas,monospace;margin-left:6px;padding:4px 8px;border:2px solid var(--line);border-radius:8px;width:14em}
+  .io-mis{display:grid;gap:6px;margin-top:10px;font-size:.9rem}
+  .io-mis>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+  .io-mis>div.done{border-color:var(--mint);background:#eef8f3}
+  .io-folder{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:10px;min-height:70px}
+  .io-file b{font-size:.9rem}
+  .io-file ol{margin:4px 0 0;padding-left:28px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;background:#fffef6;border:1px dashed #e7d9a8;border-radius:8px}
+  .io-file li i{font-style:normal;color:#b9a25a;margin-left:4px;font-size:.8rem}
+  .io-prev{background:#fbfaf7;border-left:4px solid var(--amber);border-radius:8px;padding:8px 12px;margin:0 0 12px;font-size:.93rem}

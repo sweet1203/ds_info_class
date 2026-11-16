@@ -1,0 +1,277 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 협력적 창의·융합 프로젝트</span>
+      <h1>화성 여행,<br>얼마나 걸릴까?</h1>
+      <div class="story"><b>프로그래머가 되어 보자</b><br>2015년 개봉한 미국 영화 「마션」에서는 주인공이 화성 탐사 도중 홀로 남겨져요. 살아남기 어려워 보이는 화성에서 특유의 긍정적인 사고방식으로 문제를 하나씩 해결해 나가요. 그렇다면 우리가 화성까지 여행한다고 가정하면, 화성까지는 얼마나 걸릴까요?</div>
+      <p>오늘은 모둠이 함께 <b>지구에서 태양계의 특정 행성까지 여행하는 데 걸리는 시간</b>을 계산하는 파이썬 프로그램을 설계해요. <b>문제 발견 → 추상화 → 알고리즘 설계</b>까지 화면에서 하고, 프로그램 작성은 코랩 노트북으로 이어서 해요. 그다음 프로그래머의 이야기를 읽고, 발표를 준비한 뒤 Ⅲ단원 전체를 정리해요.</p>
+      <ol>
+        <li>문제 발견 · 추상화</li><li>알고리즘 설계</li><li>진로: 프로그래머</li>
+        <li>발표 준비 · 성찰 · 평가</li><li>Ⅲ단원 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 할 일 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🔭</i><div><b>문제 발견</b><small>비슷한 사례 찾기 · 문제 정의</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🧩</i><div><b>추상화</b><small>핵심 요소 · 입력과 출력 · 데이터</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🗺️</i><div><b>알고리즘 설계</b><small>순서도 · 여행 시간 함수</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>💻 🪐</i><div><b>프로그램 작성</b><small>코랩 노트북 · 다음 시간</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>「프로그래머」가 되려면 다양한 분야의 문제를 해결하는 프로그래밍 능력을 길러야 해요. 모둠별로 <b>화성 여행 문제</b>를 정의하고, Ⅲ단원에서 배운 <b>추상화 · 알고리즘 설계 · 딕셔너리 · 함수</b>를 이용해 프로그램의 설계도를 만들어요. 설계는 <b>프로젝트 카드</b>로 정리해 발표를 준비해요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">모둠 정하기</span>
+        <div class="memo">
+          <label>모둠명</label><input type="text" data-memo="team" placeholder="예: 붉은 행성 탐사대"><div class="saved"></div>
+          <label>모둠원과 역할 <small>예: 자료 찾기, 추상화 정리, 순서도 그리기, 발표, 시간 관리</small></label><textarea data-memo="roles" rows="2"></textarea><div class="saved"></div>
+        </div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>알고리즘</b> · 복잡한 문제를 분해하여 모델링하기 위해 필요한 과정은 무엇일까?</li>
+          <li><b>프로그래밍</b> · 협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">50분 계획</span>
+        <ul>
+          <li>모둠 정하기 <b>2분</b> → 문제 발견 · 추상화 <b>9분</b></li>
+          <li>알고리즘 설계 <b>12분</b> → 진로 <b>5분</b></li>
+          <li>발표 준비 <b>8분</b> → 단원 정리 <b>8분</b> → 마무리 <b>6분</b></li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">모둠이 함께 이야기하되, 메모는 각자 내 화면에 적어요. 프로그램 작성은 노트북으로 다음 시간에 이어서 해요.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 문제 발견부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 문제 발견 · 추상화 -->
+<section class="page" data-name="문제 발견 · 추상화" data-acc="#9b4fc4">
+  <div class="head"><div class="num">01</div><div><h2>문제 발견하기 · 추상화하기</h2><p>교과서 154~155쪽 · 프로젝트 1~2단계 (93~98쪽 복습)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>먼저 비슷한 사례를 떠올려 <b>문제를 정의</b>해요. 그다음 문제와 관련한 요소를 늘어놓고, 그 가운데 꼭 필요한 <b>핵심 요소</b>만 뽑아 <b>입력</b>과 <b>출력</b>으로 나눠요. 이것이 <b>추상화</b>예요.</span></div>
+  <div class="card">
+    <h3>🔭 1. 문제 발견하기</h3>
+    <p style="margin-top:0">위 이야기와 비슷한 사례를 찾아 나열하고 문제를 정의해요. 인터넷 검색은 선생님이 안내하는 범위에서 짧게 해요.</p>
+    <div class="cards3">
+      <div class="kc" style="--k:#2f6fd0"><h4>🚀 탐사선</h4><p>사람이 만든 탐사선이 다른 행성까지 가는 데 얼마나 걸렸을까?</p></div>
+      <div class="kc" style="--k:#1f9d74"><h4>🌕 가까운 곳</h4><p>달처럼 가까운 천체까지 가는 여행과 비교하면 어떨까?</p></div>
+      <div class="kc" style="--k:#e0702b"><h4>🎬 이야기 속</h4><p>영화나 소설 속 우주여행은 얼마나 걸린다고 나올까?</p></div>
+    </div>
+    <div class="memo">
+      <label>찾은 사례 <small>(선택) 사례와 출처를 짧게, 시간이 없으면 건너뛰어요</small></label><textarea data-memo="caseNote" rows="2" placeholder="예: ○○ 탐사선이 ○○까지 가는 데 ○년 걸림 (출처: …)"></textarea><div class="saved"></div>
+      <label>문제 정의 <small>누가 무엇을 알고 싶은지, 「~을 계산하는 프로그램」으로 끝맺어요</small></label><textarea data-memo="problemDef" rows="2"></textarea>
+      <div class="saved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🧩 2. 추상화하기</h3>
+    <div class="callout" style="margin-top:0">추상화 단계에서 고려해야 할 요소로는 <b>행성의 공전 주기</b>, <b>행성으로부터 태양까지의 평균 거리</b> 등이 있어요.</div>
+    <div class="memo">
+      <label>문제 해결과 관련한 요소 고르기 <small>계산에 꼭 필요한 요소만 골라요. 필요 없는 요소는 빼는 것이 추상화예요.</small></label><div id="factorPick"></div>
+      <label>더 떠오른 관련 요소</label><input type="text" data-memo="factorEtc" placeholder="예: …">
+      <div class="saved"></div>
+    </div>
+    <h4 style="margin:16px 0 4px">❶ 핵심 요소를 입력 요소와 출력 요소로 구분하기</h4>
+    <p class="note" style="margin-top:0">어떤 내용을 입력해서 어떤 결과를 얻을 것인지는 위에서 고른 관련 요소를 참고해요.</p>
+    <div class="grid2 even">
+      <div class="memo" style="margin-top:0"><label>📥 입력</label><textarea data-memo="inputs" rows="2"></textarea><div class="saved"></div></div>
+      <div class="memo" style="margin-top:0"><label>📤 출력</label><textarea data-memo="outputs" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📊 ❷ 관련 데이터 수집 및 탐색하기</h3>
+    <p style="margin-top:0">각 행성의 공전 주기, 행성으로부터 태양까지의 평균 거리 등을 수집해요. 아래는 교과서 156쪽의 데이터예요. 행성을 눌러 값을 살펴보세요. 데이터를 모을 때 생성형 인공지능을 이용할 수도 있지만, 얻은 값은 다른 자료와 비교해 확인해요.</p>
+    <div class="r3-data">
+      <div class="r3-tw"><table class="tbl r3-ptbl" id="planetTbl"></table></div>
+      <div><svg viewBox="0 0 420 210" class="r3-orbit" id="orbitSvg" role="img" aria-label="태양에서 행성까지의 평균 거리 비교"></svg><div class="r3-pinfo" id="planetInfo"></div></div>
+    </div>
+    <p class="note">이 데이터는 노트북에 <b>딕셔너리</b>로 들어 있어요(126~128쪽). 거리는 단위가 km, 공전 주기는 단위가 일(day)이에요.</p>
+  </div>
+</section>
+
+<!-- 2 알고리즘 설계 -->
+<section class="page" data-name="알고리즘 설계" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>알고리즘 설계하기</h2><p>교과서 156쪽 · 프로젝트 3단계 (99~101쪽 · 132~145쪽 복습)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>추상화한 내용으로 프로그램이 할 일을 <b>순서대로</b> 적어요. 한 줄에 한 단계씩 적으면 옆에 <b>순서도</b>가 그려져요. 지구와 행성 사이의 여행 시간을 계산하는 부분은 <b>함수</b>로 만들어 써요.</span></div>
+  <div class="card">
+    <h3>🗺️ 3. 알고리즘 설계하기</h3>
+    <p style="margin-top:0">교과서에 주어진 ①, ② 다음 단계를 채워 알고리즘을 완성해요.</p>
+    <div class="r3-algo">
+      <div class="memo" style="margin-top:0">
+        <label>한 줄에 한 단계씩 <small>③부터 이어 써요</small></label>
+        <textarea data-memo="algoSteps" id="algoIn" rows="10">① 행성의 공전 주기 입력(자료형: 딕셔너리)
+② 행성으로부터 태양까지의 평균 거리 입력(자료형: 딕셔너리)
+③ </textarea>
+        <div class="saved"></div>
+        <div class="r3-legend">
+          <span><i class="fn"></i>「함수」가 들어간 줄</span>
+          <span><i class="io"></i>「입력」이나 「출력」이 들어간 줄</span>
+          <span><i class="if"></i>「만약」, 「반복」으로 시작하거나 「?」로 끝나는 줄 — 조건 표시만 해요(갈래 화살표는 그리지 않아요)</span>
+          <span><i class="pr"></i>그 밖의 처리</span>
+        </div>
+      </div>
+      <div class="r3-flow" id="flowView"></div>
+    </div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🧮 여행 시간을 계산하는 함수 설계</h3>
+      <div class="memo" style="margin-top:0"><label>함수가 받는 값, 계산 방법, 돌려주는 값 <small>함수는 def로 정의하고 return으로 값을 돌려줘요(144~145쪽)</small></label><textarea data-memo="funcPlan" rows="5" placeholder="함수 이름: &#10;받는 값(매개 변수): &#10;계산 방법: &#10;돌려주는 값: "></textarea><div class="saved"></div></div>
+    </div>
+    <details class="card r3-opt">
+      <summary>🤖 생성형 인공지능에게 물어보기 <span class="muted" style="font-weight:400;font-size:.88rem">(선택)</span></summary>
+      <p style="margin-top:6px;font-size:.93rem">태양계, 행성, 공전, 여행 시간, 특정 날짜 등의 키워드를 넣어 함수 구현을 요구하는 질문을 써 보고, 실제로 질문해 받은 알고리즘이 맞는지 동료와 함께 평가해요. 학교에서 쓸 수 있는 도구는 선생님 안내를 따라요.</p>
+      <div class="memo">
+        <label>질문 내용 <small>구체적으로</small></label><textarea data-memo="aiAsk" rows="2"></textarea><div class="saved"></div>
+        <label>받은 답 평가 <small>우리 설계와 같은 점, 다른 점, 믿기 어려운 점</small></label><textarea data-memo="aiCheck" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <div class="card">
+    <h3>🗂️ 우리 모둠 프로젝트 카드 <span class="muted" style="font-weight:400;font-size:.88rem">(적은 내용이 바로 나타나요)</span></h3>
+    <div id="projCard"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 진로 -->
+<section class="page" data-name="진로" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>컴퓨터 언어계의 통역사, 프로그래머</h2><p>교과서 158쪽 · 상상을 현실로 도전하는 사람들</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>프로그래밍은 아이디어와 코딩 로직을 기계 언어로 해석해 현실을 바꿀 수 있는 힘을 줘요. <b>프로그래머</b>는 컴퓨터 소프트웨어의 기술적인 문제를 해결하고, 새로운 소프트웨어 애플리케이션을 만드는 데 중요한 역할을 해요. 카드를 눌러 인터뷰 내용을 확인해 봐요.</span></div>
+  <div class="tcards" id="careerCards"></div>
+  <div class="card" style="margin-top:18px">
+    <h3>🪪 나의 진로 카드</h3>
+    <div class="memo">
+      <label>내가 일상에서 겪은 불편함 가운데 프로그램으로 해결하고 싶은 것과, 그 프로그램을 누구에게 써 보게 할지</label><textarea data-memo="career" rows="2" placeholder="예: 동아리 모임 시간을 정할 때마다 오래 걸린다 → 모두가 되는 시간을 찾아 주는 프로그램, 동아리 친구들에게 써 보게 하기"></textarea>
+      <label>프로그래머로 성장하려면 내가 기르고 싶은 역량 <small>여럿 골라도 돼요</small></label><div id="careerSkill"></div>
+      <div class="saved"></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 발표 준비 · 성찰 · 평가 -->
+<section class="page" data-name="발표 준비" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>발표 준비 · 평가 및 성찰하기</h2><p>교과서 156~157쪽 · 프로젝트 4~5단계와 평가</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>02에서 완성한 <b>프로젝트 카드</b>를 보며 <b>1분 발표</b>를 준비해요. 그리고 프로그램을 만든 뒤 확인할 것과, 실제 화성 여행에서 <b>추가로 고려해야 할 내용</b>을 모둠이 토의해요.</span></div>
+  <div class="card">
+    <h3>🎤 1분 발표: 프로젝트 카드를 보고 말하기</h3>
+    <p style="margin-top:0">대본을 따로 쓰지 않아요. 카드를 위에서부터 <b>문제 → 핵심 요소(입력과 출력) → 알고리즘 → 함수</b> 순서로 짚으며 말해요. 모둠원이 칸을 나눠 맡아도 좋아요.</p>
+    <div id="projCard2"></div>
+    <div class="memo"><label>내가 맡은 칸과 덧붙일 한마디 <small>한두 문장</small></label><textarea data-memo="pitch" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>🔎 5. 평가 및 성찰하기 · ❷ 추가로 고려해야 할 내용 토의하기</h3>
+    <div class="callout" style="margin-top:0">실제 화성 여행에서는 왜 <b>특정 날짜에 출발하는 것</b>을 고려하는 걸까? 자료를 찾아보고 이유를 모둠원들과 토의해요.</div>
+    <p class="note">생각할 거리: 156쪽 데이터에는 왜 행성의 <b>공전 주기</b>가 들어 있을까요? 행성들은 한자리에 가만히 있을까요?</p>
+    <div class="memo"><label>우리 모둠이 생각한 이유와, 프로그램이나 알고리즘에 더할 점</label><textarea data-memo="dateWhy" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>💻 4. 프로그램 작성하기 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다음 시간)</span></h3>
+    <p style="margin-top:0">설계한 알고리즘을 토대로 파이썬으로 프로그램을 구현하고 결과를 확인해요. 노트북에 행성 데이터(딕셔너리)와 단계별 빈 셀, 힌트가 있어요. 프로그램 작성이 어려운 모둠은 생성형 인공지능을 활용하되, 질문 내용은 구체적으로 써요.</p>
+    <p style="margin:0 0 8px"><b>❶ 결과 확인하기</b> 프로그램이 오류 없이 실행되는지 확인하고, 손으로 계산한 값이나 생성형 인공지능의 답과 비교해요.</p>
+    <div class="row"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-review/assets/mars_travel.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="mars_travel.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <div class="memo"><label>실행 결과와 확인한 점 <small>예: 화성까지 ○일 · 손 계산과 같음</small></label><input type="text" data-memo="progRes"><div class="saved"></div></div>
+  </div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✅ 자기 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(잘한 것을 모두 골라요)</span></h3>
+      <div id="selfEval"></div>
+      <h4 style="margin-top:14px">이 프로젝트로 길러진 역량</h4>
+      <div id="compPick"></div>
+    </div>
+    <details class="card r3-opt">
+      <summary>👂 동료 평가 <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 다른 모둠 발표를 들은 뒤)</span></summary>
+      <div class="memo">
+        <label>가장 좋았던 모둠과 그 까닭 <small>평가 기준의 말로</small></label><textarea data-memo="peer" rows="3"></textarea><div class="saved"></div>
+        <label>그 모둠에 건넬 질문이나 제안 하나</label><textarea data-memo="peerAsk" rows="2"></textarea>
+        <div class="saved"></div>
+      </div>
+    </details>
+  </div>
+  <details class="card r3-opt">
+    <summary>📋 평가 기준 보기 (눌러서 펼치기)</summary>
+    <div class="r3-tw"><table class="tbl">
+      <tr><th class="l">항목</th><th class="l">평가 기준</th></tr>
+      <tr><td><b>주제 선정</b></td><td>주제는 프로그래밍으로 해결하기 적절하였는가?</td></tr>
+      <tr><td rowspan="4"><b>해결 과정</b></td><td>추상화 과정은 문제 해결에 도움되었는가?</td></tr>
+      <tr><td>프로그래밍에 맞게 알고리즘을 설계하였는가?</td></tr>
+      <tr><td>생성형 인공지능을 활용하였는가?</td></tr>
+      <tr><td>프로그램을 보완할 부분에 대한 의견을 제시하였는가?</td></tr>
+      <tr><td rowspan="2"><b>평가 및 성찰</b></td><td>결과는 오류 없이 실행되었는가?</td></tr>
+      <tr><td>모둠원이 서로 협력하여 문제를 해결하였는가?</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<!-- 5 단원 정리 -->
+<section class="page" data-name="Ⅲ단원 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>Ⅲ단원 정리: 알고리즘과 프로그래밍</h2><p>교과서 159쪽 · 주요 개념 정리 (93~153쪽)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>복잡한 문제를 <b>분해하고 모델링해 알고리즘을 설계</b>하는 방법과, 그 알고리즘을 <b>파이썬으로 구현</b>하는 방법을 한 번에 돌아봐요. 먼저 분류 게임을 하고, 아래 퀴즈로 확인해요.</span></div>
+  <div class="cards2">
+    <div class="kc" style="--k:#2f6fd0"><div class="ic">🧠</div><h4>1. 알고리즘</h4><p>문제 상태 · 문제 해결 과정 · 문제 분해 · 모델링 · 추상화 · 알고리즘 설계와 성능 평가(수행 시간, 기억 공간) · 정렬(버블 정렬, 삽입 정렬, 퀵 정렬) · 탐색(순차 탐색 알고리즘, 이진 탐색 알고리즘)</p></div>
+    <div class="kc" style="--k:#1f9d74"><div class="ic">💻</div><h4>2. 프로그래밍</h4><p>변수 · 자료형 · 표준 입력 · 표준 출력 · 표준입출력 · 파일입출력 · 다차원 데이터(1차원 데이터, 2차원 데이터, 리스트, 딕셔너리) · 제어 구조(선택 구조, 반복 구조, 중첩 제어 구조) · 함수 · 객체 · 클래스 · 객체지향 프로그래밍 · 인스턴스 · 메소드</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>🎯 어떤 개념일까?</h3>
+    <div id="unitSort"></div>
+  </div>
+  <details class="card r3-opt">
+    <summary>✅ 역량 Check! <span class="muted" style="font-weight:400;font-size:.88rem">(선택 · 이 단원에서 길러진 역량을 모두 골라요)</span></summary>
+    <div id="unitComp" style="margin-top:8px"></div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 마무리 퀴즈 · 생각 정리 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#9b4fc4">협력적으로 프로그래밍할 때는 모둠이 함께 <b>문제를 정의</b>하고, 꼭 필요한 요소만 남겨 <b>알고리즘</b>을 세운 뒤 프로그램으로 옮기고, 결과를 확인하며 <b>보완</b>한다. 되풀이해 쓰는 계산은 <b>함수</b>로 묶어 쓴다.</div>
+    <div style="--k:#1f9d74">프로그래머는 아이디어를 컴퓨터 언어로 옮겨 사람들에게 <b>가치</b>를 주는 프로그램을 만든다. <b>끈기와 창의성</b>, 불편함을 해결하고 피드백을 반영해 보는 프로젝트 경험이 중요하다.</div>
+    <div style="--k:#d64535"><b>알고리즘</b>: 문제 분해와 모델링, 정렬과 탐색, 수행 시간과 기억 공간으로 성능 평가. <b>프로그래밍</b>: 변수와 자료형, 입출력, 다차원 데이터, 제어 구조, 함수, 객체와 클래스.</div>
+  </div>
+  <div class="card">
+    <h3>Ⅲ단원 핵심 질문에 답하기</h3>
+    <p class="muted" style="margin-top:0">오늘 세운 우리 모둠의 설계를 예로 들어 내 말로 답해 보세요.</p>
+    <b style="font-size:.93rem">협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>우리 모둠이 정의한 <b>행성 여행 문제</b>를 쓰고, 추상화 단계에서 고른 <b>핵심 요소</b>를 입력과 출력으로 나누어 설명하세요.</li>
+      <li>우리 모둠이 설계한 <b>알고리즘의 순서</b>를 쓰고, 여행 시간을 계산하는 <b>함수</b>가 무엇을 받아 어떻게 계산해 무엇을 돌려주는지 설명하세요.</li>
+      <li>프로그래머 인터뷰를 읽고 만든 <b>나의 진로 카드</b>를 바탕으로, 프로그램으로 해결해 보고 싶은 불편함과 그 프로그램을 써 볼 사람, 기르고 싶은 역량을 쓰세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

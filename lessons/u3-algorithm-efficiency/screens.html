@@ -1,0 +1,223 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 1. 알고리즘</span>
+      <h1>답은 같아도,<br>더 빠른 길이 있다</h1>
+      <div class="story"><b>「1부터 100까지 더해 볼까?」</b><br>한 친구는 1 + 2 = 3, 3 + 3 = 6 …처럼 하나씩 더해 나가고, 다른 친구는 수를 앞뒤로 짝지어 한 번에 계산했어요. 두 친구가 얻은 답은 같아요. 그렇다면 <b>어느 방법이 더 효율적</b>일까요? 그리고 그것을 어떻게 <b>비교</b>할 수 있을까요?</div>
+      <p>오늘은 같은 문제를 해결하는 여러 알고리즘 가운데 효율적인 것을 고르는 방법, 곧 <b>수행 시간</b>과 <b>기억 공간</b>으로 <b>알고리즘의 성능을 평가</b>하는 방법을 배워요. 마지막에는 <b>하노이 탑</b>을 직접 옮기며 문제 분해·모델링·성능 분석을 함께 해요.</p>
+      <ol>
+        <li>수행 시간과 기억 공간</li><li>O 표기법(빅오 표기법)</li><li>함께 해결하기 · 하노이 탑</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 배울 것 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>🧮</i><div><b>같은 문제, 여러 알고리즘</b><small>1부터 n까지의 합</small></div></div>
+      <div class="ar" style="animation-delay:.5s">↓</div>
+      <div class="st" style="animation-delay:.7s"><i>⏱️</i><div><b>연산 횟수 세기</b><small>수행 시간 · 기억 공간</small></div></div>
+      <div class="ar" style="animation-delay:1s">↓</div>
+      <div class="st" style="animation-delay:1.2s"><i>📈</i><div><b>O 표기법으로 비교</b><small>O(1) · O(n) · O(n²) · O(2ⁿ)</small></div></div>
+      <div class="ar" style="animation-delay:1.5s">↓</div>
+      <div class="st" style="animation-delay:1.7s"><i>🗼</i><div><b>하노이 탑</b><small>분해 → 모델링 → 성능 분석</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">1-1 문제 분해와 모델링 · 이어서</span>
+      <p>문제를 이해하고 분해·모델링했다면 이제 <b>알고리즘을 설계</b>할 차례예요. 그런데 같은 문제라도 적용할 수 있는 알고리즘은 여러 가지예요. 그중에서 <b>효율적인 알고리즘</b>을 고르려면 무엇을 어떻게 비교해야 할까요?</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">생각해 보기</span>
+        <p style="margin:0 0 6px;font-size:.92rem">1부터 100까지 더할 때, <b>하나씩 더하는 방법</b>과 <b>짝지어 계산하는 방법</b>의 계산(덧셈·곱셈·나눗셈) 횟수는 얼마나 차이가 날까요? 예상해 골라 보세요.</p>
+        <div id="predVote" class="ef-vote"></div>
+      </div>
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>알고리즘</b> · 복잡한 문제를 분해하여 모델링하기 위해 필요한 과정은 무엇일까?</li>
+          <li><b>오늘의 질문</b> · 같은 문제를 해결하는 여러 알고리즘 가운데 효율적인 것은 어떻게 고를까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>복잡한 문제를 추상화하여 효율적인 알고리즘을 설계할 수 있다.</li>
+          <li>문제 분해와 모델링을 활용하여 문제를 해결하면서 수행 시간을 비교할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 수행 시간 · 기억 공간 · O 표기법(빅오 표기법)</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>같은 문제를 해결하는 두 방법이 있을 때, 어느 쪽이 더 좋은지 무엇으로 판단하면 될까요? 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planFast" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 수행 시간과 기억 공간부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 수행 시간과 기억 공간 -->
+<section class="page" data-name="수행 시간과 기억 공간" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>수행 시간과 기억 공간</h2><p>교과서 99쪽 · 알고리즘 설계와 성능 평가, 수행 시간, 기억 공간, 연산 횟수</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>같은 답을 내는 알고리즘이라도 <b>계산을 몇 번 하는지</b>(수행 시간)와 <b>메모리를 얼마나 쓰는지</b>(기억 공간)가 다를 수 있어요. 데이터가 커질 때 이 둘이 어떻게 변하는지 비교해 더 효율적인 알고리즘을 골라요.</span></div>
+  <div class="card">
+    <h3>⚖️ 알고리즘의 성능 평가</h3>
+    <p style="margin-top:0">같은 문제라도 적용할 수 있는 알고리즘이 다양하기 때문에 그중 <b>효율적인 알고리즘을 선택</b>해야 해요. 컴퓨팅 시스템으로 문제를 해결할 때 무한정 시간을 들이거나 너무 많은 기억 공간이 필요하다면 비효율적이기 때문이에요. 일반적으로 <b>데이터의 크기가 커짐에 따라</b> 수행 시간과 기억 공간 측면에서 성능이 어떻게 변하는지 비교해 알고리즘의 성능을 평가해요.</p>
+    <div class="cards2">
+      <div class="kc" style="--k:#2f6fd0"><div class="ic">⏱️</div><h4>수행 시간</h4><p>어떤 알고리즘을 수행하는 데 <b>얼마나 오랜 시간</b>이 걸리는지 분석한 것이에요. 필요한 사칙연산 횟수가 많아지면 알고리즘 전체를 수행하는 시간이 늘어나므로, <b>연산 횟수</b>가 수행 시간에 해당해요.</p></div>
+      <div class="kc" style="--k:#1f9d74"><div class="ic">💾</div><h4>기억 공간</h4><p>어떤 알고리즘을 수행하는 데 <b>얼마나 많은 공간</b>(메모리/기억 장소)이 필요한지 분석한 것이에요.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🧮 예제 · 1부터 n까지의 합을 구하는 두 알고리즘</h3>
+    <div class="cards2">
+      <div class="kc" style="--k:#1f9d74">
+        <h4>알고리즘 1 · 하나씩 더하기</h4>
+        <ol class="ef-ol"><li>합(s) = 0, 숫자(n) = 1</li><li>s = s + n</li><li>n은 1씩 증가</li><li>n이 끝 수보다 작거나 같을 때 ❷와 ❸ 과정 반복</li></ol>
+        <p>숫자 2개에 대해서만 더하기(+) 연산을 할 수 있는 컴퓨팅 시스템의 한계 때문에, <b>앞 단계의 결과에 다음 숫자를 더하는 과정을 반복</b>해요. 이 기능을 모델링해 <span class="mono">s = s + n</span>과 같은 식을 만들어요.</p>
+      </div>
+      <div class="kc" style="--k:#d64535">
+        <h4>알고리즘 2 · 짝지어 계산하기</h4>
+        <ol class="ef-ol"><li>합(s) = 0, 숫자(n) = 끝 수</li><li>s = n × (n + 1) / 2</li></ol>
+        <p>1부터 n까지의 숫자에 <b>반대 순서로 한 번 더 나열</b>한 숫자를 짝지어 더하면 (1 + n), (2 + n − 1) …처럼 모두 같은 값이 돼요. 이런 작은 문제로 나누는 과정을 모델링해 <span class="mono">s = n × (n + 1) / 2</span>와 같은 식을 만들어요. <b>곱셈 한 번, 덧셈 한 번, 나눗셈 한 번</b>이에요.</p>
+      </div>
+    </div>
+    <p class="muted" style="margin:12px 0 4px">n을 바꾸며 알고리즘 2의 짝짓기를 살펴봐요.</p>
+    <div class="ctrl" style="max-width:420px"><label for="pairN">n</label><input type="range" id="pairN" min="2" max="14" value="6"><output id="pairNV">6</output></div>
+    <div id="pairBox"></div>
+  </div>
+  <div class="card">
+    <h3>🏁 체험 · 두 알고리즘의 연산 횟수 비교하기</h3>
+    <p class="muted" style="margin-top:0">끝 수 n을 정하고 <b>실행</b>을 눌러요. 알고리즘 1은 덧셈을 한 번 할 때마다 연산 횟수가 1씩 늘어요. 알고리즘 2는 덧셈·곱셈·나눗셈을 세어요. n을 <b>3가지 이상</b> 바꿔 보며 결과를 기록해요.</p>
+    <div id="raceLab"></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 O 표기법 -->
+<section class="page" data-name="O 표기법" data-acc="#e0702b">
+  <div class="head"><div class="num">02</div><div><h2>O 표기법(빅오 표기법)</h2><p>교과서 100쪽 · 정비례 그래프와 상수 그래프, O(n)과 O(1), 지식 키우기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>입력 크기 n이 커질 때 <b>연산 횟수가 어떻게 늘어나는지</b>를 짧게 적는 방법이에요. n에 정비례해 늘면 <b>O(n)</b>, n과 관계없이 일정하면 <b>O(1)</b>이라고 써요.</span></div>
+  <div class="card">
+    <h3>📈 내 기록으로 그린 연산 횟수 그래프</h3>
+    <p class="muted" style="margin-top:0">01에서 기록한 n과 연산 횟수가 점으로 찍혀요. 알고리즘 1은 <b>정비례 그래프</b>, 알고리즘 2는 <b>상수 그래프</b>가 돼요.</p>
+    <div id="myGraph"></div>
+    <div class="cards2" style="margin-top:12px">
+      <div class="kc" style="--k:#1f9d74"><h4>알고리즘 1 · O(n)</h4><p>입력 크기 n에 대해 덧셈을 n번 수행해요. 이처럼 문제 해결에 필요한 연산 횟수가 입력 크기에 「정비례」할 때 수행 시간은 <b>O(n)</b>으로 표현해요.</p></div>
+      <div class="kc" style="--k:#d64535"><h4>알고리즘 2 · O(1)</h4><p>입력 크기 n과 관계없이 3번의 연산을 수행해요. 이처럼 입력 크기와 관계없이 연산 횟수가 일정한 경우는 <b>O(1)</b>로 표현해요.</p></div>
+    </div>
+    <p style="margin-bottom:0">이처럼 같은 문제를 해결하는 두 알고리즘의 수행 시간을 비교(O(n) &gt; O(1))한 뒤, <b>더 효율적인 알고리즘 2를 선택</b>해요. <span class="muted">수행 시간을 표현하는 방법은 여러 가지가 있는데, 그중 O 표기법(빅오 표기법)을 가장 많이 사용해요.</span></p>
+  </div>
+  <div class="card">
+    <h3>🔭 지식 키우기 · 여러 가지 O 표기법 <span class="muted" style="font-weight:400;font-size:.88rem">(100쪽 심화)</span></h3>
+    <div class="ef-bigo">
+      <div>
+        <svg viewBox="0 0 300 220" class="ef-chart" aria-label="O(1), O(n), O(n²), O(2ⁿ)의 연산 횟수 그래프"></svg>
+        <ul class="ef-ul">
+          <li><b>O(1)</b> 입력 크기 n과 수행 시간이 무관할 때</li>
+          <li><b>O(n)</b> 입력 크기 n에 비례하여 수행 시간이 증가할 때</li>
+          <li><b>O(n²)</b> 입력 크기 n의 제곱에 비례하여 수행 시간이 증가할 때</li>
+          <li><b>O(2ⁿ)</b> 입력 크기가 n일 때 2의 n 제곱 값에 비례하여 수행 시간이 증가할 때</li>
+        </ul>
+      </div>
+      <div>
+        <p class="muted" style="margin-top:0">n을 바꿔 네 가지 연산 횟수를 비교해요. 막대는 가장 큰 값을 기준으로 그려요.</p>
+        <div class="ctrl"><label for="boN">n</label><input type="range" id="boN" min="1" max="40" value="5"><output id="boNV">5</output></div>
+        <div id="boBars"></div>
+      </div>
+    </div>
+    <p class="callout" style="margin-bottom:0">그래프에서 기울기가 완만할수록 수행 시간이 작고, 기울기가 급할수록 수행 시간이 커요. 따라서 수행 시간이 일정한 <b>O(1)</b>인 알고리즘이 가장 효율적이에요. 정렬 알고리즘과 탐색 알고리즘에서 다시 만나요.</p>
+  </div>
+  <div class="card">
+    <h3>🎯 어떤 O 표기법일까?</h3>
+    <p class="muted" style="margin-top:0">상황 6개를 읽고, n이 커질 때 연산 횟수가 어떻게 늘어나는지 생각해 골라요.</p>
+    <div id="boGame"></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 함께 해결하기 · 하노이 탑 -->
+<section class="page" data-name="하노이 탑" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>함께 해결하기 · 하노이 탑 문제</h2><p>교과서 101쪽 · 분석 · 실습, 문제 분해 → 모델링 → 성능 분석</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>원반 1개, 2개, 3개처럼 <b>작은 문제부터</b> 직접 옮겨 보고, 원반이 하나 늘 때 <b>앞의 작은 문제를 어떻게 다시 쓰는지</b> 찾아요. 그다음 원반 수에 따라 이동 횟수가 어떻게 늘어나는지 분석해요.</span></div>
+  <div class="card">
+    <h3>🗼 하노이 탑 옮기기</h3>
+    <div class="ef-cond"><b>조건</b>
+      <ol><li>크기가 다른 원반 n개를 출발점 기둥(A)에서 도착점 기둥(C)으로 전부 옮긴다.</li><li>원반은 한 번에 1개씩만 옮길 수 있다.</li><li>원반은 한 기둥의 맨 위 원반에서 뽑아 다른 기둥의 맨 위로만 옮길 수 있다.</li><li>원반을 옮기는 과정에서 큰 원반을 작은 원반 위로 올릴 수 없다.</li><li>중간의 보조 기둥(B)을 이용할 수 있다.</li></ol>
+    </div>
+    <p class="muted" style="margin:10px 0 6px"><b>옮기는 방법</b> 원반을 뺄 기둥을 누르고, 놓을 기둥을 눌러요. 모두 C로 옮기면 이동 횟수가 자동으로 기록돼요.</p>
+    <div id="hanoi"></div>
+  </div>
+  <div class="card">
+    <h3>🧩 문제 분해 · 작은 문제부터 해결하기</h3>
+    <ol class="ef-steps">
+      <li><b>1-1.</b> 원반이 1개일 때 몇 번 이동해야 하는지 해결해 봐요.</li>
+      <li><b>1-2.</b> 원반이 2개일 때 몇 번 이동해야 하는지 해결해 봐요. 처음 한 번 옮긴 뒤의 <b>현재 상태</b>에서 위의 원반은 어디에 있나요?</li>
+      <li><b>1-3.</b> 같은 해결 방법으로 원반이 3개일 때 몇 번 이동해야 하는지 <b>문제 상태</b>를 확인하며 해결해 봐요. 맨 아래 큰 원반을 C로 옮기기 바로 전에, 나머지 원반들은 어디에 모여 있어야 할까요?</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3>📐 모델링 · n개일 때와 n−1개일 때의 관계</h3>
+    <p class="muted" style="margin-top:0">원반의 개수가 n일 때와 n−1일 때 해결 방법의 관계를 살펴보고, 괄호에 알맞은 기둥(A, B, C)을 적어요. 1번이 가장 작은 원반, n번이 가장 큰 원반이에요. <small>정답은 화면에 나오지 않아요. 직접 옮겨 본 순서로 짝과 확인해요.</small></p>
+    <div class="ef-model" id="hModel">
+      <div><b>n이 1인 경우:</b> 1번 원반을 현재 위치에서 ( <input data-h="0" maxlength="3"> )로 이동</div>
+      <div><b>n이 1이 아닌 경우:</b> n−1번까지의 원반을 ( <input data-h="1" maxlength="3"> )로 이동</div>
+      <div class="in2">n번 원반을 ( <input data-h="2" maxlength="3"> )로 이동</div>
+      <div class="in2">n−1번까지의 원반을 ( <input data-h="3" maxlength="3"> )에서 ( <input data-h="4" maxlength="3"> )로 이동</div>
+      <div class="saved" id="hModelSaved"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📊 성능 분석 · 원반 수에 따른 이동 횟수</h3>
+    <p class="muted" style="margin-top:0">단위 연산 횟수는 <b>원반의 위치 이동 횟수</b>예요. 위에서 옮긴 내 기록이 표에 들어가요(가장 적게 옮긴 기록). 원반 수를 바꿔 가며 표를 채워요.</p>
+    <div style="overflow-x:auto"><table class="ef-tbl" id="hTable"></table></div>
+    <div class="memo"><label>내 기록에서 찾은 규칙: 원반이 1개 늘 때 이동 횟수는 어떻게 바뀌나요? 원반 n개일 때의 이동 횟수를 식이나 말로 나타내 보세요.</label><textarea data-memo="hanoiRule" rows="2"></textarea><div class="saved"></div></div>
+    <div class="memo"><label>규칙으로 예측하기: 원반 10개를 모두 옮기려면 몇 번 이동해야 할까요? 02의 O 표기법 가운데 어느 것에 가까운지도 적어요.</label><input type="text" data-memo="hanoiPred"><div class="saved"></div></div>
+  </div>
+  <div class="ef-ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">04</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0">같은 문제라도 적용할 수 있는 알고리즘은 다양하므로 <b>효율적인 알고리즘</b>을 선택해야 한다. 알고리즘의 효율성은 <b>수행 시간</b>과 <b>기억 공간</b> 측면에서 살펴보며, 연산 횟수가 수행 시간에 해당한다.</div>
+    <div style="--k:#e0702b">수행 시간은 주로 <b>O 표기법(빅오 표기법)</b>으로 나타낸다. 연산 횟수가 입력 크기에 정비례하면 <b>O(n)</b>, 입력 크기와 관계없이 일정하면 <b>O(1)</b>이며, O(n²), O(2ⁿ)처럼 더 빠르게 늘어나는 경우도 있다.</div>
+    <div style="--k:#1f9d74"><b>하노이 탑</b>은 원반 n개 문제를 원반 n−1개 문제로 나누어(문제 분해) 해결 방법의 관계를 모델링할 수 있고, 원반 수가 늘수록 이동 횟수가 매우 빠르게 늘어난다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 말로 다시 답해 보세요.</p>
+    <div class="ef-prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">오늘의 질문에 답하기 · 같은 문제를 해결하는 여러 알고리즘 가운데 효율적인 것은 어떻게 고를까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="4"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>01에서 n을 바꾸어 가며 <b>두 알고리즘의 연산 횟수</b>를 기록했습니다. 내가 기록한 결과를 쓰고, 어느 알고리즘이 더 효율적인지 수행 시간의 관점에서 설명하세요.</li>
+      <li>02에서 상황마다 <b>O 표기법</b>을 골라 보았습니다. 상황 하나를 골라 알맞은 표기법을 쓰고, 입력 크기 n이 커질 때 그 상황의 연산 횟수가 어떻게 달라지는지 설명하세요.</li>
+      <li>하노이 탑에서 원반 수를 바꾸어 가며 <b>이동 횟수</b>를 기록했습니다. 내 기록과 내가 찾은 규칙을 쓰고, 원반 n개를 옮기는 문제를 원반 n−1개를 옮기는 작은 문제와 연결해 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

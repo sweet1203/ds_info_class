@@ -1,0 +1,317 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#2f6fd0">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>악보처럼 프로그램도<br>골라서 실행할 수 있을까?</h1>
+      <div class="story"><b>「도돌이표를 만나면 앞으로 돌아가고, 1번 괄호와 2번 괄호 중 하나를 골라 연주해요.」</b><br>악보에서 특정 부분을 반복하거나 구간을 선택해 연주하듯이, 프로그래밍에서도 <b>명령어의 실행 순서를 반복하거나 선택하도록</b> 결정할 수 있을까요?</div>
+      <p>오늘은 명령어의 실행 순서를 정하는 <b>제어 구조</b>를 알아보고, 조건에 따라 다른 명령을 실행하는 <b>선택 구조</b>(if문, if~else문, if~elif~else문)를 코드를 읽으며 따라가요. 마지막에는 코랩에서 <b>배송비 안내 프로그램</b>을 완성해요.</p>
+      <ol>
+        <li>세 가지 제어 구조</li><li>if문과 if~else문</li><li>if~elif~else문과 선택 구조 형식</li>
+        <li>함께 해결하기 · 배송비 안내</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘의 목표 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>⬇️</i><div><b>순차 구조</b><small>위에서 아래로 차례차례</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🔀</i><div><b>선택 구조</b><small>if · if~else · if~elif~else</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🔍</i><div><b>어느 줄이 실행될까?</b><small>입력값에 따라 달라지는 흐름</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>📦</i><div><b>배송비 안내 프로그램</b><small>코랩에서 직접 완성하기</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">2-4 · 제어 구조의 응용</span>
+      <p>앞 시간까지 <b>변수와 자료형</b>, <b>input() 함수와 print() 함수</b>, <b>리스트와 딕셔너리</b>를 배웠어요. 지금까지의 프로그램은 위에서 아래로 한 줄씩 차례대로 실행됐지요. 이제 <b>조건에 따라 실행할 명령을 고르는 방법</b>을 배워요. 이번 소단원은 세 번에 나누어 선택 구조 → 반복 구조 → 함수 순서로 이어져요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>제어 구조의 응용</b> · 악보에서 특정 부분을 반복하거나 구간을 선택하여 연주하듯이 프로그래밍에서도 실행 순서를 반복하거나 선택하도록 결정할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 조건에 따라 다른 명령을 실행하고 싶다면 어떻게 해야 할까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>순차, 선택, 반복 구조를 활용한 프로그램을 작성할 수 있다.</li>
+          <li>다양한 제어 구조를 복합적으로 활용한 프로그램을 작성할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</p>
+      </div>
+      <div class="why">
+        <span class="kicker">오늘 쓰는 도구</span>
+        <p style="margin:0;font-size:.92rem">화면에서는 코드를 <b>읽고 예측</b>하고, 마지막 실습은 <b>구글 코랩</b>에서 해요. 학교 구글 계정으로 로그인해 두면 04 화면에서 바로 시작할 수 있어요.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>놀이기구 앞에는 「키 120cm 이상만 탈 수 있어요」 같은 안내가 있어요. 프로그램이 이렇게 <b>상황에 따라 다른 일</b>을 하게 하려면 컴퓨터에 무엇을 알려 주어야 할까요? 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planSel" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 세 가지 제어 구조부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 세 가지 제어 구조 -->
+<section class="page" data-name="세 가지 제어 구조" data-acc="#2f6fd0">
+  <div class="head"><div class="num">01</div><div><h2>명령어 실행 순서는 어떻게 바꿀까?</h2><p>교과서 132쪽 · 제어 구조, 순차 구조, 선택 구조, 반복 구조</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>제어 구조</b>는 컴퓨터에 <b>명령어를 어떤 순서로 실행할지</b> 알려 주는 방법이에요. 차례대로(순차), 골라서(선택), 되풀이해서(반복) — 이 세 가지를 조합하면 어떤 문제든 해결할 수 있어요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🍳 김치 부침개를 만드는 알고리즘</h3>
+      <ol class="ol">
+        <li>오목한 볼에 부침 가루 2컵, 물 1컵을 넣고, 부침 가루가 보이지 않을 때까지 반죽을 젓는다.</li>
+        <li>김치 1/4 쪽을 2cm 크기로 잘라서 반죽에 넣는다.</li>
+        <li>프라이팬에 식용유 4스푼을 넣고 불을 켜 팬을 달군다.</li>
+        <li>달궈진 팬에 반죽을 올려 반죽 앞뒤가 노릇해질 때까지 굽는다.</li>
+      </ol>
+      <p class="note" style="margin-bottom:0">순서를 지키지 않고 반죽을 프라이팬에 먼저 구운 뒤 김치를 넣는다면 어떻게 될까요?</p>
+    </div>
+    <div class="card">
+      <h3>🧭 제어 구조</h3>
+      <p style="margin-top:0">제대로 김치 부침개를 만들려면 조리 순서가 중요한 것처럼, 프로그램을 작성할 때도 <b>명령어가 실행되는 순서</b>가 중요해요. 그래서 명령어의 실행 순서를 설계하는데, 컴퓨터에 명령어 실행 순서를 알려 주는 구조를 <b>제어 구조</b>라고 해요.</p>
+      <p style="margin-bottom:0">제어 구조는 일의 순서를 정하는 방법으로, <b>순차, 선택, 반복</b>의 세 가지가 있어요. 어떤 문제이든 이 세 가지 제어 구조를 조합하여 해결할 수 있어요.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔀 세 가지 제어 구조 <span class="muted" style="font-weight:400;font-size:.88rem">(그림 Ⅲ-9를 다시 그림)</span></h3>
+    <div class="fc cards3">
+      <div>
+        <b>순차 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="명령 1, 명령 2, 명령 3을 차례로 실행하는 순서도"><defs><marker id="sm1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V22" marker-end="url(#sm1)"/><rect class="bx" x="55" y="24" width="90" height="28" rx="3"/><text x="100" y="38">명령 1</text>
+          <path class="ar" d="M100 52V72" marker-end="url(#sm1)"/><rect class="bx" x="55" y="74" width="90" height="28" rx="3"/><text x="100" y="88">명령 2</text>
+          <path class="ar" d="M100 102V122" marker-end="url(#sm1)"/><rect class="bx" x="55" y="124" width="90" height="28" rx="3"/><text x="100" y="138">명령 3</text>
+          <path class="ar" d="M100 152V182" marker-end="url(#sm1)"/></svg>
+        <p>순서대로 차례차례 위에서 아래로 실행하는 구조로, 프로그램 실행 과정의 가장 기본적인 구조예요.</p>
+      </div>
+      <div>
+        <b>선택 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="조건이 참이면 명령 1, 거짓이면 명령 2를 실행하는 순서도"><defs><marker id="sm2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V20" marker-end="url(#sm2)"/><polygon class="dm" points="100,22 150,46 100,70 50,46"/><text x="100" y="46">조건</text>
+          <text class="lb" x="38" y="36">참</text><text class="lb" x="166" y="36">거짓</text>
+          <path class="ar" d="M50 46H35V94" marker-end="url(#sm2)"/><rect class="bx" x="5" y="96" width="60" height="28" rx="3"/><text x="35" y="110">명령 1</text>
+          <path class="ar" d="M150 46H165V94" marker-end="url(#sm2)"/><rect class="bx" x="135" y="96" width="60" height="28" rx="3"/><text x="165" y="110">명령 2</text>
+          <path class="ar" d="M35 124V146H165V124M100 146V182" marker-end="url(#sm2)"/></svg>
+        <p>조건이 참(명령 1)이냐 거짓(명령 2)이냐에 따라 명령을 선택하여 실행하는 구조로, if문, if~else문, if~elif~else문 등이 있어요.</p>
+      </div>
+      <div>
+        <b>반복 구조</b>
+        <svg viewBox="0 0 200 186" role="img" aria-label="조건이 참인 동안 명령을 되풀이하고 거짓이면 빠져나가는 순서도"><defs><marker id="sm3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V24" marker-end="url(#sm3)"/><polygon class="dm" points="100,26 145,48 100,70 55,48"/><text x="100" y="48">조건</text>
+          <text class="lb" x="112" y="84">참</text><text class="lb" x="164" y="38">거짓</text>
+          <path class="ar" d="M100 70V96" marker-end="url(#sm3)"/><rect class="bx" x="60" y="98" width="80" height="28" rx="3"/><text x="100" y="112">명령</text>
+          <path class="ar" d="M100 126V142H25V48H53" marker-end="url(#sm3)"/>
+          <path class="ar" d="M145 48H178V182" marker-end="url(#sm3)"/></svg>
+        <p>조건을 만족하는 동안 명령을 반복하여 실행하는 구조로, for문, while문 등이 있어요.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-bottom:0">생각해 보기 · 세 가지 제어 구조에서 화살표가 어디로 이어지는지 비교해 보세요. 화살표가 갈라지는 곳, 위로 되돌아가는 곳이 있나요?</p>
+  </div>
+  <div class="card"><h3>🎯 어떤 제어 구조일까?</h3><p class="muted" style="margin-top:0">일상의 상황 6개를 읽고, 일이 진행되는 흐름이 어떤 제어 구조와 닮았는지 골라요.</p><div id="ctlGame"></div></div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 if문과 if~else문 -->
+<section class="page" data-name="if문과 if~else문" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>조건에 따라 다른 명령을 실행하려면? ① if문과 if~else문</h2><p>교과서 133쪽 · 선택 구조, if문, 비교 연산자, if~else문, % 연산자</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>선택 구조</b>는 「만약 ~라면」처럼 <b>조건식이 참인지 거짓인지</b>에 따라 실행할 명령을 고르는 구조예요. 파이썬에서는 <b>들여쓰기</b>로 어떤 명령이 조건에 속하는지 나타내요.</span></div>
+  <div class="card">
+    <h3>1 if문</h3>
+    <p style="margin-top:0">선택 구조는 어떤 상황 또는 조건에 따라 서로 다른 선택이나 행동을 해야 할 때 활용하는 구조로, 조건식이 참인지 거짓인지에 따라 일의 순서가 달라져요. <b>if문</b>은 조건이 참이라면 if문 뒤에 오는 명령을 실행하고, 조건이 거짓이라면 실행하지 않고 <b>들여쓰기 없는 명령부터</b> 실행해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 200 222" role="img" aria-label="if문 순서도: 조건이 참이면 명령 1, 명령 2를 실행하고 거짓이면 건너뛰어 명령 3을 실행"><defs><marker id="sm4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M90 2V18" marker-end="url(#sm4)"/><polygon class="dm" points="90,20 135,40 90,60 45,40"/><text x="90" y="40">조건</text>
+          <text class="lb" x="80" y="70">참</text><text class="lb" x="152" y="32">거짓</text>
+          <path class="ar" d="M90 60V78" marker-end="url(#sm4)"/><rect class="bx" x="50" y="80" width="80" height="26" rx="3"/><text x="90" y="93">명령 1</text>
+          <path class="ar" d="M90 106V124" marker-end="url(#sm4)"/><rect class="bx" x="50" y="126" width="80" height="26" rx="3"/><text x="90" y="139">명령 2</text>
+          <path class="ar" d="M90 152V172" marker-end="url(#sm4)"/><rect class="bx" x="50" y="174" width="80" height="26" rx="3"/><text x="90" y="187">명령 3</text>
+          <path class="ar" d="M135 40H168V163H94" marker-end="url(#sm4)"/></svg>
+      </div></div>
+      <div data-code="ifForm" data-nonum></div>
+      <ul class="ul">
+        <li>if 뒤에 흐름을 제어할 <b>조건</b>이 오고, 그 뒤에 <b>콜론(:)</b>을 붙여요.</li>
+        <li>if문 뒤의 명령들은 <b>들여쓰기</b>를 해야 하며, if문의 조건이 참일 때 실행돼요.</li>
+        <li>if문에 실행될 명령들은 <b>들여쓰기 위치가 같아야</b> 해요.</li>
+        <li>들여쓰기를 삭제하면 if문이 끝나요.</li>
+      </ul>
+    </div>
+    <div class="grid2 even" style="margin-top:10px">
+      <div style="overflow-x:auto"><table class="tbl2">
+        <tr><th>비교 연산자</th><th>설명</th></tr>
+        <tr><td class="mono">==</td><td>같음</td></tr><tr><td class="mono">!=</td><td>같지 않음</td></tr>
+        <tr><td class="mono">&gt;</td><td>큼(초과)</td></tr><tr><td class="mono">&gt;=</td><td>크거나 같음(이상)</td></tr>
+        <tr><td class="mono">&lt;</td><td>작음(미만)</td></tr><tr><td class="mono">&lt;=</td><td>작거나 같음(이하)</td></tr>
+      </table></div>
+      <div class="callout"><b class="mono">==</b>는 좌항과 우항이 <b>같은지 비교</b>하는 연산자, <b class="mono">!=</b>는 반대로 좌항과 우항이 <b>다른지</b> 비교하는 연산자예요.<br><small class="muted">앞에서 배운 <span class="mono">=</span>는 값을 저장하는 대입 연산자예요. 같은지 물어볼 때는 등호를 두 번 써요.</small></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ① 버스 하차 안내</h3>
+    <p class="muted" style="margin-top:0">「하차」일 때 문이 열리고 다음 정거장을 알리는 프로그램이에요. y와 n을 각각 골라 예측해 봐요.</p>
+    <div id="trBus"></div>
+  </div>
+  <div class="card">
+    <h3>2 if~else문</h3>
+    <p style="margin-top:0"><b>if~else문</b>은 if문의 조건이 참이라면 if문 뒤에 오는 명령(명령1)을 실행하고, 조건이 거짓이라면 <b>else문 뒤에 오는 명령(명령2)</b>을 실행해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 200 150" role="img" aria-label="if~else문 순서도: 조건이 참이면 명령 1, 거짓이면 명령 2"><defs><marker id="sm5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M100 2V16" marker-end="url(#sm5)"/><polygon class="dm" points="100,18 150,40 100,62 50,40"/><text x="100" y="40">조건</text>
+          <text class="lb" x="38" y="30">참</text><text class="lb" x="166" y="30">거짓</text>
+          <path class="ar" d="M50 40H35V78" marker-end="url(#sm5)"/><rect class="bx" x="5" y="80" width="60" height="26" rx="3"/><text x="35" y="93">명령 1</text>
+          <path class="ar" d="M150 40H165V78" marker-end="url(#sm5)"/><rect class="bx" x="135" y="80" width="60" height="26" rx="3"/><text x="165" y="93">명령 2</text>
+          <path class="ar" d="M35 106V124H165V106M100 124V148" marker-end="url(#sm5)"/></svg>
+      </div></div>
+      <div data-code="elseForm" data-nonum></div>
+      <ul class="ul">
+        <li><b>else</b>는 if문 없이 사용할 수 없고, <b>조건식이 필요하지 않아요.</b></li>
+        <li>if문의 조건식이 거짓이라면 else에 속한 명령들이 실행돼요.</li>
+        <li><b class="mono">%</b> 연산자는 나눗셈의 <b>나머지</b>를 계산해요. 어떤 숫자의 배수인지 판단할 때 많이 써요. 예) 5의 배수 판단식 <span class="mono">n % 5 == 0</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ② 짝수일까, 홀수일까?</h3>
+    <p class="muted" style="margin-top:0">짝수인지 홀수인지를 판단하는 프로그램이에요. 숫자를 바꿔 넣으며 두 번 이상 예측해 봐요.</p>
+    <div id="trEven"></div>
+    <div class="memo"><label>입력한 숫자에 따라 실행되는 줄이 어떻게 달라졌나요? 조건식 <span class="mono">number % 2 == 0</span>이 참일 때와 거짓일 때로 나누어 적어 보세요.</label><textarea data-memo="evenWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 if~elif~else문 -->
+<section class="page" data-name="if~elif~else문" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>조건에 따라 다른 명령을 실행하려면? ② if~elif~else문</h2><p>교과서 134쪽 · if~elif~else문, end 옵션, 스스로 해결하기(선택 구조 형식)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>확인할 조건이 여러 개일 때는 <b>elif</b>를 이어 붙여요. 위에서부터 조건을 하나씩 확인하다가 <b>처음으로 참이 되는 곳의 명령만</b> 실행하고 선택 구조를 끝내요. 모두 거짓이면 else의 명령을 실행해요.</span></div>
+  <div class="card">
+    <h3>3 if~elif~else문</h3>
+    <p style="margin-top:0">여러 경우의 조건을 확인하고 싶을 때 사용해요. 조건식이 더 많으면 확인하고 싶은 조건의 수만큼 if 뒤에 <b>elif</b>를 추가해요.</p>
+    <div class="sel-form">
+      <div class="fc"><div>
+        <svg viewBox="0 0 230 250" role="img" aria-label="if~elif~else 순서도: 조건 1, 조건 2, 조건 3을 차례로 확인하고 참인 곳의 명령을 실행, 모두 거짓이면 명령 4"><defs><marker id="sm6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2f8fc7"/></marker></defs>
+          <path class="ar" d="M70 2V16" marker-end="url(#sm6)"/>
+          <polygon class="dm" points="70,18 112,36 70,54 28,36"/><text x="70" y="36">조건 1</text><text class="lb" x="126" y="28">참</text>
+          <path class="ar" d="M112 36H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="24" width="70" height="24" rx="3"/><text x="177" y="36">명령 1</text>
+          <path class="ar" d="M70 54V72" marker-end="url(#sm6)"/><text class="lb" x="52" y="64">거짓</text>
+          <polygon class="dm" points="70,74 112,92 70,110 28,92"/><text x="70" y="92">조건 2</text><text class="lb" x="126" y="84">참</text>
+          <path class="ar" d="M112 92H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="80" width="70" height="24" rx="3"/><text x="177" y="92">명령 2</text>
+          <path class="ar" d="M70 110V128" marker-end="url(#sm6)"/><text class="lb" x="52" y="120">거짓</text>
+          <polygon class="dm" points="70,130 112,148 70,166 28,148"/><text x="70" y="148">조건 3</text><text class="lb" x="126" y="140">참</text>
+          <path class="ar" d="M112 148H140" marker-end="url(#sm6)"/><rect class="bx" x="142" y="136" width="70" height="24" rx="3"/><text x="177" y="148">명령 3</text>
+          <path class="ar" d="M70 166V184" marker-end="url(#sm6)"/><text class="lb" x="52" y="176">거짓</text>
+          <rect class="bx" x="35" y="186" width="70" height="24" rx="3"/><text x="70" y="198">명령 4</text>
+          <path class="ar" d="M212 36H222V226H70M212 92H222M212 148H222M70 210V246" marker-end="url(#sm6)"/></svg>
+      </div></div>
+      <div data-code="elifForm" data-nonum></div>
+      <ul class="ul">
+        <li><b>elif</b>는 else if의 약자로 if문 없이 사용할 수 없고, 이전 조건이 거짓일 때 뒤의 elif의 조건2를 확인해요.</li>
+        <li>이후 elif는 필요한 조건만큼 추가하여 사용할 수 있어요.</li>
+      </ul>
+    </div>
+    <div class="callout" style="margin-top:10px"><b>end 옵션</b> 출력된 문자열 끝에 무엇이 올지를 결정해요. print문의 기본값은 <span class="mono">'\n'</span>이고, 줄바꿈을 의미해요. 만약 end 옵션을 <span class="mono">''</span>로 수정하면, 다음 출력이 줄바꿈 없이 나와요.</div>
+  </div>
+  <div class="card">
+    <h3>🔍 코드 읽고 예측하기 ③ 양수일까, 음수일까, 0일까?</h3>
+    <p class="muted" style="margin-top:0">숫자를 입력받아 양수, 음수, 0을 판단하는 프로그램이에요. 양수·음수·0을 하나씩 넣어 세 번 예측해 봐요. 실행 결과가 왜 한 줄로 나오는지도 살펴봐요.</p>
+    <div id="trSign"></div>
+  </div>
+  <div class="card">
+    <h3>🧩 스스로 해결하기 · 선택 구조 형식</h3>
+    <p class="muted" style="margin-top:0">코드 4개 가운데 <b>문법에 맞게 작성한 것</b>을 모두 골라 ✔ 표시한 뒤 「확인」을 눌러요. (교과서 134쪽과 같은 방법으로, 기온을 다루는 새 코드로 연습해요.)</p>
+    <div id="formLab"></div>
+    <div class="memo"><label>문법에 맞지 않은 코드 하나를 골라, 무엇이 잘못되었고 어떻게 고치면 되는지 적어 보세요.</label><textarea data-memo="formFix" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 배송비 안내 -->
+<section class="page" data-name="배송비 안내" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 배송비 안내</h2><p>교과서 135쪽 · 복합 대입 연산자, 선택 구조로 프로그램 완성하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>온라인 쇼핑몰은 <b>정기 회원 여부</b>에 따라 배송비를 다르게 받아요. 먼저 입력값에 따라 결과가 어떻게 나와야 하는지 <b>예측</b>하고, 코랩에서 선택 구조로 <b>프로그램을 완성</b>해요.</span></div>
+  <div class="card">
+    <h3>📦 문제 상황 · 실행 결과 먼저 예측하기</h3>
+    <p style="margin-top:0">온라인 쇼핑몰에서는 정기 회원 여부에 따라 배송비를 부과하고 있어요.</p>
+    <ol class="ol">
+      <li>회원 여부를 입력받은 후, <b>총결제 금액</b>을 계산하여 안내하는 프로그램을 완성해요. 정기 회원이면 배송비가 면제되고, 아니면 배송비 3000원이 부과돼요.</li>
+      <li>1의 프로그램에 조건을 추가하여 <b>주문 금액에 따라서</b> 배송비를 면제하도록 수정해요. 정기 회원이 아니어도 주문 금액이 <b>50000원 이상</b>이면 배송비가 면제돼요.</li>
+    </ol>
+    <p class="muted">2번처럼 수정한 프로그램에 아래 값을 넣으면 <b>총금액</b>이 얼마로 나올까요? 숫자만 적고 「예측 확인」을 눌러요.</p>
+    <div id="shipLab"></div>
+    <div class="memo"><label>정기 회원이 아니고 주문 금액이 <b>50000원</b>일 때 총금액을 어떻게 예측했나요? 어떤 조건을 확인해서 그렇게 판단했는지 비교 연산자와 연결해 적어 보세요.</label><textarea data-memo="ship50" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+      <h3>➕ 복합 대입 연산자</h3>
+      <p style="margin-top:0;font-size:.92rem">변수의 값을 효율적으로 변경하기 위해 산술 연산자와 대입 연산자가 합쳐진 것으로 +=, -=, *=, /=, %= 등이 있어요.</p>
+      <div style="overflow-x:auto"><table class="tbl2">
+        <tr><th>연산자</th><th>동치</th><th>연산자</th><th>동치</th></tr>
+        <tr><td class="mono">a += b</td><td class="mono">a = a + b</td><td class="mono">a //= b</td><td class="mono">a = a // b</td></tr>
+        <tr><td class="mono">a -= b</td><td class="mono">a = a - b</td><td class="mono">a %= b</td><td class="mono">a = a % b</td></tr>
+        <tr><td class="mono">a *= b</td><td class="mono">a = a * b</td><td class="mono">a **= b</td><td class="mono">a = a ** b</td></tr>
+        <tr><td class="mono">a /= b</td><td class="mono">a = a / b</td><td></td><td></td></tr>
+      </table></div>
+  </div>
+  <div class="card">
+    <h3>💻 코랩에서 프로그램 완성하기</h3>
+    <ol class="ol">
+      <li>아래 버튼으로 노트북을 열어요(학교 구글 계정으로 로그인). 처음 열면 「경고: 이 노트북은 Google에서 작성하지 않았습니다」가 나올 수 있어요. 「무시하고 계속하기」를 눌러요.</li>
+      <li><b>1. 교과서 예제 실행해 보기</b>에서 오늘 화면에서 본 세 프로그램을 실행해 보고 입력값을 바꿔 봐요(코드가 들어 있어요).</li>
+      <li><b>2. 함께 해결하기</b>에서 직접 입력해 빈칸(____)을 채워 1번 프로그램을 완성하고, 이어서 2번처럼 수정해요. 위에서 예측한 값을 넣어 예측이 맞는지 확인해요.</li>
+      <li>시간이 남으면 <b>3. 더 해 보기</b>에 도전해요.</li>
+    </ol>
+    <div class="colab"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-selection/assets/selection.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="selection.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <div class="memo"><label>2번에서 <b>어떤 조건을 어느 위치에</b> 추가했는지 내 말로 적어 보세요. 짝과 수정한 내용을 비교해 봐요.</label><textarea data-memo="shipFix" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#2f6fd0"><b>제어 구조</b>는 컴퓨터에 명령어 실행 순서를 알려 주는 구조로, <b>순차·선택·반복</b>의 세 가지가 있다. 어떤 문제이든 이 세 가지를 조합하여 해결할 수 있다.</div>
+    <div style="--k:#1f9d74"><b>if문</b>은 조건이 참일 때만 들여쓴 명령을 실행하고, <b>if~else문</b>은 거짓일 때 else의 명령을 실행한다. 조건식에는 <b>==, !=, &gt;, &gt;=, &lt;, &lt;=</b> 같은 비교 연산자를 쓴다.</div>
+    <div style="--k:#9b4fc4"><b>if~elif~else문</b>은 여러 조건을 위에서부터 차례로 확인해 처음 참인 곳의 명령을 실행한다. 같은 제어 구조에 속한 명령은 <b>들여쓰기 위치가 같아야</b> 한다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 선택 구조로 다시 답해 보세요.</p>
+    <div class="prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 조건에 따라 다른 명령을 실행하고 싶다면 어떻게 해야 할까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>02에서 짝수·홀수를 판단하는 프로그램에 숫자를 바꿔 넣으며 실행될 줄을 예측했습니다. 입력한 숫자 두 가지를 예로 들어, 조건식이 참일 때와 거짓일 때 실행되는 줄이 어떻게 달라지는지 설명하세요.</li>
+      <li>03에서 선택 구조 형식이 문법에 맞는지 판단했습니다. 문법에 맞지 않은 코드 하나를 골라 무엇이 잘못되었는지 쓰고, 어떻게 고쳐야 하는지 설명하세요.</li>
+      <li>04에서 배송비 안내 프로그램의 결과를 예측했습니다. 정기 회원이 아니고 주문 금액이 50000원일 때 총금액을 어떻게 예측했는지 쓰고, 그렇게 판단한 까닭을 조건식과 연결해 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

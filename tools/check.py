@@ -6,7 +6,10 @@
 - 메모 목록(MEMOLIST) 키가 화면의 data-memo / chips 키와 맞는지
 - lesson.js 가 찾는 요소 id가 화면에 있는지
 - 금지 표현: 차시 번호, 날짜, 사이트 주소 / 선택지의 극단어(항상·절대·모든)
-- 질문폼 원본이 있는지
+- 질문폼 원본이 있는지, 질문이 비어 있지 않은지
+- 퀴즈 보기: 짧은→긴 순서, 극단어(만·오직·반드시·전혀 포함), 정답만 유독 긴 보기
+- 칩 이름에 구분자 「 · 」
+- (작업자료 폴더가 옆에 있으면) 교과서 「개념 정리하기」·단원 정리와 18자 이상 같은 문장
 오류(✗)가 있으면 종료 코드 1.
 """
 from __future__ import annotations
@@ -26,6 +29,43 @@ errors, warns = [], []
 
 def err(lid, msg): errors.append(f'✗ {lid}: {msg}')
 def warn(lid, msg): warns.append(f'△ {lid}: {msg}')
+
+
+_NORM = lambda s: re.sub(r'[\s\W_]+', '', re.sub(r'<[^>]+>', '', s))
+_SH = 18
+_CONCEPT = None
+
+
+def concept_shingles():
+    """교과서 쪽별 원문(저장소 밖 ../작업자료)에서 개념 정리하기·단원 정리 부분의 18자 조각 모음."""
+    global _CONCEPT
+    if _CONCEPT is not None:
+        return _CONCEPT
+    _CONCEPT = set()
+    w = ROOT.parent / '작업자료'
+    for f in sorted(w.glob('교과서_*단원_쪽별.txt')) if w.is_dir() else []:
+        pages = re.split(r'=+ 교과서 \d+쪽', rd(f))
+        for pg in pages:
+            parts = []
+            if '개념 정리하기' in pg:
+                parts.append(pg.split('개념 정리하기', 1)[1])
+            if '단원 정리' in pg and ('인공지능 소양' in pg or '역량' in pg):
+                parts.append(pg)
+            for t in parts:
+                n = _NORM(t)
+                _CONCEPT.update(n[i:i + _SH] for i in range(max(0, len(n) - _SH + 1)))
+    return _CONCEPT
+
+
+def overlaps_concept(text):
+    sh = concept_shingles()
+    if not sh:
+        return None
+    n = _NORM(text)
+    for i in range(max(0, len(n) - _SH + 1)):
+        if n[i:i + _SH] in sh:
+            return n[i:i + _SH]
+    return None
 
 
 def node_eval(js: str):
@@ -76,8 +116,17 @@ def check_lesson(c, l):
                 continue
             pos[it['a']] += 1
             for o in it['o']:
-                if re.search(r'(?<![가-힣])(항상|절대|모든)', o):
+                if re.search(r'(?<![가-힣])(항상|절대|모든|오직|반드시|전혀)', o) or re.search(r'(?<!미)(?<!허프)[가-힣]만(?![가-힣])', o):
                     warn(lid, f'QUIZ[{k}][{i}] 선택지 극단어: {o}')
+            L = [len(re.sub(r'<[^>]+>', '', o)) for o in it['o']]
+            if any(L[j] > L[j + 1] + 1 for j in range(len(L) - 1)):
+                warn(lid, f'QUIZ[{k}][{i}] 보기가 짧은→긴 순서가 아님 {L}')
+            others = [x for j, x in enumerate(L) if j != it['a']]
+            if others and L[it['a']] >= max(others) + 5 and L[it['a']] >= max(others) * 1.4:
+                warn(lid, f'QUIZ[{k}][{i}] 정답 보기만 유독 김(길이 단서) {L}')
+            hit = overlaps_concept(it['q'] + ' ' + ' '.join(it['o']))
+            if hit:
+                warn(lid, f'QUIZ[{k}][{i}] 교과서 개념 정리·단원 정리와 같은 문장: …{hit}…')
             if re.search(r'(첫째|둘째|셋째|넷째|첫 번째|두 번째|세 번째|네 번째|앞의 두|앞의 둘|뒤의 두|마지막)(와|과)? ?(셋째 )?보기|앞의 둘|[①②③④]번 보기', it.get('w', '')):
                 err(lid, f'QUIZ[{k}][{i}] 해설이 보기 위치를 가리킴(보기는 섞여 나옴): {it["w"][:40]}')
             if len(set(it['o'])) != len(it['o']):
@@ -109,13 +158,24 @@ def check_lesson(c, l):
     for pat, what in [(r'\d+\s*차시', '차시 번호'), (r'\d{1,2}\s*월\s*\d{1,2}\s*일', '날짜'), (r'vercel\.app|https?://', '사이트 주소')]:
         for hit in re.findall(pat, text):
             err(lid, f'화면에 {what}: {hit}')
+    for m2 in re.finditer(r"chips\('[^']+','[^']+',\s*\[(.*?)\]", ljs, re.S):
+        for o in re.findall(r"'([^']*)'", m2.group(1)):
+            if ' · ' in o:
+                err(lid, f'칩 이름에 구분자 「 · 」: {o}')
+    if concept_shingles():
+        for blk in re.findall(r'<div class="key3">(.*?)</div>\s*</div>|<div class="key3">(.*?)\n\s*</div>', screens, re.S):
+            hit = overlaps_concept(''.join(blk))
+            if hit:
+                warn(lid, f'마무리 요약(key3)이 교과서 개념 정리·단원 정리와 같은 문장: …{hit}…')
     if '{{FORM_URL}}' in screens and not l.get('form'):
         err(lid, '질문폼 버튼이 있는데 course.json 에 form 이 없음')
 
 
 def main(argv):
     c = json.loads(rd(ROOT / 'course.json'))
-    forms = {f['id'] for f in json.loads(rd(ROOT / 'forms' / 'forms.json'))['forms']}
+    fdata = json.loads(rd(ROOT / 'forms' / 'forms.json'))['forms']
+    forms = {f['id'] for f in fdata}
+    fq = {f['id']: f.get('questions') for f in fdata}
     ids = []
     for u in c['units']:
         for l in u['lessons']:
@@ -126,6 +186,8 @@ def main(argv):
                 check_lesson(c, l)
                 if l.get('form') and l['form'] not in forms:
                     err(l['id'], f"질문폼 {l['form']} 이 forms/forms.json 에 없음")
+                elif l.get('form') and not fq.get(l['form']) and l['status'] in ('ready', 'draft'):
+                    err(l['id'], f"질문폼 {l['form']} 의 질문이 비어 있음")
             elif l['status'] in ('ready', 'draft'):
                 err(l['id'], f"status={l['status']} 인데 lessons/{l['id']}/ 없음")
     if len(ids) != len(set(ids)):

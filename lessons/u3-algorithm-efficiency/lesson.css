@@ -1,0 +1,58 @@
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .ef-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .ef-ck>b{font-size:.92rem;color:var(--mint)}
+  .ef-ck .chk button.on::before{content:"✔ "}
+  .ef-prev{background:#fbfaf7;border-left:4px solid var(--amber);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.93rem}
+  .ef-vote.vote{grid-template-columns:1fr;gap:6px}
+  .ef-vote.vote button{padding:8px 12px;font-size:.92rem}
+  .ef-ol{margin:4px 0 6px;padding-left:22px;font-size:.92rem}
+  .ef-ol li{margin:2px 0}
+  .ef-ul{margin:8px 0 0;padding-left:18px;font-size:.88rem}
+  .ef-ul li{margin:3px 0}
+  .ef-msg{font-size:.93rem;min-height:1.5em;margin:8px 0}
+  .ef-tbl{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .ef-tbl th,.ef-tbl td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  .ef-tbl tr:first-child th{background:var(--acc-soft);color:var(--ink)}
+  .ef-tbl th small{font-weight:400;color:var(--muted)}
+  /* 01 짝짓기 */
+  .ef-pair{display:grid;gap:4px;overflow-x:auto;padding:4px 0}
+  .ef-pair .r{display:grid;grid-template-columns:repeat(var(--n),minmax(30px,44px));gap:4px}
+  .ef-pair span{text-align:center;border-radius:8px;padding:3px 0;font-weight:700;background:#e7f6ef;font-variant-numeric:tabular-nums}
+  .ef-pair .rev span{background:#fdecea}
+  .ef-pair .sum span{background:#fff4d6;border:1px dashed #f2a516}
+  .ef-pairtxt{margin:8px 0 0;font-size:.93rem}
+  /* 01 경주 */
+  .ef-race{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ef-race .lane{background:#fbfaf7;border-radius:12px;padding:10px 14px;border-left:6px solid var(--k)}
+  .ef-race h4{margin:0 0 6px;color:var(--k);font-size:.98rem}
+  .ef-race .vars{display:flex;gap:16px;flex-wrap:wrap;font-size:.92rem;font-variant-numeric:tabular-nums;min-height:1.6em}
+  .ef-race .bar{height:14px;background:#e6e1d6;border-radius:7px;overflow:hidden;margin:8px 0}
+  .ef-race .bar i{display:block;height:100%;width:0;background:var(--k);transition:width .15s}
+  .ef-race .ops{font-size:.95rem}
+  .ef-race .ops b{font-size:1.25rem;color:var(--k);font-variant-numeric:tabular-nums}
+  /* 02 그래프 */
+  .ef-chart2{width:100%;max-width:620px;display:block;background:#fff;border:2px solid var(--line);border-radius:12px}
+  .ef-bigo{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
+  .ef-chart{width:100%;background:#fff;border:2px solid var(--line);border-radius:12px}
+  .ef-bars{display:grid;gap:8px}
+  .ef-bars>div{display:grid;grid-template-columns:56px 1fr 150px;align-items:center;gap:8px;font-size:.92rem}
+  .ef-bars .b{height:16px;background:#eee8dc;border-radius:8px;overflow:hidden}
+  .ef-bars .b i{display:block;height:100%;border-radius:8px;transition:width .3s}
+  .ef-bars .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  /* 03 하노이 */
+  .ef-cond{background:#fbfaf7;border-radius:12px;padding:8px 14px;font-size:.92rem}
+  .ef-cond ol{margin:4px 0 0;padding-left:22px}
+  .ef-hanoi{background:#fff;border:2px solid var(--line);border-radius:12px;overflow-x:auto}
+  .ef-hanoi svg{display:block;width:100%;min-width:560px;max-width:760px;margin:0 auto;cursor:pointer}
+  .ef-moves{margin-left:auto;font-size:.95rem}
+  .ef-moves b{font-size:1.3rem;color:var(--acc)}
+  .ef-hstate{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;margin-top:6px;align-items:baseline}
+  .ef-hstate b{color:var(--acc)}
+  .ef-hstate small{color:var(--muted)}
+  .ef-steps{margin:0;padding-left:0;list-style:none}
+  .ef-steps li{padding:6px 0;border-top:1px dashed var(--line)}
+  .ef-steps li:first-child{border-top:0}
+  .ef-model{display:grid;gap:8px;font-size:.98rem;background:#fbfaf7;border-radius:12px;padding:12px 16px}
+  .ef-model .in2{padding-left:128px}
+  .ef-model input{width:48px;text-align:center;font:inherit;font-weight:900;color:var(--acc);border:2px dashed var(--acc);border-radius:8px;padding:2px 4px;background:#fff}
+  @media (max-width:900px){.ef-race,.ef-bigo{grid-template-columns:1fr}.ef-model .in2{padding-left:20px}}

@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제어 구조의 응용 ③ map()·split()과 함수</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202c; --muted:#5b6776; --paper:#f3efe7; --card:#fff; --line:#e3ddd2;
+    --navy:#0f2742; --amber:#f2a516; --red:#d64535; --mint:#1f9d74;
+    --acc:#2f6fd0; --acc-soft:#e6eefb;
+    --shadow:0 18px 50px rgba(15,39,66,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    background-image:radial-gradient(rgba(15,39,66,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:10;background:rgba(15,39,66,.97);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+  .brand{font-family:"Black Han Sans",sans-serif;font-size:1.15rem;letter-spacing:.01em;white-space:nowrap;color:inherit;text-decoration:none}
+  .steps{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .steps button{flex:0 0 auto;border:0;background:transparent;color:#9fb3cc;font:inherit;font-size:.82rem;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .steps button.on{background:var(--amber);color:var(--navy);font-weight:900}
+  .steps button.done::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#5fd3a5;margin-left:5px;vertical-align:middle}
+  .score{font-size:.85rem;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .progress{height:4px;background:rgba(15,39,66,.12)}
+  .progress i{display:block;height:100%;background:var(--amber);width:0;transition:width .4s}
+  main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:26px 20px 30px}
+  .page{display:none}
+  .page.on{display:block;animation:enter .45s cubic-bezier(.2,.7,.2,1) both}
+  .page.on.back{animation-name:enterBack}
+  @keyframes enter{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+  @keyframes enterBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+  .head{display:flex;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.2rem;line-height:.85;color:var(--acc);opacity:.9}
+  .head h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:2.1rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;border:1px solid rgba(0,0,0,.04)}
+  .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .grid2.even{grid-template-columns:1fr 1fr}
+  @media (max-width:860px){.grid2,.grid2.even{grid-template-columns:1fr}.num{font-size:3rem}.head h2{font-size:1.6rem}}
+  h3{margin:0 0 8px;font-size:1.1rem}
+  h4{margin:0 0 4px}
+  p{margin:6px 0}
+  a{color:var(--acc)}
+  .muted{color:var(--muted)}
+  .book{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 10px;margin-top:6px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;margin:8px 0}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center}
+  th{color:var(--muted);font-weight:700;font-size:.85rem}
+  td.l,th.l{text-align:left}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:inherit;font-size:.92rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .chip.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .btn{border:0;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;transition:transform .1s, box-shadow .2s;box-shadow:0 6px 16px rgba(15,39,66,.18)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--acc);border:2px solid var(--acc);box-shadow:none}
+  .btn.sm{padding:5px 12px;font-size:.88rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ctrl{display:grid;grid-template-columns:70px 1fr 48px;align-items:center;gap:4px 10px;margin:4px 0}
+  .ctrl label{font-weight:900;font-size:.95rem}
+  .ctrl output{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--acc)}
+  input[type=text],input[type=number]{font:inherit;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px;background:#fff;color:var(--ink)}
+  .big{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .ok{color:var(--mint);font-weight:700}.ng{color:var(--red);font-weight:700}
+  .callout{border-radius:12px;padding:12px 16px;background:var(--acc-soft);border-left:5px solid var(--acc);margin:12px 0}
+  svg{display:block;width:100%;height:auto}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:.9em;background:#f1f3f6;padding:1px 6px;border-radius:5px}
+  .cx{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;border-left:6px solid var(--acc)}
+  .cx>h3{margin:0 0 4px;font-size:1.15rem}
+  .cx>.lead2{color:var(--muted);margin:0 0 12px}
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:860px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .qa b.q{display:block;color:var(--acc);margin-bottom:3px}
+  .vsteps{list-style:none;margin:0;padding:0;counter-reset:v}
+  .vsteps>li{position:relative;padding:9px 0 9px 44px;border-top:1px dashed var(--line)}
+  .vsteps>li:first-child{border-top:0}
+  .vsteps>li::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;display:grid;place-items:center;font-size:.9rem}
+  .vsteps p{margin:2px 0 0;font-size:.93rem}
+  .case{background:#fff8e6;border:2px solid #f6d58a;border-radius:16px;padding:16px 20px;margin-bottom:18px}
+  .case>h3{margin:0 0 8px;font-size:1.05rem;color:#8a5a00}
+  /* 퀴즈 */
+  .quiz{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:16px;padding:20px 22px;margin-top:6px;box-shadow:var(--shadow)}
+  .quiz .qh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .quiz .qh b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.25rem;color:var(--amber)}
+  .quiz .qh span{font-size:.85rem;color:#a9bbd2}
+  .qi{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:10px}
+  .qi .qq{font-weight:700;margin-bottom:8px}
+  .qi .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .qi .opts button{font:inherit;font-size:.93rem;border:2px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:6px 14px;cursor:pointer;transition:.15s}
+  .qi .opts button:hover:not(:disabled){border-color:var(--amber)}
+  .qi .opts button.right{background:var(--mint);border-color:var(--mint);font-weight:700}
+  .qi .opts button.wrong{background:var(--red);border-color:var(--red);text-decoration:line-through}
+  .qi .opts button:disabled{cursor:default}
+  .qi .why{margin-top:8px;font-size:.9rem;color:#d7e3f2;display:none}
+  .qi.answered .why{display:block}
+  .qi.answered.correct{box-shadow:inset 4px 0 0 var(--mint)}
+  .qi.answered.incorrect{box-shadow:inset 4px 0 0 var(--red)}
+  .shake{animation:shake .35s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .foot{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .foot .btn{min-width:110px}
+  .foot .pg{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  /* 표지 */
+  .cover{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,#24507f 0%,#0f2742 55%,#0a1a2e 100%);color:#fff;min-height:520px;padding:46px 44px;box-shadow:var(--shadow)}
+  .cover canvas{position:absolute;right:0;top:0;height:100%;width:62%;image-rendering:pixelated;opacity:.95}
+  .cover .fade{position:absolute;inset:0;background:linear-gradient(90deg,#0f2742 34%,rgba(15,39,66,.75) 50%,rgba(15,39,66,0) 70%)}
+  .cover .in{position:relative;max-width:560px}
+  .cover .tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:.85rem;padding:4px 12px;border-radius:999px}
+  .cover h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:3.1rem;line-height:1.15;margin:16px 0 10px}
+  .cover p{color:#c8d6e8;font-size:1.05rem}
+  .cover ol{margin:18px 0 26px;padding-left:20px;color:#e1e9f4;columns:2;column-gap:28px;font-size:.95rem}
+  @media (max-width:700px){.cover{padding:30px 22px}.cover h1{font-size:2.2rem}.cover ol{columns:1}.cover canvas{width:100%;opacity:.3}.cover .fade{display:none}}
+  .today{margin-top:26px}
+  .kicker{display:inline-block;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;color:var(--navy);margin-bottom:6px;border-bottom:4px solid var(--amber);line-height:1.2}
+  .today-lead{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 26px;margin-bottom:16px}
+  .today-lead p{font-size:1.12rem;margin:6px 0 0}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
+  @media (max-width:900px){.why3{grid-template-columns:1fr}}
+  .why{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+  .why ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+  .why li{margin:6px 0}
+  .why ul.can{list-style:none;padding:0}
+  .why ul.can li{padding-left:28px;position:relative}
+  .why ul.can li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;background:var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+  .why ul.uses{list-style:none;padding:0}
+  .why ul.uses li{border-left:3px solid var(--amber);padding-left:10px}
+  .glossary-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .glossary-head .muted{font-size:.88rem}
+  .glossary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+  @media (max-width:1000px){.glossary{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.glossary{grid-template-columns:1fr}}
+  .gcard{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:#fff;border-radius:14px;padding:16px 16px 12px;box-shadow:var(--shadow);border-top:6px solid var(--g);position:relative;transition:transform .18s, box-shadow .18s}
+  .gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,39,66,.16)}
+  .gcard:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+  .gcard i{position:absolute;right:14px;top:8px;font-style:normal;font-family:"Black Han Sans",sans-serif;font-size:1.9rem;color:var(--g);opacity:.25}
+  .gcard h4{margin:0 0 6px;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;color:var(--g)}
+  .gcard dl{margin:0;font-size:.88rem;line-height:1.45}
+  .gcard dt{font-weight:900;margin-top:7px}
+  .gcard dd{margin:1px 0 0;color:#3c4654}
+  .prob{display:grid;grid-template-columns:60px 1fr 46px;gap:6px;align-items:center;font-size:.88rem;min-width:200px}
+  .prob i{display:block;height:12px;border-radius:6px;background:var(--acc)}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:860px){.apps{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:2rem;display:block}
+  .apps button b{display:block}
+  .appd{display:none}
+  .appd.on{display:block;animation:enter .35s both}
+  .ex2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media (max-width:640px){.ex2{grid-template-columns:1fr}}
+  .ex2>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;font-size:.93rem;border-left:4px solid var(--acc)}
+  .try{margin-top:12px;background:var(--acc-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+  .try ol{margin:4px 0 0;padding-left:20px}
+  /* 3단원 공통 */
+  .easy{display:flex;gap:12px;align-items:flex-start;background:#fffbea;border:2px solid #f6d58a;border-radius:14px;padding:12px 16px;margin:-4px 0 16px;font-size:1rem;line-height:1.6}
+  .easy b.t{flex:0 0 auto;background:#f2a516;color:#0f2742;border-radius:999px;padding:2px 10px;font-size:.82rem;margin-top:2px}
+  .route{position:absolute;right:30px;top:36px;width:min(430px,44%);display:grid;gap:10px}
+  .route .st{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;color:#fff;opacity:0;transform:translateX(20px);animation:rin .6s forwards}
+  .route .st i{font-style:normal;font-size:1.6rem}
+  .route .st b{display:block;font-size:1.02rem}
+  .route .st small{color:#c8d6e8;font-size:.82rem}
+  .route .ar{color:var(--amber);text-align:center;font-weight:900;opacity:0;animation:rin .5s forwards}
+  @keyframes rin{to{opacity:1;transform:none}}
+  @media (max-width:1080px){.route{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}
+  .story{background:rgba(255,255,255,.08);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0;color:#e1e9f4;font-size:.95rem}
+  .story b{color:#fff}
+  /* 카드 묶음 */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:900px){.cards3,.cards4{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.cards3,.cards2,.cards4{grid-template-columns:1fr}}
+  .kc{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:14px 16px;border-top:6px solid var(--k,var(--acc))}
+  .kc h4{color:var(--k,var(--acc));font-size:1.05rem;margin:0 0 4px}
+  .kc p{font-size:.92rem;margin:4px 0 0}
+  .kc .ic{font-size:1.7rem;line-height:1}
+  .kc small{display:block;color:var(--muted);font-size:.8rem;margin-top:6px}
+  .tagt{display:inline-block;font-size:.76rem;font-weight:900;border-radius:999px;padding:1px 9px;background:color-mix(in srgb,var(--k,var(--acc)) 14%,white);color:var(--k,var(--acc));margin:6px 4px 0 0}
+  /* 연표 */
+  .tl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tl button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font:inherit;font-weight:900;cursor:pointer;color:var(--ink)}
+  .tl button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tlv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){.tlv{grid-template-columns:1fr}}
+  .tlv>div{background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:5px solid var(--k)}
+  .tlv h4{color:var(--k)}
+  .tlv .it{margin:6px 0 0;font-size:.93rem}
+  .tlv .it b{display:block}
+  /* 분류 게임 */
+  .sit{background:#fbfaf7;border:2px dashed var(--line);border-radius:14px;padding:14px 16px;text-align:center;min-height:170px}
+  .sit .cnt{font-size:.82rem;color:var(--muted)}
+  .sit .sq{font-size:1.08rem;font-weight:900;margin:6px 0 12px;min-height:52px}
+  .sit .ic{font-size:2rem}
+  .sit .row{justify-content:center}
+  .sit .fb{min-height:24px;margin-top:8px;font-size:.93rem}
+  .sit .cat{border:2px solid var(--k);color:var(--k);background:#fff;font-weight:900}
+  .sit .cat:hover{background:color-mix(in srgb,var(--k) 12%,white)}
+  .board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:8px;margin-top:12px}
+  @media (max-width:760px){.board{grid-template-columns:1fr 1fr}}
+  .board>div{background:#fff;border-radius:12px;border-top:5px solid var(--k);padding:8px 10px;font-size:.84rem;min-height:70px}
+  .board>div b{display:block;color:var(--k);font-size:.92rem}
+  .board>div span{display:block;border-top:1px dashed var(--line);padding:3px 0}
+  .board>div span.x{color:var(--red)}
+  /* 뒤집는 카드 */
+  .tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tcard{perspective:900px;height:172px;cursor:pointer}
+  .tcard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .tcard.flip .in{transform:rotateY(180deg)}
+  .tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(15,39,66,.09);overflow:auto}
+  .tcard .f{background:#fff;border-top:6px solid var(--acc);display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .tcard .f i{font-style:normal;font-size:2rem;line-height:1.1}
+  .tcard .f b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.25;margin-top:4px}
+  .tcard .f small{color:var(--muted);font-size:.78rem;margin-top:6px}
+  .tcard .b{background:var(--acc);color:#fff;transform:rotateY(180deg);font-size:.9rem;line-height:1.5}
+  .tcard .b .x{margin-top:6px;background:rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:.84rem}
+  /* 사례 탭 */
+  .apps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .apps.a6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:860px){.apps,.apps.a6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:480px){.apps,.apps.a6{grid-template-columns:1fr 1fr}}
+  .apps button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border-radius:14px;padding:12px 8px;box-shadow:0 6px 16px rgba(15,39,66,.08);border:3px solid transparent;text-align:center;transition:.2s;font-size:.92rem}
+  .apps button.on{border-color:var(--acc);transform:translateY(-3px)}
+  .apps button .e{font-size:1.8rem;display:block}
+  .apps button b{display:block}
+  .cview{margin-top:14px}
+  .pr{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+  @media (max-width:760px){.pr{grid-template-columns:1fr}}
+  .pr>div{border-radius:12px;padding:12px 14px;font-size:.93rem}
+  .pr .p{background:#fdecea;border-left:5px solid var(--red)}
+  .pr .s{background:#e7f6ef;border-left:5px solid var(--mint)}
+  .pr h4{font-size:.95rem}
+  .pr .p h4{color:#9b2c20}.pr .s h4{color:#13684d}
+  .dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem;margin-top:10px;background:#fbfaf7;border-radius:10px;padding:10px 12px}
+  .dl b{color:var(--acc)}
+  /* 메모 */
+  .memo{margin-top:10px}
+  .memo label{display:block;font-weight:700;font-size:.93rem;margin:10px 0 4px}
+  .memo label small{font-weight:400;color:var(--muted)}
+  .memo input[type=text]{width:100%}
+  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border:1px solid #c5ccd5;border-radius:8px;resize:vertical;color:var(--ink);background:#fff}
+  .saved{font-size:.8rem;color:var(--mint);min-height:1em}
+  /* 투표 */
+  .vote{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:560px){.vote{grid-template-columns:1fr}}
+  .vote button{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:3px solid var(--line);border-radius:14px;padding:12px 14px;text-align:center;font-weight:900}
+  .vote button.on{border-color:var(--acc);background:var(--acc-soft)}
+  .vote button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
+  .reveal{display:none;margin-top:12px}
+  .reveal.on{display:block;animation:fadein .4s both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .pct{display:grid;grid-template-columns:120px 1fr 50px;gap:8px;align-items:center;margin:6px 0;font-size:.93rem}
+  .pct i{display:block;height:16px;border-radius:8px;background:var(--acc);width:0;transition:width .8s}
+  /* 질문폼 연결 */
+  .formgo{background:linear-gradient(135deg,#0f2742,#1b3d66);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+  .formgo .kicker{color:#fff;border-bottom-color:var(--amber)}
+  .formgo h3{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;margin:4px 0 8px}
+  .formgo ol{margin:6px 0 12px;padding-left:22px;color:#e1e9f4}
+  .formgo ol li{margin:6px 0}
+  .formgo p{color:#c8d6e8;font-size:.92rem}
+  .formgo .go{display:inline-block;background:var(--amber);color:var(--navy);font-weight:900;font-size:1.1rem;text-decoration:none;border-radius:12px;padding:12px 22px;margin-top:6px}
+  .formgo .go:hover{filter:brightness(1.05)}
+  .msum{background:#fff;border-radius:14px;padding:12px 16px;margin-top:12px;color:var(--ink);font-size:.9rem}
+  .msum h4{color:var(--navy)}
+  .msum dl{margin:6px 0 0}
+  .msum dt{font-weight:700;margin-top:8px;color:var(--muted);font-size:.84rem}
+  .msum dd{margin:2px 0 0;white-space:pre-wrap}
+  .msum dd.e{color:#aab2bd}
+  .key3{display:grid;gap:10px;margin-bottom:18px}
+  .key3 div{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 18px;border-left:6px solid var(--k);font-size:1.02rem}
+  .note{font-size:.84rem;color:var(--muted);margin-top:8px}
+  .flow2{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .flow2>div{flex:1;min-width:140px;background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .flow2>div b{display:block}
+  .flow2>div span{font-size:.88rem}
+  .flow2>.ar{flex:0 0 auto;min-width:0;background:none;border:0;align-self:center;font-weight:900;color:var(--muted);padding:0}
+  @media (max-width:640px){.flow2>.ar{flex-basis:100%;text-align:center;transform:rotate(90deg)}}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .chk button.on{border-color:var(--acc);background:var(--acc);color:#fff;font-weight:700}
+  .tbl td,.tbl th{padding:8px 10px;vertical-align:top}
+  .tbl td{text-align:left;font-size:.92rem}
+  .mx{min-width:560px}
+  .mx th{background:#fbfaf7}
+  .mx td{border:1px solid var(--line);height:74px;width:30%;font-size:.86rem;cursor:pointer;background:#fff;transition:background .2s}
+  .mx td:hover{background:var(--acc-soft)}
+  .mx td.fill{background:#e7f6ef;cursor:default}
+  .mx td.bad{background:#fdecea}
+  .mx th.r{white-space:nowrap}
+  #mxPool button{border-radius:12px;text-align:left;max-width:100%}
+  /* 4단원 */
+  .sdg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  @media (max-width:760px){.sdg{grid-template-columns:repeat(3,1fr)}}
+  .sdg button{all:unset;box-sizing:border-box;cursor:pointer;border-radius:10px;padding:8px 6px;color:#fff;background:var(--c);min-height:74px;font-size:.78rem;line-height:1.3;font-weight:700;display:flex;flex-direction:column;gap:2px;transition:transform .15s}
+  .sdg button b{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.3rem;line-height:1}
+  .sdg button:hover,.sdg button.on{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .sdg button.on{outline:3px solid var(--navy)}
+  .sdgv{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:12px 14px;border-left:6px solid var(--c,#0f2742);min-height:60px}
+  .five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.five{grid-template-columns:1fr}}
+  .five>div{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(15,39,66,.08);padding:12px 12px;border-top:6px solid var(--k)}
+  .five b.n{font-family:"Black Han Sans",sans-serif;color:var(--k);font-size:1.2rem}
+  .five h4{margin:2px 0 4px;font-size:.98rem}
+  .five p{font-size:.86rem;margin:4px 0}
+  .five .ml{margin-top:8px;background:color-mix(in srgb,var(--k) 10%,white);border-radius:8px;padding:6px 8px;font-size:.82rem}
+  .quad{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+  .quad .ax{font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+  .quad .ax.v{writing-mode:vertical-rl}
+  .quad .cell{background:#fbfaf7;border:2px dashed var(--line);border-radius:12px;min-height:84px;padding:6px 8px;font-size:.84rem;cursor:pointer}
+  .quad .cell.best{border-color:var(--mint);background:#e7f6ef}
+  .quad .cell small{display:block;color:var(--muted);font-size:.74rem}
+  .quad .cell span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin:2px 2px 0 0}
+  .qbuild{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.08rem;font-weight:700;background:#fff8e6;border:2px solid #f6d58a;border-radius:12px;padding:12px 14px}
+  .qbuild input{flex:1;min-width:200px;font:inherit;font-weight:400;padding:6px 10px;border:1px solid #c5ccd5;border-radius:8px}
+  .plan{width:100%}
+  .plan td:first-child{width:150px;font-weight:700;font-size:.9rem;background:#fbfaf7}
+  .plan input{width:100%;font:inherit;padding:5px 8px;border:1px solid #c5ccd5;border-radius:6px}
+  /* 시뮬레이터 */
+  .sim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:760px){.sim{grid-template-columns:1fr}}
+  .sim .cls{background:#fbfaf7;border-radius:12px;padding:10px 12px;border-top:5px solid var(--k)}
+  .sim .cls h4{color:var(--k);display:flex;justify-content:space-between}
+  .sim .cls ul{margin:6px 0 0;padding-left:18px;font-size:.88rem}
+  .sim .cls li.new{color:var(--k);font-weight:700}
+  .cand{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .cand button{border:2px dashed var(--k);background:#fff;border-radius:10px;padding:4px 10px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
+  .cand button.on{border-style:solid;background:color-mix(in srgb,var(--k) 15%,white);font-weight:700}
+  .tt td,.tt th{padding:6px 8px;font-size:.88rem}
+  .tt td.r{color:var(--mint);font-weight:900}.tt td.w{color:var(--red);font-weight:900}
+  .score2{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+  .score2 div{flex:1;min-width:140px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px 12px;text-align:center}
+  .score2 b{display:block;font-family:"Black Han Sans",sans-serif;font-size:1.8rem;color:var(--acc)}
+  /* 스크래치 블록 */
+  .blocks{font-family:ui-sans-serif,system-ui;font-size:.86rem;display:inline-block}
+  .blk{display:block;border-radius:6px;padding:5px 10px;margin:3px 0;color:#fff;width:max-content;max-width:100%}
+  .blk.ev{background:#ffbf00;color:#333;border-radius:14px 14px 6px 6px}
+  .blk.ctl{background:#ffab19;color:#333}
+  .blk.ml{background:#4c97ff}
+  .blk.lk{background:#9966ff}
+  .blk.in{margin-left:22px}
+  .blk i{font-style:normal;background:rgba(255,255,255,.9);color:#333;border-radius:10px;padding:0 6px;margin:0 2px}
+  .penguin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+  @media (max-width:560px){.penguin{grid-template-columns:1fr}}
+  .penguin div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .dist td,.dist th{padding:6px 8px;font-size:.88rem;text-align:center}
+  .dist tr.near{background:#fff4d6;font-weight:900}
+  .roles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media (max-width:860px){.roles{grid-template-columns:1fr 1fr}}
+  .roles div{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,39,66,.08);padding:10px;text-align:center;font-size:.84rem}
+  .roles div i{font-style:normal;font-size:1.6rem;display:block}
+  .roles div b{display:block;font-size:.92rem}
+  .roles div em{display:block;font-style:normal;margin-top:6px;background:#e6eefb;border-radius:8px;padding:4px 6px;color:#1b3d66}
+  .types div{background:#fbfaf7;border-radius:10px;padding:8px 10px;font-size:.86rem;border-left:4px solid var(--k)}
+  .types div b{display:block}
+  .types div small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+
+  /* 카드 격자 칸이 안의 긴 코드·표 때문에 늘어나지 않게 */
+  .cards2>*,.cards3>*,.cards4>*,.grid2>*{min-width:0}
+  /* 진도 보내기 */
+  .tr-gate{position:fixed;inset:0;z-index:200;background:rgba(15,39,66,.72);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .tr-card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 22px 16px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
+  .tr-card h2{margin:0;font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.5rem;color:var(--navy)}
+  .tr-sub{margin:-4px 0 4px;color:var(--muted);font-size:.92rem}
+  .tr-cls{display:flex;gap:8px}
+  .tr-cls label{flex:1;cursor:pointer}
+  .tr-cls input{position:absolute;opacity:0;pointer-events:none}
+  .tr-cls span{display:block;text-align:center;padding:10px 0;border:2px solid var(--line);border-radius:12px;font-weight:900;font-size:1.05rem}
+  .tr-cls input:checked+span{border-color:var(--navy);background:var(--navy);color:#fff}
+  .tr-cls input:focus-visible+span{outline:3px solid var(--amber)}
+  .tr-f{display:flex;align-items:center;gap:10px}
+  .tr-f span{width:40px;font-weight:700}
+  .tr-f input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:9px 12px;border:1px solid #c5ccd5;border-radius:10px}
+  .tr-err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .tr-card .btn{padding:12px;font-size:1.05rem;background:var(--navy)}
+  .tr-note{margin:2px 0 0;color:var(--muted);font-size:.8rem;line-height:1.5;text-align:center}
+  .tr-who,.tr-badge{display:flex;align-items:center;gap:6px;font-size:.82rem;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px;white-space:nowrap}
+  .tr-badge{padding:3px 12px;background:var(--amber);color:#111;font-weight:700}
+  .tr-who button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 9px}
+  .tr-who button:hover{background:rgba(255,255,255,.3)}
+  .tr-cls[hidden]{display:none}
+  .tr-badge button{all:unset;cursor:pointer;font-size:.74rem;background:rgba(0,0,0,.14);border-radius:999px;padding:2px 9px;margin-left:6px}
+  /* page-guard: 글자 선택·복사 막기 (입력 칸은 편집 가능) */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+  .pg-toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#0f2742;color:#fff;padding:9px 16px;border-radius:999px;font-size:.9rem;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+  .pg-toast.on{opacity:1}
+  .mono{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* 코드 상자(읽기용) */
+  .cbox{overflow-x:auto;background:#0f2742;border-radius:12px;padding:10px 0;margin:8px 0}
+  .cbox pre{margin:0;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#e8eef6;min-width:max-content}
+  .cbox .ln{display:block;white-space:pre;padding-right:16px}
+  .cbox .ln i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;color:#7f93ab;font-style:normal}
+  .cbox .k,.tr-code .k{color:#ff9f6e;font-weight:700}
+  .cbox .s,.tr-code .s{color:#a8e07e}
+  .cbox .c,.tr-code .c{color:#8fa2b8;font-style:italic}
+  .cbox .n,.tr-code .n{color:#f7c96b}
+  .cbox .f,.tr-code .f{color:#7cc7ff}
+  .cbox .bl{display:inline-block;min-width:7em;border-bottom:2px dashed #f7c96b;color:#f7c96b}
+  .outbox{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;margin:6px 0 10px;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-x:auto}
+  .outbox b.u{color:var(--acc);text-decoration:underline}
+  /* 코드 추적기 */
+  .tr{display:block;margin:10px 0}
+  .tr-in{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:9px 14px;margin-bottom:10px;font-size:.92rem}
+  .tr-in label{display:flex;align-items:center;gap:6px}
+  .tr-in input{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1rem;padding:5px 8px;border:2px solid var(--line);border-radius:8px}
+  .tr-in input:focus{outline:none;border-color:var(--acc)}
+  .tr-opt{display:flex;align-items:center;gap:6px}
+  .tr-opt button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;cursor:pointer}
+  .tr-opt button.on{border-color:var(--acc);background:var(--acc);color:#fff}
+  .tr-pickh{margin:0 0 8px;font-size:.92rem}
+  .tr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px;align-items:start}
+  .tr-grid.wide{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr)}
+  @media (max-width:820px){.tr-grid,.tr-grid.wide{grid-template-columns:1fr}}
+  .tr-codew{overflow-x:auto;background:#0f2742;border-radius:12px;padding:10px 0}
+  .tr-code{margin:0;font:14px/1.65 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;color:#e8eef6;min-width:max-content}
+  .tr-code .ln{display:block;white-space:pre;padding-right:96px;border-left:4px solid transparent;position:relative;transition:background .15s}
+  .tr-code .ln i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;color:#7f93ab;font-style:normal}
+  .tr-code .ln.done{background:rgba(31,157,116,.18)}
+  .tr-code .ln.cur{background:rgba(242,165,22,.42);border-left-color:#f2a516}
+  .tr-code .ln.skip{opacity:.4}
+  .tr-code .ln.skip::after{content:"실행 안 됨";position:absolute;right:10px;font-size:.72rem;color:#c9d3df}
+  .tr-code.pickable .ln{cursor:pointer}
+  .tr-code.pickable .ln:hover{background:rgba(255,255,255,.08)}
+  .tr-code .ln.pk i{color:#0f2742;background:#f2a516;border-radius:6px}
+  .tr-code .ln.ok::after,.tr-code .ln.ng::after,.tr-code .ln.miss::after{position:absolute;right:10px;font-size:.72rem;font-weight:700;padding:0 6px;border-radius:6px}
+  .tr-code .ln.ok::after{content:"✔ 맞음";background:#1f9d74;color:#fff}
+  .tr-code .ln.ng::after{content:"✗ 실행 안 됨";background:#d64535;color:#fff}
+  .tr-code .ln.miss::after{content:"놓침";background:#f2a516;color:#0f2742}
+  .tr-side{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .tr-side>div>b,.tr-sc>b{display:block;font-size:.82rem;color:var(--muted);margin-bottom:3px}
+  .tr-vars table{border-collapse:collapse;width:100%;background:#fff;font-size:.92rem}
+  .tr-vars th,.tr-vars td{border:1px solid var(--line);padding:4px 10px;text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+  .tr-vars th{width:34%;background:#fbfaf7}
+  .tr-vars tr.ch td{background:#fff3cf;font-weight:700}
+  .tr-sc{margin-bottom:6px}
+  .tr-sc.l table{border:2px dashed #9b4fc4}
+  .tr-fn{background:#efe2f7;color:#6b2f8f;border-radius:999px;padding:1px 9px;font-size:.82rem;font-weight:700}
+  .tr-out{margin:0;min-height:96px;max-height:260px;overflow:auto;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+  .tr-out b.u{color:var(--acc);text-decoration:underline}
+  .tr-out .er{color:var(--red);font-weight:700}
+  .tr-note{min-height:1.6em;margin:8px 0 6px;font-size:.93rem;text-align:left}
+  .tr-note code,.tr-note .mono{background:#f1ede4;border-radius:5px;padding:0 5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .tr-ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tr-cnt{font-size:.85rem;margin-left:4px}
+  .tr-tblw{overflow-x:auto;margin-top:10px}
+  .tr-tbl{border-collapse:collapse;background:#fff;font-size:.88rem;min-width:100%}
+  .tr-tbl th,.tr-tbl td{border:1px solid var(--line);padding:4px 8px;text-align:center;min-width:34px;font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap}
+  .tr-tbl th{background:#fbfaf7}
+  .tr-tbl td.cur{background:#ffe7a8}
+  .tr-tbl td.ch{font-weight:700;color:var(--acc)}
+  /* 공통 */
+  .ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .ck>b{font-size:.92rem;color:var(--mint)}
+  .ck .chk button.on::before{content:"✔ "}
+  .ul{margin:6px 0 0;padding-left:18px;font-size:.93rem}
+  .ul li{margin:4px 0}
+  .ol{font-size:.93rem;padding-left:20px}
+  .ol li{margin:4px 0}
+  .tbl2{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+  .tbl2 th,.tbl2 td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  .tbl2 tr:first-child th{background:var(--acc-soft)}
+  .tbl2 td.l{text-align:left}
+  .tbl2 .mono{font-size:.9rem}
+  .more{margin-top:12px;border:2px dashed var(--line);border-radius:12px;padding:8px 14px;background:#fbfaf7}
+  .more summary{cursor:pointer;font-weight:700}
+  .colab{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+  .blanks{font-size:.95rem;padding-left:20px}
+  .blanks li{margin:8px 0}
+  .blank{border:0;border-bottom:2px dashed var(--acc);background:var(--acc-soft);color:var(--acc);font:inherit;font-weight:700;min-width:90px;padding:1px 10px;border-radius:6px 6px 0 0;cursor:pointer}
+  .blank.on{background:var(--acc);color:#fff;border-bottom-style:solid}
+  .prev{background:#fbfaf7;border-left:4px solid var(--acc);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:.93rem}
+  /* 순서도 */
+  .fc{display:grid;gap:12px}
+  .fc>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center}
+  .fc>div>b{display:block;margin-bottom:4px}
+  .fc svg{width:100%;max-width:260px;height:auto}
+  .fc p{font-size:.86rem;margin:6px 0 0;text-align:left}
+  .fc svg .bx{fill:#2f8fc7;stroke:none}
+  .fc svg .dm{fill:#2f8fc7}
+  .fc svg text{font-size:12px;fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:middle;font-family:inherit}
+  .fc svg text.lb{fill:#5b6776;font-weight:400;font-size:11px}
+  .fc svg .ar{stroke:#2f8fc7;stroke-width:1.6;fill:none}
+  .cbox[data-nonum] .ln{padding-left:18px}
+  .qq .qcode{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;background:#f4f1ea;border-radius:8px;padding:6px 12px;margin-top:6px;font-size:.88rem;font-weight:400;white-space:pre;overflow-x:auto}
+  /* 이 차시만 */
+  .fn-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px;align-items:center}
+  @media (max-width:900px){.fn-form{grid-template-columns:1fr}}
+  .fn-ans{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center}
+  .fn-ans input{width:170px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.02rem;padding:5px 8px;border:2px solid var(--line);border-radius:8px}
+  .fn-ans input:focus{outline:none;border-color:var(--acc)}
+  .fn-steps{display:flex;flex-direction:column;gap:8px}
+  .fn-st{display:grid;grid-template-columns:270px minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+  @media (max-width:820px){.fn-st{grid-template-columns:1fr}}
+  .fn-st .lb{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:.9rem}
+  .fn-st code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f1ede4;border-radius:6px;padding:2px 8px}
+  .fn-st small{color:var(--muted);font-size:.82rem;text-align:right}
+  .fn-chips{display:flex;gap:6px;flex-wrap:wrap}
+  .fn-chips i{font-style:normal;font-family:ui-monospace,Menlo,Consolas,monospace;padding:2px 10px;border-radius:8px;border:2px solid var(--line);font-weight:700}
+  .fn-chips i.s{border-color:#1f9d74;background:#eaf7f1}
+  .fn-chips i.n{border-color:#2f6fd0;background:#e6eefb}
+  .fn-algo{margin:0}
+  .fn-bomb,.fn-shop{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start;margin-top:10px}
+  @media (max-width:820px){.fn-bomb,.fn-shop{grid-template-columns:1fr}}
+  .fn-bout{min-height:250px;max-height:330px}
+  .fn-sout{min-height:300px;max-height:360px}
+  .fn-cap{display:block;font-size:.82rem;color:var(--muted);margin:0 0 4px}
+  .fn-chk{margin:0 0 12px;padding-left:20px;font-size:.88rem;min-height:120px}
+  .fn-chk li{margin:3px 0}
+  .fn-chk li.ok{color:#17805e}
+  .fn-chk li.ng{color:var(--red)}
+  .fn-chk li.muted{color:var(--muted);list-style:none;margin-left:-20px}
+  .fn-chk code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f1ede4;border-radius:5px;padding:0 5px}
+  .fn-grid{display:grid;grid-template-columns:repeat(7,34px);gap:3px}
+  .fn-grid span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-weight:700}
+  .fn-grid .h{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  .fn-grid .c{background:#fff;border:2px solid var(--line)}
+  .fn-grid .c.on{background:#fff3cf;border-color:#f2a516;color:#d64535}
+  .fn-grid .c.new{box-shadow:0 0 0 3px #f2a516}
+  .fn-funcs{display:grid;gap:6px;margin-bottom:10px}
+  .fn-funcs div{border:2px solid var(--line);border-radius:10px;padding:6px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;background:#fff;transition:all .2s}
+  .fn-funcs div.on{border-color:#9b4fc4;background:#efe2f7;font-weight:700}
+  #shMsg code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f1ede4;border-radius:5px;padding:0 5px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">정보</span>
+  <nav class="steps" id="steps"></nav>
+  <div class="score" id="score"></div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<main id="main">
+
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>자주 사용하는 기능을<br>한 번에 표현할 수 있을까?</h1>
+      <div class="story"><b>「떡볶이 하나, 콜라 하나요. 계산해 주세요!」</b><br>분식집 주문 프로그램은 메뉴판 보기, 주문하기, 결제하기를 손님이 원할 때마다 되풀이해요. 같은 기능을 여러 번 쓸 때마다 코드를 다시 적는 대신, <b>기능에 이름을 붙여 두고 불러 쓸 수</b>는 없을까요?</div>
+      <p>오늘은 반복을 계속하다가 원할 때 멈추는 <b>무한 루프</b>, 입력받은 문자열을 나누고 바꾸는 <b>split() 메소드와 map() 함수</b>, 자주 쓰는 기능을 직접 만드는 <b>사용자 정의 함수</b>와 <b>지역 변수·전역 변수</b>를 배워요. 마지막에는 분식집 메뉴 주문 프로그램을 완성하고 제어 구조의 응용을 정리해요.</p>
+      <ol>
+        <li>무한 루프</li><li>split() 메소드와 map() 함수 · 폭탄 맵</li><li>사용자 정의 함수 · 지역 변수와 전역 변수</li>
+        <li>함께 해결하기 · 분식집 메뉴 주문</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘의 목표 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>♾️</i><div><b>무한 루프</b><small>while True와 break</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>✂️</i><div><b>split() · map()</b><small>'2 0' → 2, 0</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧰</i><div><b>사용자 정의 함수</b><small>def · 매개 변수 · return</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🍢</i><div><b>분식집 메뉴 주문</b><small>함수와 중첩 제어 구조</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">2-4 · 제어 구조의 응용</span>
+      <p>앞 시간에는 for문, range() 함수, while문, break와 continue로 <b>반복 구조</b>를 배웠어요. 오늘은 while문으로 무한 루프를 만들고, 앞에서 배운 <b>2차원 리스트</b>와 <b>딕셔너리</b>를 함께 써서 게임 맵과 주문 프로그램을 만들어요. 그리고 지금까지 써 온 print(), input() 같은 함수를 <b>직접 만들어</b> 봐요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>제어 구조의 응용</b> · 악보에서 특정 부분을 반복하거나 구간을 선택하여 연주하듯이 프로그래밍에서도 실행 순서를 반복하거나 선택하도록 결정할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 자주 사용하는 기능을 한 번에 표현할 수 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>순차, 선택, 반복 구조를 활용한 프로그램을 작성할 수 있다.</li>
+          <li>다양한 제어 구조를 복합적으로 활용한 프로그램을 작성할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</p>
+      </div>
+      <div class="why">
+        <span class="kicker">오늘 쓰는 도구</span>
+        <p style="margin:0;font-size:.92rem">화면에서는 프로그램을 직접 <b>돌려 보며</b> 실행 흐름을 따라가고, 04 화면에서 <b>구글 코랩</b> 노트북을 열어 실습해요. 학교 구글 계정으로 미리 로그인해 두세요.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>게임 프로그램에서 「점수를 계산해 화면에 보여 주는」 일을 열 군데에서 해야 한다면, 같은 코드를 열 번 써야 할까요? 더 좋은 방법을 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planFunc" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 무한 루프부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 무한 루프 -->
+<section class="page" data-name="무한 루프" data-acc="#e0702b">
+  <div class="head"><div class="num">01</div><div><h2>멈출 때까지 계속 · 무한 루프</h2><p>교과서 142쪽 · 무한 루프, while True, break</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>while 뒤의 조건에 <b>True</b>를 쓰면 조건이 늘 참이라 끝없이 반복해요. 이것이 <b>무한 루프</b>예요. 반복 안에서 원하는 상황이 되면 <b>break</b>로 빠져나와요.</span></div>
+  <div class="card">
+    <h3>5 무한 루프</h3>
+    <p style="margin-top:0">반복 횟수를 정하지 않고 반복하고 싶을 때는 while 다음의 조건에 <b>True</b>를 작성해서 무한 루프를 만들 수 있어요. 무한 루프를 그만두기 위해서 <b>break</b> 명령어를 함께 작성해요.</p>
+    <p style="margin-bottom:0">다음은 <b>정답을 맞힐 때까지 반복하여 곱셈 문제를 내는</b> 프로그램이에요. 직접 문제를 풀면서, 매번 어느 줄이 실행되는지 살펴봐요. 일부러 한두 번 틀려 보세요.</p>
+  </div>
+  <div class="card">
+    <h3>🔍 돌려 보며 따라가기 · 곱셈 문제</h3>
+    <div id="mulLab"></div>
+    <p class="note" style="margin-bottom:0">Tip · 난수의 범위를 수정해서 실행 결과를 확인해 봐요. 위의 범위 버튼을 바꾸면 3행과 4행이 바뀌어요.</p>
+    <div class="memo"><label>while True로 만든 반복은 언제 끝났나요? 틀렸을 때와 맞혔을 때 실행된 줄을 비교해, 반복이 끝나는 까닭을 적어 보세요.</label><textarea data-memo="loopWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 split()과 map() -->
+<section class="page" data-name="split()·map() · 폭탄 맵" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>입력을 나누고 바꾸기 · split() 메소드와 map() 함수</h2><p>교과서 142~143쪽 · 지식 키우기(split() 메소드와 map() 함수), 스스로 해결하기(폭탄 맵 체험)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>input()으로 받은 「2 0」은 <b>문자열 하나</b>예요. <b>split()</b>으로 잘라 리스트로 만들고, <b>map(int, …)</b>으로 각 요소를 정수로 바꾸면 x와 y 두 변수에 바로 담을 수 있어요.</span></div>
+  <div class="card">
+    <h3>📘 지식 키우기 · split() 메소드와 map() 함수</h3>
+    <p style="margin-top:0" class="muted">메소드는 클래스에 포함된 함수예요. 함수는 오늘 03 화면에서, 객체와 클래스는 다음 시간(146쪽)에 배워요.</p>
+    <div class="grid2 even">
+      <div class="kc" style="--k:#1f9d74"><h4>split() 메소드</h4><p>문자열에 관한 함수로 <span class="mono">문자열.split('구분자')</span>와 같은 형식으로 사용해요. 문자열을 구분자를 기준으로 잘라 <b>리스트</b>로 만들어 주는데, 만약 구분자를 생략한다면 <b>공백</b>을 기준으로 잘라요.</p><div data-code="splitEx" data-nonum></div><div class="outbox">['1', '3', '5']</div></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>map() 함수</h4><p>반복 가능 객체의 각 요소들에 특정한 함수를 적용하고 싶을 때 사용해요. <span class="mono">map(함수, 반복 가능 객체)</span>와 같은 형식으로 사용해요.</p><div data-code="mapEx" data-nonum></div><div class="outbox">1 3 5</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✂️ split()·map() 실험실</h3>
+    <p class="muted" style="margin-top:0">입력한 문자열이 단계마다 어떻게 바뀌는지 봐요. 따옴표가 붙은 <span class="mono">'2'</span>는 문자열, 따옴표가 없는 <span class="mono">2</span>는 정수예요. 「6 8」, 「3,4」, 「1 2 3」, 「a b」도 넣어 보세요.</p>
+    <div id="smLab"></div>
+  </div>
+  <div class="card">
+    <h3>💣 스스로 해결하기 · 폭탄 맵</h3>
+    <p style="margin-top:0">6×6 크기의 게임 맵에 폭탄을 놓을 좌표를 입력받아 폭탄이 있는 위치를 ★로 표시하는 프로그램이에요. 먼저 아래에서 <b>알고리즘 설계</b>대로 프로그램이 돌아가는 모습을 보고, 04 화면에서 코랩으로 직접 작성해요.</p>
+    <div class="grid2 even">
+      <ol class="ol fn-algo">
+        <li>0으로 채워진 6 x 6 크기의 2차원 리스트를 만든다.</li>
+        <li>폭탄을 놓고 싶은 좌표 x, y를 입력한다. 이때 좌표 x와 좌표 y는 공백으로 구분하여 입력한다.</li>
+        <li>입력한 좌표의 범위가 올바른지 확인하고, 범위가 잘못되었다면 다시 입력한다.</li>
+        <li>범위가 올바르다면, x, y좌표에 해당하는 리스트의 값을 1로 바꾸어 준다.</li>
+        <li>폭탄이 있는 좌표는 ★로, 아무것도 없는 좌표는 □로 출력한다.</li>
+      </ol>
+      <p class="note" style="margin:0">폭탄의 개수는 정해져 있지 않으며, 사용자가 폭탄을 그만 입력하고 싶다면 「n」 키를 입력하여 반복을 종료하고 게임 맵을 출력해요. x는 <b>행</b>(위에서 몇째 줄), y는 <b>열</b>(왼쪽에서 몇째 칸)이고 0부터 세요.</p>
+    </div>
+    <div id="bombLab"></div>
+    <div class="memo"><label>범위를 벗어난 좌표(예: 6 8)를 넣었을 때 프로그램은 어떻게 처리했나요? split()과 map()이 한 일, 범위를 확인한 뒤 다시 입력받은 흐름을 함께 적어 보세요.</label><textarea data-memo="bombWhy" rows="2"></textarea><div class="saved"></div></div>
+    <p class="note">직접 작성은 <b>04 화면</b>에서 코랩 노트북 <b>2-1</b>로 해요. 지금 넣어 본 좌표를 기억해 두었다가 그대로 넣어 결과를 비교해요.</p>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 사용자 정의 함수 -->
+<section class="page" data-name="함수 · 지역/전역 변수" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>자주 사용하는 기능을 한 번에 표현할 수 있을까? · 함수</h2><p>교과서 144쪽 · 사용자 정의 함수, 함수 정의와 함수 호출, 지역 변수와 전역 변수</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>자주 쓰는 기능을 <b>def</b>로 한 번 정의해 이름을 붙여 두면, 필요할 때마다 <b>이름으로 호출</b>해서 써요. 호출하면 실행 흐름이 함수 안으로 들어갔다가, <b>return</b>을 만나면 결과(반환값)를 들고 원래 자리로 돌아와요.</span></div>
+  <div class="card">
+    <h3>4 자주 사용하는 기능을 한 번에 표현할 수 있을까?</h3>
+    <p style="margin-top:0">프로그램을 작성하다 보면 특정 기능을 반복하여 처리하는 경우가 있어요. 이때 자주 사용하는 기능을 함수로 정의해서 사용할 수 있어요. 함수를 사용하면 함수 안에서 처리되는 명령어를 몰라도 특정 기능을 사용할 수 있는데, 특히 사용자가 직접 작성해서 사용하는 함수를 <b>사용자 정의 함수</b>라고 해요.</p>
+    <h4 style="margin:10px 0 6px">1 함수 정의와 함수 호출</h4>
+    <div class="fn-form">
+      <div><div data-code="defForm" data-nonum></div><div data-code="callForm" data-nonum></div></div>
+      <ul class="ul">
+        <li><b>def</b>는 define의 줄임말로, 함수를 만들 때 함수명 앞에 적어요.</li>
+        <li><b>매개 변수</b>는 함수를 호출할 때 넘겨주는 값을 전달받기 위해 사용하는 변수예요. 전달받을 값이 없다면 생략할 수 있고, 여러 개의 값을 전달받는다면 필요한 만큼 매개 변수를 추가할 수 있어요.</li>
+        <li><b>반환값</b>은 함수를 처리한 결과를 호출한 쪽으로 되돌려주는 값이에요. 없다면 생략할 수 있어요.</li>
+        <li>함수명을 호출해서 함수에 정의된 기능을 사용할 수 있어요. <b>인수</b>는 함수를 호출할 때 넘겨주는 값이에요.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 한 줄씩 따라가기 · 1부터 입력받은 수까지 누적 합을 구하는 함수</h3>
+    <p class="muted" style="margin-top:0">1행(def)을 지난 뒤 바로 함수 안으로 들어가는지, 7행에서 호출하면 실행 흐름이 어디로 가는지, return 뒤에 어디로 돌아오는지 봐요. 오른쪽 아래 <b>지역 변수</b> 칸이 언제 생기고 언제 사라지는지도 살펴봐요.</p>
+    <div id="trTotal"></div>
+  </div>
+  <div class="card">
+    <h3>2 지역 변수와 전역 변수</h3>
+    <p style="margin-top:0">함수를 사용하게 되면 코드를 재사용해서 편리하지만, 만약 변수도 함께 재사용하게 된다면 기억 장소를 독립적으로 사용하지 못하는 문제가 생겨요. 그래서 함수에서만 사용하는 <b>지역 변수</b>와 모든 영역에서 공유하는 <b>전역 변수</b>를 구분하여 사용해요.</p>
+    <div style="overflow-x:auto"><table class="tbl2">
+      <tr><th>전역 변수</th><th>지역 변수</th></tr>
+      <tr><td class="l">· 함수 밖에서 선언된 변수<br>· 모든 영역에서 자유롭게 값을 불러올 수 있지만, 함수 내부에서 값을 변경할 수 없다.</td><td class="l">· 함수 내부에서 선언된 변수<br>· 선언된 함수 내에서만 사용할 수 있다.<br>· 함수가 종료되면 메모리에서 제거된다.</td></tr>
+    </table></div>
+    <p class="note">Tip · 함수 내부에서 선언된 지역 변수를 함수 밖에서 사용하고 싶다면, <b>global</b>을 붙여 전역 변수로 선언해요. 04 화면의 분식집 프로그램에서 써요.</p>
+  </div>
+  <div class="card">
+    <h3>🔍 한 줄씩 따라가기 · 약수 개수를 합하는 프로그램</h3>
+    <p class="muted" style="margin-top:0">10까지의 약수 개수와 20까지의 약수 개수를 합하는 프로그램이에요. n, tot, i는 <b>지역 변수</b>, 9행의 tot은 <b>전역 변수</b>예요. 이름이 같은 두 tot이 각각 어떻게 바뀌는지 봐요. 단계가 많으니 「⏭ 함수 실행을 한 번에」도 써 보세요.</p>
+    <div id="trDiv"></div>
+    <div class="memo"><label>지역 변수와 전역 변수의 이름이 같아도 되나요? 추적기에서 <b>두 tot의 값이 어떻게 따로 바뀌었는지</b>를 근거로 적어 보세요.</label><textarea data-memo="sameName" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 분식집 -->
+<section class="page" data-name="분식집 메뉴 주문" data-acc="#d64535">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 분식집 메뉴 주문</h2><p>교과서 143·145쪽 · 함수와 중첩 제어 구조, 딕셔너리, global, 코랩 실습(폭탄 맵·분식집), 개념 정리하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>메뉴판 보기, 주문하기, 결제하기를 각각 <b>함수</b>로 만들어 두고, 무한 루프 안에서 손님이 고른 번호에 따라 <b>알맞은 함수를 호출</b>해요. 주문 금액 total은 여러 함수가 함께 쓰므로 <b>전역 변수</b>예요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>📋 문제 이해와 분석 · 알고리즘 설계</h3>
+      <p style="margin-top:0;font-size:.93rem">분식집 메뉴 주문 프로그램을 실행하면 메뉴 보기, 주문하기, 결제하기, 이용 종료 등이 나타나요.</p>
+      <ol class="ol">
+        <li>프로그램을 실행하면 손님이 선택할 동작이 나온다.</li>
+        <li>메뉴판 보기를 실행하면 딕셔너리로 저장된 메뉴판이 출력된 후 다시 선택 화면이 나온다.</li>
+        <li>주문하기를 실행하면 주문받을 메뉴 이름이 입력되고 총액에 선택한 메뉴 가격이 추가된다.</li>
+        <li>반복해서 주문을 받고, 사용자가 주문 끝(n)을 입력하면 다시 선택 화면이 나온다.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>📏 기준</h3>
+      <ul class="ul">
+        <li>딕셔너리로 저장된 메뉴판을 출력합니다.</li>
+        <li>메뉴를 입력받고 메뉴에 해당하는 금액을 누적한 다음, 총금액을 계산합니다.</li>
+        <li>결제하기 위해 총 주문 금액을 출력합니다.</li>
+      </ul>
+      <p class="note" style="margin-bottom:0">메뉴판 딕셔너리: 떡볶이 5000, 라면 3000, 순대 4000, 콜라 1500</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🍢 돌려 보며 따라가기 · 분식집 메뉴 주문 프로그램</h3>
+    <p class="muted" style="margin-top:0">번호를 골라 프로그램을 써 봐요. 오른쪽에서 <b>지금 실행 중인 함수</b>와 전역 변수 total이 바뀌는 모습을 봐요. 메뉴판에 없는 이름을 주문하면 어떻게 될까요?</p>
+    <div id="shopLab"></div>
+  </div>
+  <div class="card">
+    <h3>💻 코랩 실습 · 폭탄 맵과 분식집 <span class="muted" style="font-weight:400;font-size:.88rem">(코랩 2-1 · 2-2)</span></h3>
+    <ol class="ol">
+      <li>아래 버튼으로 노트북을 열어요(학교 구글 계정으로 로그인). 「Google에서 작성하지 않았습니다」 경고가 나오면 「무시하고 계속하기」를 눌러요.</li>
+      <li><b>1. 교과서 예제 실행해 보기</b>에는 01~03 화면에서 본 코드가 들어 있어요. 시간이 부족하면 1-1만 실행해 보고 2로 넘어가요.</li>
+      <li><b>2-1 폭탄 맵</b>(02 화면)의 빈칸 일곱 곳을 채워 완성해요. 02 화면 체험에서 넣은 좌표를 그대로 넣어 결과를 비교해요.</li>
+      <li><b>2-2 분식집</b>의 빈칸 세 곳을 채워 완성하고, 위에서 해 본 순서(메뉴판 보기 → 주문하기 → 결제하기 → 이용 종료)대로 입력해 결과를 비교해요.</li>
+    </ol>
+    <div class="colab"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-function/assets/function.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="function.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <p class="note">2-1 · 프로그램을 멈추거나 계속 진행하는 break문과 continue문은 while문과 if문 안에, 맵에 문자를 출력하는 것은 중첩 for문과 if문을 사용하여 작성해 보세요.</p>
+    <ul class="ul">
+      <li>2-2 · 빈칸 두 곳은 <b>함수를 정의하는 줄</b>이에요. 아래쪽 반복에서 어떤 이름으로 호출하는지 보고 정의해요.</li>
+      <li>2-2 · 나머지 한 곳은 손님이 이용 종료를 고를 때까지 계속 선택 화면을 보여 주는 <b>반복</b>이에요.</li>
+    </ul>
+    <div class="memo"><label>분식집 프로그램을 <b>함수로 나누었을 때 좋은 점</b>은 무엇인가요? order() 함수 안에 <span class="mono">global total</span>을 적은 까닭도 함께 적어 보세요.</label><textarea data-memo="shopFunc" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기 · 제어 구조의 응용</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요. <span class="mono">제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</span></p>
+    <ol class="blanks">
+      <li>입력한 비밀번호가 맞으면 「로그인 성공」, 틀리면 「다시 입력하세요」를 보여 주는 것처럼, 조건이 참인지 거짓인지에 따라 실행할 명령이 달라지는 구조는 <button class="blank" data-a="선택 구조">?</button>이다.</li>
+      <li>반 학생 30명에게 같은 안내 문자를 한 명씩 보내는 일처럼, 정해진 범위만큼 또는 조건을 만족하는 동안 명령을 되풀이하는 구조는 <button class="blank" data-a="반복 구조">?</button>이다.</li>
+      <li>학생마다 점수가 60점 이상인지 확인하려고 for문 안에 if문을 넣은 것처럼, 반복문과 선택문을 겹쳐 쓰는 구조를 <button class="blank" data-a="중첩 제어 구조">?</button>라고 한다.</li>
+      <li>여러 곳에서 쓰는 「할인 금액 계산」 기능을 def로 한 번 정의해 두고 이름으로 불러 쓴다면, 이 기능을 <button class="blank" data-a="함수">?</button>로 만든 것이다.</li>
+      <li>순차, 선택, 반복처럼 컴퓨터에 명령어의 실행 순서를 알려 주는 방법을 통틀어 <button class="blank" data-a="제어 구조">?</button>라고 한다.</li>
+    </ol>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#e0702b"><b>무한 루프</b>는 while 다음의 조건에 True를 써서 만들고, 원하는 상황이 되면 <b>break</b>로 빠져나온다. 반복 횟수를 정하지 않고 반복하고 싶을 때 쓴다.</div>
+    <div style="--k:#1f9d74"><b>split()</b> 메소드는 문자열을 구분자(생략하면 공백)를 기준으로 잘라 리스트로 만들고, <b>map(함수, 반복 가능 객체)</b>는 각 요소에 함수를 적용한다. <span class="mono">x, y = map(int, a.split())</span>처럼 함께 쓴다.</div>
+    <div style="--k:#9b4fc4"><b>사용자 정의 함수</b>는 def로 정의하고 함수명(인수)으로 호출한다. 매개 변수로 값을 받고 return으로 반환값을 돌려준다. <b>지역 변수</b>는 함수 안에서만, <b>전역 변수</b>는 모든 영역에서 쓴다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 함수로 다시 답해 보세요.</p>
+    <div class="prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 자주 사용하는 기능을 한 번에 표현할 수 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">제어 구조의 응용을 마치며 · 악보처럼 프로그램의 실행 순서를 반복하거나 선택하도록 결정할 수 있을까? 세 시간 동안 배운 것으로 답해 보세요.</b>
+    <textarea data-memo="unitQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>01에서 while True로 만든 곱셈 문제 프로그램을 직접 풀어 보았습니다. 틀렸을 때와 맞혔을 때 실행되는 줄이 어떻게 달랐는지 쓰고, 무한 루프가 어떻게 끝나는지 break와 연결해 설명하세요.</li>
+      <li>02에서 입력한 문자열이 split()과 map()을 거쳐 x, y가 되는 과정을 보았습니다. 내가 넣어 본 입력 하나를 예로 들어 단계마다 어떻게 바뀌었는지 쓰고, 폭탄 맵 프로그램에서 두 기능이 필요한 까닭을 설명하세요.</li>
+      <li>03에서 약수 개수를 합하는 프로그램을 한 줄씩 따라가며 지역 변수와 전역 변수를 보았습니다. 이름이 같은 두 tot이 어떻게 따로 바뀌었는지 쓰고, 지역 변수와 전역 변수를 구분하는 까닭을 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="../forms/info-u3-function.html" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot">
+  <button class="btn ghost" id="prev">← 이전</button>
+  <span class="pg" id="pg"></span>
+  <button class="btn" id="next">다음 →</button>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmt=n=>n.toLocaleString('ko-KR');
+
+
+
+const LESSON='u3-function', PEP='';
+
+/* 진도 보내기 ①: 누가 쓰는지 확인 (반·학번마다 퀴즈·메모를 따로 저장) */
+const WHO=(function(){
+  if(!PEP) return {off:true,sfx:''};
+  if(/[?&]preview(=|&|$)/.test(location.search)) return {preview:true,sfx:'@preview'};
+  let w=null; try{w=JSON.parse(sessionStorage.getItem('aiw-who')||'null');}catch(e){}
+  if(w&&w.teacher) return {preview:true,teacher:true,sfx:'@preview'};
+  if(!w||!/^\d{5}$/.test(w.no||'')) return {need:true,sfx:'@none'};
+  return {cls:w.cls,no:w.no,name:w.name,sfx:'@'+w.no};
+})();
+const QUIZ={
+ 1:[{q:'반복 횟수를 정하지 않고 반복하려고 할 때, while 다음의 조건에 쓰면 무한 루프가 되는 것은?',o:['0','True','False'],a:1,w:'조건에 True를 쓰면 조건이 늘 참이라 반복이 끝나지 않아요. 그래서 break를 함께 작성해 빠져나와요.'},
+    {q:'실행 결과로 알맞은 것은?<span class="qcode">n = 0\nwhile True:\n  n += 1\n  if n == 3:\n    break\nprint(n)</span>',o:['3','4','무한 루프라 끝나지 않는다'],a:0,w:'n이 1, 2, 3으로 커지다가 n == 3이 참이 되는 순간 break로 반복을 빠져나와 3을 출력해요.'}],
+ 2:[{q:'<span class="mono">\'7 8 9\'.split()</span>의 결과는?',o:["['7 8 9']","['7', '8', '9']","['7', ' ', '8', ' ', '9']"],a:1,w:'split()은 문자열을 잘라 리스트로 만들어요. 잘린 요소는 따옴표가 붙은 문자열이라 아직 계산에 쓸 수 없어요.'},
+    {q:'<span class="mono">x, y = map(int, \'3 5\'.split())</span>을 실행한 뒤 <span class="mono">x + y</span>의 값은?',o:['8','35',"'35'"],a:0,w:'split()으로 [\'3\', \'5\']를 만들고 map(int, …)으로 정수 3과 5로 바꿔 x, y에 넣었으니 더하면 8이에요.'},
+    {q:'<span class="mono">split()</span>에서 구분자를 생략하면 문자열을 무엇을 기준으로 자를까?',o:['쉼표','공백','글자 하나하나'],a:1,w:'구분자를 생략하면 공백을 기준으로 잘라요. 쉼표로 자르려면 split(\',\')처럼 구분자를 적어요.'}],
+ 3:[{q:'함수를 처리한 결과를 호출한 쪽으로 되돌려주는 값은?',o:['변수명','반환값','전역 변수'],a:1,w:'반환값은 return 뒤에 적어 함수의 결과를 돌려줘요. 없다면 생략할 수 있어요.'},
+    {q:'실행 결과로 출력되는 값은?<span class="qcode">def double(n):\n  return n * 2\nprint(double(4) + 1)</span>',o:['9','8','10'],a:0,w:'double(4)를 호출하면 4 * 2 = 8을 돌려주고, 그 자리에 8이 들어가 8 + 1 = 9를 출력해요.'},
+    {q:'지역 변수에 대한 설명으로 알맞은 것은?',o:['함수 밖에서 선언된다','함수 밖에서도 값을 불러올 수 있다','함수가 종료되면 메모리에서 제거된다'],a:2,w:'지역 변수는 함수 내부에서 선언되어 그 함수 안에서만 쓰고, 함수가 끝나면 사라져요.'}],
+ 4:[{q:'함수 안에서 함수 밖의 변수 total의 값을 바꾸려고 할 때 함수 안에 적는 것은?',o:['def total','return total','global total'],a:2,w:'global을 붙여 전역 변수로 선언하면 함수 안에서도 그 값을 바꿀 수 있어요. 분식집 프로그램의 order() 함수가 그렇게 해요.'},
+    {q:'분식집 프로그램에서 주문하기를 고르면 실행되는 함수 안의 반복이 끝나는 때는?',o:['메뉴를 하나 고를 때','결제 금액이 0원일 때','주문 끝(n)을 입력할 때'],a:2,w:'order() 안의 while True는 입력한 값이 n일 때 break로 끝나고, 다시 선택 화면으로 돌아가요.'}],
+ 5:[{q:'함수를 호출할 때 넘겨주는 값을 무엇이라고 할까?',o:['인수','반환값','매개 변수'],a:0,w:'인수는 호출할 때 넘겨주는 값이고, 매개 변수는 그 값을 전달받기 위해 함수 정의에 적는 변수예요.'},
+    {q:'도서관 대출 기록 리스트에서 책마다 반납 예정일이 지났는지 확인해, 지난 책만 연체 안내를 출력하려고 한다. 알맞은 구조는?',o:['순차 구조','반복문 안에 반복문','반복문 안에 선택문'],a:2,w:'책을 하나씩 차례로 살피는 반복문 안에서, 예정일이 지났는지에 따라 안내 여부를 고르는 선택문이 필요해요.'},
+    {q:'사용자 정의 함수를 쓸 때의 좋은 점으로 알맞은 것은?',o:['코드를 재사용하기 쉽다','입력을 받을 수 없게 된다','반복문을 쓰지 않아도 된다'],a:0,w:'자주 쓰는 기능을 한 번 정의해 두면 이름으로 호출해 여러 번 다시 쓸 수 있어요.'}],
+};
+
+const QK='ds-u3-function-quiz'+WHO.sfx;
+const MK='ds-u3-function-memo'+WHO.sfx;
+let QS={}; try{QS=JSON.parse(localStorage.getItem(QK)||'{}')||{};}catch(e){QS={};}
+function saveQ(){try{localStorage.setItem(QK,JSON.stringify(QS));}catch(e){}}
+const TOTALQ=Object.values(QUIZ).reduce((a,b)=>a+b.length,0);
+function qperm(n,key){ let h=2166136261; for(const c of key){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}
+  const p=[...Array(n).keys()]; for(let i=n-1;i>0;i--){h=Math.imul(h^(h>>>15),2246822507)>>>0; h=(h+0x6D2B79F5)>>>0; const j=h%(i+1); [p[i],p[j]]=[p[j],p[i]];} return p; }
+function renderQuiz(box){
+  const k=box.dataset.quiz; box.innerHTML=`<div class="qh"><b>개념 퀴즈</b><span>${QUIZ[k].length}문제 · 고르면 바로 채점</span></div>`;
+  QUIZ[k].forEach((it,i)=>{
+    const id=k+'-'+i, d=document.createElement('div'); d.className='qi';
+    /* 보기 순서는 학생마다 섞되(새로 고쳐도 같은 순서), 저장·채점은 원래 번호로 */
+    const perm=qperm(it.o.length, QK+'|'+id);
+    d.innerHTML=`<div class="qq">${i+1}. ${it.q}</div><div class="opts">${perm.map(j=>`<button data-j="${j}">${it.o[j]}</button>`).join('')}</div><div class="why"></div>`;
+    const btn=j=>d.querySelector(`button[data-j="${j}"]`);
+    const mark=(j,anim)=>{
+      const bs=d.querySelectorAll('button'); bs.forEach(b=>b.disabled=true);
+      btn(it.a).classList.add('right'); if(j!==it.a){btn(j).classList.add('wrong'); if(anim) d.classList.add('shake');}
+      d.classList.add('answered', j===it.a?'correct':'incorrect');
+      d.querySelector('.why').textContent=(j===it.a?'정답. ':'정답은 「'+it.o[it.a]+'」. ')+it.w;
+    };
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;QS[id]=j;saveQ();mark(j,true);updScore();});
+    if(QS[id]!=null && QS[id]<it.o.length) mark(QS[id],false);
+    box.appendChild(d);
+  });
+}
+
+/* 페이지 이동 */
+const pages=[...document.querySelectorAll('.page')];
+const stepBtns=pages.map((p,i)=>{const b=document.createElement('button');b.textContent=i?`${i}. ${p.dataset.name}`:'시작';b.onclick=()=>go(i);$('steps').appendChild(b);return b;});
+function updScore(){
+  let ok=0; for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{if(QS[k+'-'+i]===it.a) ok++;});
+  $('score').textContent=`퀴즈 ${ok} / ${TOTALQ}`;
+  pages.forEach((p,i)=>{const q=p.querySelector('[data-quiz]'); if(!q) return; const k=q.dataset.quiz; stepBtns[i].classList.toggle('done',QUIZ[k].every((_,j)=>QS[k+'-'+j]!=null));});
+  let h='<tr><th class="l">개념</th><th>맞힌 문제</th></tr>';
+  for(const k in QUIZ){const n=QUIZ[k].length, c=QUIZ[k].filter((it,i)=>QS[k+'-'+i]===it.a).length, a=QUIZ[k].filter((_,i)=>QS[k+'-'+i]!=null).length;
+    h+=`<tr><td class="l">${k}. ${pages[k].dataset.name}</td><td>${a?`<b class="${c===n?'ok':''}">${c} / ${n}</b>`:'<span class="muted">아직 안 풂</span>'}</td></tr>`;}
+  h+=`<tr><td class="l"><b>합계</b></td><td><b>${ok} / ${TOTALQ}</b></td></tr>`;
+  $('result').innerHTML=h;
+}
+let cur=-1;
+const onShow={};
+function go(i){
+  i=Math.max(0,Math.min(pages.length-1,i)); if(i===cur) return;
+  const back=i<cur; if(cur>=0) pages[cur].classList.remove('on','back');
+  pages[i].classList.add('on'); pages[i].classList.toggle('back',back);
+  document.documentElement.style.setProperty('--acc',pages[i].dataset.acc);
+  document.documentElement.style.setProperty('--acc-soft',pages[i].dataset.acc+'1a');
+  stepBtns.forEach((b,j)=>b.classList.toggle('on',j===i));
+  const sb=$('steps'), btn=stepBtns[i]; sb.scrollLeft=btn.offsetLeft-sb.clientWidth/2+btn.clientWidth/2;
+  $('prog').style.width=(i/(pages.length-1)*100)+'%';
+  $('pg').textContent=`${i} / ${pages.length-1}`;
+  $('prev').style.visibility=i?'visible':'hidden'; $('next').style.visibility=i<pages.length-1?'visible':'hidden';
+  cur=i; try{history.replaceState(null,'','#p'+i);}catch(e){} window.scrollTo(0,0);
+  if(onShow[i]) onShow[i]();
+}
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.defaultPrevented)return; if(e.target.matches&&e.target.matches('input,select,textarea'))return; if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);});
+document.querySelectorAll('.gcard').forEach(g=>g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();}}));
+document.querySelectorAll('[data-quiz]').forEach(renderQuiz);
+$('quizReset').onclick=()=>{QS={};saveQ();document.querySelectorAll('[data-quiz]').forEach(renderQuiz);updScore();};
+
+
+/* 공용 부품: 메모·카드·분류 게임·탭·투표·칩 */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+/* 메모: data-memo가 있는 입력칸은 이 기기에 저장 */
+let MEMO=store.get(MK,{});
+function bindMemos(){
+  document.querySelectorAll('[data-memo]').forEach(t=>{
+    const k=t.dataset.memo; if(MEMO[k]!=null) t.value=MEMO[k];
+    let tm; t.addEventListener('input',()=>{MEMO[k]=t.value; clearTimeout(tm); tm=setTimeout(()=>{store.set(MK,MEMO); let s=t.nextElementSibling; while(s&&!s.matches('.saved')&&!s.matches('[data-memo]')) s=s.nextElementSibling; if(!s||!s.matches('.saved')) s=t.parentElement.querySelector('.saved'); if(s){s.textContent='이 기기에 저장됨'; setTimeout(()=>s.textContent='',1400);} t.dispatchEvent(new Event('memo'));},300);});
+  });
+}
+function memoSummary(box,list){
+  const h=list.map(([k,label])=>{const v=(MEMO[k]||'').trim(); return `<dt>${esc(label)}</dt><dd class="${v?'':'e'}">${v?esc(v):'(아직 안 씀)'}</dd>`;}).join('');
+  $(box).innerHTML=`<h4>오늘 화면에 적어 둔 내 메모</h4><dl>${h}</dl>`;
+}
+
+/* 뒤집는 카드 */
+function flipCards(box,items){
+  $(box).innerHTML=items.map(c=>`<div class="tcard" tabindex="0"><div class="in"><div class="f"><i>${c.ic||''}</i><b>${c.f}</b>${c.s?`<small>${c.s}</small>`:''}</div><div class="b">${c.b}${c.x?`<div class="x">${c.x}</div>`:''}</div></div></div>`).join('');
+  $(box).querySelectorAll('.tcard').forEach(t=>{const f=()=>t.classList.toggle('flip'); t.onclick=f; t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}};});
+}
+
+/* 분류 게임: 문장을 보고 알맞은 묶음 고르기 */
+function sorter(box,cfg){
+  const B=$(box);
+  function start(){
+    const order=shuffle(cfg.items.map((_,i)=>i)); let pos=0, ok=0; const placed=cfg.cats.map(()=>[]);
+    B.innerHTML=`<div class="sit"><div class="cnt"></div><div class="ic"></div><div class="sq"></div><div class="row btns">${cfg.cats.map((c,j)=>`<button class="btn sm cat" style="--k:${c.k}" data-j="${j}">${c.n}</button>`).join('')}</div><div class="fb"></div><div class="row nx" style="margin-top:8px"></div></div><div class="board" style="--n:${cfg.cats.length}">${cfg.cats.map(c=>`<div style="--k:${c.k}"><b>${c.n}</b></div>`).join('')}</div>`;
+    const sq=B.querySelector('.sq'), ic=B.querySelector('.ic'), cnt=B.querySelector('.cnt'), fb=B.querySelector('.fb'), nx=B.querySelector('.nx'), btns=[...B.querySelectorAll('.cat')], cols=[...B.querySelectorAll('.board>div')];
+    function show(){
+      if(pos>=order.length){cnt.textContent=''; ic.textContent='🎉'; sq.innerHTML=`${order.length}개 중 <b>${ok}개</b>를 바로 맞혔어요.`; fb.innerHTML=cfg.end||''; btns.forEach(b=>b.style.display='none'); nx.innerHTML='<button class="btn ghost sm">처음부터 다시</button>'; nx.firstChild.onclick=start; return;}
+      const it=cfg.items[order[pos]]; cnt.textContent=`${pos+1} / ${order.length}`; ic.textContent=it.ic||''; sq.innerHTML=it.t; fb.textContent=''; nx.innerHTML=''; btns.forEach(b=>{b.disabled=false;b.style.display='';});
+    }
+    btns.forEach(b=>b.onclick=()=>{
+      const it=cfg.items[order[pos]], j=+b.dataset.j, right=j===it.c; if(right) ok++;
+      btns.forEach(x=>x.disabled=true);
+      fb.innerHTML=(right?'<span class="ok">맞아요!</span> ':`<span class="ng">아쉬워요.</span> 정답은 <b>${cfg.cats[it.c].n}</b>. `)+(it.w||'');
+      const s=document.createElement('span'); s.innerHTML=it.short||it.t; if(!right) s.className='x'; cols[it.c].appendChild(s);
+      nx.innerHTML='<button class="btn sm">다음 →</button>'; nx.firstChild.onclick=()=>{pos++;show();}; nx.firstChild.focus();
+    });
+    show();
+  }
+  start();
+}
+
+/* 탭 보기: 버튼을 누르면 내용 바꾸기 */
+function tabs(btnBox,viewBox,items,render){
+  $(btnBox).innerHTML=items.map((it,i)=>`<button data-i="${i}"><span class="e">${it.ic||''}</span><b>${it.n}</b></button>`).join('');
+  const bs=[...$(btnBox).querySelectorAll('button')];
+  const pick=i=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); $(viewBox).innerHTML=render(items[i],i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i)); pick(0);
+}
+
+/* 투표: 고르면 결과 보이기 (이 기기에만 저장) */
+function vote(box,key,opts,onPick){
+  const B=$(box); B.innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o[0]}${o[1]?`<small>${o[1]}</small>`:''}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')];
+  const pick=(i,save)=>{bs.forEach((b,j)=>b.classList.toggle('on',i===j)); if(save){MEMO[key]=opts[i][0]; store.set(MK,MEMO);} onPick&&onPick(i);};
+  bs.forEach(b=>b.onclick=()=>pick(+b.dataset.i,true));
+  const prev=opts.findIndex(o=>o[0]===MEMO[key]); if(prev>=0) pick(prev,false);
+}
+function chips(box,key,opts,multi){
+  const B=$(box); B.classList.add('chk'); B.innerHTML=opts.map(o=>`<button>${o}</button>`).join('');
+  const bs=[...B.querySelectorAll('button')]; let sel=(MEMO[key]||'').split(' · ').filter(Boolean);
+  const draw=()=>bs.forEach(b=>b.classList.toggle('on',sel.includes(b.textContent)));
+  bs.forEach(b=>b.onclick=()=>{const t=b.textContent; if(multi) sel=sel.includes(t)?sel.filter(x=>x!==t):[...sel,t]; else sel=sel.includes(t)?[]:[t]; MEMO[key]=sel.join(' · '); store.set(MK,MEMO); draw(); B.dispatchEvent(new Event('memo'));});
+  draw();
+}
+/* ===== 코드 추적기: 한 줄씩 실행하며 실행한 줄·변수 값·실행 결과를 보여 줌 (이 차시 공통) ===== */
+const pyS=v=>v&&typeof v==='object'&&!Array.isArray(v)&&'f' in v?(Number.isInteger(v.f)?v.f.toFixed(1):String(v.f)):Array.isArray(v)?'['+v.map(pyR).join(', ')+']':v===true?'True':v===false?'False':v==null?'None':String(v);
+const pyR=v=>typeof v==='string'?`'${v}'`:pyS(v);
+function PyErr(m){this.m=m;}
+const pyInt=s=>{if(/^\s*[-+]?\d+\s*$/.test(String(s))) return parseInt(s,10); throw new PyErr(`ValueError: invalid literal for int() with base 10: '${s}'`);};
+const KW=o=>Object.assign({__kw:1},o);
+function Rec(){this.st=[];this.v={};this.L=null;this.fn='';this.out='';}
+Rec.prototype={
+  fin(){const s=this.st[this.st.length-1]; if(s){s.v=Object.assign({},this.v); s.L=this.L?Object.assign({},this.L):null; s.fn=this.fn; s.out=this.out;}},
+  at(n,note){this.fin(); this.st.push({n,note:note||''}); if(this.st.length>600) throw new PyErr('(단계가 너무 많아 여기서 멈췄어요)');},
+  set(k,v){if(this.L) this.L[k]=v; else this.v[k]=v;},
+  g(k,v){this.v[k]=v;},
+  get(k){return this.L&&k in this.L?this.L[k]:this.v[k];},
+  p(...a){let o={}; if(a.length&&a[a.length-1]&&a[a.length-1].__kw) o=a.pop(); const sep=o.sep!=null?o.sep:' ', end=o.end!=null?o.end:'\n'; this.out+=esc(a.map(pyS).join(sep)+end);},
+  inp(prompt,val){this.out+=esc(prompt)+`<b class="u">${esc(val)}</b>\n`; return String(val);},
+  call(fn){this.fn=fn; this.L={};},
+  ret(){this.fn=''; this.L=null;}
+};
+const TRKW=new Set('if elif else for in while break continue def return True False import and or not global'.split(' '));
+function trHl(c){
+  return c.replace(/(#.*$)|([fF]?'[^']*'|"[^"]*")|([A-Za-z_\uAC00-\uD7A3][\w\uAC00-\uD7A3]*)|(\d+)|([^#'"A-Za-z_\d\uAC00-\uD7A3]+)/g,(m,cm,st,id,nu,ot)=>{
+    if(cm) return `<span class="c">${esc(cm)}</span>`;
+    if(st) return `<span class="s">${esc(st)}</span>`;
+    if(id) return TRKW.has(id)?`<span class="k">${id}</span>`:/^(print|input|int|len|range|map|str|random|randint|split|append|items)$/.test(id)?`<span class="f">${id}</span>`:esc(id);
+    if(nu) return `<span class="n">${nu}</span>`;
+    return esc(ot);
+  });
+}
+function tracer(id,cfg){
+  const B=$(id); B.classList.add('tr');
+  const val={}; (cfg.inputs||[]).forEach(x=>val[x.k]=x.v);
+  let code=[], lines=[]; const neu=n=>/^\s*else\s*:/.test(code[n-1]||''); const blank=n=>!code[n-1]||!code[n-1].trim()||/^\s*#/.test(code[n-1]);
+  B.innerHTML=`${cfg.inputs?'<div class="tr-in"></div>':''}${cfg.pick?`<p class="tr-pickh">${cfg.pickMsg||'<b>먼저 예측해요.</b> 입력값을 정한 뒤 <b>실행될 줄</b>을 모두 눌러 표시하고 「예측 확인」을 눌러요.'}</p>`:''}
+    <div class="tr-grid${cfg.wide?' wide':''}"><div class="tr-codew"><pre class="tr-code${cfg.pick?' pickable':''}"></pre></div>
+    <div class="tr-side">${cfg.vars||cfg.scopes?'<div class="tr-vars"></div>':''}<div class="tr-outw"><b>실행 결과</b><pre class="tr-out"></pre></div></div></div>
+    <div class="tr-note"></div>
+    <div class="tr-ctl">${cfg.pick?'<button class="btn sm tr-chk">✔ 예측 확인</button>':''}<button class="btn sm tr-step">▶ 한 줄 실행</button><button class="btn sm ghost tr-auto">⏯ 자동 실행</button>${cfg.skip?`<button class="btn sm ghost tr-skip">${cfg.skip.label}</button>`:''}<button class="btn sm ghost tr-end">⏩ 끝까지</button><button class="btn sm ghost tr-reset">↺ 처음부터</button>${cfg.pick?'<button class="btn sm ghost tr-again">✎ 다시 예측</button>':''}<span class="tr-cnt muted"></span></div>
+    ${cfg.table?'<div class="tr-tblw"><table class="tr-tbl"></table></div>':''}`;
+  const q=s=>B.querySelector(s), preE=q('.tr-code'), outE=q('.tr-out'), noteE=q('.tr-note'), cntE=q('.tr-cnt'), varE=q('.tr-vars'), tblE=q('.tr-tbl');
+  let S=[], cur=0, timer=null, checked=!cfg.pick, picks=new Set(), msg='';
+  /* 입력 칸 */
+  if(cfg.inputs){
+    const I=q('.tr-in');
+    I.innerHTML=(cfg.inLabel?`<b>${cfg.inLabel}</b>`:'')+cfg.inputs.map(x=>x.opts?`<span class="tr-opt" data-k="${x.k}">${esc(x.label)} ${x.opts.map(o=>`<button type="button" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</span>`
+      :`<label>${esc(x.label)} <input type="text" data-k="${x.k}" value="${esc(x.v)}" style="width:${x.w||110}px" autocomplete="off" spellcheck="false"></label>`).join('');
+    I.querySelectorAll('.tr-opt').forEach(g=>{const k=g.dataset.k, bs=[...g.querySelectorAll('button')], draw=()=>bs.forEach(b=>b.classList.toggle('on',b.dataset.o===val[k]));
+      bs.forEach(b=>b.onclick=()=>{val[k]=b.dataset.o; draw(); build();}); draw();});
+    I.querySelectorAll('input').forEach(t=>{let tm; t.addEventListener('input',()=>{val[t.dataset.k]=t.value; clearTimeout(tm); tm=setTimeout(build,350);});});
+  }
+  function renderCode(){
+    const nc=typeof cfg.code==='function'?cfg.code(val):cfg.code; if(nc.join('\n')===code.join('\n')&&lines.length) return; code=nc;
+    preE.innerHTML=code.map((c,i)=>`<span class="ln" data-n="${i+1}"><i>${i+1}</i>${trHl(c)||' '}</span>`).join(''); lines=[...preE.querySelectorAll('.ln')];
+    if(cfg.pick) lines.forEach((l,i)=>l.onclick=()=>{if(checked||blank(i+1)) return; const n=i+1; picks.has(n)?picks.delete(n):picks.add(n); draw();});
+  }
+  function build(){
+    stop(); renderCode(); const R=new Rec(); msg='';
+    try{cfg.run(R,val);}catch(e){if(e instanceof PyErr){msg=e.m;} else throw e;}
+    R.fin(); S=R.st;
+    if(msg&&S.length){S[S.length-1].out+=`<span class="er">${esc(msg)}</span>\n`;}
+    cur=0; if(cfg.pick){checked=false; picks.clear();} draw();
+  }
+  function ran(k){const s=new Set(); for(let i=0;i<k;i++) s.add(S[i].n); return s;}
+  function fmtv(o,prev,keys){
+    if(!o) return '';
+    const ks=keys||Object.keys(o);
+    return ks.map(k=>{const has=k in o, v=has?pyR(o[k]):'', ch=has&&(!prev||!(k in prev)||pyR(prev[k])!==v);
+      return `<tr class="${ch?'ch':''}"><th>${esc(k)}</th><td>${has?esc(v):'<span class="muted">-</span>'}</td></tr>`;}).join('');
+  }
+  function draw(){
+    const done=cur>=S.length, R=ran(cur), all=ran(S.length), s=cur?S[cur-1]:null, p=cur>1?S[cur-2]:null;
+    lines.forEach((l,i)=>{const n=i+1; l.className='ln'+(R.has(n)?' done':'')+(s&&s.n===n?' cur':'')+(done&&checked&&!all.has(n)&&!blank(n)?' skip':'')+(picks.has(n)?' pk':'');
+      if(cfg.pick&&checked&&picks.size&&!neu(n)){if(picks.has(n)&&all.has(n)) l.classList.add('ok'); else if(picks.has(n)) l.classList.add('ng'); else if(all.has(n)) l.classList.add('miss');}});
+    outE.innerHTML=s?s.out:(msg&&!S.length?`<span class="er">${esc(msg)}</span>`:'');
+    noteE.innerHTML=!checked?'':s?`<b>${s.n}행</b> 실행${s.fn?` <span class="tr-fn">함수 ${esc(s.fn)} 안</span>`:''}${s.note?' · '+s.note:''}`:'<span class="muted">「▶ 한 줄 실행」을 누르면 1행부터 실행해요.</span>';
+    cntE.textContent=checked?`${cur} / ${S.length}단계${done&&S.length?' · 끝':''}`:'';
+    if(varE){
+      if(cfg.scopes){const gk=Object.keys(s?s.v:{}), lk=s&&s.L?Object.keys(s.L):[];
+        varE.innerHTML=`<div class="tr-sc"><b>전역 변수</b><table>${gk.length?fmtv(s.v,p&&p.v):'<tr><td class="muted">아직 없음</td></tr>'}</table></div><div class="tr-sc l"><b>지역 변수${s&&s.fn?` · ${esc(s.fn)}()`:''}</b><table>${s&&s.L?(lk.length?fmtv(s.L,p&&p.L):'<tr><td class="muted">(함수 시작)</td></tr>'):`<tr><td class="muted">${p&&p.L?'함수가 끝나 사라졌어요':'함수 밖이라 없음'}</td></tr>`}</table></div>`;}
+      else varE.innerHTML=`<b>변수</b><table>${fmtv(s?s.v:{},p&&p.v,cfg.vars)}</table>`;
+    }
+    if(tblE){const N=Math.max(S.length,cfg.tableMin||0), cols=[...Array(N).keys()];
+      tblE.innerHTML=`<tr><th>단계</th>${cols.map(i=>`<th>${i+1}</th>`).join('')}</tr><tr><th>행 번호</th>${cols.map(i=>`<td class="${i===cur-1?'cur':''}">${i<cur?S[i].n:''}</td>`).join('')}</tr>`+
+        (cfg.tvars||cfg.vars).map(k=>`<tr><th>${esc(k)}</th>${cols.map(i=>{const v=i<cur&&k in S[i].v?pyR(S[i].v[k]):''; const pv=i>0&&i<cur&&k in S[i-1].v?pyR(S[i-1].v[k]):null; return `<td class="${i===cur-1?'cur':''}${v!==''&&v!==pv?' ch':''}">${esc(v)}</td>`;}).join('')}</tr>`).join('');}
+    q('.tr-step').disabled=!checked||done; q('.tr-end').disabled=!checked||done; q('.tr-auto').disabled=!checked||done; if(q('.tr-skip')) q('.tr-skip').disabled=!checked||done;
+    if(q('.tr-chk')) q('.tr-chk').style.display=checked?'none':''; if(q('.tr-again')) q('.tr-again').style.display=checked?'':'none';
+    q('.tr-step').style.display=q('.tr-auto').style.display=q('.tr-end').style.display=checked?'':'none';
+    if(done&&cfg.onEnd&&checked) cfg.onEnd(val,S);
+  }
+  function stop(){clearInterval(timer); timer=null; const a=q('.tr-auto'); if(a) a.textContent='⏯ 자동 실행';}
+  q('.tr-step').onclick=()=>{stop(); if(cur<S.length){cur++; draw();}};
+  q('.tr-end').onclick=()=>{stop(); cur=S.length; draw();};
+  if(cfg.skip) q('.tr-skip').onclick=()=>{stop(); do{cur++;}while(cur<S.length&&!cfg.skip.stop(S,cur)); draw();};
+  q('.tr-reset').onclick=()=>{stop(); cur=0; draw();};
+  q('.tr-auto').onclick=()=>{if(timer){stop();return;} q('.tr-auto').textContent='⏸ 멈춤'; timer=setInterval(()=>{if(cur>=S.length){stop(); return;} cur++; draw(); if(cur>=S.length) stop();},cfg.speed||650);};
+  if(cfg.pick){
+    q('.tr-again').onclick=()=>{stop(); cur=0; checked=false; picks.clear(); draw();};
+    q('.tr-chk').onclick=()=>{if(!picks.size){alert('실행될 줄을 먼저 눌러 표시해요.'); return;} checked=true; cur=S.length; draw();
+      const all=new Set([...ran(S.length)].filter(n=>!neu(n))); let ok=0, ng=0, miss=0; picks.forEach(n=>{if(neu(n)) return; all.has(n)?ok++:ng++;}); all.forEach(n=>{if(!picks.has(n)) miss++;});
+      noteE.innerHTML=(ng||miss?`<span class="ng">다시 살펴봐요.</span> `:'<span class="ok">모두 맞았어요!</span> ')+`실행된 줄 ${all.size}개 중 <b>${ok}개</b>를 맞혔어요.${ng?` 실행되지 않은 줄을 ${ng}개 골랐어요(✗).`:''}${miss?` 놓친 줄이 ${miss}개 있어요(놓침).`:''} 「↺ 처음부터」로 한 줄씩 다시 따라가 보거나, 「다시 예측」으로 같은 입력값에서 다시 예측할 수 있어요.`;
+      if(cfg.onPick) cfg.onPick(val,{ok,ng,miss,all:all.size});};
+  }
+  build();
+  return {rebuild:build, val};
+}
+/* 읽기용 코드 상자: <div data-code="키"> 에 CODE[키]를 줄 번호와 함께 그림. ____ 는 빈칸 */
+function codeBoxes(map){document.querySelectorAll('[data-code]').forEach(d=>{const c=map[d.dataset.code]; if(!c) return; const nn=d.hasAttribute('data-nonum'); d.classList.add('cbox'); d.innerHTML=`<pre>${c.map((l,i)=>`<span class="ln">${nn?'':`<i>${i+1}</i>`}${trHl(l).replace(/____/g,'<span class="bl"></span>')||' '}</span>`).join('')}</pre>`;});}
+
+/* ===== 이 차시 코드 ===== */
+const TF=c=>c?'<b class="ok">True(참)</b>':'<b class="ng">False(거짓)</b>';
+const addRec=(old,item,n)=>{const a=(old||'').split(' / ').filter(Boolean); a.push(item); return a.slice(-(n||3)).join(' / ');};
+function fnSave(){store.set(MK,MEMO);}
+const rint=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+codeBoxes({
+  splitEx:["numbers = '1 3 5'","print(numbers.split())"],
+  mapEx:["a = ['1', '3', '5']","x, y, z = map(int, a)","print(x, y, z)"],
+  defForm:['def 함수명(매개 변수):','  명령1','  명령2','  return 반환값'],
+  callForm:['함수명(인수)'],
+});
+/* 줄 번호가 있는 코드 상자(직접 만든 체험용) */
+function codePre(box,code){box.innerHTML=`<div class="tr-codew"><pre class="tr-code">${code.map((c,i)=>`<span class="ln" data-n="${i+1}"><i>${i+1}</i>${trHl(c)||' '}</span>`).join('')}</pre></div>`; return [...box.querySelectorAll('.ln')];}
+function mark(lines,done,cur){lines.forEach((l,i)=>{const n=i+1; l.className='ln'+(done.includes(n)?' done':'')+(n===cur?' cur':'');});}
+
+/* 01 무한 루프 · 곱셈 문제 */
+(function(){
+  const R=[[1,9,'1~9 (교과서)'],[1,5,'1~5'],[2,19,'2~19']]; let ri=0;
+  const B=$('mulLab');
+  B.innerHTML=`<div class="tr-in"><span class="tr-opt">난수의 범위 ${R.map((r,i)=>`<button type="button" data-r="${i}">${r[2]}</button>`).join('')}</span><button class="btn sm ghost" id="mulNew">↺ 처음부터 실행</button></div>
+    <div class="tr-grid wide"><div id="mulCode"></div><div class="tr-side"><div class="tr-vars"><b>변수</b><table id="mulVar"></table></div><div class="tr-outw"><b>실행 결과</b><pre class="tr-out" id="mulOut"></pre></div>
+    <div class="fn-ans"><input id="mulIn" inputmode="numeric" placeholder="정답 입력" autocomplete="off"><button class="btn sm" id="mulGo">입력</button></div></div></div>
+    <div class="tr-note" id="mulNote"></div>`;
+  let lines, a, b, num, round, out, over, wrong, wait=false, tmr=null;
+  const code=()=>["import random","while True:",`  a = random.randint(${R[ri][0]}, ${R[ri][1]})`,`  b = random.randint(${R[ri][0]}, ${R[ri][1]})`,"  print(a, '*', b, '= ?')","  num = int(input('정답 입력:'))","","  if num == a * b:","    print('정답입니다!')","    break","","  print(f'틀렸습니다. 정답은 {a * b}입니다.')"];
+  function vars(){$('mulVar').innerHTML=[['a',a],['b',b],['num',num]].map(([k,v])=>`<tr><th>${k}</th><td>${v==null?'<span class="muted">-</span>':v}</td></tr>`).join('');}
+  function ask(prev){wait=false; round++; a=rint(R[ri][0],R[ri][1]); b=rint(R[ri][0],R[ri][1]); num=null; out+=`${a} * ${b} = ?\n정답 입력:`;
+    mark(lines,[...(prev||[]),2,3,4,5],6);
+    $('mulNote').innerHTML=`<b>반복 ${round}번째</b> · 2행 <code>while True:</code> 조건은 늘 ${TF(true)}라 반복 안으로 들어와요. 6행에서 <b>입력을 기다려요.</b>`;
+    show(); setTimeout(()=>$('mulIn').focus(),0);}
+  function show(){$('mulOut').innerHTML=out; $('mulOut').scrollTop=1e6; vars(); $('mulGo').disabled=over||wait; $('mulIn').disabled=over||wait;}
+  function start(){clearTimeout(tmr); tmr=null; wait=false; lines=codePre($('mulCode'),code()); B.querySelectorAll('[data-r]').forEach(x=>x.classList.toggle('on',+x.dataset.r===ri)); round=0; out=''; over=false; wrong=0; mark(lines,[1],0); ask([1]);}
+  function answer(){if(over||wait) return; const t=$('mulIn').value.trim(); if(!t){$('mulIn').focus(); return;}
+    out+=`<b class="u">${esc(t)}</b>\n`; $('mulIn').value='';
+    if(!/^\s*[-+]?\d+\s*$/.test(t)){out+=`<span class="er">ValueError: invalid literal for int() with base 10: '${esc(t)}'</span>\n`; over=true; mark(lines,[1,2,3,4,5,6],6);
+      $('mulNote').innerHTML='<span class="ng">숫자가 아닌 값을 넣어 6행의 int()에서 오류가 나 프로그램이 멈췄어요.</span> 「↺ 처음부터 실행」을 눌러요.'; show(); return;}
+    num=parseInt(t,10); const ok=num===a*b;
+    if(ok){out+='정답입니다!\n'; over=true; mark(lines,[1,2,3,4,5,6,8,9,10],10);
+      $('mulNote').innerHTML=`8행 <code>${num} == ${a} * ${b}</code> → ${TF(true)} · 9행 출력 뒤 <b>10행 break</b>로 무한 루프를 빠져나와 프로그램이 끝나요. (반복 ${round}번, 틀린 횟수 ${wrong}번)`;
+      MEMO.mulTry=addRec(MEMO.mulTry,`반복 ${round}번째에 정답(틀린 횟수 ${wrong}번, 난수 범위 ${R[ri][0]}~${R[ri][1]})`); fnSave(); show();}
+    else{wrong++; out+=`틀렸습니다. 정답은 ${a*b}입니다.\n`; const prevDone=[1,2,3,4,5,6,8,12]; mark(lines,prevDone,12);
+      $('mulNote').innerHTML=`8행 <code>${num} == ${a} * ${b}</code> → ${TF(false)} · if문을 건너뛰고 12행을 실행한 뒤 <b>다시 2행으로</b> 돌아가요.`; wait=true; show();
+      tmr=setTimeout(()=>{tmr=null; if(!over) ask([1]);},900);}
+  }
+  B.querySelectorAll('[data-r]').forEach(x=>x.onclick=()=>{ri=+x.dataset.r; start();});
+  $('mulNew').onclick=start; $('mulGo').onclick=answer; $('mulIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault(); answer();}});
+  start();
+})();
+
+/* 02 split()·map() 실험실 */
+(function(){
+  const SEP=[['생략',null],["','",','],["'-'",'-']];
+  const B=$('smLab');
+  B.innerHTML=`<div class="tr-in"><label>a = input() 에 넣은 값 <input type="text" id="smIn" value="2 0" style="width:150px" autocomplete="off" spellcheck="false"></label><span class="tr-opt">구분자 ${SEP.map((s,i)=>`<button type="button" data-s="${i}">${s[0]}</button>`).join('')}</span></div><div class="fn-steps" id="smOut"></div>`;
+  let si=0;
+  function run(){
+    B.querySelectorAll('[data-s]').forEach(x=>x.classList.toggle('on',+x.dataset.s===si));
+    const raw=$('smIn').value, sep=SEP[si][1], call=sep?`a.split('${sep}')`:'a.split()';
+    const parts=sep?raw.split(sep):(raw.trim()?raw.trim().split(/\s+/):[]);
+    const ok=parts.map(p=>/^\s*[-+]?\d+\s*$/.test(p)), bad=parts.findIndex((p,i)=>!ok[i]);
+    let h=`<div class="fn-st"><span class="lb">입력값 a</span><code>'${esc(raw)}'</code><small>문자열 하나</small></div>`;
+    h+=`<div class="fn-st"><span class="lb">${esc(call)}</span><span class="fn-chips">${parts.length?parts.map(p=>`<i class="s">'${esc(p)}'</i>`).join(''):'<i class="s">(빈 리스트)</i>'}</span><small>리스트 · 요소 ${parts.length}개(모두 문자열)</small></div>`;
+    if(bad>=0) h+=`<div class="fn-st"><span class="lb">map(int, ${esc(call)})</span><span class="ng">ValueError: invalid literal for int() with base 10: '${esc(parts[bad])}'</span><small>int()로 바꿀 수 없는 요소가 있어요</small></div>`;
+    else{h+=`<div class="fn-st"><span class="lb">map(int, ${esc(call)})</span><span class="fn-chips">${parts.map(p=>`<i class="n">${parseInt(p,10)}</i>`).join('')||'<i class="n">(없음)</i>'}</span><small>각 요소에 int()를 적용 → 정수</small></div>`;
+      h+=`<div class="fn-st"><span class="lb">x, y = map(int, ${esc(call)})</span>${parts.length===2?`<span class="fn-chips"><i class="n">x = ${parseInt(parts[0],10)}</i><i class="n">y = ${parseInt(parts[1],10)}</i></span><small>값 2개가 x, y에 차례로</small>`:`<span class="ng">ValueError: ${parts.length>2?'too many values to unpack (expected 2)':`not enough values to unpack (expected 2, got ${parts.length})`}</span><small>변수는 2개인데 값이 ${parts.length}개예요</small>`}</div>`;}
+    $('smOut').innerHTML=h;
+  }
+  $('smIn').addEventListener('input',run); B.querySelectorAll('[data-s]').forEach(x=>x.onclick=()=>{si=+x.dataset.s; run();}); run();
+})();
+
+/* 02 폭탄 맵 체험 */
+(function(){
+  const B=$('bombLab');
+  B.innerHTML=`<div class="fn-bomb"><div><div class="fn-ans"><input id="bmIn" placeholder="예: 2 0 (끝: n)" autocomplete="off" spellcheck="false"><button class="btn sm" id="bmGo">입력</button><button class="btn sm ghost" id="bmNew">↺ 처음부터</button></div><pre class="tr-out fn-bout" id="bmOut"></pre></div>
+    <div><b class="fn-cap">처리 과정</b><ol class="fn-chk" id="bmChk"></ol><b class="fn-cap">게임 맵 maps (x = 행, y = 열)</b><div class="fn-grid" id="bmGrid"></div></div></div>`;
+  let maps, out, over, last, inputs;
+  const P='폭탄을 놓고 싶은 좌표(종료: n): ';
+  function grid(){let h='<span></span>'+[0,1,2,3,4,5].map(j=>`<span class="h">${j}</span>`).join('');
+    for(let i=0;i<6;i++){h+=`<span class="h">${i}</span>`; for(let j=0;j<6;j++) h+=`<span class="c${maps[i][j]?' on':''}${last&&last[0]===i&&last[1]===j?' new':''}">${maps[i][j]?'★':''}</span>`;}
+    $('bmGrid').innerHTML=h;}
+  function chk(items){$('bmChk').innerHTML=items.map(([t,s])=>`<li class="${s||''}">${t}</li>`).join('');}
+  function show(){$('bmOut').innerHTML=out+(over?'':esc(P)); $('bmOut').scrollTop=1e6; grid(); $('bmGo').disabled=over; $('bmIn').disabled=over;}
+  function start(){maps=[...Array(6)].map(()=>Array(6).fill(0)); out=''; over=false; last=null; inputs=[]; chk([['좌표를 입력하면 처리 과정이 여기에 나타나요.','muted']]); show();}
+  function go(){if(over) return; const a=$('bmIn').value; $('bmIn').value=''; inputs.push(a); out+=esc(P)+`<b class="u">${esc(a)}</b>\n`; last=null;
+    if(a==='n'){const c=[[`입력이 'n'인가요? → 예 · <b>break</b>로 반복을 끝내요`,'ok'],['중첩 for문으로 맵을 출력해요(폭탄 ★, 빈칸 □)','ok']];
+      for(let i=0;i<6;i++){out+=maps[i].map(v=>v?' ★ ':' □ ').join('')+'\n';} over=true; const k=maps.flat().filter(Boolean).length;
+      MEMO.bombLog=`입력: ${inputs.map(x=>`「${x}」`).join(' → ')} · 폭탄 ${k}개`; fnSave(); chk(c); show(); return;}
+    const c=[[`입력이 'n'인가요? → 아니요`,'']];
+    const parts=a.trim()?a.trim().split(/\s+/):[];
+    c.push([`a.split() → [${parts.map(p=>`'${esc(p)}'`).join(', ')}]`,'']);
+    if(!parts.every(p=>/^[-+]?\d+$/.test(p))||parts.length!==2){
+      const msg=!parts.every(p=>/^[-+]?\d+$/.test(p))?`ValueError: invalid literal for int() with base 10: '${esc(parts.find(p=>!/^[-+]?\d+$/.test(p)))}'`:parts.length>2?'ValueError: too many values to unpack (expected 2)':`ValueError: not enough values to unpack (expected 2, got ${parts.length})`;
+      out+=`<span class="er">${msg}</span>\n`; c.push([`map(int, …)으로 x, y를 만들 때 오류 → <b>프로그램이 멈춰요</b>`,'ng']); over=true; chk(c); show(); return;}
+    const x=+parts[0], y=+parts[1]; c.push([`map(int, a.split()) → x = ${x}, y = ${y}`,'']);
+    const okr=0<=x&&x<=5&&0<=y&&y<=5; c.push([`범위 확인: x와 y가 모두 0~5 안에 있나요? → ${okr?'예':'아니요'}`,okr?'':'ng']);
+    if(!okr){out+='올바른 범위가 아닙니다.\n'; c.push(['「올바른 범위가 아닙니다.」를 출력하고, 맵은 바꾸지 않은 채 반복의 처음으로 돌아가 다시 입력받아요','ng']);}
+    else{maps[x][y]=1; last=[x,y]; c.push([`<code>maps[${x}][${y}] = 1</code> · ${x}행 ${y}열에 폭탄`,'ok']);}
+    chk(c); show(); $('bmIn').focus();}
+  $('bmGo').onclick=go; $('bmIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault(); go();}}); $('bmNew').onclick=start;
+  start();
+})();
+
+/* 03 누적 합 함수 */
+const fnStop={label:'⏭ 함수 실행을 한 번에',stop:(S,k)=>k>=2&&!S[k-1].fn&&!!S[k-2].fn};
+tracer('trTotal',{
+  code:["def total(number):","    sum = 0","    for i in range(1, number + 1):","      sum +=i","    return sum","num = int(input('수: '))","print(total(num))"],
+  inputs:[{k:'n',label:'입력할 수',v:'5',w:80}], scopes:true, skip:fnStop,
+  run(R,v){
+    R.at(1,'<b>def</b> · 함수 total을 정의해 기억해 둬요. 안의 명령은 <b>호출될 때</b> 실행돼요');
+    R.at(6); const n=pyInt(R.inp('수: ',v.n)); R.set('num',n);
+    if(n>20) throw new PyErr('(이 화면에서는 20 이하의 수로 따라가 봐요. 코랩에서는 큰 수도 돼요.)');
+    R.at(7,`<code>total(num)</code> 호출 · 인수 ${n}을(를) 들고 함수 안으로 이동해요`);
+    R.at(2,`매개 변수 number가 인수 ${n}을(를) 전달받았어요`); R.call('total'); R.set('number',n); R.set('sum',0);
+    let s=0; for(let i=1;i<=n;i++){R.at(3,`i = ${i}`); R.set('i',i); R.at(4,`sum += i → ${s} + ${i} = ${s+i}`); s+=i; R.set('sum',s);}
+    R.at(3,'반복 범위가 끝나 반복을 마쳐요');
+    R.at(5,`<b>return</b> · 반환값 ${s}을(를) 들고 호출한 곳(7행)으로 돌아가요`);
+    R.at(7,`7행으로 돌아와 <code>total(num)</code> 자리에 반환값 ${s}이(가) 들어가 출력돼요 · 지역 변수는 사라졌어요`); R.ret(); R.p(s);
+  }
+});
+
+/* 03 약수 개수 · 지역 변수와 전역 변수 */
+tracer('trDiv',{
+  code:v=>["def divisorCount(n):","  tot = 0","  for i in range(1, n+1):","    if n % i == 0:","      tot += 1","  print('약수 개수:', tot)","  return tot","","tot = 0",`tot += divisorCount(${v.a})`,`tot += divisorCount(${v.b})`,"print('약수 누적 개수:', tot)"],
+  inputs:[{k:'a',label:'10행의 인수',v:'10',w:60},{k:'b',label:'11행의 인수',v:'20',w:60}], scopes:true, skip:fnStop, speed:450,
+  run(R,v){
+    const A=pyInt(v.a), Bv=pyInt(v.b); if(A<1||Bv<1||A>30||Bv>30) throw new PyErr('(이 화면에서는 1~30 사이의 수로 따라가 봐요.)');
+    R.at(1,'<b>def</b> · 함수 divisorCount를 정의해 기억해 둬요');
+    R.at(9,'함수 밖에서 선언한 <b>전역 변수</b> tot'); R.g('tot',0); let G=0;
+    for(const [ln,arg] of [[10,A],[11,Bv]]){
+      R.at(ln,`<code>divisorCount(${arg})</code> 호출 · 함수 안으로 이동해요`);
+      R.at(2,`매개 변수 n = ${arg} · 함수 안의 tot은 <b>지역 변수</b>(전역 tot과 다른 기억 장소)`); R.call('divisorCount'); R.set('n',arg); R.set('tot',0);
+      let t=0; for(let i=1;i<=arg;i++){R.at(3,`i = ${i}`); R.set('i',i); const c=arg%i===0; R.at(4,`<code>${arg} % ${i} == 0</code> → ${TF(c)}`); if(c){R.at(5,`지역 tot → ${t+1}`); t++; R.set('tot',t);}}
+      R.at(3,'반복 범위가 끝나 반복을 마쳐요');
+      R.at(6); R.p('약수 개수:',t);
+      R.at(7,`<b>return</b> · 지역 tot의 값 ${t}을(를) 돌려줘요`);
+      R.at(ln,`${ln}행으로 돌아와 전역 tot += ${t} → ${G+t} · 지역 변수는 사라졌어요`); R.ret(); G+=t; R.g('tot',G);
+    }
+    R.at(12); R.p('약수 누적 개수:',G);
+  }
+});
+
+/* 04 분식집 메뉴 주문 */
+(function(){
+  const MENU={'떡볶이':5000,'라면':3000,'순대':4000,'콜라':1500};
+  const B=$('shopLab');
+  B.innerHTML=`<div class="fn-shop"><div><pre class="tr-out fn-sout" id="shOut"></pre><div class="fn-ans"><input id="shIn" autocomplete="off" spellcheck="false" placeholder="입력"><button class="btn sm" id="shGo">입력</button><button class="btn sm ghost" id="shNew">↺ 처음부터</button></div><div class="row" id="shQuick" style="margin-top:6px"></div></div>
+    <div><b class="fn-cap">지금 실행 중</b><div class="fn-funcs" id="shFn">${[['main','메인 반복 · 선택 화면'],['show_menu','show_menu() · 메뉴판 보기'],['order','order() · 주문하기'],['pay','pay() · 결제하기']].map(([k,t])=>`<div data-f="${k}">${t}</div>`).join('')}</div>
+    <b class="fn-cap">전역 변수</b><div class="tr-vars"><table id="shVar"></table></div><p class="muted" style="font-size:.85rem;margin:6px 0 0" id="shMsg"></p></div></div>`;
+  let out, mode, total, ordered, over;
+  const MAINP='1. 메뉴판 보기\n2. 주문하기\n3. 결제하기\n4. 이용 종료\n\n무엇을 하시겠습니까?\n', ORDP='메뉴를 선택해 주세요.(주문 끝(n))';
+  function fn(k){B.querySelectorAll('[data-f]').forEach(d=>d.classList.toggle('on',d.dataset.f===k));}
+  function quick(){const q=over?[]:mode==='main'?['1','2','3','4']:mode==='order'?[...Object.keys(MENU),'김밥','n']:[];
+    $('shQuick').innerHTML=q.map(x=>`<button class="btn sm ghost" data-q="${esc(x)}">${esc(x)}</button>`).join(''); $('shQuick').querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{$('shIn').value=b.dataset.q; step();});}
+  function show(){$('shOut').innerHTML=out+(over?'':esc(mode==='main'?MAINP:ORDP)); $('shOut').scrollTop=1e6;
+    $('shVar').innerHTML=`<tr><th>total</th><td>${total}</td></tr><tr><th>menu_pan</th><td style="font-size:.8rem">{'떡볶이': 5000, '라면': 3000, '순대': 4000, '콜라': 1500}</td></tr>`;
+    $('shGo').disabled=over; $('shIn').disabled=over; quick();}
+  function start(){out=''; mode='main'; total=0; ordered=[]; over=false; fn('main'); $('shMsg').innerHTML='번호를 입력하거나 아래 버튼을 눌러요.'; show();}
+  function step(){if(over) return; const t=$('shIn').value; $('shIn').value='';
+    if(mode==='main'){out+=esc(MAINP)+`<b class="u">${esc(t)}</b>\n`;
+      if(!/^\s*[-+]?\d+\s*$/.test(t)){out+=`<span class="er">ValueError: invalid literal for int() with base 10: '${esc(t)}'</span>\n`; over=true; fn(''); $('shMsg').innerHTML='<span class="ng">번호가 아닌 값을 넣어 int()에서 오류가 나 프로그램이 멈췄어요.</span>'; show(); return;}
+      const a=parseInt(t,10);
+      if(a===1){fn('show_menu'); out+='====<메뉴판>====\n'+Object.entries(MENU).map(([m,p])=>`${m}: ${p}\n\n`).join(''); $('shMsg').innerHTML='<code>show_menu()</code>를 호출해 딕셔너리의 메뉴와 가격을 출력하고 돌아왔어요.'; setTimeout(()=>{if(!over&&mode==='main') fn('main');},900);}
+      else if(a===2){mode='order'; fn('order'); $('shMsg').innerHTML='<code>order()</code> 안의 <b>while True</b>가 돌고 있어요. 메뉴 이름을 넣거나, 끝내려면 n을 넣어요.';}
+      else if(a===3){fn('pay'); out+=`주문하신 금액은 총 ${total}입니다.\n\n`; MEMO.shopLog=`주문: ${ordered.join(', ')||'없음'} · 결제 금액 ${total}원`; fnSave(); $('shMsg').innerHTML=`<code>pay()</code>가 전역 변수 total(${total})을 불러와 출력했어요.`; setTimeout(()=>{if(!over&&mode==='main') fn('main');},900);}
+      else if(a===4){out+='이용해 주셔서 감사합니다.\n'; over=true; fn(''); $('shMsg').innerHTML='<b>break</b>로 무한 루프를 끝내고 프로그램이 끝났어요.';}
+      else {fn('main'); $('shMsg').innerHTML=`${a}에 해당하는 조건이 없어 아무 일 없이 다시 선택 화면이 나와요.`;}
+    } else {out+=esc(ORDP)+`<b class="u">${esc(t)}</b>\n`;
+      if(t==='n'){mode='main'; fn('main'); $('shMsg').innerHTML='n을 입력해 order() 안의 반복을 <b>break</b>로 끝내고 선택 화면으로 돌아왔어요.';}
+      else if(Object.hasOwn(MENU,t)){out+=`${t} 주문하셔서 ${MENU[t]}원 추가됩니다.\n`; total+=MENU[t]; ordered.push(t); $('shMsg').innerHTML=`<code>global total</code> 덕분에 함수 안에서 전역 변수 total을 ${total}(으)로 바꿨어요.`;}
+      else {out+=`<span class="er">KeyError: '${esc(t)}'</span>\n`; over=true; fn(''); $('shMsg').innerHTML=`<span class="ng">메뉴판 딕셔너리에 「${esc(t)}」(이)라는 키가 없어 <code>menu_pan[menu]</code>에서 오류가 나 프로그램이 멈췄어요.</span> 코랩 「더 해 보기」에서 고쳐 봐요.`;}
+    }
+    show(); if(!over) $('shIn').focus();}
+  $('shGo').onclick=step; $('shIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault(); step();}}); $('shNew').onclick=start;
+  start();
+})();
+
+/* 04 개념 정리하기 빈칸 */
+document.querySelectorAll('.blank').forEach(b=>b.onclick=()=>{const on=!b.classList.contains('on'); b.textContent=on?b.dataset.a:'?'; b.classList.toggle('on',on);});
+
+/* 성취도 평가 */
+chips('ck1','ck1',['map() 함수와 split() 메소드를 적절하게 사용할 수 있다'],true);
+chips('ck2','ck2',['함수와 중첩 제어 구조를 사용하여 프로그램을 작성할 수 있다'],true);
+
+/* 05 마무리 */
+const MEMOLIST=[['planFunc','처음 생각 · 같은 기능을 여러 번 쓰려면'],['mulTry','곱셈 문제 무한 루프 기록'],['loopWhy','무한 루프가 끝나는 까닭'],['bombLog','폭탄 맵 체험 기록'],['bombWhy','범위를 벗어난 좌표를 처리한 흐름'],['ck1','성취도 · map()과 split()'],['sameName','이름이 같은 지역 변수와 전역 변수'],['shopLog','분식집 주문 기록'],['shopFunc','함수로 나눈 좋은 점과 global'],['ck2','성취도 · 함수와 중첩 제어 구조'],['keyQ','핵심 질문에 대한 내 답'],['unitQ','제어 구조의 응용을 마치며'],['newLearn','새롭게 알게 된 점']];
+onShow[5]=()=>{const p=(MEMO.planFunc||'').trim(); $('prevPlan').innerHTML=`<b>처음 생각</b> ${p?esc(p):'<span class="muted">(시작 화면에 아직 안 씀)</span>'}`; memoSummary('msum',MEMOLIST);};
+
+/* 진도 보내기 ②: 화면 이동·퀴즈·메모·창 이탈을 선생님 시트로 */
+(function(){
+  if(WHO.off) return;
+  const box=document.createElement('div');
+  if(WHO.preview){
+    box.className='tr-badge';
+    box.innerHTML=WHO.teacher?'교사 모드 · 전송 안 함 <button type="button">끝내기</button>':'미리보기 · 진도 전송 안 함';
+    (document.querySelector('.top')||document.body).appendChild(box);
+    const b=box.querySelector('button'); if(b) b.onclick=()=>{ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); };
+    return;
+  }
+
+  if(WHO.need){
+    let last={}; try{last=JSON.parse(localStorage.getItem('aiw-last')||'{}')||{};}catch(e){}
+    box.className='tr-gate';
+    box.innerHTML=`<form class="tr-card" autocomplete="off">
+      <h2>수업 시작 전에</h2>
+      <p class="tr-sub">학번과 이름을 써 주세요.</p>
+      <label class="tr-f"><span>학번</span><input name="no" inputmode="numeric" maxlength="5" placeholder="예: 20101" value="${esc(last.no||'')}"></label>
+      <label class="tr-f"><span>이름</span><input name="name" maxlength="10" placeholder="이름" value="${esc(last.name||'')}"></label>
+      <div class="tr-cls" hidden>${[].map(c=>`<label><input type="radio" name="cls" value="${c}"><span>${c}</span></label>`).join('')}</div>
+      <div class="tr-err"></div>
+      <button class="btn" type="submit">시작하기 →</button>
+      <p class="tr-note">어느 화면까지 왔는지, 퀴즈와 메모가 선생님께 전달돼요.<br>다른 친구 이름으로 들어가지 마세요.</p>
+    </form>`;
+    document.body.appendChild(box);
+    const f=box.querySelector('form'), err=box.querySelector('.tr-err'), go2=f.querySelector('button[type=submit]'), clsBox=box.querySelector('.tr-cls');
+    f.no.addEventListener('input',()=>{f.no.value=f.no.value.replace(/\D/g,'').slice(0,5);});
+    const TEACH=t=>{let h=2166136261;for(const c of t){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}, TEACH_H='853zuh';
+    const enter=w=>{ try{sessionStorage.setItem('aiw-who',JSON.stringify(w)); if(!w.teacher) localStorage.setItem('aiw-last',JSON.stringify({no:w.no,name:w.name}));}catch(e){} location.reload(); };
+    const busy=on=>{ go2.disabled=on; go2.textContent=on?'명단에서 확인하는 중…':'시작하기 →'; };
+    f.onsubmit=async e=>{
+      e.preventDefault(); err.textContent='';
+      const no=f.no.value.trim(), name=f.name.value.replace(/\s+/g,'').trim();
+      if(TEACH(no+'|'+name)===TEACH_H) return enter({teacher:true});
+      if(!/^\d{5}$/.test(no)){err.textContent='학번 다섯 자리를 숫자로 써 주세요.';f.no.focus();return;}
+      if(name.length<2){err.textContent='이름을 써 주세요.';f.name.focus();return;}
+      /* 명단에서 확인이 안 될 때만 반을 직접 고른다 */
+      if(!clsBox.hidden){
+        const cls=(f.querySelector('input[name=cls]:checked')||{}).value;
+        if(!cls){err.textContent='반을 골라 주세요.';return;}
+        return enter({cls,no,name});
+      }
+      busy(true);
+      try{
+        const r=await fetch(PEP,{method:'POST',body:JSON.stringify({op:'who',no,name})});
+        const d=await r.json();
+        if(d.ok) return enter({cls:d.cls,no,name});
+        busy(false);
+        if(d.err==='notfound'){ err.textContent='명단에서 찾지 못했어요. 학번과 이름을 다시 확인해 주세요. 계속 안 되면 선생님께 말해 주세요.'; return; }
+        throw new Error(d.err);
+      }catch(x){
+        busy(false);
+        if(clsBox.hidden){ clsBox.hidden=false; err.textContent='명단을 확인하지 못했어요. 내 반을 골라 주세요.'; }
+      }
+    };
+    setTimeout(()=>{ (f.no.value?(f.name.value?go2:f.name):f.no).focus(); },50);
+    return;
+  }
+
+  /* 이름 표시 + 바꾸기 */
+  box.className='tr-who';
+  box.innerHTML=`<span>${esc(WHO.cls)} ${esc(WHO.no)} <b>${esc(WHO.name)}</b></span><button type="button" title="다른 학생으로 바꾸기">바꾸기</button>`;
+  (document.querySelector('.top')||document.body).appendChild(box);
+  box.querySelector('button').onclick=()=>{ if(confirm('다른 학생으로 바꿀까요? (지금까지 한 것은 이 학번으로 저장돼 있어요)')){ try{sessionStorage.removeItem('aiw-who');}catch(e){} location.reload(); } };
+
+  const SK=QK+'-seen', AK=QK+'-away';
+  const seen=new Set(store.get(SK,[]));
+  const A=store.get(AK,{n:0,s:0});
+  let awayAt=null, lastAct=Date.now(), sent=0, lastSent=0, tmr=null, dirty=false;
+
+  function snap(){
+    let ok=0, done=0;
+    for(const k in QUIZ) QUIZ[k].forEach((it,i)=>{const v=QS[k+'-'+i]; if(v!=null){done++; if(v===it.a) ok++;}});
+    const ML=(typeof MEMOLIST!=='undefined')?MEMOLIST:[];
+    return {op:'put',lesson:LESSON,title:document.title,cls:WHO.cls,no:WHO.no,name:WHO.name,
+      scr:cur,names:pages.map((p,i)=>i?p.dataset.name:'시작'),seen:[...seen].sort((a,b)=>a-b),
+      qOk:ok,qDone:done,qTot:TOTALQ,
+      memo:ML.map(([k,l])=>[l,String(MEMO[k]==null?'':MEMO[k]).slice(0,1500)]),
+      away:awayAt?1:0,leaves:A.n,awaySec:Math.round(A.s+(awayAt?(Date.now()-awayAt)/1000:0)),idle:Math.round((Date.now()-lastAct)/1000),n:++sent};
+  }
+  function flush(){
+    if(!dirty) return; dirty=false; lastSent=Date.now();
+    const body=JSON.stringify(snap());
+    try{ if(navigator.sendBeacon && navigator.sendBeacon(PEP,new Blob([body],{type:'text/plain'}))) return; }catch(e){}
+    try{ fetch(PEP,{method:'POST',mode:'no-cors',body,keepalive:true}).catch(()=>{}); }catch(e){}
+  }
+  /* 너무 자주 보내지 않기: 보통 15초, 창 이탈·복귀는 3초 간격 */
+  function send(urgent){
+    dirty=true; clearTimeout(tmr);
+    const gap=urgent?3000:15000, wait=Math.max(0,gap-(Date.now()-lastSent));
+    tmr=setTimeout(flush,wait);
+  }
+
+  const _go=go; go=function(i){ _go(i); if(!seen.has(cur)){seen.add(cur); store.set(SK,[...seen]);} send(true); };
+  const _upd=updScore; updScore=function(){ _upd(); send(); };
+  const _set=store.set; store.set=function(k,v){ _set(k,v); if(k===MK) send(); };
+
+  function leave(){ if(awayAt) return; awayAt=Date.now(); A.n++; _set(AK,A); send(true); }
+  function back(){ if(!awayAt) return; A.s+=(Date.now()-awayAt)/1000; awayAt=null; _set(AK,A); send(true); }
+  document.addEventListener('visibilitychange',()=>{ document.hidden?leave():(document.hasFocus()&&back()); });
+  window.addEventListener('blur',()=>setTimeout(()=>{ if(!document.hasFocus()) leave(); },300));
+  window.addEventListener('focus',back);
+  window.addEventListener('pagehide',()=>{ dirty=true; flush(); });
+  ['pointerdown','keydown','input','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now();},{capture:true,passive:true}));
+  /* 화면에 머물러 있으면 2분마다 한 번 신호 */
+  setInterval(()=>{ if(!document.hidden) send(); },120000);
+})();
+
+/* 시작 */
+bindMemos();
+updScore();
+const h0=parseInt((location.hash.match(/^#p(\d+)$/)||[])[1],10);
+go(isNaN(h0)?0:h0);
+</script>
+<script>
+/* page-guard: 복사·잘라내기·드래그·오른쪽 클릭 막기 (복사 버튼은 그대로 동작) */
+(function(){
+  var t=null, tm=null, MSG='수업 자료는 복사할 수 없어요. 내 말로 정리해 보세요.';
+  function say(){ if(!t){t=document.createElement('div');t.className='pg-toast';document.body.appendChild(t);} t.textContent=MSG; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('on');},1800); }
+  function inField(e){ return e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'); }
+  ['copy','cut'].forEach(function(type){ document.addEventListener(type,function(e){ e.preventDefault(); say(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('selectstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('dragstart',function(e){ if(!inField(e)) e.preventDefault(); },true);
+  document.addEventListener('keydown',function(e){ var k=(e.key||'').toLowerCase(); if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x')){ e.preventDefault(); say(); } if((e.ctrlKey||e.metaKey)&&k==='a'&&!inField(e)) e.preventDefault(); },true);
+})();
+</script>
+</body>
+</html>

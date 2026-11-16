@@ -1,0 +1,117 @@
+  .btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* 성취도 평가 · 처음 생각 · 접기 */
+  .dm-ck{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:0 0 18px}
+  .dm-ck>b{font-size:.92rem;color:var(--mint)}
+  .dm-ck .chk button.on::before{content:"✔ "}
+  .dm-prev{background:#fbfaf7;border-left:4px solid var(--amber);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.93rem}
+  .dm-more>summary{cursor:pointer;font-weight:700}
+  .dm-euler{background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.9rem;margin:8px 0}
+  /* 01 로봇 */
+  .dm-scenes{display:grid;grid-template-columns:repeat(3,minmax(0,170px));gap:14px;margin-bottom:8px}
+  .dm-scene{background:#fbfaf7;border:2px solid var(--line);border-radius:12px;padding:6px 8px;text-align:center;font-size:.88rem}
+  .dm-scene svg{width:100%;display:block;margin-top:4px}
+  .dm-askrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0;font-size:.93rem}
+  .dm-askrow>span:first-child{min-width:110px}
+  .dm-fb{font-size:.88rem}
+  .dm-rb{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:14px;align-items:start}
+  .dm-rbboard svg{width:100%;display:block}
+  .dm-rbinfo{display:grid;gap:4px;font-size:.88rem;background:#fbfaf7;border-radius:10px;padding:8px 12px;margin-bottom:8px}
+  .dm-rbinfo b{color:var(--acc);margin-right:4px}
+  .dm-cmds{margin-bottom:8px}
+  .dm-prog{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;background:#fff;border:2px dashed var(--line);border-radius:10px;padding:6px 8px;margin-bottom:8px}
+  .dm-prog span{font-size:.84rem;background:var(--acc-soft);border-radius:8px;padding:2px 8px}
+  .dm-prog span.on{background:var(--amber);font-weight:700}
+  .dm-rbmsg{margin-top:8px;font-size:.92rem;min-height:1.5em}
+  /* 02 */
+  .dm-chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .dm-chain span{background:var(--acc-soft);border:2px solid var(--acc);border-radius:999px;padding:4px 14px;font-weight:700;font-size:.93rem}
+  .dm-chain i{font-style:normal;color:var(--muted);font-weight:900}
+  .dm-abs3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:10px}
+  .dm-abs3>div{background:#fbfaf7;border-radius:12px;padding:10px;text-align:center}
+  .dm-abs3 svg{width:100%;max-width:200px;height:150px;display:block;margin:0 auto 4px}
+  .dm-abs3 b{display:block;color:var(--acc)}
+  .dm-abs3 small{display:block;color:var(--muted);font-size:.84rem;line-height:1.45}
+  .dm-tt{display:grid;grid-template-columns:1.15fr 1fr 220px;gap:14px;align-items:start}
+  .dm-cap{display:block;font-size:.88rem;color:var(--acc);margin-bottom:4px}
+  .dm-alg{margin:0;padding-left:0;list-style:none;font-size:.86rem}
+  .dm-alg li{padding:3px 8px;border-radius:6px}
+  .dm-alg li.on{background:var(--amber);font-weight:700}
+  .dm-code{background:#0f2742;color:#e1e9f4;border-radius:10px;padding:8px 0;margin:0;font-size:.85rem;line-height:1.55;overflow-x:auto}
+  .dm-code span{display:block;padding:0 12px 0 0;white-space:pre}
+  .dm-code span i{display:inline-block;width:30px;text-align:right;margin-right:10px;color:#7f93ad;font-style:normal}
+  .dm-code span.on{background:rgba(242,165,22,.35)}
+  .dm-vars{display:flex;flex-direction:column;gap:2px;margin-top:8px;font-size:.86rem;background:#fbfaf7;border-radius:8px;padding:6px 10px}
+  .dm-vars small{color:var(--muted)}
+  .dm-turtle{width:100%;background:#fff;border:2px solid var(--line);border-radius:12px}
+  .dm-turtle.sm{max-width:220px;height:170px}
+  .dm-grow .ctrl{grid-template-columns:100px 1fr 48px}
+  .dm-grow{margin-top:12px;background:#fbfaf7;border-radius:12px;padding:10px 14px;max-width:560px}
+  .dm-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .dm-pick button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 14px;font:inherit;font-size:.93rem;cursor:pointer}
+  .dm-pick button.on{border-color:var(--acc);background:var(--acc-soft);font-weight:700}
+  .dm-pick button.r{box-shadow:0 0 0 3px var(--mint)}
+  .dm-pick button.x{box-shadow:0 0 0 3px var(--red)}
+  .dm-absfb{font-size:.9rem;margin-top:8px}
+  .dm-absfb ul{margin:6px 0 0;padding-left:18px}
+  /* 03 날짜 상자 */
+  .dm-dstage{background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.92rem;min-height:56px}
+  .dm-dstage>b{color:var(--acc);margin-right:6px}
+  .dm-dlog{margin-top:4px;font-size:.86rem}
+  .dm-dlog small{color:var(--muted);margin-right:4px}
+  .dm-drow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0;min-height:52px}
+  .dm-dgrp{display:flex;border:2px solid var(--acc);border-radius:10px;overflow:hidden;background:#fff}
+  .dm-dgrp span{padding:6px 10px;font-weight:700;font-variant-numeric:tabular-nums;border-left:1px solid var(--line);min-width:52px;text-align:center}
+  .dm-dgrp span:first-child{border-left:0}
+  .dm-dgrp.one{border-style:dashed}
+  .dm-drow .cut{font-style:normal}
+  /* 03 퍼즐 */
+  .dm-pzwrap{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+  .dm-pz{display:grid;grid-template-columns:repeat(6,46px);border:3px solid var(--ink);border-radius:6px;overflow:hidden;width:max-content}
+  .dm-pz .cell{width:46px;height:46px;border-right:1px solid #c5ccd5;border-bottom:1px solid #c5ccd5;display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:900;background:#fff;transition:opacity .2s,background .2s}
+  .dm-pz .cell.br{border-right:3px solid var(--ink)}
+  .dm-pz .cell.bb{border-bottom:3px solid var(--ink)}
+  .dm-pz .cell.giv{background:#eef1f5}
+  .dm-pz .cell input{width:100%;height:100%;border:0;text-align:center;font:inherit;font-weight:900;color:var(--acc);background:transparent;padding:0}
+  .dm-pz .cell.dim{opacity:.28}
+  .dm-pz .cell.hl{background:#fff4d6}
+  .dm-pz .cell.giv.hl{background:#f6e3b0}
+  .dm-pz .cell.bad{background:#fdecea}
+  .dm-pz .cell.good input{color:var(--mint)}
+  .dm-pzside .row{margin-bottom:8px}
+  .dm-pzmsg{background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.92rem;margin-bottom:8px}
+  .dm-pzfb{font-size:.92rem;min-height:1.4em}
+  /* 04 지하철 */
+  .dm-seg{display:inline-flex;border:2px solid var(--acc);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+  .dm-seg button{border:0;background:#fff;color:var(--acc);font:inherit;font-size:.88rem;font-weight:700;padding:5px 12px;cursor:pointer}
+  .dm-seg button.on{background:var(--acc);color:#fff}
+  .dm-metro{overflow-x:auto;background:#fff;border:2px solid var(--line);border-radius:12px}
+  .dm-metro svg{display:block;width:100%;min-width:640px;height:auto}
+  .dm-metro .noise{transition:opacity .5s}
+  .dm-metro svg.clean .noise{opacity:0}
+  .dm-metro .tm{display:none}
+  .dm-metro svg.times .tm{display:inline}
+  .dm-metro .st{cursor:pointer}
+  .dm-metro .st text{paint-order:stroke;stroke:#fff;stroke-width:4px}
+  .dm-metro .st.can circle{stroke:var(--amber);stroke-width:5}
+  .dm-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin:6px 0}
+  .dm-legend i{display:inline-block;width:22px;height:6px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  .dm-mstat{background:#fbfaf7;border-radius:10px;padding:8px 12px;font-size:.92rem;margin-bottom:8px}
+  .dm-recs{display:grid;gap:4px;font-size:.9rem;margin-top:8px}
+  .dm-recs b{color:var(--acc)}
+  /* 04 타일 */
+  .dm-tile{display:grid;grid-template-columns:260px 1fr;gap:18px;align-items:start}
+  .dm-tilesvg{width:100%;background:#fff;border:2px solid var(--line);border-radius:12px}
+  .dm-tbl{border-collapse:collapse;width:100%;font-size:.9rem;background:#fff}
+  .dm-tbl th,.dm-tbl td{border:1px solid var(--line);padding:5px 8px;text-align:center}
+  .dm-tbl th{background:var(--acc-soft);color:var(--ink)}
+  .dm-tbl .mk{font-size:.85rem}
+  .dm-rule,.dm-pred,.dm-auto{margin-top:10px;font-size:.92rem}
+  .dm-rule .dm-seg{margin-top:4px}
+  .dm-auto{background:#0f2742;color:#e1e9f4;border-radius:10px;padding:8px 12px}
+  .dm-auto .muted{color:#a9bbd2}
+  /* 개념 정리 빈칸 */
+  .dm-blanks{padding-left:22px}
+  .dm-blanks li{margin:8px 0}
+  .dm-blank{min-width:96px;border:2px dashed var(--acc);background:var(--acc-soft);border-radius:8px;font:inherit;font-weight:700;color:var(--acc);cursor:pointer;padding:0 8px}
+  .dm-blank.on{border-style:solid;background:#fff}
+  @media (max-width:900px){.dm-tt,.dm-rb,.dm-tile,.dm-pzwrap,.dm-abs3{grid-template-columns:1fr}}

@@ -1,0 +1,261 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>자주 사용하는 기능을<br>한 번에 표현할 수 있을까?</h1>
+      <div class="story"><b>「떡볶이 하나, 콜라 하나요. 계산해 주세요!」</b><br>분식집 주문 프로그램은 메뉴판 보기, 주문하기, 결제하기를 손님이 원할 때마다 되풀이해요. 같은 기능을 여러 번 쓸 때마다 코드를 다시 적는 대신, <b>기능에 이름을 붙여 두고 불러 쓸 수</b>는 없을까요?</div>
+      <p>오늘은 반복을 계속하다가 원할 때 멈추는 <b>무한 루프</b>, 입력받은 문자열을 나누고 바꾸는 <b>split() 메소드와 map() 함수</b>, 자주 쓰는 기능을 직접 만드는 <b>사용자 정의 함수</b>와 <b>지역 변수·전역 변수</b>를 배워요. 마지막에는 분식집 메뉴 주문 프로그램을 완성하고 제어 구조의 응용을 정리해요.</p>
+      <ol>
+        <li>무한 루프</li><li>split() 메소드와 map() 함수 · 폭탄 맵</li><li>사용자 정의 함수 · 지역 변수와 전역 변수</li>
+        <li>함께 해결하기 · 분식집 메뉴 주문</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘의 목표 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>♾️</i><div><b>무한 루프</b><small>while True와 break</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>✂️</i><div><b>split() · map()</b><small>'2 0' → 2, 0</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>🧰</i><div><b>사용자 정의 함수</b><small>def · 매개 변수 · return</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🍢</i><div><b>분식집 메뉴 주문</b><small>함수와 중첩 제어 구조</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">2-4 · 제어 구조의 응용</span>
+      <p>앞 시간에는 for문, range() 함수, while문, break와 continue로 <b>반복 구조</b>를 배웠어요. 오늘은 while문으로 무한 루프를 만들고, 앞에서 배운 <b>2차원 리스트</b>와 <b>딕셔너리</b>를 함께 써서 게임 맵과 주문 프로그램을 만들어요. 그리고 지금까지 써 온 print(), input() 같은 함수를 <b>직접 만들어</b> 봐요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>제어 구조의 응용</b> · 악보에서 특정 부분을 반복하거나 구간을 선택하여 연주하듯이 프로그래밍에서도 실행 순서를 반복하거나 선택하도록 결정할 수 있을까?</li>
+          <li><b>오늘의 질문</b> · 자주 사용하는 기능을 한 번에 표현할 수 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>순차, 선택, 반복 구조를 활용한 프로그램을 작성할 수 있다.</li>
+          <li>다양한 제어 구조를 복합적으로 활용한 프로그램을 작성할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</p>
+      </div>
+      <div class="why">
+        <span class="kicker">오늘 쓰는 도구</span>
+        <p style="margin:0;font-size:.92rem">화면에서는 프로그램을 직접 <b>돌려 보며</b> 실행 흐름을 따라가고, 04 화면에서 <b>구글 코랩</b> 노트북을 열어 실습해요. 학교 구글 계정으로 미리 로그인해 두세요.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📝 학습 계획 세우기</h3>
+      <div class="memo"><label>게임 프로그램에서 「점수를 계산해 화면에 보여 주는」 일을 열 군데에서 해야 한다면, 같은 코드를 열 번 써야 할까요? 더 좋은 방법을 지금 떠오르는 대로 적어 보세요. <small>마지막 화면에서 다시 비교해요.</small></label><textarea data-memo="planFunc" rows="2"></textarea><div class="saved"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 무한 루프부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 무한 루프 -->
+<section class="page" data-name="무한 루프" data-acc="#e0702b">
+  <div class="head"><div class="num">01</div><div><h2>멈출 때까지 계속 · 무한 루프</h2><p>교과서 142쪽 · 무한 루프, while True, break</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>while 뒤의 조건에 <b>True</b>를 쓰면 조건이 늘 참이라 끝없이 반복해요. 이것이 <b>무한 루프</b>예요. 반복 안에서 원하는 상황이 되면 <b>break</b>로 빠져나와요.</span></div>
+  <div class="card">
+    <h3>5 무한 루프</h3>
+    <p style="margin-top:0">반복 횟수를 정하지 않고 반복하고 싶을 때는 while 다음의 조건에 <b>True</b>를 작성해서 무한 루프를 만들 수 있어요. 무한 루프를 그만두기 위해서 <b>break</b> 명령어를 함께 작성해요.</p>
+    <p style="margin-bottom:0">다음은 <b>정답을 맞힐 때까지 반복하여 곱셈 문제를 내는</b> 프로그램이에요. 직접 문제를 풀면서, 매번 어느 줄이 실행되는지 살펴봐요. 일부러 한두 번 틀려 보세요.</p>
+  </div>
+  <div class="card">
+    <h3>🔍 돌려 보며 따라가기 · 곱셈 문제</h3>
+    <div id="mulLab"></div>
+    <p class="note" style="margin-bottom:0">Tip · 난수의 범위를 수정해서 실행 결과를 확인해 봐요. 위의 범위 버튼을 바꾸면 3행과 4행이 바뀌어요.</p>
+    <div class="memo"><label>while True로 만든 반복은 언제 끝났나요? 틀렸을 때와 맞혔을 때 실행된 줄을 비교해, 반복이 끝나는 까닭을 적어 보세요.</label><textarea data-memo="loopWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 split()과 map() -->
+<section class="page" data-name="split()·map() · 폭탄 맵" data-acc="#1f9d74">
+  <div class="head"><div class="num">02</div><div><h2>입력을 나누고 바꾸기 · split() 메소드와 map() 함수</h2><p>교과서 142~143쪽 · 지식 키우기(split() 메소드와 map() 함수), 스스로 해결하기(폭탄 맵 체험)</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>input()으로 받은 「2 0」은 <b>문자열 하나</b>예요. <b>split()</b>으로 잘라 리스트로 만들고, <b>map(int, …)</b>으로 각 요소를 정수로 바꾸면 x와 y 두 변수에 바로 담을 수 있어요.</span></div>
+  <div class="card">
+    <h3>📘 지식 키우기 · split() 메소드와 map() 함수</h3>
+    <p style="margin-top:0" class="muted">메소드는 클래스에 포함된 함수예요. 함수는 오늘 03 화면에서, 객체와 클래스는 다음 시간(146쪽)에 배워요.</p>
+    <div class="grid2 even">
+      <div class="kc" style="--k:#1f9d74"><h4>split() 메소드</h4><p>문자열에 관한 함수로 <span class="mono">문자열.split('구분자')</span>와 같은 형식으로 사용해요. 문자열을 구분자를 기준으로 잘라 <b>리스트</b>로 만들어 주는데, 만약 구분자를 생략한다면 <b>공백</b>을 기준으로 잘라요.</p><div data-code="splitEx" data-nonum></div><div class="outbox">['1', '3', '5']</div></div>
+      <div class="kc" style="--k:#2f6fd0"><h4>map() 함수</h4><p>반복 가능 객체의 각 요소들에 특정한 함수를 적용하고 싶을 때 사용해요. <span class="mono">map(함수, 반복 가능 객체)</span>와 같은 형식으로 사용해요.</p><div data-code="mapEx" data-nonum></div><div class="outbox">1 3 5</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✂️ split()·map() 실험실</h3>
+    <p class="muted" style="margin-top:0">입력한 문자열이 단계마다 어떻게 바뀌는지 봐요. 따옴표가 붙은 <span class="mono">'2'</span>는 문자열, 따옴표가 없는 <span class="mono">2</span>는 정수예요. 「6 8」, 「3,4」, 「1 2 3」, 「a b」도 넣어 보세요.</p>
+    <div id="smLab"></div>
+  </div>
+  <div class="card">
+    <h3>💣 스스로 해결하기 · 폭탄 맵</h3>
+    <p style="margin-top:0">6×6 크기의 게임 맵에 폭탄을 놓을 좌표를 입력받아 폭탄이 있는 위치를 ★로 표시하는 프로그램이에요. 먼저 아래에서 <b>알고리즘 설계</b>대로 프로그램이 돌아가는 모습을 보고, 04 화면에서 코랩으로 직접 작성해요.</p>
+    <div class="grid2 even">
+      <ol class="ol fn-algo">
+        <li>0으로 채워진 6 x 6 크기의 2차원 리스트를 만든다.</li>
+        <li>폭탄을 놓고 싶은 좌표 x, y를 입력한다. 이때 좌표 x와 좌표 y는 공백으로 구분하여 입력한다.</li>
+        <li>입력한 좌표의 범위가 올바른지 확인하고, 범위가 잘못되었다면 다시 입력한다.</li>
+        <li>범위가 올바르다면, x, y좌표에 해당하는 리스트의 값을 1로 바꾸어 준다.</li>
+        <li>폭탄이 있는 좌표는 ★로, 아무것도 없는 좌표는 □로 출력한다.</li>
+      </ol>
+      <p class="note" style="margin:0">폭탄의 개수는 정해져 있지 않으며, 사용자가 폭탄을 그만 입력하고 싶다면 「n」 키를 입력하여 반복을 종료하고 게임 맵을 출력해요. x는 <b>행</b>(위에서 몇째 줄), y는 <b>열</b>(왼쪽에서 몇째 칸)이고 0부터 세요.</p>
+    </div>
+    <div id="bombLab"></div>
+    <div class="memo"><label>범위를 벗어난 좌표(예: 6 8)를 넣었을 때 프로그램은 어떻게 처리했나요? split()과 map()이 한 일, 범위를 확인한 뒤 다시 입력받은 흐름을 함께 적어 보세요.</label><textarea data-memo="bombWhy" rows="2"></textarea><div class="saved"></div></div>
+    <p class="note">직접 작성은 <b>04 화면</b>에서 코랩 노트북 <b>2-1</b>로 해요. 지금 넣어 본 좌표를 기억해 두었다가 그대로 넣어 결과를 비교해요.</p>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck1"></div></div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 사용자 정의 함수 -->
+<section class="page" data-name="함수 · 지역/전역 변수" data-acc="#9b4fc4">
+  <div class="head"><div class="num">03</div><div><h2>자주 사용하는 기능을 한 번에 표현할 수 있을까? · 함수</h2><p>교과서 144쪽 · 사용자 정의 함수, 함수 정의와 함수 호출, 지역 변수와 전역 변수</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>자주 쓰는 기능을 <b>def</b>로 한 번 정의해 이름을 붙여 두면, 필요할 때마다 <b>이름으로 호출</b>해서 써요. 호출하면 실행 흐름이 함수 안으로 들어갔다가, <b>return</b>을 만나면 결과(반환값)를 들고 원래 자리로 돌아와요.</span></div>
+  <div class="card">
+    <h3>4 자주 사용하는 기능을 한 번에 표현할 수 있을까?</h3>
+    <p style="margin-top:0">프로그램을 작성하다 보면 특정 기능을 반복하여 처리하는 경우가 있어요. 이때 자주 사용하는 기능을 함수로 정의해서 사용할 수 있어요. 함수를 사용하면 함수 안에서 처리되는 명령어를 몰라도 특정 기능을 사용할 수 있는데, 특히 사용자가 직접 작성해서 사용하는 함수를 <b>사용자 정의 함수</b>라고 해요.</p>
+    <h4 style="margin:10px 0 6px">1 함수 정의와 함수 호출</h4>
+    <div class="fn-form">
+      <div><div data-code="defForm" data-nonum></div><div data-code="callForm" data-nonum></div></div>
+      <ul class="ul">
+        <li><b>def</b>는 define의 줄임말로, 함수를 만들 때 함수명 앞에 적어요.</li>
+        <li><b>매개 변수</b>는 함수를 호출할 때 넘겨주는 값을 전달받기 위해 사용하는 변수예요. 전달받을 값이 없다면 생략할 수 있고, 여러 개의 값을 전달받는다면 필요한 만큼 매개 변수를 추가할 수 있어요.</li>
+        <li><b>반환값</b>은 함수를 처리한 결과를 호출한 쪽으로 되돌려주는 값이에요. 없다면 생략할 수 있어요.</li>
+        <li>함수명을 호출해서 함수에 정의된 기능을 사용할 수 있어요. <b>인수</b>는 함수를 호출할 때 넘겨주는 값이에요.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔍 한 줄씩 따라가기 · 1부터 입력받은 수까지 누적 합을 구하는 함수</h3>
+    <p class="muted" style="margin-top:0">1행(def)을 지난 뒤 바로 함수 안으로 들어가는지, 7행에서 호출하면 실행 흐름이 어디로 가는지, return 뒤에 어디로 돌아오는지 봐요. 오른쪽 아래 <b>지역 변수</b> 칸이 언제 생기고 언제 사라지는지도 살펴봐요.</p>
+    <div id="trTotal"></div>
+  </div>
+  <div class="card">
+    <h3>2 지역 변수와 전역 변수</h3>
+    <p style="margin-top:0">함수를 사용하게 되면 코드를 재사용해서 편리하지만, 만약 변수도 함께 재사용하게 된다면 기억 장소를 독립적으로 사용하지 못하는 문제가 생겨요. 그래서 함수에서만 사용하는 <b>지역 변수</b>와 모든 영역에서 공유하는 <b>전역 변수</b>를 구분하여 사용해요.</p>
+    <div style="overflow-x:auto"><table class="tbl2">
+      <tr><th>전역 변수</th><th>지역 변수</th></tr>
+      <tr><td class="l">· 함수 밖에서 선언된 변수<br>· 모든 영역에서 자유롭게 값을 불러올 수 있지만, 함수 내부에서 값을 변경할 수 없다.</td><td class="l">· 함수 내부에서 선언된 변수<br>· 선언된 함수 내에서만 사용할 수 있다.<br>· 함수가 종료되면 메모리에서 제거된다.</td></tr>
+    </table></div>
+    <p class="note">Tip · 함수 내부에서 선언된 지역 변수를 함수 밖에서 사용하고 싶다면, <b>global</b>을 붙여 전역 변수로 선언해요. 04 화면의 분식집 프로그램에서 써요.</p>
+  </div>
+  <div class="card">
+    <h3>🔍 한 줄씩 따라가기 · 약수 개수를 합하는 프로그램</h3>
+    <p class="muted" style="margin-top:0">10까지의 약수 개수와 20까지의 약수 개수를 합하는 프로그램이에요. n, tot, i는 <b>지역 변수</b>, 9행의 tot은 <b>전역 변수</b>예요. 이름이 같은 두 tot이 각각 어떻게 바뀌는지 봐요. 단계가 많으니 「⏭ 함수 실행을 한 번에」도 써 보세요.</p>
+    <div id="trDiv"></div>
+    <div class="memo"><label>지역 변수와 전역 변수의 이름이 같아도 되나요? 추적기에서 <b>두 tot의 값이 어떻게 따로 바뀌었는지</b>를 근거로 적어 보세요.</label><textarea data-memo="sameName" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 분식집 -->
+<section class="page" data-name="분식집 메뉴 주문" data-acc="#d64535">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 분식집 메뉴 주문</h2><p>교과서 143·145쪽 · 함수와 중첩 제어 구조, 딕셔너리, global, 코랩 실습(폭탄 맵·분식집), 개념 정리하기</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>메뉴판 보기, 주문하기, 결제하기를 각각 <b>함수</b>로 만들어 두고, 무한 루프 안에서 손님이 고른 번호에 따라 <b>알맞은 함수를 호출</b>해요. 주문 금액 total은 여러 함수가 함께 쓰므로 <b>전역 변수</b>예요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>📋 문제 이해와 분석 · 알고리즘 설계</h3>
+      <p style="margin-top:0;font-size:.93rem">분식집 메뉴 주문 프로그램을 실행하면 메뉴 보기, 주문하기, 결제하기, 이용 종료 등이 나타나요.</p>
+      <ol class="ol">
+        <li>프로그램을 실행하면 손님이 선택할 동작이 나온다.</li>
+        <li>메뉴판 보기를 실행하면 딕셔너리로 저장된 메뉴판이 출력된 후 다시 선택 화면이 나온다.</li>
+        <li>주문하기를 실행하면 주문받을 메뉴 이름이 입력되고 총액에 선택한 메뉴 가격이 추가된다.</li>
+        <li>반복해서 주문을 받고, 사용자가 주문 끝(n)을 입력하면 다시 선택 화면이 나온다.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>📏 기준</h3>
+      <ul class="ul">
+        <li>딕셔너리로 저장된 메뉴판을 출력합니다.</li>
+        <li>메뉴를 입력받고 메뉴에 해당하는 금액을 누적한 다음, 총금액을 계산합니다.</li>
+        <li>결제하기 위해 총 주문 금액을 출력합니다.</li>
+      </ul>
+      <p class="note" style="margin-bottom:0">메뉴판 딕셔너리: 떡볶이 5000, 라면 3000, 순대 4000, 콜라 1500</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🍢 돌려 보며 따라가기 · 분식집 메뉴 주문 프로그램</h3>
+    <p class="muted" style="margin-top:0">번호를 골라 프로그램을 써 봐요. 오른쪽에서 <b>지금 실행 중인 함수</b>와 전역 변수 total이 바뀌는 모습을 봐요. 메뉴판에 없는 이름을 주문하면 어떻게 될까요?</p>
+    <div id="shopLab"></div>
+  </div>
+  <div class="card">
+    <h3>💻 코랩 실습 · 폭탄 맵과 분식집 <span class="muted" style="font-weight:400;font-size:.88rem">(코랩 2-1 · 2-2)</span></h3>
+    <ol class="ol">
+      <li>아래 버튼으로 노트북을 열어요(학교 구글 계정으로 로그인). 「Google에서 작성하지 않았습니다」 경고가 나오면 「무시하고 계속하기」를 눌러요.</li>
+      <li><b>1. 교과서 예제 실행해 보기</b>에는 01~03 화면에서 본 코드가 들어 있어요. 시간이 부족하면 1-1만 실행해 보고 2로 넘어가요.</li>
+      <li><b>2-1 폭탄 맵</b>(02 화면)의 빈칸 일곱 곳을 채워 완성해요. 02 화면 체험에서 넣은 좌표를 그대로 넣어 결과를 비교해요.</li>
+      <li><b>2-2 분식집</b>의 빈칸 세 곳을 채워 완성하고, 위에서 해 본 순서(메뉴판 보기 → 주문하기 → 결제하기 → 이용 종료)대로 입력해 결과를 비교해요.</li>
+    </ol>
+    <div class="colab"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-function/assets/function.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="function.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <p class="note">2-1 · 프로그램을 멈추거나 계속 진행하는 break문과 continue문은 while문과 if문 안에, 맵에 문자를 출력하는 것은 중첩 for문과 if문을 사용하여 작성해 보세요.</p>
+    <ul class="ul">
+      <li>2-2 · 빈칸 두 곳은 <b>함수를 정의하는 줄</b>이에요. 아래쪽 반복에서 어떤 이름으로 호출하는지 보고 정의해요.</li>
+      <li>2-2 · 나머지 한 곳은 손님이 이용 종료를 고를 때까지 계속 선택 화면을 보여 주는 <b>반복</b>이에요.</li>
+    </ul>
+    <div class="memo"><label>분식집 프로그램을 <b>함수로 나누었을 때 좋은 점</b>은 무엇인가요? order() 함수 안에 <span class="mono">global total</span>을 적은 까닭도 함께 적어 보세요.</label><textarea data-memo="shopFunc" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card">
+    <h3>📝 개념 정리하기 · 제어 구조의 응용</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요. <span class="mono">제어 구조 · 선택 구조 · 반복 구조 · 중첩 제어 구조 · 함수</span></p>
+    <ol class="blanks">
+      <li>입력한 비밀번호가 맞으면 「로그인 성공」, 틀리면 「다시 입력하세요」를 보여 주는 것처럼, 조건이 참인지 거짓인지에 따라 실행할 명령이 달라지는 구조는 <button class="blank" data-a="선택 구조">?</button>이다.</li>
+      <li>반 학생 30명에게 같은 안내 문자를 한 명씩 보내는 일처럼, 정해진 범위만큼 또는 조건을 만족하는 동안 명령을 되풀이하는 구조는 <button class="blank" data-a="반복 구조">?</button>이다.</li>
+      <li>학생마다 점수가 60점 이상인지 확인하려고 for문 안에 if문을 넣은 것처럼, 반복문과 선택문을 겹쳐 쓰는 구조를 <button class="blank" data-a="중첩 제어 구조">?</button>라고 한다.</li>
+      <li>여러 곳에서 쓰는 「할인 금액 계산」 기능을 def로 한 번 정의해 두고 이름으로 불러 쓴다면, 이 기능을 <button class="blank" data-a="함수">?</button>로 만든 것이다.</li>
+      <li>순차, 선택, 반복처럼 컴퓨터에 명령어의 실행 순서를 알려 주는 방법을 통틀어 <button class="blank" data-a="제어 구조">?</button>라고 한다.</li>
+    </ol>
+  </div>
+  <div class="ck"><b>✅ 성취도 평가</b><div id="ck2"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">05</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#e0702b"><b>무한 루프</b>는 while 다음의 조건에 True를 써서 만들고, 원하는 상황이 되면 <b>break</b>로 빠져나온다. 반복 횟수를 정하지 않고 반복하고 싶을 때 쓴다.</div>
+    <div style="--k:#1f9d74"><b>split()</b> 메소드는 문자열을 구분자(생략하면 공백)를 기준으로 잘라 리스트로 만들고, <b>map(함수, 반복 가능 객체)</b>는 각 요소에 함수를 적용한다. <span class="mono">x, y = map(int, a.split())</span>처럼 함께 쓴다.</div>
+    <div style="--k:#9b4fc4"><b>사용자 정의 함수</b>는 def로 정의하고 함수명(인수)으로 호출한다. 매개 변수로 값을 받고 return으로 반환값을 돌려준다. <b>지역 변수</b>는 함수 안에서만, <b>전역 변수</b>는 모든 영역에서 쓴다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <p class="muted" style="margin-top:0">시작 화면에서 적은 처음 생각을 보고, 오늘 배운 함수로 다시 답해 보세요.</p>
+    <div class="prev" id="prevPlan"></div>
+    <b style="font-size:.93rem">핵심 질문에 답하기 · 자주 사용하는 기능을 한 번에 표현할 수 있을까?</b>
+    <textarea data-memo="keyQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">제어 구조의 응용을 마치며 · 악보처럼 프로그램의 실행 순서를 반복하거나 선택하도록 결정할 수 있을까? 세 시간 동안 배운 것으로 답해 보세요.</b>
+    <textarea data-memo="unitQ" rows="3"></textarea><div class="saved"></div>
+    <b style="font-size:.93rem">새롭게 알게 된 점</b>
+    <textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="5"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>01에서 while True로 만든 곱셈 문제 프로그램을 직접 풀어 보았습니다. 틀렸을 때와 맞혔을 때 실행되는 줄이 어떻게 달랐는지 쓰고, 무한 루프가 어떻게 끝나는지 break와 연결해 설명하세요.</li>
+      <li>02에서 입력한 문자열이 split()과 map()을 거쳐 x, y가 되는 과정을 보았습니다. 내가 넣어 본 입력 하나를 예로 들어 단계마다 어떻게 바뀌었는지 쓰고, 폭탄 맵 프로그램에서 두 기능이 필요한 까닭을 설명하세요.</li>
+      <li>03에서 약수 개수를 합하는 프로그램을 한 줄씩 따라가며 지역 변수와 전역 변수를 보았습니다. 이름이 같은 두 tot이 어떻게 따로 바뀌었는지 쓰고, 지역 변수와 전역 변수를 구분하는 까닭을 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>

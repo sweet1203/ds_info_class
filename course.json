@@ -138,9 +138,9 @@
      "no": "14",
      "id": "u3-decompose-model",
      "title": "문제 분해와 모델링",
-     "pages": "90~98",
+     "pages": "88~98",
      "form": "info-u3-decompose-model",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "15",
@@ -148,7 +148,7 @@
      "title": "알고리즘 설계와 성능 평가",
      "pages": "99~101",
      "form": "info-u3-algorithm-efficiency",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "16",
@@ -156,7 +156,7 @@
      "title": "정렬 알고리즘",
      "pages": "102~107",
      "form": "info-u3-sorting",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "17",
@@ -164,7 +164,7 @@
      "title": "탐색 알고리즘 · 알고리즘 정리",
      "pages": "108~117",
      "form": "info-u3-searching",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "18",
@@ -172,7 +172,7 @@
      "title": "변수와 자료형",
      "pages": "118~121",
      "form": "info-u3-variables",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "19",
@@ -180,7 +180,7 @@
      "title": "표준입출력과 파일입출력",
      "pages": "122~125",
      "form": "info-u3-io",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "20",
@@ -188,7 +188,7 @@
      "title": "다차원 데이터 ① 리스트와 딕셔너리",
      "pages": "126~128",
      "form": "info-u3-data-1d",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "21",
@@ -196,7 +196,7 @@
      "title": "다차원 데이터 ② 2차원 데이터",
      "pages": "129~131",
      "form": "info-u3-data-2d",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "22",
@@ -204,7 +204,7 @@
      "title": "제어 구조의 응용 ① 선택 구조",
      "pages": "132~135",
      "form": "info-u3-selection",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "23",
@@ -212,7 +212,7 @@
      "title": "제어 구조의 응용 ② 반복 구조",
      "pages": "136~141",
      "form": "info-u3-loop",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "24",
@@ -220,7 +220,7 @@
      "title": "제어 구조의 응용 ③ map()·split()과 함수",
      "pages": "142~145",
      "form": "info-u3-function",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "25",
@@ -228,7 +228,7 @@
      "title": "객체와 클래스 · 프로그래밍 정리",
      "pages": "146~153",
      "form": "info-u3-class",
-     "status": "todo"
+     "status": "ready"
     },
     {
      "no": "26",
@@ -236,7 +236,7 @@
      "title": "협력적 창의·융합 프로젝트 · Ⅲ단원 정리",
      "pages": "154~159",
      "form": "info-u3-review",
-     "status": "todo"
+     "status": "ready"
     }
    ]
   },
@@ -249,7 +249,7 @@
      "no": "27",
      "id": "u4-agent",
      "title": "지능 에이전트의 개념과 특성",
-     "pages": "162~169",
+     "pages": "160~169",
      "form": "info-u4-agent",
      "status": "todo"
     },
@@ -312,7 +312,7 @@
      "no": "34",
      "id": "u5-digital-impact",
      "title": "디지털 기술의 영향",
-     "pages": "208~215",
+     "pages": "206~215",
      "form": "info-u5-digital-impact",
      "status": "todo"
     },

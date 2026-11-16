@@ -1,0 +1,414 @@
+<!-- 0 시작 -->
+<section class="page" data-name="시작" data-acc="#9b4fc4">
+  <div class="cover">
+    <div class="in">
+      <span class="tag">정보 · Ⅲ. 알고리즘과 프로그래밍 · 2. 프로그래밍</span>
+      <h1>틀 하나로<br>객체를 여러 개 찍어 낸다면?</h1>
+      <div class="story"><b>「클래스를 이용하여 필요한 만큼 객체를 생성할 수 있어요.」</b><br>공장의 기계에 설계도를 넣으면 똑같은 모양의 장난감 병정이 줄지어 나와요. 붕어빵 틀 하나로 붕어빵을 여러 개 구워 내는 것과 같아요. 프로그래밍 언어도 기계어, 어셈블리어, 절차지향 언어를 거쳐 이렇게 <b>객체를 찍어 내는 객체지향 언어</b>로 발전해 왔어요.</div>
+      <p>오늘은 <b>객체 · 클래스 · 인스턴스 · 메소드</b>를 배우고, 파이썬으로 클래스를 정의해 객체를 만들어요. 코드를 한 줄씩 읽으며 결과를 예측하고, <b>숫자 야구 게임</b>으로 클래스를 활용한 뒤 프로그래밍 단원 전체를 정리해요.</p>
+      <ol>
+        <li>객체와 클래스</li><li>클래스 정의와 객체 생성 · 생성자</li><li>클래스 안의 메소드</li>
+        <li>함께 해결하기 · 숫자 야구 게임</li><li>프로그래밍 정리</li><li>마무리 · 질문폼</li>
+      </ol>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:var(--amber);color:var(--navy);box-shadow:none" onclick="go(1)">시작하기 →</button>
+        <button class="btn" style="background:transparent;border:2px solid rgba(255,255,255,.5);box-shadow:none" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">오늘 배울 것 보기 ↓</button>
+      </div>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="st" style="animation-delay:.2s"><i>📐</i><div><b>클래스</b><small>객체를 만드는 설계도 · 붕어빵 틀</small></div></div>
+      <div class="ar" style="animation-delay:.6s">↓</div>
+      <div class="st" style="animation-delay:.8s"><i>🚗 🚙 🛻</i><div><b>객체(인스턴스) 여러 개</b><small>속성 값은 저마다, 메소드는 함께</small></div></div>
+      <div class="ar" style="animation-delay:1.2s">↓</div>
+      <div class="st" style="animation-delay:1.4s"><i>⚾</i><div><b>숫자 야구 게임</b><small>Player 객체 · Game 객체</small></div></div>
+      <div class="ar" style="animation-delay:1.8s">↓</div>
+      <div class="st" style="animation-delay:2s"><i>🧩</i><div><b>프로그래밍 정리</b><small>생활 속 프로그래밍 · 함수 · 협력</small></div></div>
+    </div>
+  </div>
+
+  <div id="intro" class="today">
+    <div class="today-lead">
+      <span class="kicker">오늘 우리는</span>
+      <p>프로그램에 필요한 <b>객체</b>를 만들고, 이 객체들이 서로 주고받으며 프로그램을 작성하는 <b>객체지향 프로그래밍</b>을 배워요. <b>클래스</b>를 쓰면 비슷한 기능을 가진 다른 객체를 쉽게 만들 수 있어요.</p>
+    </div>
+    <div class="why3">
+      <div class="why">
+        <span class="kicker">핵심 질문</span>
+        <ul class="uses">
+          <li><b>프로그래밍</b> · 협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</li>
+          <li><b>오늘의 질문</b> · 클래스와 객체를 생성하고 어떻게 이용해야 문제 해결을 위한 프로그램 구현에 활용할 수 있을까?</li>
+        </ul>
+      </div>
+      <div class="why">
+        <span class="kicker">배우고 나면 할 수 있는 것</span>
+        <ul class="can">
+          <li>객체지향의 기본 개념을 이해하고 필요성을 설명할 수 있다.</li>
+          <li>객체와 클래스를 생성하고 문제 해결을 위한 프로그램을 구현할 수 있다.</li>
+        </ul>
+        <p style="font-size:.88rem;margin-top:8px" class="muted">주요 용어: 객체 · 클래스 · 객체지향 프로그래밍 · 인스턴스 · 메소드</p>
+      </div>
+      <div class="why">
+        <span class="kicker">학습 계획 세우기</span>
+        <div class="memo" style="margin-top:0">
+          <label>게임에 같은 종류의 캐릭터가 100명 나와요. 이름과 체력만 다르고 걷기, 공격하기는 똑같아요. 코드를 어떻게 짜면 편할까요? <small>마지막 화면에서 다시 비교해요.</small></label>
+          <textarea data-memo="planClass" rows="3"></textarea><div class="saved"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn" style="background:var(--navy)" onclick="go(1)">01 객체와 클래스부터 시작하기 →</button></div>
+  </div>
+</section>
+
+<!-- 1 객체와 클래스 -->
+<section class="page" data-name="객체와 클래스" data-acc="#9b4fc4">
+  <div class="head"><div class="num">01</div><div><h2>객체와 클래스는 무엇일까?</h2><p>교과서 146~147쪽 · 객체지향 프로그래밍, 객체, 인스턴스, 클래스</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><b>객체</b>는 <b>속성</b>(상태를 나타내는 데이터)과 <b>메소드</b>(행동을 나타내는 함수)를 한 단위로 묶은 것이에요. <b>클래스</b>는 객체를 만드는 <b>설계도</b>예요. 붕어빵 틀(클래스) 하나로 붕어빵(객체)을 여러 개 만들 수 있어요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🧱 객체</h3>
+      <p style="margin-top:0">객체(object)는 <b>속성</b>과 <b>메소드</b>를 한 개의 단위로 묶어 표현한 것이에요. 속성은 객체의 <b>상태</b>를 나타내는 데이터이고, 메소드는 객체의 <b>행동</b>을 나타내는 함수예요. 객체가 메모리에 할당되어 실체화된 것을 <b>인스턴스</b>라고 해요.</p>
+      <div class="cl-person">
+        <div class="cl-pc">🧑 <b>person</b><small>객체</small></div>
+        <div><span class="cl-tagA">속성</span> 이름 · 나이 · 성별 · 직업</div>
+        <div><span class="cl-tagM">메소드</span> 걷기 · 먹기 · 자기 · 일하기</div>
+      </div>
+      <p class="note">함수는 특정한 기능을 하는 코드 덩어리를 하나로 묶은 것이고, 클래스 안에서 구현한 함수는 <b>메소드</b>라고 따로 불러요.</p>
+    </div>
+    <div class="card">
+      <h3>📐 클래스</h3>
+      <p style="margin-top:0">객체를 생성하기 위한 <b>설계도</b>를 클래스(class)라고 해요. 객체를 만들려면 먼저 클래스를 정의해야 해요. 예를 들어 「사람」 클래스를 정의하면 「윤기」, 「별이」 같은 구체적인 사람 객체를 만들 수 있어요.</p>
+      <div class="callout" style="margin-bottom:0">클래스는 같은 종류의 객체(인스턴스)를 <b>여러 개</b> 만들 수 있어요. 자동차 설계도 하나로 컨버터블, 세단, SUV, 픽업트럭을 만드는 것처럼요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏭 체험 · 자동차 클래스로 객체 찍어 내기</h3>
+    <p style="margin-top:0">왼쪽 <b>Car 클래스</b>(설계도)에 속성 값을 넣고 <b>객체 만들기</b>를 눌러요. 객체를 <b>3개 이상</b> 만든 뒤, 객체마다 전진 · 후진 · 정지를 눌러 보세요.</p>
+    <div class="cl-factory">
+      <div class="cl-mold">
+        <div class="cl-moldhd">📐 클래스(class) <b>Car</b></div>
+        <svg viewBox="0 0 160 70" class="cl-moldcar" aria-hidden="true"><path d="M12 50 L12 36 L40 34 L56 18 L108 18 L126 34 L150 38 L150 50 Z"/><circle cx="42" cy="52" r="9"/><circle cx="122" cy="52" r="9"/></svg>
+        <div class="cl-moldrow"><div><b>속성</b><br>• 종류<br>• 색상<br>• 속도</div><div><b>메소드</b><br>• 전진<br>• 후진<br>• 정지</div></div>
+        <div class="cl-form">
+          <label>종류 <select id="carKind"><option>컨버터블</option><option>세단</option><option>SUV</option><option>픽업트럭</option></select></label>
+          <label>색상 <select id="carColor"><option>검은색</option><option>파란색</option><option>주황색</option><option>갈색</option><option>빨간색</option><option>초록색</option></select></label>
+          <label>속도 <input id="carSpeed" type="range" min="100" max="300" step="10" value="240"><b id="carSpeedV">240km</b></label>
+          <button class="btn" id="carMake">객체 만들기 →</button>
+        </div>
+      </div>
+      <div class="cl-objs">
+        <div class="cl-objshd"><span>🚗 객체(object) · 인스턴스</span><span id="carCount" class="muted"></span><button class="btn ghost sm" id="carClear">모두 지우기</button></div>
+        <div id="carList"></div>
+        <pre class="cl-log" id="carLog" aria-live="polite"></pre>
+      </div>
+    </div>
+    <div class="callout" id="carTip" style="display:none"></div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>⚖️ 객체지향 프로그래밍과 절차지향 프로그래밍</h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l"></th><th class="l">객체지향 프로그래밍</th><th class="l">절차지향 프로그래밍</th></tr>
+        <tr><td><b>기준</b></td><td>데이터와 처리 방법을 하나로 묶은 <b>객체</b></td><td>순차적인 절차와 <b>함수</b></td></tr>
+        <tr><td><b>장점</b></td><td>코드의 재사용성, 유지 보수성, 확장성이 좋아요</td><td>구조가 단순하고 이해하기 쉬워요</td></tr>
+        <tr><td><b>어려움</b></td><td>–</td><td>규모가 커지면 유지 보수와 확장이 어려워요</td></tr>
+        <tr><td><b>대표 언어</b></td><td>파이썬</td><td>C 언어</td></tr>
+      </table></div>
+      <p class="note">규모가 크고 복잡한 소프트웨어 프로젝트에서는 객체지향 프로그래밍의 장점이 크게 작용해 소프트웨어의 품질과 생산성을 높여요.</p>
+    </div>
+    <details class="card cl-more">
+      <summary>📚 예제 · 책을 빌리고 돌려주는 과정의 클래스 <span class="muted" style="font-weight:400;font-size:.88rem">(눌러서 펼치기)</span></summary>
+      <p><b>1단계</b> 필요한 클래스 생각하기 → <b>2단계</b> 속성과 메소드 정하기</p>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">클래스</th><th class="l">속성</th><th class="l">메소드</th></tr>
+        <tr><td>학생(Student)</td><td>학번, 이름, 대여한 책 리스트</td><td>책 대여하기, 책 반납하기</td></tr>
+        <tr><td>책(Book)</td><td>제목, 저자</td><td>대여 상태(대여 가능, 대여 중)</td></tr>
+      </table></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h3>🎮 게임 캐릭터(Hero) 클래스를 설계한다면?</h3>
+    <div id="heroSort"></div>
+  </div>
+  <div class="card">
+    <div class="memo" style="margin-top:0"><label>클래스와 객체는 어떤 관계일까요? 내가 만든 자동차 객체를 예로 들어 한두 문장으로 <small>틀은 몇 개, 객체는 몇 개? 무엇이 같고 무엇이 달랐나요?</small></label><textarea data-memo="classWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="1"></div>
+</section>
+
+<!-- 2 클래스 정의와 객체 생성 · 생성자 -->
+<section class="page" data-name="클래스 정의와 객체 생성" data-acc="#2f6fd0">
+  <div class="head"><div class="num">02</div><div><h2>클래스 정의 및 객체 생성은 어떻게 할까?</h2><p>교과서 148쪽 · class 키워드, 객체 생성, 생성자 __init__()</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span><span class="mono">class</span> 키워드로 클래스를 정의하고, <span class="mono">객체 변수 = 클래스 이름()</span>으로 객체를 만들어요(<b>인스턴스화</b>). 만든 객체에 <b>.</b> 연산자를 붙이면 속성값에 접근할 수 있어요. <b>생성자</b> <span class="mono">__init__()</span>을 쓰면 객체를 만들면서 속성도 함께 저장해요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✍️ 클래스와 객체 생성 형식</h3>
+<pre class="cl-code cl-plain">class 클래스 이름:
+    속성 내용
+    def 메소드명():
+        메소드 내용
+
+객체 변수 = 클래스 이름()</pre>
+      <p class="note">클래스 이름은 일반적으로 <b>대문자로 시작</b>해요(예: Book). 클래스로부터 객체를 생성하면, 클래스에 정의된 속성과 메소드를 가진 인스턴스가 생겨요.</p>
+    </div>
+    <div class="card">
+      <h3>🏷️ 식별자의 명명 규칙 · self</h3>
+      <ul style="margin:0;padding-left:20px">
+        <li><b>카멜 표기법</b>: 여러 단어로 된 이름에서 각 단어의 첫 글자를 대문자로 (예: userName)</li>
+        <li><b>스네이크 표기법</b>: 모두 소문자로 쓰고 단어 사이를 밑줄(_)로 연결 (예: user_name)</li>
+      </ul>
+      <p style="margin-bottom:0">클래스 안에서 정의하는 메소드의 <b>첫 번째 매개 변수는 self</b>예요. self는 그 메소드가 호출된 <b>객체 자체</b>를 가리키고, self로 객체의 속성과 다른 메소드에 접근해요. self를 빠뜨리면 오류가 나요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>▶️ 체험 · 한 줄씩 실행해 보기</h3>
+    <p style="margin-top:0"><b>예제 ② 생성자</b>부터 해요(예제 ①은 시간이 되면). <b>다음 줄</b>을 누를 때마다 한 줄씩 실행돼요. 오른쪽 <b>객체 상자</b>가 어떻게 바뀌는지 보고, <b>print</b> 줄에서는 출력을 먼저 예측해요.</p>
+    <div class="apps cl-tabs" id="runTabs"></div><div id="runTabsView" hidden></div>
+    <div id="runBox"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔮 코드 읽고 예측하기</h3>
+    <p class="muted" style="margin-top:0">실행하기 전에 결과를 골라 보세요.</p>
+    <div id="pred2"></div>
+  </div>
+  <div class="card">
+    <div class="memo" style="margin-top:0"><label>생성자를 쓰면 객체를 만들 때 무엇이 달라지나요? 예제 ②의 코드 한 줄을 함께 적어요. <small>예제 ①은 객체를 만든 뒤 속성을 한 줄씩 바꿨어요.</small></label><textarea data-memo="initWhy" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="quiz" data-quiz="2"></div>
+</section>
+
+<!-- 3 클래스 안의 메소드 -->
+<section class="page" data-name="클래스 안의 메소드" data-acc="#1f9d74">
+  <div class="head"><div class="num">03</div><div><h2>클래스 안에 메소드 정의는 어떻게 할까?</h2><p>교과서 149쪽 · 메소드, 객체지향 프로그래밍 예제, 스페셜 메소드</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>클래스 안에 정의한 함수를 <b>메소드</b>라고 해요. 메소드는 주로 <b>클래스의 속성값을 활용</b>해 특정 기능을 하거나 값을 반환해요. 첫 번째 매개 변수 <span class="mono">self</span>로 그 객체의 속성을 꺼내 써요.</span></div>
+  <div class="card">
+    <h3>📅 책이 출판된 지 몇 년이 지났을까?</h3>
+    <div class="cl-run2">
+<pre class="cl-code" id="yearCode"></pre>
+      <div>
+        <p style="margin-top:0"><span class="mono">from datetime import date</span>는 날짜를 처리하는 표준 라이브러리 객체를 불러와요. <span class="mono">get_years_since_publication()</span> 메소드는 올해 연도에서 <span class="mono">self.publish_year</span>(그 책 객체의 출판 연도)를 빼서 반환해요.</p>
+        <div class="cl-console"><span class="cl-chd">출력</span><div id="yearOut"></div></div>
+        <div class="cl-form" style="margin-top:10px">
+          <label>다른 책으로 바꿔 보기 · 출판 연도 <input id="yearIn" type="number" min="1400" max="2100" value="1943" style="width:90px"></label>
+          <span id="yearRes" class="cl-res"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 체험 · 학급 문고 대여 프로그램</h3>
+    <p style="margin-top:0">교과서 객체지향 프로그래밍 예제의 Book 클래스와 Student 클래스예요. 아래 예측을 먼저 하고, 버튼을 눌러 <b>객체의 속성이 어떻게 바뀌는지</b> 확인해요.</p>
+    <div class="cl-run2">
+<pre class="cl-code" id="rentCode"></pre>
+      <div>
+        <div id="pred3"></div>
+      </div>
+    </div>
+    <div class="cl-rent">
+      <div class="cl-calls" id="rentCalls"></div>
+      <div class="cl-objrow" id="rentObjs"></div>
+      <p class="note" style="margin:0">rented_books 안의 책은 객체 이름(b1)으로 보여 줘요. 코랩에서 <span class="mono">print(s1.rented_books)</span>를 출력하면 <span class="mono">[&lt;__main__.Book object at …&gt;]</span>처럼 보여요.</p>
+      <div class="cl-console"><span class="cl-chd">출력</span><div id="rentOut"></div></div>
+    </div>
+  </div>
+
+  <div class="grid2 even">
+    <div class="card">
+      <h3>✨ 스페셜 메소드 <span class="muted" style="font-weight:400;font-size:.88rem">(표 Ⅲ-2)</span></h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">스페셜 메소드</th><th class="l">기능</th></tr>
+        <tr><td class="mono">__init__</td><td>객체가 생성될 때 호출, 객체의 상태를 초기화하는 데 사용</td></tr>
+        <tr><td class="mono">__str__</td><td>객체를 문자열로 인쇄하는 방법을 정의, <span class="mono">print(객체)</span>를 쓰면 호출</td></tr>
+        <tr><td class="mono">__len__</td><td>객체의 요소 수를 반환, <span class="mono">len(객체)</span>를 쓰면 호출</td></tr>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="memo" style="margin-top:0"><label>s2가 b1을 빌리지 못한 까닭을 메소드와 속성으로 설명해 보세요. 그 까닭이 드러나는 코드 한 줄을 함께 적어요. <small>rent_book()이 어떤 속성을 확인하고 바꾸나요?</small></label><textarea data-memo="methodWhy" rows="3"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="3"></div>
+</section>
+
+<!-- 4 함께 해결하기 · 숫자 야구 게임 -->
+<section class="page" data-name="함께 해결하기 · 숫자 야구" data-acc="#e0702b">
+  <div class="head"><div class="num">04</div><div><h2>함께 해결하기 · 숫자 야구 게임</h2><p>교과서 150~151쪽 · 클래스와 객체를 활용한 프로그램</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>숫자와 자리가 모두 맞으면 <b>스트라이크</b>, 숫자만 맞으면 <b>볼</b>이에요. 참가자마다 <b>Player 객체</b>가 하나씩 생기고, 저마다 비밀 숫자 3개를 가져요. <b>Game 객체</b>는 참가자 목록을 가지고 라운드를 진행해요.</span></div>
+  <div class="grid2 even">
+    <div class="card">
+      <h3>🔍 문제 이해와 분석 · 알고리즘 설계</h3>
+      <p style="margin-top:0">숫자 야구 게임은 두 명 이상이 함께 즐기는 숫자 추측 게임이에요. 되도록 적은 시도로 정확한 숫자를 맞히는 것이 목표예요.</p>
+      <ul style="margin:0;padding-left:20px">
+        <li>게임을 시작하면 참여할 플레이어 인원수를 입력받는다.</li>
+        <li>플레이어마다 0~9 사이의 랜덤한 숫자 3개가 중복 없이 배정된다.</li>
+        <li>각 플레이어는 자기 순서에 숫자를 추측하고 피드백을 받는다.</li>
+        <li>숫자를 모두 맞힌 플레이어가 있으면 이름을 출력하고 게임을 끝낸다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧩 클래스 · 속성 · 메소드</h3>
+      <div class="cl-tw"><table class="tbl">
+        <tr><th class="l">클래스</th><th class="l">속성</th><th class="l">메소드</th></tr>
+        <tr><td><b>Player</b></td><td class="mono">name, numbers</td><td class="mono">check_strike()</td></tr>
+        <tr><td><b>Game</b></td><td class="mono">players</td><td class="mono">play(), check_gameover()</td></tr>
+      </table></div>
+      <p class="note">교과서 소스 코드에 맞춰 속성은 numbers, 메소드 이름은 밑줄(_)로 적었어요. play()는 게임을 진행하는 메소드로, (가)가 바로 이 안에 들어가요.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 (가) play() 메소드 설계하기 · 순서 맞추기</h3>
+    <p style="margin-top:0">(가)에는 게임을 진행하는 코드가 들어가요. 위의 알고리즘 설계를 보고, 할 일 카드를 <b>실행할 순서대로</b> 눌러 늘어놓아 보세요. 카드는 코드가 아니라 알고리즘이에요. 다음 체험에서 게임을 해 보며 이 순서대로 진행되는지 확인해요.</p>
+    <div id="playOrder"></div>
+    <div class="memo"><label>play()에서 <b>되풀이해야 할 일</b>과 <b>반복을 멈추는 조건</b>을 내 말로 적어 보세요.</label><textarea data-memo="playPlan" rows="3"></textarea><div class="saved"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>⚾ 체험 · 숫자 야구 한 판</h3>
+    <p style="margin-top:0">참가자 수와 이름을 정하고 <b>게임 시작</b>을 누르면 참가자마다 Player 객체가 만들어져요. 라운드마다 차례대로 숫자 3개를 추측해요. 위에서 늘어놓은 순서대로 진행되는지 보세요. 오른쪽에서 <b>Game 객체의 값</b>이 어떻게 바뀌는지도 보세요.</p>
+    <div class="cl-ball">
+      <div>
+        <div class="cl-form" id="ballSetup">
+          <label>참가자 수 <select id="ballN"><option>1</option><option selected>2</option><option>3</option></select></label>
+          <span id="ballNames"></span>
+          <button class="btn" id="ballStart">게임 시작</button>
+        </div>
+        <div class="cl-form" id="ballTurn" style="display:none">
+          <label><b id="ballWho"></b>의 추측 <input id="ballIn" type="text" maxlength="5" placeholder="예: 3 4 5" style="width:110px"></label>
+          <button class="btn" id="ballGo">추측하기</button>
+          <button class="btn ghost sm" id="ballGive">정답 보기</button>
+        </div>
+        <pre class="cl-log cl-big" id="ballLog"></pre>
+      </div>
+      <div class="cl-objcol" id="ballObjs"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔮 check_strike() 읽고 예측하기</h3>
+    <div class="cl-run2">
+<pre class="cl-code" id="strikeCode"></pre>
+      <div id="pred4"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💻 코랩에서 (가) 채워 프로그램 완성하기</h3>
+    <p style="margin-top:0">노트북의 <b>2. 함께 해결하기</b>에 Player · Game 클래스와 (가)의 빈칸, 단계별 힌트가 있어요. 위에서 늘어놓은 순서를 주석 삼아 코드로 옮겨 보세요. 수업 시간에 다 못 하면 다음 시간이나 집에서 이어서 해요.</p>
+    <div class="row"><a class="btn" href="https://colab.research.google.com/github/sweet1203/ds_info_class/blob/main/lessons/u3-class/assets/object_class.ipynb" target="_blank" rel="noopener" style="text-decoration:none">코랩에서 노트북 열기 ↗</a><a class="btn ghost" href="object_class.ipynb" download style="text-decoration:none">노트북 파일 받기</a></div>
+    <div class="memo"><label>코랩 실행 결과 <small>(가)를 채워 게임이 끝까지 실행됐나요? 막힌 곳이 있으면 적어요.</small></label><input type="text" data-memo="colabRes"><div class="saved"></div></div>
+  </div>
+  <div class="cl-ck"><b>✅ 성취도 평가</b><div id="ckClass"></div></div>
+  <div class="quiz" data-quiz="4"></div>
+</section>
+
+<!-- 5 프로그래밍 정리 -->
+<section class="page" data-name="프로그래밍 정리" data-acc="#d64535">
+  <div class="head"><div class="num">05</div><div><h2>객체와 클래스 개념 정리 · 프로그래밍 정리</h2><p>교과서 151~153쪽 · 개념 정리하기, 맞춤 활동, 선택 활동</p></div></div>
+  <div class="easy"><b class="t">쉽게 말하면</b><span>오늘 배운 용어를 새 상황에 맞춰 보고, 프로그래밍 단원을 <b>지식 · 이해</b>, <b>과정 · 기능</b>, <b>가치 · 태도</b> 세 가지 활동으로 정리해요.</span></div>
+  <div class="card">
+    <h3>📝 개념 정리하기</h3>
+    <p class="muted" style="margin-top:0;font-size:.9rem">빈칸에 들어갈 말을 먼저 떠올린 뒤 눌러서 확인하세요. 한 번 더 누르면 다시 가려져요.</p>
+    <ol class="cl-blanks">
+      <li>몬스터의 이름, 체력 같은 데이터와 공격하기, 도망가기 같은 행동을 한 단위로 묶은 것은 <button class="cl-blank" data-a="객체">?</button>이다.</li>
+      <li>몬스터 수십 마리를 같은 모양으로 찍어 내려면 먼저 설계도인 <button class="cl-blank" data-a="클래스">?</button>를 정의해야 한다.</li>
+      <li>Monster 설계도로 만들어져 실제로 쓸 수 있게 된 몬스터 하나하나(m1, m2, …)를 <button class="cl-blank" data-a="인스턴스">?</button>라고 한다.</li>
+      <li>게임 속 몬스터 m1에게 <span class="mono">m1.attack()</span>이라고 써서 공격을 시켰다. 이렇게 객체 이름 뒤에 점을 찍고 불러 쓰는 attack()은 몬스터의 <button class="cl-blank" data-a="메소드">?</button>이다.</li>
+      <li>게임 회사가 몬스터, 아이템, 지도를 각각 Monster, Item, Map 설계도로 만들고, 이 설계도로 만든 것들이 서로 주고받으며 게임이 돌아가게 짰다. 이렇게 짠 방식이 <button class="cl-blank" data-a="객체지향 프로그래밍">?</button>이다.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>🧩 맞춤 활동 · 프로그래밍 활용</h3>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#2f6fd0">지식 · 이해</span>
+      <div class="memo" style="margin-top:0"><label>일상생활 속에서 프로그래밍으로 해결하고 있는 문제를 찾아 세 가지 이상 나열해 보세요.</label><textarea data-memo="dailyProg" rows="2" placeholder="예: 버스가 몇 분 뒤에 오는지 알려 주기, …"></textarea><div class="saved"></div></div>
+    </div>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#1f9d74">과정 · 기능</span>
+      <div>
+        <p style="margin-top:0">런 길이 부호화 방식(53쪽)으로 압축한 결과를 출력하는 함수예요. 결과를 예측한 뒤 <b>한 번 반복</b>을 눌러 변수 a와 cnt가 어떻게 바뀌는지 따라가 보세요.</p>
+        <div class="cl-run2">
+<pre class="cl-code" id="rleCode"></pre>
+          <div id="pred5"></div>
+        </div>
+        <div class="cl-form" style="margin-top:10px">
+          <label>함수에 넣을 문자열 <input id="rleIn" type="text" maxlength="14" value="BBBWWB" style="width:150px"></label>
+          <button class="btn sm" id="rleStep">한 번 반복</button>
+          <button class="btn ghost sm" id="rleAll">끝까지</button>
+          <button class="btn ghost sm" id="rleReset">처음부터</button>
+        </div>
+        <div class="cl-tw"><table class="tbl cl-trace" id="rleTbl"></table></div>
+      </div>
+    </div>
+    <div class="cl-act">
+      <span class="cl-lv" style="--k:#e0702b">가치 · 태도</span>
+      <div class="memo" style="margin-top:0"><label>프로그래밍 프로젝트를 할 때 협력적으로 문제를 해결하려는 태도를 평가할 항목을 두 가지 추가하고, 나의 점수(5~1)를 매겨 보세요. <small>회의, 역할 나누기, 코드 함께 보기, 오류 해결, 시간 지키기 가운데에서 떠올려 봐요. 친구가 추가한 항목과 비교해 봐요.</small></label><textarea data-memo="evalAdd" rows="2" placeholder="항목 1: … (○점)&#10;항목 2: … (○점)"></textarea><div class="saved"></div></div>
+    </div>
+  </div>
+
+  <div class="cl-ck"><b>✅ 학업 성취도 점검</b><div id="ckProg"></div></div>
+  <details class="card cl-more">
+    <summary>🔀 선택 활동 · 보충과 심화 <span class="muted" style="font-weight:400;font-size:.88rem">(시간이 남을 때)</span></summary>
+    <div class="grid2 even" style="margin-top:10px">
+      <div>
+        <h4 style="margin:0 0 6px">보충 · 터틀 그래픽스</h4>
+        <p style="margin:0 0 6px;font-size:.93rem">파이썬의 터틀(turtle) 그래픽스 모듈로 간단한 그림을 그려요. 아래 코드는 사각형을 그려요. 코드를 바꿔 원하는 모양을 그려 보세요. 터틀은 웹 환경인 코랩보다 설치형 환경인 <b>파이썬 IDLE</b>에서 하기를 권해요.</p>
+<pre class="cl-code cl-plain">import turtle          # turtle 모듈 불러오기
+t = turtle.Turtle()    # turtle 객체 생성
+for i in range(4):
+    t.forward(100)     # 앞으로 100픽셀 이동
+    t.right(90)        # 오른쪽으로 90도 회전
+turtle.done()          # 그림판 유지</pre>
+        <p class="note">기본 명령어: forward() 전진 · backward() 후진 · right() 우회전 · left() 좌회전 · circle() 원 그리기</p>
+      </div>
+      <div>
+        <h4 style="margin:0 0 6px">심화 · 영화(Movie) 클래스</h4>
+        <p style="margin:0;font-size:.93rem">영화(Movie) 클래스를 정의하고, 최근 영화 정보로 객체를 만들어 영화 정보를 저장하는 프로그램을 작성해 보세요. 노트북의 <b>3. 더 해 보기</b>에 빈 셀과 힌트가 있어요.</p>
+      </div>
+    </div>
+  </details>
+  <div class="quiz" data-quiz="5"></div>
+</section>
+
+<!-- 6 마무리 -->
+<section class="page" data-name="마무리 · 질문폼" data-acc="#0f2742">
+  <div class="head"><div class="num">06</div><div><h2>마무리</h2><p>핵심 문장 · 처음 생각과 비교 · 마무리 퀴즈 · 질문폼</p></div></div>
+  <div class="key3">
+    <div style="--k:#9b4fc4"><b>객체</b>는 속성(데이터)과 메소드(행동)를 한 단위로 묶은 것이고, <b>클래스</b>는 객체를 만드는 설계도다. 클래스로 만들어 메모리에 실체화된 객체를 <b>인스턴스</b>라고 한다.</div>
+    <div style="--k:#2f6fd0"><span class="mono">class</span>로 클래스를 정의하고 <span class="mono">객체 변수 = 클래스 이름()</span>으로 객체를 만든다. <b>생성자 __init__()</b>은 객체가 생성될 때 자동으로 호출되어 속성을 저장하고, <b>메소드</b>는 self로 그 객체의 속성을 활용한다.</div>
+    <div style="--k:#e0702b"><b>객체지향 프로그래밍</b>은 코드의 재사용성, 유지 보수성, 확장성을 높여 규모가 크고 복잡한 소프트웨어 프로젝트에서 장점이 크다. 숫자 야구 게임은 Player 객체와 Game 객체가 서로 주고받으며 동작한다.</div>
+  </div>
+  <div class="card">
+    <h3>처음 생각과 비교하기</h3>
+    <div class="cl-then"><span class="kicker">처음에 쓴 생각</span><div id="planShow"></div></div>
+    <b style="font-size:.93rem">협력적으로 문제를 해결하기 위해 프로그래밍은 어떻게 구현할까?</b>
+    <textarea data-memo="keyQ" rows="3" placeholder="오늘 배운 클래스와 객체를 넣어 내 말로 답해요"></textarea><div class="saved"></div>
+    <div class="memo"><label>프로그래밍 단원에서 새롭게 알게 된 점</label><textarea data-memo="newLearn" rows="2"></textarea><div class="saved"></div></div>
+  </div>
+  <div class="card" style="--acc:#0f2742">
+    <h3>마무리 퀴즈</h3>
+    <div class="quiz" data-quiz="6"></div>
+  </div>
+  <div class="card">
+    <h3>개념 퀴즈 결과</h3>
+    <table id="result"></table>
+    <button class="btn ghost" id="quizReset">퀴즈 다시 풀기</button>
+  </div>
+  <div class="formgo">
+    <span class="kicker">생각 정리 과제</span>
+    <h3>질문폼에 내 생각 쓰기</h3>
+    <ol>
+      <li>내가 만든 자동차 객체로 설명하는 <b>클래스와 객체(인스턴스)의 관계</b>를 쓰고, 객체지향 프로그래밍이 좋은 점을 한 가지 설명하세요.</li>
+      <li>예제 코드의 한 줄을 들어 <b>생성자(__init__)</b>와 <b>메소드</b>가 각각 하는 일을 설명하세요.</li>
+      <li>숫자 야구 게임에서 <b>Player 객체와 Game 객체</b>가 맡은 일을 쓰고, <b>play()</b>에서 되풀이할 일과 멈추는 조건을 설명하세요.</li>
+    </ol>
+    <p>질문폼에는 붙여넣기가 되지 않아요. 아래 메모를 보면서 직접 다시 써 주세요.</p>
+    <a class="go" href="{{FORM_URL}}" target="_blank" rel="noopener">질문폼 열기 →</a>
+    <div class="msum" id="msum"></div>
+  </div>
+</section>
